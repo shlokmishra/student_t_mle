@@ -3,22 +3,20 @@
 
 echo "--- Starting Experiment Batch for k=3 ---"
 
-# First, activate the virtual environment
-source venv/bin/activate
+# We call the python executable from the venv directly.
+# This is more robust than activating the environment.
+VENV_PYTHON="venv/bin/python"
 
 # Run for m=20
 echo "--- Running k=3, m=20 ---"
-python3 main.py --k 3 --m 20
+$VENV_PYTHON main.py --k 3 --m 20
 
 # Run for m=50
 echo "--- Running k=3, m=50 ---"
-python3 main.py --k 3 --m 50
+$VENV_PYTHON main.py --k 3 --m 50
 
 # Run for m=250
 echo "--- Running k=3, m=250 ---"
-python3 main.py --k 3 --m 250
-
-# Deactivate the environment
-deactivate
+$VENV_PYTHON main.py --k 3 --m 250
 
 echo "--- Experiment Batch for k=3 Complete ---"
