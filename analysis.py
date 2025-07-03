@@ -159,7 +159,6 @@ def plot_posterior_comparison(mle_chain, x_original, params, filename=None):
 # --- Experiment 2: Posterior Predictive Check for X
 # ==============================================================================
 
-# In analysis.py
 
 def create_x_comparison_table(x_original, x_pred_full_data, x_pred_mle, filename=None):
     """
