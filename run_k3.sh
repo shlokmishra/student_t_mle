@@ -5,7 +5,6 @@ echo "--- Starting Experiment Batch for k=3 ---"
 
 # We call the python executable from the venv directly.
 # This is more robust than activating the environment.
-VENV_PYTHON="venv/bin/python"
 
 # Run for m=20
 echo "--- Running k=3, m=20 ---"

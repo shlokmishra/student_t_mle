@@ -63,7 +63,8 @@ def plot_diagnostics_with_benchmark(results, params, kde_0, filename=None):
     likelihood_kde = kde_0.pdf(params['mu_star'] - mu_grid)
     prior_on_grid = stats.norm.pdf(mu_grid, loc=params['prior_mean'], scale=params['prior_std'])
     unnormalized_posterior_kde = likelihood_kde * prior_on_grid
-    area = np.trapezoid(unnormalized_posterior_kde, mu_grid)
+    # area = np.trapezoid(unnormalized_posterior_kde, mu_grid)
+    area = np.trapz(unnormalized_posterior_kde, mu_grid)
     benchmark_posterior = unnormalized_posterior_kde / area
     axes[1].plot(mu_grid, benchmark_posterior, color='green', linestyle='--', lw=2.5, label="Benchmark Posterior")
 
@@ -115,15 +116,20 @@ def plot_posterior_comparison(mle_chain, x_original, params, filename=None):
     log_posterior_vals = [sf.log_posterior_mu(mu, x_original, params['k'], params['prior_mean'], params['prior_std']) for mu in mu_grid]
     unnormalized_posterior_full = np.exp(log_posterior_vals - np.max(log_posterior_vals)) # Subtract max for stability
 
+
     # Normalize using numerical integration
-    integral_area = np.trapezoid(unnormalized_posterior_full, mu_grid)
+    # integral_area = np.trapezoid(unnormalized_posterior_full, mu_grid)
+    integral_area = np.trapz(unnormalized_posterior_full, mu_grid)
     true_posterior_full_data = unnormalized_posterior_full / integral_area
 
     # --- 3. Quantitative Comparison ---
     mean_mle = np.mean(posterior_mle_samples)
     std_mle = np.std(posterior_mle_samples)
-    mean_full = np.trapezoid(mu_grid * true_posterior_full_data, mu_grid)
-    std_full = np.sqrt(np.trapezoid((mu_grid - mean_full)**2 * true_posterior_full_data, mu_grid))
+    # mean_full = np.trapezoid(mu_grid * true_posterior_full_data, mu_grid)
+    # std_full = np.sqrt(np.trapezoid((mu_grid - mean_full)**2 * true_posterior_full_data, mu_grid))
+    mean_full = np.trapz(mu_grid * true_posterior_full_data, mu_grid)
+    std_full = np.sqrt(np.trapz((mu_grid - mean_full)**2 * true_posterior_full_data, mu_grid))
+
 
     print(f"Posterior from MLE only (Sampler): Mean = {mean_mle:.4f}, Std Dev = {std_mle:.4f}")
     print(f"Posterior from Full Data (True):   Mean = {mean_full:.4f}, Std Dev = {std_full:.4f}")

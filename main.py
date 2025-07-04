@@ -5,7 +5,7 @@
 import os
 import numpy as np
 import pandas as pd
-import argparse  # The library for command-line arguments
+import argparse  
 import sampler_functions as sf
 import analysis as an
 
@@ -47,6 +47,8 @@ def run_single_experiment(k, m):
 
     # --- 2. EXECUTION PHASE ---
     
+    kde_0 = sf.compute_benchmark_kde(params)
+
     # Run the main Insufficient Gibbs Sampler to get p(μ|μ*)
     gibbs_results = sf.run_main_gibbs_sampler(params, mu_0, x_0)
     mu_chain_mle = gibbs_results['mu_chain']
@@ -61,6 +63,13 @@ def run_single_experiment(k, m):
     
     # --- 3. ANALYSIS & REPORTING PHASE ---
     print("\n--- Generating All Analysis Reports ---")
+
+    an.plot_diagnostics_with_benchmark(
+        results=gibbs_results,
+        params=params,
+        kde_0=kde_0, # Pass the computed KDE object
+        filename=f"{base_results_dir}/final_summary_k{params['k']}_m{params['m']}.png"
+    )
 
     # Generate the posterior comparison plot (Experiment 1)
     an.plot_posterior_comparison(
@@ -107,7 +116,7 @@ def run_single_experiment(k, m):
         'std_dev_mle_only': std_dev_mle_only,
         'info_loss_ratio': info_loss_ratio,
         'mu_acceptance_rate': gibbs_results['mu_acceptance_rate'],
-        'x_acceptance_rate': gibbs_results['x_pair_acceptance_rate'],
+        # 'x_acceptance_rate': gibbs_results['x_pair_acceptance_rate'],
     }
 
     # Save human-readable summary to a text file

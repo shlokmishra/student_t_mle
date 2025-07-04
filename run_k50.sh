@@ -2,7 +2,6 @@
 # This script runs all experiments for k=50.
 
 echo "--- Starting Experiment Batch for k=50 ---"
-VENV_PYTHON="venv/bin/python"
 
 echo "--- Running k=50, m=20 ---"
 python3 main.py --k 50 --m 20
