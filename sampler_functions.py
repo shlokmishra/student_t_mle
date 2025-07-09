@@ -2,6 +2,31 @@ import numpy as np
 from scipy import stats
 from scipy.special import logsumexp
 from tqdm import tqdm
+from scipy.optimize import root_scalar
+
+
+def get_mle(data, params):
+    """Find the MLE for the location parameter μ of a t-distribution
+    with fixed dof and fixed scale=1, for the given data array."""
+
+    k = params['k']
+    x = np.asarray(data)
+    print(f"Calculating MLE for data with {len(x)} points and k={k}...")
+    # Define the MLE equation: sum((x - mu) / (k + (x - mu)**2)) = 0
+    def mle_equation(mu):
+        return np.sum((x - mu) / (k + (x - mu)**2))
+
+    # Use the median as a robust initial guess and bracket for root finding
+    median = np.median(x)
+    bracket = (x.min() - 10, x.max() + 10)
+
+    # Find the root
+    result = root_scalar(mle_equation, bracket=bracket, method='brentq')
+    if not result.converged:
+        raise RuntimeError("MLE root finding did not converge.")
+
+    mu_star = result.root
+    return mu_star
 
 def negative_log_likelihood(mu, data, k):
     """Calculates the negative of the log-likelihood for Student's t data."""
@@ -366,31 +391,18 @@ def run_main_gibbs_sampler(params, mu_0, x_0):
 def generate_initial_data(params):
     """
     Generates the initial "ground-truth" dataset and finds its MLE, μ*.
-    This simulates the problem we are trying to solve.
-
-    Args:
-        params (dict): Dictionary of model parameters (needs 'k', 'mu_true', 'm').
-
-    Returns:
-        (np.array, float): A tuple containing the original data and its calculated MLE.
     """
     print("--- Generating initial data and finding MLE (μ*) ---")
-    np.random.seed(42) # For reproducibility
-    
-    # Generate the ground-truth dataset
+    np.random.seed(42)
     x_original = stats.t.rvs(
         df=params['k'],
         loc=params['mu_true'],
         scale=1,
         size=params['m']
     )
-    
-    # A robust way to find the MLE for a t-distribution's location
-    _, mu_star, _ = stats.t.fit(x_original, fdf=params['k'])
-    
+    mu_star = get_mle(x_original, params)
     print(f"Generated {params['m']} data points with true μ = {params['mu_true']}.")
     print(f"Calculated MLE μ* = {mu_star:.4f}")
-    
     return x_original, mu_star
 
 def initialize_sampler(params):
@@ -445,32 +457,35 @@ def generate_all_predictive_samples(mu_chain_mle, mu_chain_full_data, params):
     Generates two sets of posterior predictive samples for x:
     1. Based on the posterior of mu given the MLE (from Gibbs Sampler)
     2. Based on the posterior of mu given the full data
-    
+
     Returns:
-        (np.array, np.array): A tuple containing the two flattened datasets:
-                              (x_pred_mle_flat, x_pred_full_data_flat)
+        (np.array, np.array): A tuple containing the two predictive datasets:
+                              (x_pred_mle, x_pred_full_data)
     """
     print("\n--- Generating Posterior Predictive Datasets ---")
     
-    # --- Settings ---
-    num_x_vectors_to_gen = 10000  # Generate 10k vectors for each case
+    num_x_samples = 10000  # Number of posterior predictive draws
     burn_in = int(params['num_iterations_T'] * 0.2)
 
     # --- Generate samples for x_tilde | mu* ---
-    print(f"Generating {num_x_vectors_to_gen} samples from p(x|μ*)...")
+    print(f"Generating {num_x_samples} samples from p(x|μ*)...")
     posterior_mle_mus = mu_chain_mle[burn_in:]
-    mus_for_mle_pred = np.random.choice(posterior_mle_mus, size=num_x_vectors_to_gen, replace=True)
-    x_samples_from_mle = [stats.t.rvs(df=params['k'], loc=mu, scale=1, size=params['m']) for mu in tqdm(mus_for_mle_pred, desc="Sampling x|μ*")]
-    x_pred_mle_flat = np.array(x_samples_from_mle).flatten()
+    mus_for_mle_pred = np.random.choice(posterior_mle_mus, size=num_x_samples, replace=True)
+    x_pred_mle = np.array([
+        stats.t.rvs(df=params['k'], loc=mu, scale=1, size=1)
+        for mu in tqdm(mus_for_mle_pred, desc="Sampling x|μ*")
+    ]).flatten()
 
     # --- Generate samples for x_tilde | x_original ---
-    print(f"Generating {num_x_vectors_to_gen} samples from p(x|x_original)...")
+    print(f"Generating {num_x_samples} samples from p(x|x_original)...")
     posterior_full_data_mus = mu_chain_full_data[burn_in:]
-    mus_for_full_data_pred = np.random.choice(posterior_full_data_mus, size=num_x_vectors_to_gen, replace=True)
-    x_samples_from_full_data = [stats.t.rvs(df=params['k'], loc=mu, scale=1, size=params['m']) for mu in tqdm(mus_for_full_data_pred, desc="Sampling x|x")]
-    x_pred_full_data_flat = np.array(x_samples_from_full_data).flatten()
+    mus_for_full_data_pred = np.random.choice(posterior_full_data_mus, size=num_x_samples, replace=True)
+    x_pred_full_data = np.array([
+        stats.t.rvs(df=params['k'], loc=mu, scale=1, size=1)
+        for mu in tqdm(mus_for_full_data_pred, desc="Sampling x|x")
+    ]).flatten()
     
-    return x_pred_mle_flat, x_pred_full_data_flat
+    return x_pred_mle, x_pred_full_data
 
 def run_full_data_sampler(params, x_data, start_mu):
     """
@@ -509,6 +524,85 @@ def run_full_data_sampler(params, x_data, start_mu):
 
     print("Full-data posterior sampling complete.")
     return mu_chain
+
+def generate_datasets(params, outlier_percentile=0.995):
+    """
+    Generates two datasets: x1 (clean) and x2 (with a guaranteed outlier).
+    x1 and x2 will be identical except for one element.
+    All non-outlier samples are constrained to be within the 25th to 75th percentile range.
+
+    Args:
+        params (dict): Requires 'k', 'm', 'mu_true'.
+                       k: Degrees of freedom for the t-distribution.
+                       m: Number of samples in each dataset.
+                       mu_true: True mean (location) of the t-distribution.
+        outlier_percentile (float): The percentile threshold to define an outlier.
+                                    A value above this percentile is considered an outlier.
+
+    Returns:
+        (np.array, np.array, float): A tuple containing:
+                                     - x1: The clean dataset.
+                                     - x2: The dataset with an outlier.
+                                     - L: The calculated outlier threshold.
+    """
+    k = params['k']
+    m = params['m']
+    mu_true = params['mu_true']
+    
+    # 1. Define the outlier threshold L
+    # L is the value such that (outlier_percentile * 100)% of the data
+    # falls below it. Values above L are considered outliers.
+    L = stats.t.ppf(outlier_percentile, df=k, loc=mu_true, scale=1)
+
+    # Define the 25th and 75th percentiles for the "clean" range
+    Q1 = stats.t.ppf(0.25, df=k, loc=mu_true, scale=1)
+    Q3 = stats.t.ppf(0.75, df=k, loc=mu_true, scale=1)
+    
+    # 2. Generate m-1 common samples for both datasets, ensuring they are within Q1 and Q3
+    common_samples = []
+    while len(common_samples) < m - 1:
+        sample = stats.t.rvs(df=k, loc=mu_true, scale=1, size=1)[0]
+        # Ensure the sample is within the interquartile range (25th to 75th percentile)
+        if Q1 <= sample <= Q3: 
+            common_samples.append(sample)
+    common_samples = np.array(common_samples) # Convert list to numpy array
+    
+    # 3. Generate the m-th sample for x1 (guaranteed to be within Q1 and Q3)
+    while True:
+        non_outlier_sample = stats.t.rvs(df=k, loc=mu_true, scale=1, size=1)[0]
+        # Ensure the sample is within the interquartile range
+        if Q1 <= non_outlier_sample <= Q3:
+            break # We have a sample that is not an outlier and is within the desired range
+            
+    # 4. Generate the m-th sample for x2 (guaranteed to be an outlier)
+    while True:
+        # Generate a random probability within the outlier range
+        tail_prob = np.random.uniform(outlier_percentile, 1.0)
+        # Use ppf to get a value corresponding to this tail probability
+        outlier_sample = stats.t.ppf(tail_prob, df=k, loc=mu_true, scale=1)
+        # Ensure it's strictly greater than L for a clear outlier
+        if outlier_sample > L:
+            break 
+            
+    # 5. Construct x1 (clean dataset)
+    # Combine the common samples with the non-outlier sample.
+    x1 = np.append(common_samples, non_outlier_sample)
+    # Shuffle x1 to ensure the non-outlier's position is random.
+    np.random.shuffle(x1)
+            
+    # 6. Construct x2 (dataset with a guaranteed outlier)
+    # Combine the common samples with the outlier sample.
+    x2 = np.append(common_samples, outlier_sample)
+    # Shuffle x2 to randomize the outlier's position.
+    np.random.shuffle(x2)
+    
+    print(f"Outlier threshold L (>{outlier_percentile*100:.1f}th percentile) = {L:.4f}")
+    print(f"25th percentile (Q1): {Q1:.4f}, 75th percentile (Q3): {Q3:.4f}")
+    print(f"Max value in clean dataset (x1): {np.max(x1):.4f}")
+    print(f"Min value in clean dataset (x1): {np.min(x1):.4f}")
+    print(f"Max value in outlier dataset (x2): {np.max(x2):.4f}")
+    
+    return x1, x2, L
 
 
 

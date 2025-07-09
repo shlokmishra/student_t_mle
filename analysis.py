@@ -165,13 +165,12 @@ def plot_posterior_comparison(mle_chain, x_original, params, filename=None):
 # --- Experiment 2: Posterior Predictive Check for X
 # ==============================================================================
 
-
-def create_x_comparison_table(x_original, x_pred_full_data, x_pred_mle, filename=None):
+def create_x_comparison_table_markdown(x_original, x_pred_full_data, x_pred_mle, filename=None):
     """
-    Creates and saves/displays a styled DataFrame comparing data statistics,
+    Creates and saves/displays a Markdown table comparing data statistics,
     including tail-focused percentiles.
     """
-    print("\n--- Generating Statistics Comparison Table ---")
+    print("\n--- Generating Statistics Comparison Table (Markdown) ---")
     
     stats_to_compare = {
         "Mean": [np.mean(x_original), np.mean(x_pred_full_data), np.mean(x_pred_mle)],
@@ -187,60 +186,78 @@ def create_x_comparison_table(x_original, x_pred_full_data, x_pred_mle, filename
     index_labels = ["Ground Truth (x_original)", "Pred. from Full Data (x̃|x)", "Pred. from MLE (x̃|μ*)"]
     df = pd.DataFrame(stats_to_compare, index=index_labels)
 
+    # Build the Markdown table
+    header = "| Statistic | " + " | ".join(df.columns) + " |"
+    separator = "|" + "---|" * (len(df.columns) + 1)
+    rows = []
+    for idx, row in df.iterrows():
+        formatted = [f"{v:.4f}" for v in row]
+        rows.append(f"| {idx} | " + " | ".join(formatted) + " |")
+    markdown = "\n".join([header, separator] + rows)
 
-    styles = [
-        dict(selector="th.col_heading", props=[("text-align", "center"),("font-weight", "bold"),("background-color", "#f2f2f2"),("border", "1px solid black"),("color", "black")]),
-        dict(selector="th.row_heading", props=[("text-align", "left"),("font-weight", "bold"),("border", "1px solid black")]),
-        dict(selector="td", props=[("text-align", "center"),("border", "1px solid black")]),
-        dict(selector="caption", props=[("caption-side", "top"),("font-size", "1.2em"),("font-weight", "bold"),("margin-bottom", "10px")])
-    ]
-    def highlight_std(s):
-        return ['background-color: #4B6C8C; color: white; font-weight: bold' if s.name == 'Std. Dev.' else '' for v in s]
-    
-    styled_df = df.style.format("{:.4f}").set_caption("Final Comparison of Data Statistics (with Tail Analysis)").set_table_styles(styles).apply(highlight_std, axis=1)
-
+    # Optionally save to file
     if filename:
-        html = styled_df.to_html()
-        with open(filename, 'w') as f:
-            f.write(html)
-        print(f"Styled table saved to {filename}")
+        with open(filename, "w") as f:
+            f.write("# Final Comparison of Data Statistics (with Tail Analysis)\n\n")
+            f.write(markdown)
+        print(f"Markdown table saved to {filename}")
     else:
-        display(styled_df)
+        print("\n# Final Comparison of Data Statistics (with Tail Analysis)\n")
+        print(markdown)
+    
+    return markdown
 
-def plot_x_distribution_comparison(x_pred_full_data, x_pred_mle, filename=None):
+def plot_x_distribution_comparison(x_pred_full_data, x_pred_mle, filename=None, bw_adjust=1.0):
     """
     Plots the KDEs of the two posterior predictive distributions.
     This version omits the noisy KDE of the original data for clarity.
+
+    Args:
+        x_pred_full_data (np.array): Posterior predictive samples given full data.
+        x_pred_mle (np.array): Posterior predictive samples given MLE.
+        filename (str, optional): If provided, saves the plot to this file.
+        bw_adjust (float, optional): Bandwidth adjustment for KDE smoothing.
     """
     print("\n--- Generating Final Data Distribution Comparison Plot ---")
     plt.figure(figsize=(12, 8))
 
-    # To handle outliers, we'll set the plot limits based on percentiles
-    # Combine both datasets to find the overall range of interest
+    # Input validation and conversion
+    x_pred_full_data = np.asarray(x_pred_full_data).flatten()
+    x_pred_mle = np.asarray(x_pred_mle).flatten()
+
+    # Remove NaNs or infs if present
+    x_pred_full_data = x_pred_full_data[np.isfinite(x_pred_full_data)]
+    x_pred_mle = x_pred_mle[np.isfinite(x_pred_mle)]
+
+    # Set x-axis limits based on percentiles to avoid outlier distortion
     combined_data = np.concatenate([x_pred_full_data, x_pred_mle])
-    # Calculate the 1st and 99th percentiles to define our x-axis limits
     x_min, x_max = np.percentile(combined_data, [1, 99])
+    plt.xlim(x_min, x_max)
 
-
-    # Green Curve: The "ideal" predictions from the full-data posterior
-    sns.kdeplot(x_pred_full_data, color='green', lw=3, label='Posterior Predictive given Full Data (x̃|x)', fill=True, alpha=0.2)
-    
-    # Red Curve: The actual predictions from our Gibbs sampler
-    sns.kdeplot(x_pred_mle, color='red', lw=3, linestyle='--', label='Posterior Predictive given MLE (x̃|μ*)', fill=True, alpha=0.2)
+    # Plot KDEs with optional bandwidth adjustment
+    sns.kdeplot(
+        x_pred_full_data, color='green', lw=3, 
+        label='Posterior Predictive given Full Data (x̃|x)', 
+        fill=True, alpha=0.2, bw_adjust=bw_adjust
+    )
+    sns.kdeplot(
+        x_pred_mle, color='red', lw=3, linestyle='--', 
+        label='Posterior Predictive given MLE (x̃|μ*)', 
+        fill=True, alpha=0.2, bw_adjust=bw_adjust
+    )
 
     plt.title("Comparison of Posterior Predictive Distributions", fontsize=16)
     plt.xlabel("Value")
     plt.ylabel("Density")
     plt.legend(fontsize=12)
     plt.grid(True, alpha=0.4)
-    
+
     if filename:
         plt.savefig(filename, dpi=300, bbox_inches='tight')
         print(f"Plot saved to {filename}")
         plt.close()
     else:
         plt.show()
-
 
 def plot_predictive_density_difference(x_pred_full_data, x_pred_mle, filename=None):
     """
@@ -296,3 +313,85 @@ def plot_predictive_density_difference(x_pred_full_data, x_pred_mle, filename=No
     else:
         plt.show()
 
+def plot_outlier_predictive_distributions(x_pred_x1, x_pred_x2, x_pred_mle1, x_pred_mle2, L, filename_prefix=None):
+    """
+    Plots the four posterior predictive densities in two separate plots to compare their tail behavior.
+    
+    Args:
+        x_pred_x1 (np.array): Samples from p(x̃|x1) - Bayesian predictive from clean data.
+        x_pred_x2 (np.array): Samples from p(x̃|x2) - Bayesian predictive from outlier data.
+        x_pred_mle1 (np.array): Samples from p(x̃|μ*(x1)) - MLE-based predictive from clean data.
+        x_pred_mle2 (np.array): Samples from p(x̃|μ*(x2)) - MLE-based predictive from outlier data.
+        L (float): The outlier threshold value.
+        filename_prefix (str, optional): Prefix for saving the plots. If provided, two files
+                                         will be saved: '{prefix}_bayesian.png' and '{prefix}_mle.png'.
+    """
+    print("\n--- Generating Posterior Predictive Density Comparison Plots ---")
+    
+    # Determine a suitable x-axis range based on all data and the outlier threshold
+    # We want to show the bulk of the distribution and the relevant tail around L
+    all_x_data = np.concatenate([x_pred_x1, x_pred_x2, x_pred_mle1, x_pred_mle2])
+    
+    # Calculate quantiles to get a robust range for the x-axis
+    # Use a small quantile (e.g., 0.001) for the left limit to capture the left tail
+    # and extend slightly beyond L for the right limit.
+    x_min_val = np.percentile(all_x_data, 0.1) # Capture more of the left tail
+    x_max_val = max(np.percentile(all_x_data, 99.9), L * 1.2) # Ensure L and some beyond are visible
+
+    # Adjust x_min_val if it's too far negative compared to L
+    # This helps to zoom in if the data is very spread out but we care about the positive tail
+    if L > 0: # If L is positive, we might want to focus more on positive values
+        x_min_val = min(x_min_val, -L * 2) # Ensure some negative range, but not excessively so
+        x_min_val = max(x_min_val, np.percentile(all_x_data, 0.5)) # Don't cut off too much of the distribution
+
+    # --- Plot 1: Bayesian Predictive Densities ---
+    plt.figure(figsize=(10, 6)) # Adjusted figure size for single comparison
+    
+    sns.kdeplot(x_pred_x1, color='green', lw=2.5, linestyle='-', label='Bayesian Pred. (Clean Data)')
+    sns.kdeplot(x_pred_x2, color='green', lw=2.5, linestyle='--', label='Bayesian Pred. (Outlier Data)')
+    
+    plt.axvline(L, color='black', linestyle=':', lw=2, label=f'Outlier Threshold (L={L:.2f})')
+    
+    plt.yscale('log')
+    plt.xlim(x_min_val, x_max_val) # Set dynamic x-axis limits
+    plt.ylim(bottom=1e-5) # Set a lower limit for the log scale
+
+    plt.title("Bayesian Posterior Predictive Tails", fontsize=16)
+    plt.xlabel("Value")
+    plt.ylabel("Density (Log Scale)")
+    plt.legend(fontsize=11)
+    plt.grid(True, which="both", linestyle='--', alpha=0.5)
+
+    if filename_prefix:
+        bayesian_filename = f"{filename_prefix}_bayesian.png"
+        plt.savefig(bayesian_filename, dpi=300, bbox_inches='tight')
+        print(f"Bayesian plot saved to {bayesian_filename}")
+        plt.close()
+    else:
+        plt.show()
+
+    # --- Plot 2: MLE-based Predictive Densities ---
+    plt.figure(figsize=(10, 6)) # Adjusted figure size
+    
+    sns.kdeplot(x_pred_mle1, color='red', lw=2.5, linestyle='-', label='MLE-based Pred. (Clean Data)')
+    sns.kdeplot(x_pred_mle2, color='red', lw=2.5, linestyle='--', label='MLE-based Pred. (Outlier Data)')
+    
+    plt.axvline(L, color='black', linestyle=':', lw=2, label=f'Outlier Threshold (L={L:.2f})')
+    
+    plt.yscale('log')
+    plt.xlim(x_min_val, x_max_val) # Set dynamic x-axis limits
+    plt.ylim(bottom=1e-5) # Set a lower limit for the log scale
+
+    plt.title("MLE-based Posterior Predictive Tails", fontsize=16)
+    plt.xlabel("Value")
+    plt.ylabel("Density (Log Scale)")
+    plt.legend(fontsize=11)
+    plt.grid(True, which="both", linestyle='--', alpha=0.5)
+
+    if filename_prefix:
+        mle_filename = f"{filename_prefix}_mle.png"
+        plt.savefig(mle_filename, dpi=300, bbox_inches='tight')
+        print(f"MLE-based plot saved to {mle_filename}")
+        plt.close()
+    else:
+        plt.show()

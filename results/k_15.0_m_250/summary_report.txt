@@ -1,9 +1,0 @@
-Summary for k=15.0, m=250
-==============================
-k: 15.0000
-m: 250.0000
-mu_star: 9.9046
-std_dev_full_data: 0.0666
-std_dev_mle_only: 0.0654
-info_loss_ratio: 0.9822
-mu_acceptance_rate: 0.0925
