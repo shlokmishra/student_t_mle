@@ -84,7 +84,7 @@ def run_single_experiment(k, m):
         x_original, 
         x_pred_full_data=x_pred_full_data_flat, 
         x_pred_mle=x_pred_mle_flat,
-        filename=f"{base_results_dir}/stats_comparison_table.html"
+        filename=f"{base_results_dir}/stats_comparison_table.md"
     )
 
     # Generate the posterior predictive comparison plot (Experiment 2)
@@ -95,11 +95,11 @@ def run_single_experiment(k, m):
     )
 
     # Generate the difference plot
-    an.plot_predictive_density_difference(
-        x_pred_full_data=x_pred_full_data_flat,
-        x_pred_mle=x_pred_mle_flat,
-        filename=f"{base_results_dir}/x_pred_difference.png"
-    )
+    # an.plot_predictive_density_difference(
+    #     x_pred_full_data=x_pred_full_data_flat,
+    #     x_pred_mle=x_pred_mle_flat,
+    #     filename=f"{base_results_dir}/x_pred_difference.png"
+    # )
 
     # --- 4. SAVE SUMMARY RESULTS ---
     # Calculate key summary statistics for the master results table
@@ -140,10 +140,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # --- Input Validation ---
-    if args.k <= 2:
-        print(f"Error: Degrees of freedom k must be greater than 2. Got k={args.k}.")
-        exit(1)
-
     # --- Run the Experiment ---
     summary = run_single_experiment(k=args.k, m=args.m)
 

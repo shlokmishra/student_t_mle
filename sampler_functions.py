@@ -525,75 +525,68 @@ def run_full_data_sampler(params, x_data, start_mu):
     print("Full-data posterior sampling complete.")
     return mu_chain
 
-def generate_datasets(params, outlier_percentile=0.995):
+def generate_datasets(params, num_outliers=1, outlier_percentile=0.995, epsilon=1e-4):
     """
-    Generates two datasets: x1 (clean) and x2 (with a guaranteed outlier).
-    x1 and x2 will be identical except for one element.
+    Generates two datasets: x1 (clean) and x2 (with a guaranteed number of outliers).
+    x1 and x2 will be identical except for a specified number of elements.
     All non-outlier samples are constrained to be within the 25th to 75th percentile range.
+    Outliers are generated to be very close to the defined threshold.
 
     Args:
         params (dict): Requires 'k', 'm', 'mu_true'.
                        k: Degrees of freedom for the t-distribution.
                        m: Number of samples in each dataset.
                        mu_true: True mean (location) of the t-distribution.
+        num_outliers (int): The number of outliers to include in the x2 dataset.
         outlier_percentile (float): The percentile threshold to define an outlier.
                                     A value above this percentile is considered an outlier.
+        epsilon (float): A small value added to the outlier threshold to ensure the
+                         generated outlier is just slightly above it.
 
     Returns:
         (np.array, np.array, float): A tuple containing:
                                      - x1: The clean dataset.
-                                     - x2: The dataset with an outlier.
+                                     - x2: The dataset with outliers.
                                      - L: The calculated outlier threshold.
     """
     k = params['k']
     m = params['m']
     mu_true = params['mu_true']
     
+    if num_outliers >= m:
+        raise ValueError("The number of outliers must be less than the total number of samples.")
+
     # 1. Define the outlier threshold L
-    # L is the value such that (outlier_percentile * 100)% of the data
-    # falls below it. Values above L are considered outliers.
     L = stats.t.ppf(outlier_percentile, df=k, loc=mu_true, scale=1)
 
-    # Define the 25th and 75th percentiles for the "clean" range
+    # 2. Define the 25th and 75th percentiles for the "clean" range
     Q1 = stats.t.ppf(0.25, df=k, loc=mu_true, scale=1)
     Q3 = stats.t.ppf(0.75, df=k, loc=mu_true, scale=1)
     
-    # 2. Generate m-1 common samples for both datasets, ensuring they are within Q1 and Q3
+    # 3. Generate m - num_outliers common samples for both datasets
     common_samples = []
-    while len(common_samples) < m - 1:
+    while len(common_samples) < m - num_outliers:
         sample = stats.t.rvs(df=k, loc=mu_true, scale=1, size=1)[0]
-        # Ensure the sample is within the interquartile range (25th to 75th percentile)
         if Q1 <= sample <= Q3: 
             common_samples.append(sample)
-    common_samples = np.array(common_samples) # Convert list to numpy array
+    common_samples = np.array(common_samples)
     
-    # 3. Generate the m-th sample for x1 (guaranteed to be within Q1 and Q3)
-    while True:
+    # 4. Generate num_outliers non-outlier samples for x1
+    non_outlier_samples = []
+    while len(non_outlier_samples) < num_outliers:
         non_outlier_sample = stats.t.rvs(df=k, loc=mu_true, scale=1, size=1)[0]
-        # Ensure the sample is within the interquartile range
         if Q1 <= non_outlier_sample <= Q3:
-            break # We have a sample that is not an outlier and is within the desired range
+            non_outlier_samples.append(non_outlier_sample)
             
-    # 4. Generate the m-th sample for x2 (guaranteed to be an outlier)
-    while True:
-        # Generate a random probability within the outlier range
-        tail_prob = np.random.uniform(outlier_percentile, 1.0)
-        # Use ppf to get a value corresponding to this tail probability
-        outlier_sample = stats.t.ppf(tail_prob, df=k, loc=mu_true, scale=1)
-        # Ensure it's strictly greater than L for a clear outlier
-        if outlier_sample > L:
-            break 
+    # 5. Generate num_outliers outlier samples for x2
+    outlier_samples = [L + epsilon for _ in range(num_outliers)]
             
-    # 5. Construct x1 (clean dataset)
-    # Combine the common samples with the non-outlier sample.
-    x1 = np.append(common_samples, non_outlier_sample)
-    # Shuffle x1 to ensure the non-outlier's position is random.
+    # 6. Construct x1 (the clean dataset)
+    x1 = np.append(common_samples, non_outlier_samples)
     np.random.shuffle(x1)
             
-    # 6. Construct x2 (dataset with a guaranteed outlier)
-    # Combine the common samples with the outlier sample.
-    x2 = np.append(common_samples, outlier_sample)
-    # Shuffle x2 to randomize the outlier's position.
+    # 7. Construct x2 (the dataset with outliers)
+    x2 = np.append(common_samples, outlier_samples)
     np.random.shuffle(x2)
     
     print(f"Outlier threshold L (>{outlier_percentile*100:.1f}th percentile) = {L:.4f}")
@@ -603,7 +596,6 @@ def generate_datasets(params, outlier_percentile=0.995):
     print(f"Max value in outlier dataset (x2): {np.max(x2):.4f}")
     
     return x1, x2, L
-
 
 
 

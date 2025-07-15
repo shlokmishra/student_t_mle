@@ -165,7 +165,7 @@ def plot_posterior_comparison(mle_chain, x_original, params, filename=None):
 # --- Experiment 2: Posterior Predictive Check for X
 # ==============================================================================
 
-def create_x_comparison_table_markdown(x_original, x_pred_full_data, x_pred_mle, filename=None):
+def create_x_comparison_table(x_original, x_pred_full_data, x_pred_mle, filename=None):
     """
     Creates and saves/displays a Markdown table comparing data statistics,
     including tail-focused percentiles.
@@ -231,8 +231,8 @@ def plot_x_distribution_comparison(x_pred_full_data, x_pred_mle, filename=None, 
 
     # Set x-axis limits based on percentiles to avoid outlier distortion
     combined_data = np.concatenate([x_pred_full_data, x_pred_mle])
-    x_min, x_max = np.percentile(combined_data, [1, 99])
-    plt.xlim(x_min, x_max)
+    # x_min, x_max = np.percentile(combined_data, [1, 99])
+    # plt.xlim(x_min, x_max)
 
     # Plot KDEs with optional bandwidth adjustment
     sns.kdeplot(
@@ -395,3 +395,53 @@ def plot_outlier_predictive_distributions(x_pred_x1, x_pred_x2, x_pred_mle1, x_p
         plt.close()
     else:
         plt.show()
+
+
+def plot_combined_analysis(x1, x2, mu1, mu2, threshold, manual_outlier_val=None):
+    """
+    Generates a single, comprehensive plot visualizing two datasets,
+    their MLEs, and the outlier threshold.
+
+    Args:
+        x1 (np.array): The first (clean) dataset.
+        x2 (np.array): The second (outlier) dataset.
+        mu1 (float): The MLE calculated for x1.
+        mu2 (float): The MLE calculated for x2.
+        threshold (float): The calculated outlier threshold (L).
+        manual_outlier_val (float, optional): The value of the manually set outlier.
+                                              If provided, it will be highlighted.
+    """
+    plt.figure(figsize=(12, 8))
+    
+    # Use a consistent color palette
+    palette = ['#4C72B0', '#DD8452'] # Blue for clean, Orange for outlier
+    
+    # 1. Plot the individual data points for both datasets
+    sns.stripplot(data=[x1, x2], size=7, jitter=0.25, palette=palette, zorder=2)
+
+    # 2. Add the outlier threshold line
+    plt.axhline(threshold, color='red', linestyle='--', lw=2,
+                label=f'Outlier Threshold (L={threshold:.2f})', zorder=3)
+
+    # 3. Add the MLE for the clean dataset (x1)
+    plt.axhline(mu1, color=palette[0], linestyle=':', lw=2.5, xmin=0.05, xmax=0.45,
+                label=f'MLE for x1 = {mu1:.2f}', zorder=4)
+
+    # 4. Add the MLE for the outlier dataset (x2)
+    plt.axhline(mu2, color=palette[1], linestyle=':', lw=2.5, xmin=0.55, xmax=0.95,
+                label=f'MLE for x2 = {mu2:.2f}', zorder=4)
+    
+    # 5. If a manual outlier was set, highlight it for clarity
+    if manual_outlier_val is not None:
+        plt.scatter(1, manual_outlier_val, s=150, facecolors='none', 
+                    edgecolors='red', lw=2, zorder=5,
+                    label=f'Manually Set Outlier ({manual_outlier_val})')
+
+    # --- Final plot styling ---
+    plt.xticks([0, 1], ['x1 (Clean Dataset)', 'x2 (With Outlier)'])
+    plt.ylabel("Value", fontsize=12)
+    plt.title("Impact of an Outlier on Maximum Likelihood Estimation", fontsize=16)
+    plt.legend(loc='best', fontsize=10)
+    plt.grid(axis='y', linestyle='--', alpha=0.6)
+    plt.show()
+
