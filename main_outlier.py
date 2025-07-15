@@ -37,10 +37,10 @@ def main(args):
     z_domain_half_width = 1 / (2 * np.sqrt(params['k']))
     params['z_domain'] = (-z_domain_half_width, z_domain_half_width)
     
-    print("--- Experiment Parameters ---")
-    for key, val in params.items():
-        print(f"{key}: {val}")
-    print(f"num_outliers: {args.num_outliers}")
+    # print("--- Experiment Parameters ---")
+    # for key, val in params.items():
+    #     print(f"{key}: {val}")
+    # print(f"num_outliers: {args.num_outliers}")
 
     # --- 3. Create Custom Results Directory ---
     # Structure: results_outlier/{num_outliers}_outliers/k_{k}_m_{m}/
@@ -60,8 +60,8 @@ def main(args):
     # --- 5. Calculate MLE and Generate Plot ---
     mu_star_1 = sf.get_mle(x1_clean, params)
     mu_star_2 = sf.get_mle(x2_with_outlier, params)
-    print(f"MLE for clean data, μ*(x1):     {mu_star_1:.4f}")
-    print(f"MLE for outlier data, μ*(x2):  {mu_star_2:.4f}")
+    # print(f"MLE for clean data, μ*(x1):     {mu_star_1:.4f}")
+    # print(f"MLE for outlier data, μ*(x2):  {mu_star_2:.4f}")
 
     plot_path = os.path.join(results_path, "mle_comparison_plot.png")
     an.plot_combined_analysis(
@@ -72,10 +72,10 @@ def main(args):
         threshold=outlier_threshold_L,
         save_path=plot_path
     )
-    print("-" * 30)
+    # print("-" * 30)
 
     # --- 6. Generate All Four Posterior Chains for μ ---
-    print("--- Generating the four posterior distributions for μ ---")
+    # print("--- Generating the four posterior distributions for μ ---")
     mu_chain_x1 = oef.get_full_data_posterior_samples(x1_clean, params)
     mu_chain_x2 = oef.get_full_data_posterior_samples(x2_with_outlier, params)
     mu_chain_mle1 = oef.get_mle_conditional_posterior_samples(mu_star_1, params)

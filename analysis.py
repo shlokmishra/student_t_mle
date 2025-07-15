@@ -397,7 +397,7 @@ def plot_outlier_predictive_distributions(x_pred_x1, x_pred_x2, x_pred_mle1, x_p
         plt.show()
 
 
-def plot_combined_analysis(x1, x2, mu1, mu2, threshold, manual_outlier_val=None):
+def plot_combined_analysis(x1, x2, mu1, mu2, threshold, save_path=None, manual_outlier_val=None):
     """
     Generates a single, comprehensive plot visualizing two datasets,
     their MLEs, and the outlier threshold.
@@ -408,6 +408,8 @@ def plot_combined_analysis(x1, x2, mu1, mu2, threshold, manual_outlier_val=None)
         mu1 (float): The MLE calculated for x1.
         mu2 (float): The MLE calculated for x2.
         threshold (float): The calculated outlier threshold (L).
+        save_path (str, optional): Path to save the figure. If provided, the plot is
+                                   saved to this path instead of being shown.
         manual_outlier_val (float, optional): The value of the manually set outlier.
                                               If provided, it will be highlighted.
     """
@@ -443,5 +445,11 @@ def plot_combined_analysis(x1, x2, mu1, mu2, threshold, manual_outlier_val=None)
     plt.title("Impact of an Outlier on Maximum Likelihood Estimation", fontsize=16)
     plt.legend(loc='best', fontsize=10)
     plt.grid(axis='y', linestyle='--', alpha=0.6)
-    plt.show()
-
+    
+    # --- Save or show the plot ---
+    if save_path:
+        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        # We don't print from a helper function, the main script handles printing.
+        plt.close() # Close the figure to free up memory
+    else:
+        plt.show()
