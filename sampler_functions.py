@@ -28,6 +28,10 @@ def get_mle(data, params):
     mu_star = result.root
     return mu_star
 
+def mle_score(mu, x, k):
+    """Calculates the score function for the MLE of a t-distribution."""
+    return np.sum((x - mu) / (k + (x - mu)**2))
+
 def negative_log_likelihood(mu, data, k):
     """Calculates the negative of the log-likelihood for Student's t data."""
     # logpdf is log(PDF), so we sum them up for the log-likelihood
@@ -597,6 +601,116 @@ def generate_datasets(params, num_outliers=1, outlier_percentile=0.995, epsilon=
     
     return x1, x2, L
 
+def generate_clean_dataset_centered(params):
+    """
+    Generates a 'clean' dataset where the MLE is guaranteed to be mu_true.
+
+    Args:
+        params (dict): Requires 'k', 'm', 'mu_true'.
+                       k: Degrees of freedom for the t-distribution.
+                       m: Number of samples in the dataset.
+                       mu_true: The desired MLE for the final dataset.
+
+    Returns:
+        np.array: The generated clean dataset with MLE = mu_true.
+    """
+    k = params['k']
+    m = params['m']
+    mu_true = params['mu_true']
+
+    # 1. Define the 25th and 75th percentiles for the "clean" range
+    Q1 = stats.t.ppf(0.25, df=k, loc=mu_true, scale=1)
+    Q3 = stats.t.ppf(0.75, df=k, loc=mu_true, scale=1)
+
+    # 2. Generate m initial samples within the interquartile range
+    initial_samples = []
+    while len(initial_samples) < m:
+        sample = stats.t.rvs(df=k, loc=mu_true, scale=1, size=1)[0]
+        if Q1 <= sample <= Q3:
+            initial_samples.append(sample)
+    initial_samples = np.array(initial_samples)
+
+    # 3. Find the initial MLE of this dataset using the provided function
+    initial_mle = sf.get_mle(initial_samples, params)
+
+    # 4. Calculate the shift required to move the MLE to mu_true
+    shift = mu_true - initial_mle
+    
+    # 5. Apply the shift to the entire dataset
+    centered_dataset = initial_samples + shift
+    
+    return centered_dataset
+
+def generate_constrained_outlier_pair(clean_dataset, indices, mu_star, k, outlier_threshold_L, params):
+    """
+    Takes a dataset and two indices (i, j), sets x[i] to a random outlier value,
+    and calculates a new x[j] to keep the MLE constant.
+
+    Args:
+        clean_dataset (np.array): The input dataset (ideally with MLE = mu_star).
+        indices (tuple): A tuple of two integers (i, j) for the points to update.
+        mu_star (float): The MLE value to be preserved.
+        k (float): The degrees of freedom of the t-distribution.
+        outlier_threshold_L (float): The 99.5th percentile threshold. An outlier will be
+                                     sampled from a uniform distribution between this
+                                     value and the 99.9th percentile.
+        params (dict): The parameters dictionary, which must contain 'z_domain'.
+
+    Returns:
+        np.array or None: The modified dataset with the same MLE, or None if the
+                          operation is not possible (e.g., z is out of domain).
+    """
+    i, j = indices
+    x_i, x_j = clean_dataset[i], clean_dataset[j]
+
+    # 1. Transform original pair to y-space and then z-space
+    y_i = x_i - mu_star
+    y_j = x_j - mu_star
+    z_i = sf.psi(y_i, k)
+    z_j = sf.psi(y_j, k)
+    
+    # 2. Calculate the invariant sum delta
+    delta = z_i + z_j
+
+    # 3. Define the new outlier point by sampling from the tail
+    p999 = stats.t.ppf(0.999, df=k, loc=mu_star, scale=1)
+    outlier_value = np.random.uniform(outlier_threshold_L, p999)
+    x_tilde_i = outlier_value
+    y_tilde_i = x_tilde_i - mu_star
+    z_tilde_i = sf.psi(y_tilde_i, k)
+
+    # 4. Calculate the required z for the second point
+    z_tilde_j = delta - z_tilde_i
+
+    # 5. Check if the new z is within the valid domain from params
+    z_domain_limit = params['z_domain'][1] # Use the upper limit from the tuple
+    if not (-z_domain_limit < z_tilde_j < z_domain_limit):
+        print(f"Warning: Calculated z_tilde_j ({z_tilde_j:.4f}) is outside the valid domain.")
+        return None
+
+    # 6. Invert z_tilde_j back to y-space
+    y_minus, y_plus = sf.psi_inverse(z_tilde_j, k)
+    
+    if np.isnan(y_minus):
+        print("Warning: Could not find a valid inverse for z_tilde_j.")
+        return None
+
+    # 7. Choose the y-value closer to the original y_j
+    # This helps maintain the structure of the data as much as possible.
+    if abs(y_minus - y_j) < abs(y_plus - y_j):
+        y_tilde_j = y_minus
+    else:
+        y_tilde_j = y_plus
+        
+    # 8. Transform back to x-space
+    x_tilde_j = y_tilde_j + mu_star
+
+    # 9. Create and return the new dataset
+    outlier_dataset = clean_dataset.copy()
+    outlier_dataset[i] = x_tilde_i
+    outlier_dataset[j] = x_tilde_j
+    
+    return outlier_dataset
 
 
 
