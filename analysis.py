@@ -48,17 +48,14 @@ def plot_diagnostics_with_benchmark(results, params, kde_0, filename=None):
     # Create a grid for the smooth density curves
     mu_grid = np.linspace(posterior_mu_samples.min() - 1, posterior_mu_samples.max() + 1, 500)
     
-    # --- MODIFICATION STARTS HERE ---
-    
+
     # NEW: Plot the histogram of the Gibbs sampler output in the background
     axes[1].hist(posterior_mu_samples, bins=50, density=True, color='red', alpha=0.3, label="Sampler Histogram")
     
     # Plot the KDE of our Gibbs sampler's output over the histogram
     kde_sampler = stats.gaussian_kde(posterior_mu_samples)
     axes[1].plot(mu_grid, kde_sampler(mu_grid), color='red', lw=2.5, label="p(μ | μ*) - Sampler KDE")
-    
-    # --- MODIFICATION ENDS HERE ---
-    
+        
     # Now, calculate and plot the benchmark posterior on the same axes
     likelihood_kde = kde_0.pdf(params['mu_star'] - mu_grid)
     prior_on_grid = stats.norm.pdf(mu_grid, loc=params['prior_mean'], scale=params['prior_std'])
@@ -92,74 +89,74 @@ def plot_diagnostics_with_benchmark(results, params, kde_0, filename=None):
 # --- Experiment 1: Mu Posterior Comparison
 # ==============================================================================
 
-def plot_posterior_comparison(mle_chain, x_original, params, filename=None):
-    """
-    Compares the sampler's posterior p(μ|μ*) against the true analytical
-    posterior from the full data, p(μ|x).
+# def plot_posterior_comparison(mle_chain, x_original, params, filename=None):
+#     """
+#     Compares the sampler's posterior p(μ|μ*) against the true analytical
+#     posterior from the full data, p(μ|x).
 
-    Args:
-        mle_chain (np.array): The MCMC chain for μ from the Gibbs sampler.
-        x_original (np.array): The original, full dataset.
-        params (dict): The parameters dictionary.
-        filename (str, optional): Path to save the plot.
-    """
-    print("\n--- Generating Final Posterior Comparison Plot (Sampler vs. True Analytical) ---")
+#     Args:
+#         mle_chain (np.array): The MCMC chain for μ from the Gibbs sampler.
+#         x_original (np.array): The original, full dataset.
+#         params (dict): The parameters dictionary.
+#         filename (str, optional): Path to save the plot.
+#     """
+#     print("\n--- Generating Final Posterior Comparison Plot (Sampler vs. True Analytical) ---")
     
-    # --- 1. Get the samples from the Gibbs sampler (for p(μ|μ*)) ---
-    burn_in = int(len(mle_chain) * 0.2)
-    posterior_mle_samples = mle_chain[burn_in:]
+#     # --- 1. Get the samples from the Gibbs sampler (for p(μ|μ*)) ---
+#     burn_in = int(len(mle_chain) * 0.2)
+#     posterior_mle_samples = mle_chain[burn_in:]
 
-    # --- 2. Calculate the True Analytical Posterior p(μ|x) ---
-    mu_grid = np.linspace(posterior_mle_samples.min() - 1, posterior_mle_samples.max() + 1, 500)
+#     # --- 2. Calculate the True Analytical Posterior p(μ|x) ---
+#     mu_grid = np.linspace(posterior_mle_samples.min() - 1, posterior_mle_samples.max() + 1, 500)
     
-    # Calculate the unnormalized posterior using our log_posterior_mu function
-    log_posterior_vals = [sf.log_posterior_mu(mu, x_original, params['k'], params['prior_mean'], params['prior_std']) for mu in mu_grid]
-    unnormalized_posterior_full = np.exp(log_posterior_vals - np.max(log_posterior_vals)) # Subtract max for stability
+#     # Calculate the unnormalized posterior using our log_posterior_mu function
+#     log_posterior_vals = [sf.log_posterior_mu(mu, x_original, params['k'], params['prior_mean'], params['prior_std']) for mu in mu_grid]
+#     unnormalized_posterior_full = np.exp(log_posterior_vals - np.max(log_posterior_vals)) # Subtract max for stability
 
 
-    # Normalize using numerical integration
-    # integral_area = np.trapezoid(unnormalized_posterior_full, mu_grid)
-    integral_area = np.trapz(unnormalized_posterior_full, mu_grid)
-    true_posterior_full_data = unnormalized_posterior_full / integral_area
+#     # Normalize using numerical integration
+#     # integral_area = np.trapezoid(unnormalized_posterior_full, mu_grid)
+#     integral_area = np.trapz(unnormalized_posterior_full, mu_grid)
+#     true_posterior_full_data = unnormalized_posterior_full / integral_area
 
-    # --- 3. Quantitative Comparison ---
-    mean_mle = np.mean(posterior_mle_samples)
-    std_mle = np.std(posterior_mle_samples)
-    # mean_full = np.trapezoid(mu_grid * true_posterior_full_data, mu_grid)
-    # std_full = np.sqrt(np.trapezoid((mu_grid - mean_full)**2 * true_posterior_full_data, mu_grid))
-    mean_full = np.trapz(mu_grid * true_posterior_full_data, mu_grid)
-    std_full = np.sqrt(np.trapz((mu_grid - mean_full)**2 * true_posterior_full_data, mu_grid))
+#     # --- 3. Quantitative Comparison ---
+#     mean_mle = np.mean(posterior_mle_samples)
+#     std_mle = np.std(posterior_mle_samples)
+#     # mean_full = np.trapezoid(mu_grid * true_posterior_full_data, mu_grid)
+#     # std_full = np.sqrt(np.trapezoid((mu_grid - mean_full)**2 * true_posterior_full_data, mu_grid))
+#     mean_full = np.trapz(mu_grid * true_posterior_full_data, mu_grid)
+#     std_full = np.sqrt(np.trapz((mu_grid - mean_full)**2 * true_posterior_full_data, mu_grid))
 
 
-    print(f"Posterior from MLE only (Sampler): Mean = {mean_mle:.4f}, Std Dev = {std_mle:.4f}")
-    print(f"Posterior from Full Data (True):   Mean = {mean_full:.4f}, Std Dev = {std_full:.4f}")
+#     print(f"Posterior from MLE only (Sampler): Mean = {mean_mle:.4f}, Std Dev = {std_mle:.4f}")
+#     print(f"Posterior from Full Data (True):   Mean = {mean_full:.4f}, Std Dev = {std_full:.4f}")
 
-    # --- 4. Visual Comparison ---
-    plt.figure(figsize=(12, 8))
+#     # --- 4. Visual Comparison ---
+#     plt.figure(figsize=(12, 8))
     
-    # Plot the KDE of our Gibbs sampler's output
-    kde_mle = stats.gaussian_kde(posterior_mle_samples)
-    plt.plot(mu_grid, kde_mle(mu_grid), color='red', lw=2.5, label=f"p(μ | μ*) - Sampler Output [Std Dev = {std_mle:.3f}]")
-    plt.fill_between(mu_grid, kde_mle(mu_grid), color='red', alpha=0.2)
+#     # Plot the KDE of our Gibbs sampler's output
+#     kde_mle = stats.gaussian_kde(posterior_mle_samples)
+#     plt.plot(mu_grid, kde_mle(mu_grid), color='red', lw=2.5, label=f"p(μ | μ*) - Sampler Output [Std Dev = {std_mle:.3f}]")
+#     plt.fill_between(mu_grid, kde_mle(mu_grid), color='red', alpha=0.2)
 
-    # Plot the true analytical posterior curve
-    plt.plot(mu_grid, true_posterior_full_data, color='blue', lw=2.5, label=f"p(μ | x) - True Posterior [Std Dev = {std_full:.3f}]")
-    plt.fill_between(mu_grid, true_posterior_full_data, color='blue', alpha=0.2)
+#     # Plot the true analytical posterior curve
+#     plt.plot(mu_grid, true_posterior_full_data, color='blue', lw=2.5, label=f"p(μ | x) - True Posterior [Std Dev = {std_full:.3f}]")
+#     plt.fill_between(mu_grid, true_posterior_full_data, color='blue', alpha=0.2)
 
-    # Reference lines
-    plt.axvline(params['mu_true'], color='black', linestyle='--', linewidth=2, label=f"True μ")
-    plt.axvline(params['mu_star'], color='darkorange', linestyle=':', linewidth=2.5, label=f"Observed MLE (μ*)")
-    plt.title("Comparison of Posteriors: Full Data vs. MLE Only", fontsize=16)
-    plt.xlabel("Value of μ")
-    plt.ylabel("Posterior Density")
-    plt.legend(fontsize=12)
+#     # Reference lines
+#     plt.axvline(params['mu_true'], color='black', linestyle='--', linewidth=2, label=f"True μ")
+#     plt.axvline(params['mu_star'], color='darkorange', linestyle=':', linewidth=2.5, label=f"Observed MLE (μ*)")
+#     plt.title("Comparison of Posteriors: Full Data vs. MLE Only", fontsize=16)
+#     plt.xlabel("Value of μ")
+#     plt.ylabel("Posterior Density")
+#     plt.legend(fontsize=12)
     
-    if filename:
-        plt.savefig(filename, dpi=300, bbox_inches='tight')
-        print(f"Plot saved to {filename}")
-        plt.close()
-    else:
-        plt.show()
+#     if filename:
+#         plt.savefig(filename, dpi=300, bbox_inches='tight')
+#         print(f"Plot saved to {filename}")
+#         plt.close()
+#     else:
+#         plt.show()
 
 # ==============================================================================
 # --- Experiment 2: Posterior Predictive Check for X
@@ -453,3 +450,187 @@ def plot_combined_analysis(x1, x2, mu1, mu2, threshold, save_path=None, manual_o
         plt.close() # Close the figure to free up memory
     else:
         plt.show()
+
+
+def plot_dataset_comparison(x1_clean, outlier_datasets, params, save_path):
+    """
+    Visualizes the clean dataset against multiple sequential outlier datasets,
+    saving the plot to a file.
+
+    Args:
+        x1_clean (np.array): The initial clean dataset.
+        outlier_datasets (list): A list of np.array, each an outlier dataset.
+        params (dict): Dictionary with 'k' and 'mu_true' for threshold calculation.
+        save_path (str): The full path where the generated plot will be saved.
+    """
+    print("\n--- Visualizing Datasets ---")
+    plt.figure(figsize=(16, 8))
+
+    # Combine all datasets for plotting
+    all_datasets_for_plot = [x1_clean] + outlier_datasets
+    labels = ['Clean'] + [f'Outlier Set {i+1}' for i in range(len(outlier_datasets))]
+
+    # Create the strip plot to visualize all datasets at once
+    sns.stripplot(data=all_datasets_for_plot, size=8, jitter=0.2, alpha=0.9)
+
+    # Define and plot outlier thresholds
+    outlier_threshold_L1 = stats.t.ppf(0.995, df=params['k'], loc=params['mu_true'], scale=1)
+    plt.axhline(outlier_threshold_L1, color='red', linestyle='--', 
+                label=f'Outlier Threshold (L1={outlier_threshold_L1:.2f})')
+
+    outlier_threshold_L2 = stats.t.ppf(0.005, df=params['k'], loc=params['mu_true'], scale=1)
+    plt.axhline(outlier_threshold_L2, color='blue', linestyle='--', 
+                label=f'Outlier Threshold (L2={outlier_threshold_L2:.2f})')
+
+    # Final plot styling
+    plt.xticks(ticks=range(len(labels)), labels=labels)
+    plt.ylabel("Value", fontsize=12)
+    plt.title("Visual Comparison of Clean vs. Sequential Constrained Outlier Datasets", fontsize=16)
+    plt.legend()
+    plt.grid(axis='y', linestyle='--', alpha=0.6)
+    
+    # Save the plot to the specified path and close the figure
+    plt.savefig(save_path, dpi=300, bbox_inches='tight')
+    plt.close() # Prevents the plot from displaying in the notebook
+    print(f"Dataset comparison plot saved to: {save_path}")
+
+def plot_posterior_comparison(mu_grid, benchmark_posterior, posterior_chains, params, save_path):
+    """
+    Visualizes and saves a two-panel plot comparing the benchmark posterior 
+    against the full data posteriors for the clean and outlier datasets.
+
+    Args:
+        mu_grid (np.array): The grid of mu values for plotting the benchmark.
+        benchmark_posterior (np.array): The density values for the benchmark posterior.
+        posterior_chains (list): A list of MCMC chains for mu. The first chain should be
+                                 for the clean data, followed by the outlier datasets.
+        params (dict): Dictionary with 'mu_true' for plotting the MLE line.
+        save_path (str): The full path where the generated plot will be saved.
+    """
+    print("\n--- Visualizing Posterior Distributions ---")
+    fig, axes = plt.subplots(1, 2, figsize=(18, 7), sharey=True)
+    
+    # Determine the number of outlier sets to set the color palette
+    num_outlier_sets = len(posterior_chains) - 1
+    colors = sns.color_palette("viridis_r", n_colors=num_outlier_sets)
+
+    # --- Left Panel: Clean Dataset Analysis ---
+    # Plot the benchmark posterior p(μ|μ̂)
+    axes[0].plot(mu_grid, benchmark_posterior, color='red', linestyle='-', lw=2.5, label="Benchmark Posterior $p(μ|μ̂)$")
+    # Plot the full data posterior p(μ|x₁)
+    sns.kdeplot(posterior_chains[0], label="Full Posterior $p(μ|x_1)$", color='green', lw=2, ax=axes[0], bw_method='scott')
+    # Add a vertical line for the constant MLE
+    axes[0].axvline(params['mu_true'], color='black', linestyle='--', lw=2, label=f"MLE $\\mu^* = {params['mu_true']:.1f}$")
+    axes[0].set_title("Posterior Distributions for Clean Data ($x_1$)", fontsize=15)
+    axes[0].set_xlabel("μ")
+    axes[0].set_ylabel("Density")
+    axes[0].legend()
+    axes[0].grid(alpha=0.3)
+
+    # --- Right Panel: Outlier Datasets Analysis ---
+    # Plot the benchmark posterior p(μ|μ̂)
+    axes[1].plot(mu_grid, benchmark_posterior, color='red', linestyle='-', lw=2.5, label="Benchmark Posterior $p(μ|μ̂)$")
+    # Plot the full data posteriors for each outlier set
+    for i, chain in enumerate(posterior_chains[1:]):
+        sns.kdeplot(chain, label=f"Full Posterior (Outlier Set {i+1})", color=colors[i], lw=2, ax=axes[1], bw_method='scott')
+    # Add a vertical line for the constant MLE
+    axes[1].axvline(params['mu_true'], color='black', linestyle='--', lw=2, label=f"MLE $\\mu^* = {params['mu_true']:.1f}$")
+    axes[1].set_title("Posteriors for Sequential Outlier Datasets", fontsize=15)
+    axes[1].set_xlabel("μ")
+    axes[1].legend()
+    axes[1].grid(alpha=0.3)
+
+    # Set a consistent, zoomed-in x-axis for both plots
+    axes[0].set_xlim(7, 15)
+    axes[1].set_xlim(7, 15)
+
+    plt.tight_layout()
+    
+    # Save the plot to the specified path and close the figure
+    plt.savefig(save_path, dpi=300, bbox_inches='tight')
+    plt.close() # Prevents the plot from displaying in the notebook
+    print(f"Posterior comparison plot saved to: {save_path}")
+
+def plot_predictive_comparison(predictive_chains, x_pred_from_mle, params, save_path):
+    """
+    Visualizes and saves a two-panel plot comparing the posterior predictive distributions.
+
+    Args:
+        predictive_chains (list): A list of predictive chains from the full data posteriors.
+                                  The first chain is for the clean data.
+        x_pred_from_mle (np.array): The predictive chain generated from the MLE's posterior.
+        params (dict): Dictionary with 'k' and 'mu_true' for threshold calculation.
+        save_path (str): The full path where the generated plot will be saved.
+    """
+    print("\n--- Visualizing Posterior Predictive Distributions ---")
+
+    # Define the high and low percentile thresholds
+    L1 = stats.t.ppf(0.995, df=params['k'], loc=params['mu_true'], scale=1)
+    L2 = stats.t.ppf(0.005, df=params['k'], loc=params['mu_true'], scale=1)
+    print(f"Upper threshold L1 (99.5%) = {L1:.2f}")
+    print(f"Lower threshold L2 (0.5%) = {L2:.2f}")
+
+    fig, axes = plt.subplots(1, 2, figsize=(18, 7), sharey=True)
+    
+    num_outlier_sets = len(predictive_chains) - 1
+    if num_outlier_sets > 0:
+        colors = sns.color_palette("viridis_r", n_colors=num_outlier_sets)
+    else:
+        colors = []
+
+    # Increase the bandwidth adjustment factor for smoother curves
+    bw_smoother = 1.5 
+
+    # --- Left Panel: Clean Dataset Analysis ---
+    # Calculate probabilities for the MLE-based chain
+    prob_gt_L1_mle = np.mean(x_pred_from_mle > L1)
+    prob_lt_L2_mle = np.mean(x_pred_from_mle < L2)
+    # Calculate probabilities for the clean data chain
+    prob_gt_L1_clean = np.mean(predictive_chains[0] > L1)
+    prob_lt_L2_clean = np.mean(predictive_chains[0] < L2)
+
+    # Plot the predictive distribution from the MLE, p(x|μ*)
+    sns.kdeplot(x_pred_from_mle, label=f"Predictive from MLE $p(x|\\mu^*)$\n($P(x>L_1)={prob_gt_L1_mle:.3f}$, $P(x<L_2)={prob_lt_L2_mle:.3f}$)", color='red', lw=2, fill=True, alpha=0.4, ax=axes[0], bw_adjust=bw_smoother, gridsize=5000)
+    # Plot the predictive distribution from the full clean data, p(x|x₁)
+    sns.kdeplot(predictive_chains[0], label=f"Predictive from Full Data $p(x|x_1)$\n($P(x>L_1)={prob_gt_L1_clean:.3f}$, $P(x<L_2)={prob_lt_L2_clean:.3f}$)", color='green', lw=2, fill=True, alpha=0.4, ax=axes[0], bw_adjust=bw_smoother, gridsize=5000)
+
+    axes[0].axvline(L1, color='blue', linestyle=':', lw=2, label=f'$L_1$ (99.5%)={L1:.2f}')
+    axes[0].axvline(L2, color='purple', linestyle=':', lw=2, label=f'$L_2$ (0.5%)={L2:.2f}')
+    axes[0].set_title("Posterior Predictive Distributions (Clean Data)", fontsize=15)
+    axes[0].set_xlabel("x")
+    axes[0].set_ylabel("Density")
+    axes[0].legend()
+    axes[0].grid(alpha=0.3)
+
+    # --- Right Panel: Outlier Datasets Analysis ---
+    # Plot the predictive distribution from the MLE, p(x|μ*)
+    sns.kdeplot(x_pred_from_mle, label=f"Predictive from MLE $p(x|\\mu^*)$\n($P(x>L_1)={prob_gt_L1_mle:.3f}$, $P(x<L_2)={prob_lt_L2_mle:.3f}$)", color='red', lw=2, fill=True, alpha=0.4, ax=axes[1], bw_adjust=bw_smoother, gridsize=5000)
+    # Plot the predictive distributions for each outlier set
+    for i, chain in enumerate(predictive_chains[1:]):
+        prob_gt_L1_outlier = np.mean(chain > L1)
+        prob_lt_L2_outlier = np.mean(chain < L2)
+        sns.kdeplot(chain, label=f"Predictive (Outlier Set {i+1})\n($P(x>L_1)={prob_gt_L1_outlier:.3f}$, $P(x<L_2)={prob_lt_L2_outlier:.3f}$)", color=colors[i], lw=2, ax=axes[1], bw_adjust=bw_smoother, gridsize=5000)
+
+    axes[1].axvline(L1, color='blue', linestyle=':', lw=2, label=f'$L_1$ (99.5%)={L1:.2f}')
+    axes[1].axvline(L2, color='purple', linestyle=':', lw=2, label=f'$L_2$ (0.5%)={L2:.2f}')
+    axes[1].set_title("Posterior Predictive Distributions (Outlier Sets)", fontsize=15)
+    axes[1].set_xlabel("x")
+    axes[1].legend()
+    axes[1].grid(alpha=0.3)
+
+    # Set consistent, dynamic x-axis limits for both plots
+    all_preds_for_plot = np.concatenate([x_pred_from_mle] + predictive_chains)
+    x_min = np.percentile(all_preds_for_plot, 1)
+    x_max = np.percentile(all_preds_for_plot, 99)
+    padding = (x_max - x_min) * 0.1
+    xlim = (x_min - padding, x_max + padding)
+    axes[0].set_xlim(xlim)
+    axes[1].set_xlim(xlim)
+
+    plt.tight_layout()
+    
+    # Save the plot to the specified path and close the figure
+    plt.savefig(save_path, dpi=300, bbox_inches='tight')
+    plt.close() # Prevents the plot from displaying in the notebook
+    print(f"Posterior predictive comparison plot saved to: {save_path}")
+

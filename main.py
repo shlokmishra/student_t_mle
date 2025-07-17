@@ -4,6 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import scipy.stats as stats
+import random
+import pickle
 
 # --- 1. Import Custom Function Modules ---
 try:
@@ -31,7 +33,6 @@ def main(args):
         'prior_mean': 0.0,
         'prior_std': 20.0,
         'proposal_std_mu': 0.9,
-        'proposal_std_z': 0.2
     }
     # Add z_domain to params, as it depends on k
     z_domain_half_width = 1 / (2 * np.sqrt(params['k']))
@@ -45,175 +46,258 @@ def main(args):
     # --- 3. Create Custom Results Directory ---
     # Structure: results_outlier/{num_outliers}_outliers/k_{k}_m_{m}/
     results_path = os.path.join(
-        "results_outlier",
-        f"{args.num_outliers}_outliers",
+        "results_outlier_new",
         f"k_{args.k}_m_{args.m}"
     )
     os.makedirs(results_path, exist_ok=True)
     print(f"\nResults will be saved in: '{results_path}'")
     print("-" * 30)
+    
+    print("--- Generating Clean, Centered Dataset ---")
+    x1_clean = sf.generate_clean_dataset_centered(params)
+    print("Clean dataset generated successfully.")
+    print(f"Verified MLE of clean dataset: {sf.get_mle(x1_clean, params):.6f}\n")
 
-    # --- 4. Generate Datasets ---
-    x1_clean, x2_with_outlier, outlier_threshold_L = sf.generate_datasets(params, num_outliers=args.num_outliers)
-    print("Datasets generated successfully.")
 
-    # --- 5. Calculate MLE and Generate Plot ---
-    mu_star_1 = sf.get_mle(x1_clean, params)
-    mu_star_2 = sf.get_mle(x2_with_outlier, params)
-    # print(f"MLE for clean data, μ*(x1):     {mu_star_1:.4f}")
-    # print(f"MLE for outlier data, μ*(x2):  {mu_star_2:.4f}")
+    # --- NEW SEQUENTIAL GENERATION LOGIC ---
+    print("\n--- Generating 5 Sequential Outlier Datasets ---")
+    outlier_datasets = []
+    num_outlier_sets_to_generate = 5
+
+    # Start with the clean dataset as the base for the first modification
+    current_dataset = x1_clean.copy() 
+    # Keep track of indices that are still "clean" and can be modified
+    available_indices = list(range(params['m']))
+
+    for i in range(num_outlier_sets_to_generate):
+        # Check if we have enough clean points left to form a pair
+        if len(available_indices) < 2:
+            print(f"Not enough available indices to continue. Generated {i} outlier sets.")
+            break
+
+        print(f"--- Generating Outlier Set {i+1} (Total non-clean points: {(i+1)*2}) ---")
+        
+        # Randomly select two available indices to form the new pair
+        indices_to_update = tuple(random.sample(available_indices, 2))
+        idx1, idx2 = indices_to_update
+        
+        # Generate the next outlier dataset based on the CURRENT one
+        x_outlier = sf.generate_constrained_outlier_pair(
+            clean_dataset=current_dataset,
+            indices=indices_to_update,
+            mu_star=params['mu_true'],
+            k=params['k'],
+            params=params
+        )
+        
+        if x_outlier is not None:
+            # Add the new dataset to our list
+            outlier_datasets.append(x_outlier)
+            
+            # --- ADDED PRINT STATEMENTS ---
+            original_val1 = current_dataset[idx1]
+            original_val2 = current_dataset[idx2]
+            new_val1 = x_outlier[idx1]
+            new_val2 = x_outlier[idx2]
+            print(f"  Modifying indices: ({idx1}, {idx2})")
+            print(f"  Original values: x[{idx1}]={original_val1:.2f}, x[{idx2}]={original_val2:.2f}")
+            print(f"  New values:      x[{idx1}]={new_val1:.2f}, x[{idx2}]={new_val2:.2f}")
+            
+            # --- CORRECTED VERIFICATION STEP ---
+            # Instead of re-calculating the MLE, we verify that the score at mu_true is ~0.
+            # This is more stable than root-finding on a complex distribution.
+            score_at_mu_true = sf.mle_score(params['mu_true'], x_outlier, params['k'])
+            print(f"  Score at mu_true={params['mu_true']:.1f}: {score_at_mu_true:.6e}\n")
+
+            # Update the current dataset for the next iteration
+            current_dataset = x_outlier.copy()
+            
+            # Remove the used indices from the available pool
+            available_indices.remove(idx1)
+            available_indices.remove(idx2)
+        else:
+            print(f"Failed to generate a valid pair for indices ({idx1}, {idx2}). Stopping generation.")
+            break
+
+    print(f"\nSuccessfully generated {len(outlier_datasets)} sequential outlier datasets.")
+
+
+
 
     plot_path = os.path.join(results_path, "mle_comparison_plot.png")
-    an.plot_combined_analysis(
-        x1=x1_clean, 
-        x2=x2_with_outlier, 
-        mu1=mu_star_1, 
-        mu2=mu_star_2,
-        threshold=outlier_threshold_L,
-        save_path=plot_path
+    an.plot_dataset_comparison(
+        x1_clean, outlier_datasets, params, save_path=plot_path
     )
-    # print("-" * 30)
+    print("\n--- Loading/Computing Benchmark KDE for p(μ̂ | μ=0) ---")
+    
+    kde_path = os.path.join(
+        "results_outlier_new")
 
-    # --- 6. Generate All Four Posterior Chains for μ ---
-    # print("--- Generating the four posterior distributions for μ ---")
-    mu_chain_x1 = oef.get_full_data_posterior_samples(x1_clean, params)
-    mu_chain_x2 = oef.get_full_data_posterior_samples(x2_with_outlier, params)
-    mu_chain_mle1 = oef.get_mle_conditional_posterior_samples(mu_star_1, params)
-    mu_chain_mle2 = oef.get_mle_conditional_posterior_samples(mu_star_2, params)
-    print("All four posterior chains for μ generated successfully.")
-    print("-" * 30)
+    # Define the path where the saved KDE object is stored
+    kde_save_path = os.path.join(kde_path, "kde_0_benchmark.pkl")
+
+    print("\n--- Loading/Computing Benchmark Data for p(μ̂ | μ=0) ---")
+
+    # Define the path where the saved MLE samples will be stored
+    mle_samples_save_path = os.path.join(kde_path, "benchmark_mle_samples.pkl")
+
+    # Check if the file with the raw data already exists
+    if os.path.exists(mle_samples_save_path):
+        # If it exists, load the pre-computed samples
+        print(f"Loading pre-computed benchmark samples from: {mle_samples_save_path}")
+        with open(mle_samples_save_path, 'rb') as f:
+            mle_samples = pickle.load(f)
+    else:
+        # If it doesn't exist, run the expensive simulation using the new function
+        print("No pre-computed samples found. Running simulation...")
+        mle_samples = sf.compute_benchmark_mle_samples(params, num_simulations=50000)
+        
+        # Save the newly computed samples for future runs
+        with open(mle_samples_save_path, 'wb') as f:
+            pickle.dump(mle_samples, f)
+        print(f"Benchmark samples computed and saved to: {mle_samples_save_path}")
+
+    print("\nBuilding Benchmark KDE from samples...")
+    kde_0 = stats.gaussian_kde(mle_samples)
+    print("Benchmark KDE is ready.")
+
+
+    # --- Calculate Benchmark Posterior using the loaded/computed KDE ---
+    print("\n--- Calculating Benchmark Posterior ---")
+    mu_grid = np.linspace(params['mu_true'] - 8, params['mu_true'] + 8, 1000)
+    # The likelihood p(μ̂ | μ) is equivalent to p(μ̂ - μ | 0).
+    likelihood_kde = kde_0.pdf(params['mu_true'] - mu_grid)
+    prior_on_grid = stats.norm.pdf(mu_grid, loc=params['prior_mean'], scale=params['prior_std'])
+    unnormalized_posterior_kde = likelihood_kde * prior_on_grid
+    area = np.trapezoid(unnormalized_posterior_kde, mu_grid)
+    benchmark_posterior = unnormalized_posterior_kde / area
+    print("Benchmark posterior calculated successfully.")
+
+    
+    print("\n--- Generating Full Data Posterior Samples for Each Dataset ---")
+    all_datasets = [x1_clean] + outlier_datasets
+    posterior_chains = []
+    for i, dataset in enumerate(all_datasets):
+        if i == 0:
+            print(f"Running sampler for Clean Dataset...")
+        else:
+            print(f"Running sampler for Outlier Set {i}...")
+        # This calls the function from outlier_functions.py
+        chain = oef.get_full_data_posterior_samples(dataset, params)
+        posterior_chains.append(chain)
+    print("All posterior chains generated.")
+
+
 
     # --- 7. Generate All Four Predictive Distributions for x ---
-    print("--- Generating predictive distributions for x ---")
-    scale = 1 # The scale parameter of the t-distribution
-    
-    # More efficient generation: create datasets once, then derive chains
-    datasets_x1 = [stats.t.rvs(df=params['k'], loc=mu, scale=scale, size=params['m']) for mu in mu_chain_x1]
-    datasets_x2 = [stats.t.rvs(df=params['k'], loc=mu, scale=scale, size=params['m']) for mu in mu_chain_x2]
-    datasets_mle1 = [stats.t.rvs(df=params['k'], loc=mu, scale=scale, size=params['m']) for mu in mu_chain_mle1]
-    datasets_mle2 = [stats.t.rvs(df=params['k'], loc=mu, scale=scale, size=params['m']) for mu in mu_chain_mle2]
+    print("\n--- Generating Posterior Predictive Distributions ---")
+    predictive_chains = []
+    # Model parameters
+    k = params['k']
+    scale = 1
+    m = params['m']
 
-    # Flattened chains for the main predictive plot
-    x_pred_x1 = np.array(datasets_x1).flatten()
-    x_pred_x2 = np.array(datasets_x2).flatten()
-    x_pred_mle1 = np.array(datasets_mle1).flatten()
-    x_pred_mle2 = np.array(datasets_mle2).flatten()
-    
-    # Chains of the maximum value from each generated dataset
-    x_pred_x1_max = np.array([d.max() for d in datasets_x1])
-    x_pred_x2_max = np.array([d.max() for d in datasets_x2])
-    x_pred_mle1_max = np.array([d.max() for d in datasets_mle1])
-    x_pred_mle2_max = np.array([d.max() for d in datasets_mle2])
-    
-    print("Predictive distributions and max value chains generated successfully.")
-    print("-" * 30)
+    for i, mu_chain in enumerate(posterior_chains):
+        if i == 0:
+            print(f"Generating predictive samples for Clean Dataset chain...")
+        else:
+            print(f"Generating predictive samples for Outlier Set {i} chain...")
+        
+        # For each mu in the posterior chain, generate a new dataset of size m
+        predictive_datasets = [stats.t.rvs(df=k, loc=mu, scale=scale, size=m) for mu in mu_chain]
+        
+        # Flatten the list of datasets into a single array of predictive samples
+        x_pred = np.array(predictive_datasets).flatten()
+        predictive_chains.append(x_pred)
+
+    print("All posterior predictive chains generated.")
+
 
     ## ------------------------------------------------------------------
     ## --- Detailed Analysis and Plotting ---
     ## ------------------------------------------------------------------
     print("Generating detailed analysis plots...")
 
-    # --- Plot 1: Posterior Distributions of μ ---
-    fig, axes = plt.subplots(1, 2, figsize=(18, 7), sharey=True)
-    sns.kdeplot(mu_chain_mle1, label="Posterior $p(μ|μ^*(x_1))$", color='red', lw=2, ax=axes[0])
-    sns.kdeplot(mu_chain_x1, label="Posterior $p(μ|x_1)$", color='green', lw=2, ax=axes[0])
-    axes[0].axvline(mu_star_1, color='black', linestyle='--', lw=2, label=f"MLE $\\mu^*(x_1) = {mu_star_1:.2f}$")
-    axes[0].set_title("Posterior Distributions for μ (from Clean Data $x_1$)", fontsize=15)
-    axes[0].set_xlabel("μ")
-    axes[0].set_ylabel("Density")
-    axes[0].legend()
-    axes[0].grid(alpha=0.3)
-    sns.kdeplot(mu_chain_mle2, label="Posterior $p(μ|μ^*(x_2))$", color='red', lw=2, ax=axes[1])
-    sns.kdeplot(mu_chain_x2, label="Posterior $p(μ|x_2)$", color='green', lw=2, ax=axes[1])
-    axes[1].axvline(mu_star_2, color='black', linestyle='--', lw=2, label=f"MLE $\\mu^*(x_2) = {mu_star_2:.2f}$")
-    axes[1].set_title("Posterior Distributions for μ (from Outlier Data $x_2$)", fontsize=15)
-    axes[1].set_xlabel("μ")
-    axes[1].legend()
-    axes[1].grid(alpha=0.3)
-    plt.tight_layout()
-    posterior_plot_path = os.path.join(results_path, "posterior_mu_comparison.png")
-    plt.savefig(posterior_plot_path)
-    print(f"Posterior μ comparison plot saved to: {posterior_plot_path}")
-    plt.close()
+    posterior_plot_path = os.path.join(results_path, "posterior_comparison.png")
 
-    # --- Plot 2: Posterior Predictive Distributions of x ---
-    # Calculate tail probabilities P(x > L)
-    prob_x_mle1 = np.mean(x_pred_mle1 > outlier_threshold_L)
-    prob_x_x1 = np.mean(x_pred_x1 > outlier_threshold_L)
-    prob_x_mle2 = np.mean(x_pred_mle2 > outlier_threshold_L)
-    prob_x_x2 = np.mean(x_pred_x2 > outlier_threshold_L)
+    # Call the new function
+    an.plot_posterior_comparison(
+        mu_grid=mu_grid,
+        benchmark_posterior=benchmark_posterior,
+        posterior_chains=posterior_chains,
+        params=params,
+        save_path=posterior_plot_path
+    )
 
-    fig, axes = plt.subplots(1, 2, figsize=(18, 7), sharey=True)
-    combined_preds = np.concatenate([x_pred_mle1, x_pred_x1, x_pred_mle2, x_pred_x2])
-    x_min = np.percentile(combined_preds, 1)
-    x_max = np.percentile(combined_preds, 99)
-    padding = (x_max - x_min) * 0.1
-    xlim = (x_min - padding, x_max + padding)
-    bw = 0.25
-    axes[0].set_xlim(xlim)
-    sns.kdeplot(x_pred_mle1, label=rf"Predictive $p(x|\mu^*(x_1))$ ($P(x>L)={prob_x_mle1:.4f}$)", color='red', lw=2, fill=True, alpha=0.4, bw_adjust=bw, ax=axes[0])
-    sns.kdeplot(x_pred_x1, label=rf"Predictive $p(x|x_1)$ ($P(x>L)={prob_x_x1:.4f}$)", color='green', lw=2, fill=True, alpha=0.4, bw_adjust=bw, ax=axes[0])
-    axes[0].axvline(outlier_threshold_L, color='blue', linestyle=':', lw=2, label=f'Outlier Threshold L={outlier_threshold_L:.2f}')
-    axes[0].set_title("Posterior Predictive Distributions (from Clean Data $x_1$)", fontsize=15)
-    axes[0].set_xlabel("x")
-    axes[0].set_ylabel("Density")
-    axes[0].legend()
-    axes[0].grid(alpha=0.3)
-    
-    axes[1].set_xlim(xlim)
-    sns.kdeplot(x_pred_mle2, label=rf"Predictive $p(x|\mu^*(x_2))$ ($P(x>L)={prob_x_mle2:.4f}$)", color='red', lw=2, fill=True, alpha=0.4, bw_adjust=bw, ax=axes[1])
-    sns.kdeplot(x_pred_x2, label=rf"Predictive $p(x|x_2)$ ($P(x>L)={prob_x_x2:.4f}$)", color='green', lw=2, fill=True, alpha=0.4, bw_adjust=bw, ax=axes[1])
-    axes[1].axvline(outlier_threshold_L, color='blue', linestyle=':', lw=2, label=f'Outlier Threshold L={outlier_threshold_L:.2f}')
-    axes[1].set_title("Posterior Predictive Distributions (from Outlier Data $x_2$)", fontsize=15)
-    axes[1].set_xlabel("x")
-    axes[1].legend()
-    axes[1].grid(alpha=0.3)
-    plt.tight_layout()
+
+# First, construct the full path for the output file
     predictive_plot_path = os.path.join(results_path, "posterior_predictive_comparison.png")
-    plt.savefig(predictive_plot_path)
-    print(f"Posterior predictive comparison plot saved to: {predictive_plot_path}")
-    plt.close()
 
-    # --- Plot 3: Posterior Predictive Distributions of max(x) ---
-    # Calculate tail probabilities P(max(x) > L)
-    prob_max_mle1 = np.mean(x_pred_mle1_max > outlier_threshold_L)
-    prob_max_x1 = np.mean(x_pred_x1_max > outlier_threshold_L)
-    prob_max_mle2 = np.mean(x_pred_mle2_max > outlier_threshold_L)
-    prob_max_x2 = np.mean(x_pred_x2_max > outlier_threshold_L)
+    # a) Generate a sample chain of mu values from the benchmark posterior distribution
+    print("\n--- Generating Samples from Benchmark Posterior ---")
+    # We sample from the mu_grid, with probabilities given by the benchmark density.
+    num_samples = params['num_iterations_T'] # Match length of other chains
 
-    fig, axes = plt.subplots(1, 2, figsize=(18, 7), sharey=True)
-    combined_max_preds = np.concatenate([x_pred_mle1_max, x_pred_x1_max, x_pred_mle2_max, x_pred_x2_max])
-    x_min_max = np.percentile(combined_max_preds, 1)
-    x_max_max = np.percentile(combined_max_preds, 99)
-    padding_max = (x_max_max - x_min_max) * 0.1
-    xlim_max = (x_min_max - padding_max, x_max_max + padding_max)
-    
-    axes[0].set_xlim(xlim_max)
-    sns.kdeplot(x_pred_mle1_max, label=rf"Predictive $p(\max(x)|\mu^*(x_1))$ ($P(\max>L)={prob_max_mle1:.4f}$)", color='red', lw=2, fill=True, alpha=0.4, bw_adjust=bw, ax=axes[0])
-    sns.kdeplot(x_pred_x1_max, label=rf"Predictive $p(\max(x)|x_1)$ ($P(\max>L)={prob_max_x1:.4f}$)", color='green', lw=2, fill=True, alpha=0.4, bw_adjust=bw, ax=axes[0])
-    axes[0].axvline(outlier_threshold_L, color='blue', linestyle=':', lw=2, label=f'Outlier Threshold L={outlier_threshold_L:.2f}')
-    axes[0].set_title("Posterior Predictive of max(x) (from Clean Data $x_1$)", fontsize=15)
-    axes[0].set_xlabel("max(x)")
-    axes[0].set_ylabel("Density")
-    axes[0].legend()
-    axes[0].grid(alpha=0.3)
+    # Ensure probabilities sum to 1 for np.random.choice
+    probabilities = benchmark_posterior / np.sum(benchmark_posterior)
 
-    axes[1].set_xlim(xlim_max)
-    sns.kdeplot(x_pred_mle2_max, label=rf"Predictive $p(\max(x)|\mu^*(x_2))$ ($P(\max>L)={prob_max_mle2:.4f}$)", color='red', lw=2, fill=True, alpha=0.4, bw_adjust=bw, ax=axes[1])
-    sns.kdeplot(x_pred_x2_max, label=rf"Predictive $p(\max(x)|x_2)$ ($P(\max>L)={prob_max_x2:.4f}$)", color='green', lw=2, fill=True, alpha=0.4, bw_adjust=bw, ax=axes[1])
-    axes[1].axvline(outlier_threshold_L, color='blue', linestyle=':', lw=2, label=f'Outlier Threshold L={outlier_threshold_L:.2f}')
-    axes[1].set_title("Posterior Predictive of max(x) (from Outlier Data $x_2$)", fontsize=15)
-    axes[1].set_xlabel("max(x)")
-    axes[1].legend()
-    axes[1].grid(alpha=0.3)
-    
-    plt.tight_layout()
-    predictive_max_plot_path = os.path.join(results_path, "posterior_predictive_max_comparison.png")
-    plt.savefig(predictive_max_plot_path)
-    print(f"Posterior predictive max(x) comparison plot saved to: {predictive_max_plot_path}")
-    plt.close()
-    
-    print("\nScript finished successfully for num_outliers =", args.num_outliers, "and k =", args.k, "with m =", args.m)
+    mu_chain_from_mle = np.random.choice(
+        mu_grid,
+        size=num_samples,
+        p=probabilities,
+        replace=True # Allow sampling mu values more than once
+    )
+    print("Samples from benchmark posterior generated.")
+
+
+    # b) Generate the predictive chain p(x|μ*) from the mu samples
+    print("\n--- Generating Predictive Chain from MLE's Posterior ---")
+    # Model parameters
+    k = params['k']
+    scale = 1
+    m = params['m']
+
+    predictive_datasets_from_mle = [stats.t.rvs(df=k, loc=mu, scale=scale, size=m) for mu in mu_chain_from_mle]
+    x_pred_from_mle = np.array(predictive_datasets_from_mle).flatten()
+    print("Predictive chain from MLE's posterior generated.")
+
+    # Now, call the function with all the required data
+    an.plot_predictive_comparison(
+        predictive_chains=predictive_chains,
+        x_pred_from_mle=x_pred_from_mle,
+        params=params,
+        save_path=predictive_plot_path
+    )
+
+    print("\n--- Saving All Generated Chains to Files ---")
+
+    # 1. Save the list of posterior chains (mu chains)
+    posterior_chains_path = os.path.join(results_path, "posterior_chains.pkl")
+    with open(posterior_chains_path, 'wb') as f:
+        pickle.dump(posterior_chains, f)
+    print(f"Posterior chains saved to: {posterior_chains_path}")
+
+    # 2. Save the list of predictive chains from the full data
+    predictive_chains_path = os.path.join(results_path, "predictive_chains_from_data.pkl")
+    with open(predictive_chains_path, 'wb') as f:
+        pickle.dump(predictive_chains, f)
+    print(f"Predictive chains from full data saved to: {predictive_chains_path}")
+
+    # 3. Save the single predictive chain generated from the MLE
+    predictive_mle_path = os.path.join(results_path, "predictive_chain_from_mle.pkl")
+    with open(predictive_mle_path, 'wb') as f:
+        pickle.dump(x_pred_from_mle, f)
+    print(f"Predictive chain from MLE saved to: {predictive_mle_path}")
+
+    print("All chains have been successfully saved.")
+
+
+
+
+
+
+
+
 
 
 if __name__ == "__main__":
@@ -224,8 +308,6 @@ if __name__ == "__main__":
                         help='Degrees of freedom for the t-distribution.')
     parser.add_argument('-m', type=int, default=20, 
                         help='Number of samples in each dataset.')
-    parser.add_argument('--num_outliers', type=int, default=1, 
-                        help='Number of outliers to plant in the second dataset.')
     
     args = parser.parse_args()
     

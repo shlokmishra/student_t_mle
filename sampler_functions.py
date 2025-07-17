@@ -424,37 +424,41 @@ def initialize_sampler(params):
     x_0 = np.full(shape=params['m'], fill_value=params['mu_star'])
     return mu_0, x_0
 
-def compute_benchmark_kde(params, num_simulations=10000):
+def compute_benchmark_mle_samples(params, num_simulations=10000):
     """
-    Performs a large simulation to empirically construct the likelihood p(μ̂ | μ=0).
-    This is computationally expensive and is used for final validation.
+    Performs a large simulation to get the raw samples of the MLE distribution p(μ̂ | μ=0).
+    This is the computationally expensive part.
 
     Args:
         params (dict): Needs 'k' and 'm'.
         num_simulations (int): The number of datasets to generate.
 
     Returns:
-        scipy.stats.gaussian_kde: A trained KDE object.
+        np.array: An array containing the calculated MLE for each simulated dataset.
     """
     print(f"\n--- Computing Benchmark KDE from {num_simulations} simulations ---")
     print("(This is computationally intensive and will take some time...)")
     
-    mle_samples_for_kde = np.zeros(num_simulations)
-    mu_for_kde = 0.0
+    k = params['k']
+    m = params['m']
+    mle_samples = np.zeros(num_simulations)
 
-    for i in tqdm(range(num_simulations), desc="Building Benchmark KDE"):
-        # Simulate a dataset where the true mu is 0
-        sim_data = stats.t.rvs(df=params['k'], loc=mu_for_kde, scale=1, size=params['m'])
-        # Calculate its MLE
-        _, mu_star_sim, _ = stats.t.fit(sim_data, fdf=params['k'])
-        mle_samples_for_kde[i] = mu_star_sim
+    # It's faster to generate all random numbers at once
+    # We assume mu=0 for the benchmark distribution
+    all_data = stats.t.rvs(df=k, loc=0, scale=1, size=(num_simulations, m))
 
-    # Create the KDE object using the collected MLEs
-    # We use the reduced bandwidth we found to be effective earlier.
-    kde_0 = stats.gaussian_kde(mle_samples_for_kde, bw_method=0.25)
-    
-    print("Benchmark KDE computed successfully.")
-    return kde_0
+    for i in range(num_simulations):
+        if (i + 1) % 10000 == 0:
+            print(f"  Processing simulation {i+1}/{num_simulations}...")
+        # Use the pre-generated data for this simulation
+        sample_data = all_data[i, :]
+        
+        # Calculate the MLE for this dataset
+        # Note: This assumes you have a get_mle function available
+        mle_samples[i] = get_mle(sample_data, params)
+        
+    print("Benchmark MLE samples computed successfully.")
+    return mle_samples
 
 def generate_all_predictive_samples(mu_chain_mle, mu_chain_full_data, params):
     """
@@ -631,7 +635,7 @@ def generate_clean_dataset_centered(params):
     initial_samples = np.array(initial_samples)
 
     # 3. Find the initial MLE of this dataset using the provided function
-    initial_mle = sf.get_mle(initial_samples, params)
+    initial_mle = get_mle(initial_samples, params)
 
     # 4. Calculate the shift required to move the MLE to mu_true
     shift = mu_true - initial_mle
@@ -641,24 +645,11 @@ def generate_clean_dataset_centered(params):
     
     return centered_dataset
 
-def generate_constrained_outlier_pair(clean_dataset, indices, mu_star, k, outlier_threshold_L, params):
+def generate_constrained_outlier_pair(clean_dataset, indices, mu_star, k, params):
     """
     Takes a dataset and two indices (i, j), sets x[i] to a random outlier value,
-    and calculates a new x[j] to keep the MLE constant.
-
-    Args:
-        clean_dataset (np.array): The input dataset (ideally with MLE = mu_star).
-        indices (tuple): A tuple of two integers (i, j) for the points to update.
-        mu_star (float): The MLE value to be preserved.
-        k (float): The degrees of freedom of the t-distribution.
-        outlier_threshold_L (float): The 99.5th percentile threshold. An outlier will be
-                                     sampled from a uniform distribution between this
-                                     value and the 99.9th percentile.
-        params (dict): The parameters dictionary, which must contain 'z_domain'.
-
-    Returns:
-        np.array or None: The modified dataset with the same MLE, or None if the
-                          operation is not possible (e.g., z is out of domain).
+    and calculates a new x[j] to keep the MLE constant. The outlier is sampled
+    from either the high tail or the low tail with 50% probability.
     """
     i, j = indices
     x_i, x_j = clean_dataset[i], clean_dataset[j]
@@ -666,37 +657,55 @@ def generate_constrained_outlier_pair(clean_dataset, indices, mu_star, k, outlie
     # 1. Transform original pair to y-space and then z-space
     y_i = x_i - mu_star
     y_j = x_j - mu_star
-    z_i = sf.psi(y_i, k)
-    z_j = sf.psi(y_j, k)
+    z_i = psi(y_i, k)
+    z_j = psi(y_j, k)
     
     # 2. Calculate the invariant sum delta
     delta = z_i + z_j
 
-    # 3. Define the new outlier point by sampling from the tail
-    p999 = stats.t.ppf(0.999, df=k, loc=mu_star, scale=1)
-    outlier_value = np.random.uniform(outlier_threshold_L, p999)
-    x_tilde_i = outlier_value
-    y_tilde_i = x_tilde_i - mu_star
-    z_tilde_i = sf.psi(y_tilde_i, k)
+    # --- MODIFIED SECTION ---
+    # 3. Loop to find a valid outlier value
+    max_attempts = 100
+    for attempt in range(max_attempts):
+        # With 50% chance, sample from the upper tail, otherwise sample from the lower tail.
+        if np.random.rand() < 0.5:
+            # Sample from the upper tail (99.5th to 99.9th percentile)
+            p995 = stats.t.ppf(0.995, df=k, loc=mu_star, scale=1)
+            p999 = stats.t.ppf(0.999, df=k, loc=mu_star, scale=1)
+            outlier_value = np.random.uniform(p995, p999)
+        else:
+            # Sample from the lower tail (0.1th to 0.5th percentile)
+            p001 = stats.t.ppf(0.001, df=k, loc=mu_star, scale=1)
+            p005 = stats.t.ppf(0.005, df=k, loc=mu_star, scale=1)
+            outlier_value = np.random.uniform(p001, p005)
 
-    # 4. Calculate the required z for the second point
-    z_tilde_j = delta - z_tilde_i
+        # Transform the new outlier point
+        x_tilde_i = outlier_value
+        y_tilde_i = x_tilde_i - mu_star
+        z_tilde_i = psi(y_tilde_i, k)
 
-    # 5. Check if the new z is within the valid domain from params
-    z_domain_limit = params['z_domain'][1] # Use the upper limit from the tuple
-    if not (-z_domain_limit < z_tilde_j < z_domain_limit):
-        print(f"Warning: Calculated z_tilde_j ({z_tilde_j:.4f}) is outside the valid domain.")
+        # Calculate the required z for the second point
+        z_tilde_j = delta - z_tilde_i
+
+        # Check if the new z is within the valid domain from params
+        z_domain_limit = params['z_domain'][1]
+        if -z_domain_limit < z_tilde_j < z_domain_limit:
+            # Found a valid z_tilde_j, break the loop and proceed
+            break
+    else:
+        # This block executes if the loop completes without a 'break'
+        print(f"Warning: Failed to find a valid outlier pair after {max_attempts} attempts.")
         return None
+    # --- END OF MODIFIED SECTION ---
 
     # 6. Invert z_tilde_j back to y-space
-    y_minus, y_plus = sf.psi_inverse(z_tilde_j, k)
+    y_minus, y_plus = psi_inverse(z_tilde_j, k)
     
     if np.isnan(y_minus):
         print("Warning: Could not find a valid inverse for z_tilde_j.")
         return None
 
     # 7. Choose the y-value closer to the original y_j
-    # This helps maintain the structure of the data as much as possible.
     if abs(y_minus - y_j) < abs(y_plus - y_j):
         y_tilde_j = y_minus
     else:
@@ -711,7 +720,6 @@ def generate_constrained_outlier_pair(clean_dataset, indices, mu_star, k, outlie
     outlier_dataset[j] = x_tilde_j
     
     return outlier_dataset
-
 
 
 
