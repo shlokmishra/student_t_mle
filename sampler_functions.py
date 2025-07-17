@@ -665,7 +665,7 @@ def generate_constrained_outlier_pair(clean_dataset, indices, mu_star, k, params
 
     # --- MODIFIED SECTION ---
     # 3. Loop to find a valid outlier value
-    max_attempts = 100
+    max_attempts = 100000
     for attempt in range(max_attempts):
         # With 50% chance, sample from the upper tail, otherwise sample from the lower tail.
         if np.random.rand() < 0.5:
