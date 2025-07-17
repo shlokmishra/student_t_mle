@@ -6,4 +6,5 @@ x2 - outlier posterior
 make MLE same
 
 scipy optimise gaussian kde
-pickle
+
+multiple datasets by changing the seed

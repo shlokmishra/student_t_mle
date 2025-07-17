@@ -169,7 +169,7 @@ def main(args):
     likelihood_kde = kde_0.pdf(params['mu_true'] - mu_grid)
     prior_on_grid = stats.norm.pdf(mu_grid, loc=params['prior_mean'], scale=params['prior_std'])
     unnormalized_posterior_kde = likelihood_kde * prior_on_grid
-    area = np.trapezoid(unnormalized_posterior_kde, mu_grid)
+    area = np.trapz(unnormalized_posterior_kde, mu_grid)
     benchmark_posterior = unnormalized_posterior_kde / area
     print("Benchmark posterior calculated successfully.")
 
