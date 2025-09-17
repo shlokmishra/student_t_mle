@@ -38,15 +38,11 @@ def main(args):
     z_domain_half_width = 1 / (2 * np.sqrt(params['k']))
     params['z_domain'] = (-z_domain_half_width, z_domain_half_width)
     
-    # print("--- Experiment Parameters ---")
-    # for key, val in params.items():
-    #     print(f"{key}: {val}")
-    # print(f"num_outliers: {args.num_outliers}")
 
     # --- 3. Create Custom Results Directory ---
     # Structure: results_outlier/{num_outliers}_outliers/k_{k}_m_{m}/
     results_path = os.path.join(
-        "results_outlier_new",
+        "results_outlier_multiple",
         f"k_{args.k}_m_{args.m}"
     )
     os.makedirs(results_path, exist_ok=True)

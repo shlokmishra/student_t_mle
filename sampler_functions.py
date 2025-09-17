@@ -11,7 +11,7 @@ def get_mle(data, params):
 
     k = params['k']
     x = np.asarray(data)
-    print(f"Calculating MLE for data with {len(x)} points and k={k}...")
+    # print(f"Calculating MLE for data with {len(x)} points and k={k}...")
     # Define the MLE equation: sum((x - mu) / (k + (x - mu)**2)) = 0
     def mle_equation(mu):
         return np.sum((x - mu) / (k + (x - mu)**2))
@@ -645,38 +645,40 @@ def generate_clean_dataset_centered(params):
     
     return centered_dataset
 
-def generate_constrained_outlier_pair(clean_dataset, indices, mu_star, k, params):
+# highhigh = 0.9975
+# highlow = 0.995
+# lowhigh = 0.005
+# lowlow = 0.0025
+
+def generate_constrained_outlier_pair(clean_dataset, indices, mu_star, k, params, highhigh, highlow, lowhigh, lowlow):
     """
     Takes a dataset and two indices (i, j), sets x[i] to a random outlier value,
-    and calculates a new x[j] to keep the MLE constant. The outlier is sampled
-    from either the high tail or the low tail with 50% probability.
+    and correctly SAMPLES a new x[j] from the constrained manifold to keep the 
+    MLE constant.
     """
     i, j = indices
     x_i, x_j = clean_dataset[i], clean_dataset[j]
 
     # 1. Transform original pair to y-space and then z-space
-    y_i = x_i - mu_star
-    y_j = x_j - mu_star
-    z_i = psi(y_i, k)
-    z_j = psi(y_j, k)
+    y_i_orig = x_i - mu_star
+    y_j_orig = x_j - mu_star
+    z_i_orig = psi(y_i_orig, k)
+    z_j_orig = psi(y_j_orig, k)
     
     # 2. Calculate the invariant sum delta
-    delta = z_i + z_j
+    delta = z_i_orig + z_j_orig
 
-    # --- MODIFIED SECTION ---
-    # 3. Loop to find a valid outlier value
+    # 3. Loop to find a valid outlier value that allows for a valid partner
     max_attempts = 100000
     for attempt in range(max_attempts):
         # With 50% chance, sample from the upper tail, otherwise sample from the lower tail.
         if np.random.rand() < 0.5:
-            # Sample from the upper tail (99.5th to 99.9th percentile)
-            p995 = stats.t.ppf(0.995, df=k, loc=mu_star, scale=1)
-            p999 = stats.t.ppf(0.999, df=k, loc=mu_star, scale=1)
+            p995 = stats.t.ppf(highhigh, df=k, loc=mu_star, scale=1)
+            p999 = stats.t.ppf(highlow, df=k, loc=mu_star, scale=1)
             outlier_value = np.random.uniform(p995, p999)
         else:
-            # Sample from the lower tail (0.1th to 0.5th percentile)
-            p001 = stats.t.ppf(0.001, df=k, loc=mu_star, scale=1)
-            p005 = stats.t.ppf(0.005, df=k, loc=mu_star, scale=1)
+            p001 = stats.t.ppf(lowlow, df=k, loc=mu_star, scale=1)
+            p005 = stats.t.ppf(lowhigh, df=k, loc=mu_star, scale=1)
             outlier_value = np.random.uniform(p001, p005)
 
         # Transform the new outlier point
@@ -690,36 +692,72 @@ def generate_constrained_outlier_pair(clean_dataset, indices, mu_star, k, params
         # Check if the new z is within the valid domain from params
         z_domain_limit = params['z_domain'][1]
         if -z_domain_limit < z_tilde_j < z_domain_limit:
-            # Found a valid z_tilde_j, break the loop and proceed
-            break
+            break # Found a valid z_tilde_j, proceed
     else:
-        # This block executes if the loop completes without a 'break'
         print(f"Warning: Failed to find a valid outlier pair after {max_attempts} attempts.")
         return None
-    # --- END OF MODIFIED SECTION ---
 
-    # 6. Invert z_tilde_j back to y-space
-    y_minus, y_plus = psi_inverse(z_tilde_j, k)
+    # --- NEW CORRECTED SAMPLING LOGIC ---
+    # 4. Compute inverse branches for the partner point
+    y_j_minus, y_j_plus = psi_inverse(z_tilde_j, k)
     
-    if np.isnan(y_minus):
+    if np.isnan(y_j_minus):
         print("Warning: Could not find a valid inverse for z_tilde_j.")
         return None
 
-    # 7. Choose the y-value closer to the original y_j
-    if abs(y_minus - y_j) < abs(y_plus - y_j):
-        y_tilde_j = y_minus
+    # 5. Assign weights to the two possible branches based on the true density f_y
+    # We assume mu_current = mu_star for the density calculation
+    weight_minus = f_y(y_j_minus, mu_star, mu_star, k)
+    weight_plus = f_y(y_j_plus, mu_star, mu_star, k)
+    
+    sum_weights = weight_minus + weight_plus
+    if sum_weights <= 0 or np.isnan(sum_weights):
+        # If both densities are zero, we can't sample. Fall back to proximity.
+        y_tilde_j = y_j_minus if abs(y_j_minus - y_j_orig) < abs(y_j_plus - y_j_orig) else y_j_plus
     else:
-        y_tilde_j = y_plus
+        # 6. Sample one of the branches according to the normalized weights
+        probs = [weight_minus / sum_weights, weight_plus / sum_weights]
+        y_tilde_j = np.random.choice([y_j_minus, y_j_plus], p=probs)
         
-    # 8. Transform back to x-space
+    # 7. Transform back to x-space
     x_tilde_j = y_tilde_j + mu_star
 
-    # 9. Create and return the new dataset
+    # 8. Create and return the new dataset
     outlier_dataset = clean_dataset.copy()
     outlier_dataset[i] = x_tilde_i
     outlier_dataset[j] = x_tilde_j
     
     return outlier_dataset
+
+
+def calculate_true_analytical_posterior(dataset, params):
+    """
+    Calculates the true, normalized posterior density p(mu|x) on a grid.
+
+    Args:
+        dataset (np.array): The dataset x.
+        params (dict): Dictionary containing k, prior_mean, prior_std, and mu_true.
+
+    Returns:
+        (np.array, np.array): A tuple containing:
+                              - mu_grid: The grid of mu values used.
+                              - true_posterior: The normalized posterior density on that grid.
+    """
+    # Define a grid for mu around the true mean for calculation
+    mu_grid = np.linspace(params['mu_true'] - 8, params['mu_true'] + 8, 1000)
+    
+    # Calculate the unnormalized posterior using the log_posterior_mu function
+    # This assumes log_posterior_mu is defined elsewhere in your sf file
+    log_posterior_vals = [log_posterior_mu(mu, dataset, params['k'], params['prior_mean'], params['prior_std']) for mu in mu_grid]
+    
+    # Subtract the max for numerical stability before exponentiating
+    unnormalized_posterior = np.exp(log_posterior_vals - np.max(log_posterior_vals))
+
+    # Normalize the area to 1 using numerical integration
+    integral_area = np.trapz(unnormalized_posterior, mu_grid)
+    true_posterior = unnormalized_posterior / integral_area
+    
+    return mu_grid, true_posterior
 
 
 

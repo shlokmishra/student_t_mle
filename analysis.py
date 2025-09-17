@@ -5,6 +5,7 @@ import seaborn as sns
 import scipy.stats as stats
 from IPython.display import display
 import sampler_functions as sf
+from tqdm.notebook import tqdm 
 
 # ==============================================================================
 # --- Main Sampler Diagnostics
@@ -83,6 +84,81 @@ def plot_diagnostics_with_benchmark(results, params, kde_0, filename=None):
         plt.close(fig)
     else:
         plt.show()
+
+def tune_and_plot_mu_sampler(x_original, params, mu_start, num_iterations=10000, save_path=None):
+    """
+    Runs a Metropolis-Hastings sampler for mu, calculates the acceptance rate,
+    and plots the sampler's output against the true analytical posterior for validation.
+
+    Args:
+        x_original (np.array): The fixed dataset to condition on.
+        params (dict): The experiment parameters, including 'proposal_std_mu'.
+        sf (module): Your sampler_functions module containing helper functions.
+        num_iterations (int): The number of samples to generate.
+        save_path (str, optional): Path to save the figure. If None, shows the plot.
+    """
+    print(f"\n--- Tuning Metropolis Sampler for μ ---")
+    print(f"Running for {num_iterations} iterations with proposal_std_mu = {params['proposal_std_mu']:.2f}")
+
+    # --- 1. Run the Metropolis-Hastings Sampler ---
+    mu_chain = [mu_start]
+    acceptance_count = 0
+
+    # Use tqdm to show a progress bar for the loop
+    for i in tqdm(range(1, num_iterations), desc="Sampling μ"):
+        # Get the next sample using a function assumed to be in sf
+        mu_new = sf.update_mu_metropolis(mu_chain[-1], x_original, params)
+        
+        # Check if the proposal was accepted
+        if mu_new != mu_chain[-1]:
+            acceptance_count += 1
+            
+        mu_chain.append(mu_new)
+
+    # --- Burn-in and Acceptance Rate Calculation ---
+    burn_in_index = int(num_iterations * 0.20)
+    mu_chain_post_burn_in = mu_chain[burn_in_index:]
+    
+    # Calculate acceptance rate on the post-burn-in part of the chain for a more stable estimate
+    # Note: This is an approximation, the overall rate is often used.
+    acceptance_rate = acceptance_count / (num_iterations - 1)
+    print(f"Sampler finished. Overall Acceptance Rate: {acceptance_rate:.2%}")
+    if not (0.15 < acceptance_rate < 0.5):
+        print("Warning: Acceptance rate is outside the ideal range of 15-50%. Consider adjusting 'proposal_std_mu'.")
+
+    # --- 2. Calculate the True Analytical Posterior for Comparison ---
+    mu_grid, true_posterior = sf.calculate_true_analytical_posterior(x_original, params)
+
+    # --- 3. Visualize the Comparison ---
+    plt.figure(figsize=(12, 8))
+
+    # Plot a histogram of the sampler's output (post-burn-in) with a KDE overlay
+    sns.histplot(mu_chain_post_burn_in, kde=True, stat='density', bins=50, color='purple', label="Sampler Output (Hist+KDE)", line_kws={'lw': 2.5})
+    
+    # Plot the true analytical posterior curve
+    plt.plot(mu_grid, true_posterior, color='green', linestyle='--', lw=2.5, label="True Analytical Posterior")
+
+    # Final plot styling
+    plt.title(f"μ Sampler Validation (Acceptance Rate: {acceptance_rate:.1%})", fontsize=16)
+    plt.xlabel("μ", fontsize=12)
+    plt.ylabel("Density", fontsize=12)
+    plt.legend()
+    plt.grid(alpha=0.5)
+    
+    # Zoom the x-axis
+    plt.xlim(8, 12)
+    
+    plt.tight_layout()
+    
+
+    # --- 4. Save or Show the Plot ---
+    if save_path:
+        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        plt.close()
+        print(f"Sampler validation plot saved to: {save_path}")
+    else:
+        plt.show()
+
 
 
 # ==============================================================================
@@ -489,10 +565,12 @@ def plot_dataset_comparison(x1_clean, outlier_datasets, params, save_path):
     plt.legend()
     plt.grid(axis='y', linestyle='--', alpha=0.6)
     
-    # Save the plot to the specified path and close the figure
-    plt.savefig(save_path, dpi=300, bbox_inches='tight')
-    plt.close() # Prevents the plot from displaying in the notebook
-    print(f"Dataset comparison plot saved to: {save_path}")
+    if save_path is None:
+        plt.show()
+    else:   # Save the plot to the specified path and close the figure
+        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        plt.close() # Prevents the plot from displaying in the notebook
+        print(f"Dataset comparison plot saved to: {save_path}")
 
 def plot_posterior_comparison(mu_grid, benchmark_posterior, posterior_chains, params, save_path):
     """
@@ -633,4 +711,448 @@ def plot_predictive_comparison(predictive_chains, x_pred_from_mle, params, save_
     plt.savefig(save_path, dpi=300, bbox_inches='tight')
     plt.close() # Prevents the plot from displaying in the notebook
     print(f"Posterior predictive comparison plot saved to: {save_path}")
+
+def plot_all_runs_comparison(all_runs_datasets, params, save_path=None, highhigh=0.995, highlow=0.995, lowhigh=0.005, lowlow=0.005):
+    """
+    Visualizes the aggregated results from multiple experimental runs (seeds).
+
+    This function creates a single plot with columns for the clean dataset and
+    each sequential outlier set. Each column shows all data points from all runs,
+    providing a comprehensive view of the data generation consistency.
+
+    Args:
+        all_runs_datasets (dict): A dictionary where keys are seeds and values are
+                                  dicts containing 'clean' and 'outliers' datasets.
+                                  e.g., {seed: {'clean': np.array, 'outliers': [...]}}
+        params (dict): Dictionary with 'k' and 'mu_true' for threshold calculation.
+        save_path (str, optional): The full path where the plot will be saved. 
+                                   If None, the plot is displayed instead.
+    """
+    print("\n--- Visualizing Aggregated Datasets From All Runs ---")
+    
+    # --- 1. Prepare Data for Plotting ---
+    # We need to restructure the data into a format suitable for seaborn.
+    # A list of dictionaries for a pandas DataFrame is ideal.
+    plot_data = []
+    
+    # Find the max number of outlier sets generated across all runs
+    num_outlier_sets = 0
+    if all_runs_datasets:
+        first_key = next(iter(all_runs_datasets))
+        num_outlier_sets = len(all_runs_datasets[first_key]['outliers'])
+
+    for seed, run_data in all_runs_datasets.items():
+        # Add clean data points
+        for value in run_data['clean']:
+            plot_data.append({'Dataset Type': 'Clean', 'Value': value, 'Seed': seed})
+        
+        # Add outlier data points
+        for i, outlier_set in enumerate(run_data['outliers']):
+            for value in outlier_set:
+                plot_data.append({'Dataset Type': f'Outlier Set {i+1}', 'Value': value, 'Seed': seed})
+
+    df = pd.DataFrame(plot_data)
+
+    # --- 2. Create the Plot ---
+    plt.figure(figsize=(20, 9))
+    
+    # Define the order for the x-axis
+    x_order = ['Clean'] + [f'Outlier Set {i+1}' for i in range(num_outlier_sets)]
+    
+    # Use a stripplot to show all individual points
+    sns.stripplot(
+        x='Dataset Type', 
+        y='Value', 
+        data=df, 
+        order=x_order,
+        jitter=0.25, 
+        alpha=0.6,
+        size=5
+    )
+
+    # --- 3. Add Threshold Lines ---
+    outlier_threshold_L1 = stats.t.ppf(highhigh, df=params['k'], loc=params['mu_true'], scale=1)
+    outlier_threshold_L2 = stats.t.ppf(lowhigh, df=params['k'], loc=params['mu_true'], scale=1)
+    outlier_threshold_L3 = stats.t.ppf(highlow, df=params['k'], loc=params['mu_true'], scale=1)
+    outlier_threshold_L4 = stats.t.ppf(lowlow, df=params['k'], loc=params['mu_true'], scale=1)
+    plt.axhline(outlier_threshold_L1, color='red', linestyle='--', 
+                label=f'Upper Threshold (L1={outlier_threshold_L1:.2f})')
+    
+    plt.axhline(outlier_threshold_L3, color='orange', linestyle='--', 
+                label=f'Upper Threshold (L3={outlier_threshold_L3:.2f})')
+    plt.axhline(outlier_threshold_L4, color='purple', linestyle='--', 
+                label=f'Upper Threshold (L4={outlier_threshold_L4:.2f})')
+    
+
+    outlier_threshold_L2 = stats.t.ppf(0.005, df=params['k'], loc=params['mu_true'], scale=1)
+    plt.axhline(outlier_threshold_L2, color='blue', linestyle='--', 
+                label=f'Lower Threshold (L2={outlier_threshold_L2:.2f})')
+
+    # --- 4. Final Plot Styling ---
+    plt.ylabel("Value", fontsize=14)
+    plt.xlabel("Dataset Type", fontsize=14)
+    plt.title(f"Aggregated Data Points Across All {len(all_runs_datasets)} Runs", fontsize=18)
+    plt.xticks(rotation=15)
+    plt.legend()
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
+    
+    # --- 5. Save or Show the Plot ---
+    if save_path:
+        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        plt.close()
+        print(f"Aggregated dataset visualization saved to: {save_path}")
+    else:
+        plt.show()
+
+def plot_all_runs_posterior_comparison(all_runs_posteriors, mu_grid, benchmark_posterior, params, save_path=None):
+    """
+    Visualizes and saves a multi-row plot comparing analytical posteriors 
+    for all experimental runs (seeds).
+
+    Args:
+        all_runs_posteriors (dict): Dict where keys are seeds and values are lists
+                                    of the analytical posterior densities.
+        mu_grid (np.array): The grid of mu values for plotting.
+        benchmark_posterior (np.array): The density values for the benchmark posterior.
+        params (dict): Dictionary with 'mu_true' for plotting the MLE line.
+        save_path (str, optional): The full path where the plot will be saved. 
+                                   If None, the plot is displayed instead.
+    """
+    print("\n--- Visualizing All Posterior Distributions Across All Runs ---")
+    
+    num_runs = len(all_runs_posteriors)
+    seeds = list(all_runs_posteriors.keys())
+    
+    # Create a figure with one row per seed
+    fig, axes = plt.subplots(num_runs, 2, figsize=(18, 7 * num_runs), sharey=True)
+    
+    # Adjust for the case of a single run to prevent indexing errors
+    if num_runs == 1:
+        axes = np.array([axes])
+
+    for i, seed in enumerate(seeds):
+        posteriors_for_this_run = all_runs_posteriors[seed]
+        num_outlier_sets = len(posteriors_for_this_run) - 1
+        colors = sns.color_palette("viridis_r", n_colors=num_outlier_sets)
+
+        # --- Left Panel: Clean Dataset Analysis for this seed ---
+        ax_left = axes[i, 0]
+        ax_left.plot(mu_grid, benchmark_posterior, color='red', linestyle='-', lw=2.5, label="Benchmark $p(μ|μ̂)$")
+        ax_left.plot(mu_grid, posteriors_for_this_run[0], color='green', lw=2, label="True Posterior $p(μ|x_1)$")
+        ax_left.axvline(params['mu_true'], color='black', linestyle='--', lw=2, label=f"MLE $\\mu^* = {params['mu_true']:.1f}$")
+        ax_left.set_title(f"Seed {seed}: Clean Data ($x_1$)", fontsize=15)
+        ax_left.set_ylabel("Density")
+        ax_left.legend()
+        ax_left.grid(alpha=0.3)
+        ax_left.set_xlim(7, 15)
+
+        # --- Right Panel: Outlier Datasets Analysis for this seed ---
+        ax_right = axes[i, 1]
+        ax_right.plot(mu_grid, benchmark_posterior, color='red', linestyle='-', lw=2.5, label="Benchmark $p(μ|μ̂)$")
+        for j, posterior_density in enumerate(posteriors_for_this_run[1:]):
+            ax_right.plot(mu_grid, posterior_density, label=f"Outlier Set {j+1}", color=colors[j], lw=2)
+        ax_right.axvline(params['mu_true'], color='black', linestyle='--', lw=2, label=f"MLE $\\mu^* = {params['mu_true']:.1f}$")
+        ax_right.set_title(f"Seed {seed}: Sequential Outlier Datasets", fontsize=15)
+        ax_right.legend()
+        ax_right.grid(alpha=0.3)
+        ax_right.set_xlim(7, 15)
+
+        # Add x-label only to the last row
+        if i == num_runs - 1:
+            ax_left.set_xlabel("μ")
+            ax_right.set_xlabel("μ")
+
+    plt.tight_layout()
+    
+    # Save the plot to the specified path or show it
+    if save_path:
+        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        plt.close()
+        print(f"Aggregated posterior comparison plot saved to: {save_path}")
+    else:
+        plt.show()
+        
+
+def plot_all_runs_predictive_comparison(all_runs_predictive_chains, x_pred_from_benchmark, params, save_path=None):
+    """
+    Visualizes and saves a multi-row plot comparing posterior predictive distributions
+    for all experimental runs (seeds), including tail probabilities.
+
+    Args:
+        all_runs_predictive_chains (dict): Dict where keys are seeds and values are lists
+                                           of the predictive sample chains.
+        x_pred_from_benchmark (np.array): The predictive chain from the benchmark posterior.
+        params (dict): Dictionary with 'k' and 'mu_true' for threshold calculation.
+        save_path (str, optional): The full path where the plot will be saved. 
+                                   If None, the plot is displayed instead.
+    """
+    print("\n--- Visualizing All Posterior Predictive Distributions Across All Runs ---")
+
+    # Define the high and low percentile thresholds
+    L1 = stats.t.ppf(0.995, df=params['k'], loc=params['mu_true'], scale=1)
+    L2 = stats.t.ppf(0.005, df=params['k'], loc=params['mu_true'], scale=1)
+    print(f"Upper threshold L1 (99.5%) = {L1:.2f}")
+    print(f"Lower threshold L2 (0.5%) = {L2:.2f}")
+
+    num_runs = len(all_runs_predictive_chains)
+    seeds = list(all_runs_predictive_chains.keys())
+
+    fig, axes = plt.subplots(num_runs, 2, figsize=(18, 7 * num_runs), sharey=True)
+
+    if num_runs == 1:
+        axes = np.array([axes])
+
+    for i, seed in enumerate(seeds):
+        predictive_chains_for_this_run = all_runs_predictive_chains[seed]
+        num_outlier_sets = len(predictive_chains_for_this_run) - 1
+        colors = sns.color_palette("viridis_r", n_colors=num_outlier_sets)
+
+        ax_left = axes[i, 0]
+        ax_right = axes[i, 1]
+        
+        subsample_size = 5000
+        
+        # Subsample the benchmark chain
+        x_pred_benchmark_sample = np.random.choice(x_pred_from_benchmark, subsample_size, replace=False) if len(x_pred_from_benchmark) > subsample_size else x_pred_from_benchmark
+
+        # --- Left Panel: Clean Dataset Predictive Analysis ---
+        x_pred_clean_sample = np.random.choice(predictive_chains_for_this_run[0], subsample_size, replace=False) if len(predictive_chains_for_this_run[0]) > subsample_size else predictive_chains_for_this_run[0]
+
+        sns.kdeplot(x_pred_benchmark_sample, label="Predictive from Benchmark $p(x|\\mu^*)$", color='red', lw=2, fill=True, alpha=0.4, ax=ax_left, gridsize=1000)
+        sns.kdeplot(x_pred_clean_sample, label="Predictive from Full Data $p(x|x_1)$", color='green', lw=2, fill=True, alpha=0.4, ax=ax_left, gridsize=1000)
+        
+        # --- Create and add text box for tail probabilities ---
+        prob_gt_L1_bench = np.mean(x_pred_from_benchmark > L1)
+        prob_lt_L2_bench = np.mean(x_pred_from_benchmark < L2)
+        prob_gt_L1_clean = np.mean(predictive_chains_for_this_run[0] > L1)
+        prob_lt_L2_clean = np.mean(predictive_chains_for_this_run[0] < L2)
+        
+        text_str_left = (
+            f"Benchmark:\n"
+            f"  $P(x > L_1) = {prob_gt_L1_bench:.4f}$\n"
+            f"  $P(x < L_2) = {prob_lt_L2_bench:.4f}$\n\n"
+            f"Full Data (Clean):\n"
+            f"  $P(x > L_1) = {prob_gt_L1_clean:.4f}$\n"
+            f"  $P(x < L_2) = {prob_lt_L2_clean:.4f}$"
+        )
+        props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
+        ax_left.text(0.05, 0.95, text_str_left, transform=ax_left.transAxes, fontsize=10,
+                     verticalalignment='top', bbox=props)
+
+        ax_left.set_title(f"Seed {seed}: Predictive Distributions (Clean Data)", fontsize=15)
+        ax_left.set_ylabel("Density")
+        ax_left.legend()
+        ax_left.grid(alpha=0.3)
+
+        # --- Right Panel: Outlier Datasets Predictive Analysis ---
+        sns.kdeplot(x_pred_benchmark_sample, label="Predictive from Benchmark $p(x|\\mu^*)$", color='red', lw=2, fill=True, alpha=0.4, ax=ax_right, gridsize=1000)
+        
+        text_str_right_parts = [
+            f"Benchmark:\n"
+            f"  $P(x > L_1) = {prob_gt_L1_bench:.4f}$\n"
+            f"  $P(x < L_2) = {prob_lt_L2_bench:.4f}$\n"
+        ]
+        
+        for j, pred_chain in enumerate(predictive_chains_for_this_run[1:]):
+            pred_chain_sample = np.random.choice(pred_chain, subsample_size, replace=False) if len(pred_chain) > subsample_size else pred_chain
+            sns.kdeplot(pred_chain_sample, label=f"Predictive (Outlier Set {j+1})", color=colors[j], lw=2, ax=ax_right, gridsize=1000)
+            
+            # Calculate probabilities for the text box
+            prob_gt_L1_outlier = np.mean(pred_chain > L1)
+            prob_lt_L2_outlier = np.mean(pred_chain < L2)
+            text_str_right_parts.append(
+                f"\nOutlier Set {j+1}:\n"
+                f"  $P(x > L_1) = {prob_gt_L1_outlier:.4f}$\n"
+                f"  $P(x < L_2) = {prob_lt_L2_outlier:.4f}$"
+            )
+
+        ax_right.text(0.05, 0.95, "".join(text_str_right_parts), transform=ax_right.transAxes, fontsize=10,
+                      verticalalignment='top', bbox=props)
+
+        ax_right.set_title(f"Seed {seed}: Predictive Distributions (Outlier Sets)", fontsize=15)
+        ax_right.legend()
+        ax_right.grid(alpha=0.3)
+        
+        # Set consistent, dynamic x-axis limits for both plots in the row
+        all_preds_for_row = np.concatenate([x_pred_from_benchmark] + predictive_chains_for_this_run)
+        x_min = np.percentile(all_preds_for_row, 1)
+        x_max = np.percentile(all_preds_for_row, 99)
+        padding = (x_max - x_min) * 0.1
+        xlim = (x_min - padding, x_max + padding)
+        ax_left.set_xlim(xlim)
+        ax_right.set_xlim(xlim)
+
+        # Add x-label only to the last row
+        if i == num_runs - 1:
+            ax_left.set_xlabel("x")
+            ax_right.set_xlabel("x")
+
+    plt.tight_layout()
+
+    if save_path:
+        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        plt.close()
+        print(f"Aggregated predictive comparison plot saved to: {save_path}")
+    else:
+        plt.show()
+
+
+def plot_outlier_wise_posterior_comparison(all_runs_posteriors, mu_grid, benchmark_posterior, params, save_path=None):
+    """
+    Visualizes analytical posteriors from all runs, grouped by the number of outliers,
+    with each group in a separate vertical plot.
+
+    Args:
+        all_runs_posteriors (dict): Dict where keys are seeds and values are lists
+                                    of the analytical posterior densities.
+        mu_grid (np.array): The grid of mu values for plotting.
+        benchmark_posterior (np.array): The density values for the benchmark posterior.
+        params (dict): Dictionary with 'mu_true' for plotting the MLE line.
+        save_path (str, optional): The full path where the plot will be saved. 
+                                   If None, the plot is displayed instead.
+    """
+    print("\n--- Visualizing Posteriors Grouped by Outlier Count ---")
+
+    # --- 1. Restructure the data ---
+    # Group posteriors by the number of outlier points (0, 2, 4, ...)
+    restructured_posteriors = {}
+    if not all_runs_posteriors:
+        print("No posteriors to plot.")
+        return
+        
+    # Determine how many outlier levels there are from the first run
+    first_seed = next(iter(all_runs_posteriors))
+    num_levels = len(all_runs_posteriors[first_seed])
+
+    for i in range(num_levels):
+        num_outlier_points = i * 2
+        restructured_posteriors[num_outlier_points] = []
+        for seed in all_runs_posteriors:
+            restructured_posteriors[num_outlier_points].append(all_runs_posteriors[seed][i])
+
+    # --- 2. Create the plot layout ---
+    num_plots = len(restructured_posteriors)
+    # Create a tall figure with one subplot per row
+    fig, axes = plt.subplots(num_plots, 1, figsize=(10, 6 * num_plots), sharex=True)
+    if num_plots == 1:
+        axes = [axes] # Make it iterable for consistency
+
+    # --- 3. Iterate through each outlier level and plot ---
+    for i, (num_points, posteriors) in enumerate(restructured_posteriors.items()):
+        ax = axes[i]
+        
+        # Plot the single benchmark posterior for comparison
+        ax.plot(mu_grid, benchmark_posterior, color='red', linestyle='-', lw=2.5, label="Benchmark $p(μ|μ̂)$")
+        
+        # Plot all 10 posterior curves for this outlier level
+        for j, posterior_density in enumerate(posteriors):
+            # Only add one label for the whole group of curves
+            label = 'Full Data Posteriors' if j == 0 else None
+            ax.plot(mu_grid, posterior_density, color='green', lw=1, alpha=0.5, label=label)
+
+        # Add the constant MLE line
+        ax.axvline(params['mu_true'], color='black', linestyle='--', lw=2, label=f"MLE $\\mu^* = {params['mu_true']:.1f}$")
+        
+        # Set titles and labels
+        if num_points == 0:
+            ax.set_title("Clean Datasets (0 Outlier Points)", fontsize=15)
+        else:
+            ax.set_title(f"{num_points/2} Outlier Points", fontsize=15)
+
+        ax.set_ylabel("Density")
+        ax.legend()
+        ax.grid(alpha=0.3)
+        ax.set_xlim(7, 15)
+
+    # Add a single x-label at the bottom
+    axes[-1].set_xlabel("μ")
+    plt.tight_layout()
+
+    # --- 4. Save or show the plot ---
+    if save_path:
+        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        plt.close()
+        print(f"Outlier-wise posterior plot saved to: {save_path}")
+    else:
+        plt.show()
+        
+        
+def plot_outlier_wise_predictive_comparison(all_runs_predictive_chains, x_pred_from_benchmark, params, save_path=None):
+    """
+    Visualizes posterior predictive distributions from all runs, grouped by the 
+    number of outliers, with each group in a separate vertical plot.
+
+    Args:
+        all_runs_predictive_chains (dict): Dict where keys are seeds and values are lists
+                                           of the predictive sample chains.
+        x_pred_from_benchmark (np.array): The predictive chain from the benchmark posterior.
+        params (dict): Dictionary with 'k' and 'mu_true' for plotting.
+        save_path (str, optional): The full path where the plot will be saved. 
+                                   If None, the plot is displayed instead.
+    """
+    print("\n--- Visualizing Predictive Distributions Grouped by Outlier Count ---")
+
+    # --- 1. Restructure the data ---
+    restructured_predictives = {}
+    if not all_runs_predictive_chains:
+        print("No predictive chains to plot.")
+        return
+        
+    first_seed = next(iter(all_runs_predictive_chains))
+    num_levels = len(all_runs_predictive_chains[first_seed])
+
+    for i in range(num_levels):
+        num_outlier_points = i * 2
+        restructured_predictives[num_outlier_points] = []
+        for seed in all_runs_predictive_chains:
+            restructured_predictives[num_outlier_points].append(all_runs_predictive_chains[seed][i])
+
+    # --- 2. Create the plot layout ---
+    num_plots = len(restructured_predictives)
+    fig, axes = plt.subplots(num_plots, 1, figsize=(10, 6 * num_plots), sharex=True)
+    if num_plots == 1:
+        axes = [axes]
+
+    # --- 3. Iterate through each outlier level and plot ---
+    subsample_size = 5000
+    x_pred_benchmark_sample = np.random.choice(x_pred_from_benchmark, subsample_size, replace=False) if len(x_pred_from_benchmark) > subsample_size else x_pred_from_benchmark
+
+    for i, (num_points, chains) in enumerate(restructured_predictives.items()):
+        ax = axes[i]
+        
+        # Plot the benchmark predictive KDE
+        sns.kdeplot(x_pred_benchmark_sample, label="Predictive from Benchmark $p(x|\\mu^*)$", color='red', lw=2, fill=True, alpha=0.4, ax=ax, gridsize=1000)
+        
+        # Plot all 10 predictive KDEs for this outlier level
+        for j, pred_chain in enumerate(chains):
+            label = 'Full Data Predictives' if j == 0 else None
+            pred_chain_sample = np.random.choice(pred_chain, subsample_size, replace=False) if len(pred_chain) > subsample_size else pred_chain
+            sns.kdeplot(pred_chain_sample, color='green', lw=1, alpha=0.5, ax=ax, gridsize=1000, label=label)
+
+        # Set titles and labels
+        if num_points == 0:
+            ax.set_title("Clean Datasets (0 Outlier Points)", fontsize=15)
+        else:
+            ax.set_title(f"{num_points/2} Outlier Points", fontsize=15)
+        
+        ax.set_ylabel("Density")
+        ax.legend()
+        ax.grid(alpha=0.3)
+
+    # Add a single x-label at the bottom and set dynamic x-limits
+    all_preds_for_plot = np.concatenate([x_pred_from_benchmark] + [chain for chains in restructured_predictives.values() for chain in chains])
+    x_min = np.percentile(all_preds_for_plot, 1)
+    x_max = np.percentile(all_preds_for_plot, 99)
+    padding = (x_max - x_min) * 0.1
+    axes[-1].set_xlim(x_min - padding, x_max + padding)
+    axes[-1].set_xlabel("x")
+    plt.tight_layout()
+
+    # --- 4. Save or show the plot ---
+    if save_path:
+        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        plt.close()
+        print(f"Outlier-wise predictive plot saved to: {save_path}")
+    else:
+        plt.show()
 
