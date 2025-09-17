@@ -11,11 +11,7 @@ from scipy.optimize import root_scalar
 import sampler_functions as sf
 
 # ==============================================================================
-# --- Phase 1: Data Generation
-# ==============================================================================
-
-# ==============================================================================
-# --- Phase 2: Posterior Generation
+# ---  Posterior Generation
 # ==============================================================================
 
 def get_full_data_posterior_samples(data, params):
@@ -35,7 +31,7 @@ def get_mle_conditional_posterior_samples(mu_star, params):
     return results['mu_chain']
 
 # ==============================================================================
-# --- Phase 3: Outlier Probability Calculation
+# --- Outlier Probability Calculation
 # ==============================================================================
 
 def generate_predictive_samples(mu_chain, params, num_samples=50000):
