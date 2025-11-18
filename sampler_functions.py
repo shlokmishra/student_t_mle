@@ -5,6 +5,7 @@ from tqdm import tqdm
 from scipy.optimize import root_scalar
 
 
+
 def get_mle(data, params):
     """Find the MLE for the location parameter μ of a t-distribution
     with fixed dof and fixed scale=1, for the given data array."""
@@ -340,6 +341,8 @@ def run_main_gibbs_sampler(params, mu_0, x_0):
 
     # Initialize stats at t=0 from the provided x_0
     x_current = x_0.copy() # Use a copy to avoid modifying the original
+    x_chain = np.zeros((T, params['m']))
+    x_chain[0, :] = x_current
     # x_mean_chain[0] = np.mean(x_current)
     # x_std_chain[0] = np.std(x_current)
     # x_quartiles_chain[0, :] = np.percentile(x_current, [25, 50, 75])
@@ -362,7 +365,7 @@ def run_main_gibbs_sampler(params, mu_0, x_0):
         # --- Step (b): Sample x(t) ---
         x_new, accepted_pairs, accepted_z_is = update_x_full(x_current, mu_new, params)
         x_current = x_new # Update x_current for the next iteration
-
+        x_chain[t, :] = x_current
         # x_pair_acceptance_count += accepted_pairs
         z_i_acceptance_count += accepted_z_is
 
@@ -385,6 +388,7 @@ def run_main_gibbs_sampler(params, mu_0, x_0):
         # "x_pair_acceptance_rate": x_pair_acceptance_rate,
         "z_i_acceptance_rate": z_i_acceptance_rate,
         "mu_chain": mu_chain,
+        "x_chain": x_chain,
         # "x_mean_chain": x_mean_chain,
         # "x_std_chain": x_std_chain,
         # "x_quartiles_chain": x_quartiles_chain,
@@ -758,10 +762,3 @@ def calculate_true_analytical_posterior(dataset, params):
     true_posterior = unnormalized_posterior / integral_area
     
     return mu_grid, true_posterior
-
-
-
-
-
-
-
