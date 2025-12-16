@@ -13,7 +13,7 @@ def psi_jax(y: jnp.ndarray, k: jnp.int32) -> jnp.ndarray:
 
 def psi_inverse_jax(z: jnp.ndarray, k: jnp.int32):
     discr = 1.0 - 4.0 * k * z**2
-    discr = jnp.maximum(discr, 0.0)
+    discr = jnp.clip(discr, a_min=0.0)
     sqrt_discr = jnp.sqrt(discr)
 
     eps = 1e-12
@@ -34,10 +34,9 @@ def psi_prime_abs_jax(y: jnp.ndarray, k: jnp.int32) -> jnp.ndarray:
     den = (k + y**2)**2
     return jnp.abs(num) / den
 
-def log_psi_prime_abs_jax(y: jnp.ndarray, k: jnp.int32) -> jnp.ndarray:
-    num = k - y**2
-    den = (k + y**2)**2
-    return jnp.log(jnp.abs(num)) - 2.0 * jnp.log(den)
+def log_psi_prime_abs_jax(y, k):
+    return jnp.log(jnp.abs(k - y**2) + 1e-30) - 2.0 * jnp.log(k + y**2)
+
 
 def student_t_logpdf(y: jnp.ndarray, df: jnp.int32, loc: jnp.ndarray, scale: jnp.ndarray) -> jnp.ndarray:
     # log pdf du Student-t :
@@ -207,9 +206,11 @@ def update_x_full_jax(key, x_current, mu_current, mu_star, k, sigma_z):
     deltas = delta_from_xi_xj_batch( xis, xjs, mu_star, k)
     deltas_new = delta_from_xi_xj_batch( xis_new, xjs_new, mu_star, k)
     
-    
+    # Reconstruction des paires mélangées
     x_updated_pairs = jnp.stack([xis_new, xjs_new], axis=1).reshape(-1)
-    x_new = x_perm.at[0:m].set(x_updated_pairs)  #
+    x_perm_new = x_perm.at[0:m].set(x_updated_pairs)
+    # Réordonner selon la permutation originale
+    x_new = x_perm_new[jnp.argsort(perm)]
 
     pair_accepted_count = jnp.sum(pair_accepted_vec)
     z_accepted_count    = jnp.sum(z_accepted_vec)
@@ -283,13 +284,11 @@ def run_gibbs_sampler_mle_jax(key: jax.random.PRNGKey, mu_star : float, params: 
     x_0 = jnp.ones(m) * mu_star
     xs = xs.at[0, :].set(x_0)
     
-    mle_current = mu_star
     mu_0 = mu_star
     mus = mus.at[0].set(mu_0)
     
     num_z_moves = params.get('num_z_moves', m//2)
-    params['num_z_moves'] = num_z_moves
-    x_current = x_0.copy() 
+    params['num_z_moves'] = num_z_moves 
     mu_acceptance_count = 0
     z_i_acceptance_count = 0
     pair_acceptance_count = 0
@@ -300,16 +299,15 @@ def run_gibbs_sampler_mle_jax(key: jax.random.PRNGKey, mu_star : float, params: 
     # The main loop
     for t in tqdm(range(1, T+1), desc="Running Gibbs Sampler"):
         # --- Step (a): Sample mu(t) ---
-        
         key, key_mu, key_x = random.split(key, 3)
+        x_current = xs[t-1]  #
         mu_new, accept_mu = update_mu_metropolis_jax(key_mu, mus[t-1], x_current, params['proposal_std_mu'], params['prior_mean'], params['prior_std'], params['k'])
         mus = mus.at[t].set(mu_new)
-        x_current = xs[t-1].copy()  
         if accept_mu: 
             mu_acceptance_count += 1
             
         # --- Step (b): Sample x(t) ---
-        x_new, accepted_pairs, accepted_z_is, deltas, deltas_new = update_x_full_jax(key_x, xs[t-1], mus[t], mu_star, params['k'], params['proposal_std_z'])
+        x_new, accepted_pairs, accepted_z_is, deltas, deltas_new = update_x_full_jax(key_x, x_current, mus[t], mu_star, params['k'], params['proposal_std_z'])
         xs = xs.at[t, :].set(x_new)
         # print("MLE difference:", mle_new - mle_current)
         grad_likelihood_checks = grad_likelihood_checks.at[t-1].set(sum_psi_jax(x_new - mu_star, params['k']))
