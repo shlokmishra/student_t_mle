@@ -14,8 +14,8 @@ def get_mle(data, params):
     def mle_equation(mu):
         return np.sum((x - mu) / (k + (x - mu)**2))
 
-    # Use the median as a robust initial guess and bracket for root finding
-    median = np.median(x)
+    # # Use the median as a robust initial guess and bracket for root finding
+    # median = np.median(x)
     bracket = (x.min() - 10, x.max() + 10)
 
     # Find the root
@@ -39,7 +39,6 @@ def get_benchmark_mle_samples(params, num_simulations=10000):
         np.array: An array containing the calculated MLE for each simulated dataset.
     """
     print(f"\n--- Computing Benchmark KDE from {num_simulations} simulations ---")
-    print("(This is computationally intensive and will take some time...)")
     
     k = params['k']
     m = params['m']

@@ -3,39 +3,41 @@ jax.config.update("jax_enable_x64", True)
 import jax.numpy as jnp
 from jax import random, vmap, jit
 from jax.scipy.stats import t, norm, truncnorm
+from jax.scipy.special import logsumexp, softmax
+
+def sum_psi_jax(y: jnp.ndarray, k: jnp.int32) -> jnp.ndarray:
+    return jnp.sum(psi_jax(y, k))
 
 def psi_jax(y: jnp.ndarray, k: jnp.int32) -> jnp.ndarray:
     return y / (k + y**2)
 
-def psi_inverse_jax(z: jnp.ndarray, k: jnp.int32) -> jnp.ndarray:
-    # Handle the discriminant carefully to avoid NaNs
+def psi_inverse_jax(z: jnp.ndarray, k: jnp.int32):
     discr = 1.0 - 4.0 * k * z**2
-    discr = jnp.clip(discr, a_min=0.0)
+    discr = jnp.maximum(discr, 0.0)
     sqrt_discr = jnp.sqrt(discr)
 
-    def non_zero_branch(z_local):
-        y_plus  = (1.0 + sqrt_discr) / (2.0 * z_local)
-        y_minus = (1.0 - sqrt_discr) / (2.0 * z_local)
-        y1 = jnp.minimum(y_minus, y_plus)
-        y2 = jnp.maximum(y_minus, y_plus)
-        return y1, y2
+    eps = 1e-12
+    denom = 2.0 * z
+    denom_safe = jnp.where(jnp.abs(denom) < eps, jnp.sign(denom) * eps + eps, denom)
 
-    def zero_branch(z_local):
-        # when z is close to 0, use the approximation y ≈ k * z
-        y0 = k * z_local # approximation
-        return y0, y0
+    y_plus  = (1.0 + sqrt_discr) / denom_safe
+    y_minus = (1.0 - sqrt_discr) / denom_safe
 
-    # when z is close to 0, use the approximation
-    eps = 1e-8  
-    return jax.lax.cond(jnp.abs(z) < eps,
-                        zero_branch,
-                        non_zero_branch,
-                        z)
+    y_plus  = jnp.where(jnp.abs(z) < eps, 0.0, y_plus)
+    y_minus = jnp.where(jnp.abs(z) < eps, 0.0, y_minus)
+
+    return jnp.minimum(y_minus, y_plus), jnp.maximum(y_minus, y_plus)
+
 
 def psi_prime_abs_jax(y: jnp.ndarray, k: jnp.int32) -> jnp.ndarray:
     num = k - y**2
     den = (k + y**2)**2
     return jnp.abs(num) / den
+
+def log_psi_prime_abs_jax(y: jnp.ndarray, k: jnp.int32) -> jnp.ndarray:
+    num = k - y**2
+    den = (k + y**2)**2
+    return jnp.log(jnp.abs(num)) - 2.0 * jnp.log(den)
 
 def student_t_logpdf(y: jnp.ndarray, df: jnp.int32, loc: jnp.ndarray, scale: jnp.ndarray) -> jnp.ndarray:
     # log pdf du Student-t :
@@ -68,11 +70,11 @@ def q_logpdf_jax(z: jnp.ndarray, mu_current: jnp.ndarray, mu_star: jnp.ndarray, 
     # log f(y) + log |psi'(y)|^{-1}
     y_vals = jnp.stack([y_minus, y_plus])  # shape (2,)
     log_fy_vals = fy_logpdf_jax(y_vals, mu_current, mu_star, k)
-    log_psi_prime_vals = jnp.log(psi_prime_abs_jax(y_vals, k) + 1e-30)
+    log_psi_prime_vals = log_psi_prime_abs_jax(y_vals, k)
 
     log_terms = log_fy_vals - log_psi_prime_vals  # shape (2,)
 
-    log_q = jax.scipy.special.logsumexp(log_terms)
+    log_q = logsumexp(log_terms)
 
     log_q = jnp.where(in_supp, log_q, -jnp.inf)
     return log_q
@@ -107,7 +109,8 @@ def update_z_one(key: jax.random.PRNGKey, z_current: jnp.ndarray, delta: jnp.nda
 
 def update_xi_xj_one(key, xi, xj, mu_current, mu_star, k, sigma_z):
 
-    key_z, key_choice = random.split(key)
+    key_z, key_i, key_j = random.split(key, 3)
+
 
     # --- Step 1: delta ---
     yi, yj = xi - mu_star, xj - mu_star
@@ -130,28 +133,23 @@ def update_xi_xj_one(key, xi, xj, mu_current, mu_star, k, sigma_z):
         yi_minus, yi_plus = psi_inverse_jax(zi_tilde, k)
         yj_minus, yj_plus = psi_inverse_jax(zj_tilde, k)
 
-        ys_candidate = jnp.array([yi_minus, yi_plus, yj_minus, yj_plus])
-        w_single = jnp.exp(fy_logpdf_jax(ys_candidate, mu_current, mu_star, k))
+        yi_candidates = jnp.array([yi_minus, yi_plus])
+        yj_candidates = jnp.array([yj_minus, yj_plus])
+        
+        log_wi = fy_logpdf_jax(yi_candidates, mu_current, mu_star, k) - log_psi_prime_abs_jax(yi_candidates, k) # try without the second term
+        pi = softmax(log_wi)
+        yi_tilde = yi_candidates[random.choice(key_i, 2, p=pi)]
+        
+        
+        log_wj = fy_logpdf_jax(yj_candidates, mu_current, mu_star, k) - log_psi_prime_abs_jax(yj_candidates, k) # try without the second term
+        pj = softmax(log_wj)
+        yj_tilde = yj_candidates[random.choice(key_j, 2, p=pj)]
+        
+    
+        xi_tilde = yi_tilde + mu_star
+        xj_tilde = yj_tilde + mu_star
 
-        w1 = w_single[0] * w_single[2]  # (yi-, yj-)
-        w2 = w_single[0] * w_single[3]  # (yi-, yj+)
-        w3 = w_single[1] * w_single[2]  # (yi+, yj-)
-        w4 = w_single[1] * w_single[3]  # (yi+, yj+)
-        weights = jnp.array([w1, w2, w3, w4])
-
-        sum_w = jnp.sum(weights)
-        probs = weights / sum_w
-        idx = random.choice(key_choice, 4, p=probs)
-        yi_candidates = jnp.array([yi_minus, yi_minus, yi_plus, yi_plus])
-        yj_candidates = jnp.array([yj_minus, yj_plus, yj_minus, yj_plus])
-
-        y_i_new = yi_candidates[idx]
-        y_j_new = yj_candidates[idx]
-
-        x_i_new = y_i_new + mu_star
-        x_j_new = y_j_new + mu_star
-
-        return x_i_new, x_j_new, True, z_accepted
+        return xi_tilde, xj_tilde, True, z_accepted
 
         # def reject_from_weights(_):
         #     return xi, xj, False, z_accepted
@@ -233,13 +231,10 @@ def unnormalized_posterior_mu_logpdf_jax(mu: float, x: jnp.ndarray, prior_loc: f
         log_likelihood = jnp.sum(t.logpdf(x, df=k, loc=mu, scale=1))
         log_prior = norm.logpdf(mu, loc=prior_loc, scale=prior_scale)
     else:
-        # vectorized mu -> compute per-mu likelihood: shape (n_data, n_mu) -> sum over data -> (n_mu,)
         log_likelihood = jnp.sum(t.logpdf(x[:, None], df=k, loc=mu[None, :], scale=1), axis=0)
         log_prior = norm.logpdf(mu, loc=prior_loc, scale=prior_scale)
 
     return log_likelihood + log_prior
-
-
 
 
 
@@ -294,10 +289,11 @@ def run_gibbs_sampler_mle_jax(key: jax.random.PRNGKey, mu_star : float, params: 
     
     num_z_moves = params.get('num_z_moves', m//2)
     params['num_z_moves'] = num_z_moves
-    x_current = x_0.copy() # Use a copy to avoid modifying the original
+    x_current = x_0.copy() 
     mu_acceptance_count = 0
     z_i_acceptance_count = 0
     pair_acceptance_count = 0
+    grad_likelihood_checks = jnp.zeros(T)
     
     total_z_moves = T * num_z_moves 
 
@@ -308,17 +304,15 @@ def run_gibbs_sampler_mle_jax(key: jax.random.PRNGKey, mu_star : float, params: 
         key, key_mu, key_x = random.split(key, 3)
         mu_new, accept_mu = update_mu_metropolis_jax(key_mu, mus[t-1], x_current, params['proposal_std_mu'], params['prior_mean'], params['prior_std'], params['k'])
         mus = mus.at[t].set(mu_new)
-        x_current = xs[t-1].copy()  # Update current x for the next
+        x_current = xs[t-1].copy()  
         if accept_mu: 
             mu_acceptance_count += 1
             
         # --- Step (b): Sample x(t) ---
         x_new, accepted_pairs, accepted_z_is, deltas, deltas_new = update_x_full_jax(key_x, xs[t-1], mus[t], mu_star, params['k'], params['proposal_std_z'])
         xs = xs.at[t, :].set(x_new)
-        mle_new = get_mle(x_new, params['k'])
         # print("MLE difference:", mle_new - mle_current)
-        mle_current = mle_new
-        # print("Difference in deltas (should be small):", jnp.max(jnp.abs(deltas - deltas_new)))
+        grad_likelihood_checks = grad_likelihood_checks.at[t-1].set(sum_psi_jax(x_new - mu_star, params['k']))
         z_i_acceptance_count += accepted_z_is
         pair_acceptance_count += accepted_pairs
 
@@ -338,31 +332,37 @@ def run_gibbs_sampler_mle_jax(key: jax.random.PRNGKey, mu_star : float, params: 
         "z_i_acceptance_rate": z_i_acceptance_rate,
         "mu_chain": mus,
         "x_chain": xs,
+        "grad_likelihood_checks": grad_likelihood_checks,
     }
     
     return results
 
-
-from scipy.optimize import root_scalar
-
-def get_mle(x, k):
-    """Find the MLE for the location parameter μ of a t-distribution
-    with fixed dof and fixed scale=1, for the given data array."""
-
-    x = jnp.asarray(x)
-    # print(f"Calculating MLE for data with {len(x)} points and k={k}...")
-    # Define the MLE equation: sum((x - mu) / (k + (x - mu)**2)) = 0
-    def mle_equation(mu):
-        return jnp.sum((x - mu) / (k + (x - mu)**2))
-
-    # Use the median as a robust initial guess and bracket for root finding
-    bracket = (x.min() - 10, x.max() + 10)
-
-    # Find the root
-    result = root_scalar(mle_equation, bracket=bracket, method='brentq')
-    if not result.converged:
-        raise RuntimeError("MLE root finding did not converge.")
-
-    mu_star = result.root
-    # mu_star = jnp.round(mu_star, decimals=6)  # avoid numerical issues
-    return mu_star
+def run_metropolis_x_jax(key: jax.random.PRNGKey, x : jnp.ndarray, params: dict) -> dict:
+    T = params['num_iterations_T']
+    m = x.shape[0]
+    mus = jnp.zeros(T+1)
+    mus = mus.at[0].set(jnp.median(x))
+    
+    num_z_moves = params.get('num_z_moves', m//2)
+    params['num_z_moves'] = num_z_moves
+    mu_acceptance_count = 0
+    
+    # The main loop
+    for t in tqdm(range(1, T+1), desc="Running Gibbs Sampler"):
+        # --- Step (a): Sample mu(t) ---
+        key, key_mu, key_x = random.split(key, 3)
+        mu_new, accept_mu = update_mu_metropolis_jax(key_mu, mus[t-1], x, params['proposal_std_mu'], params['prior_mean'], params['prior_std'], params['k'])
+        mus = mus.at[t].set(mu_new)
+        if accept_mu: 
+            mu_acceptance_count += 1
+    # Calculate final rates
+    mu_acceptance_rate = mu_acceptance_count / T
+  
+    print(f"\n--- Sampling Complete ---")
+    print(f"Mu Acceptance Rate: {mu_acceptance_rate:.4f}")
+    
+    results = {
+        "mu_acceptance_rate": mu_acceptance_rate,
+        "mu_chain": mus,
+    }
+    return results
