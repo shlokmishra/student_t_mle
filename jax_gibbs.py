@@ -3,7 +3,8 @@ jax.config.update("jax_enable_x64", True)
 import jax.numpy as jnp
 from jax import random, vmap, jit
 from jax.scipy.stats import t, norm, truncnorm
-from jax.scipy.special import logsumexp, softmax
+from jax.scipy.special import logsumexp
+from jax.nn import softmax
 
 def sum_psi_jax(y: jnp.ndarray, k: jnp.int32) -> jnp.ndarray:
     return jnp.sum(psi_jax(y, k))
