@@ -6,6 +6,15 @@ from jax.scipy.stats import t, norm, truncnorm
 from jax.scipy.special import logsumexp
 from jax.nn import softmax
 
+EPS_Z   = 1e-12   # marge sur le support z en float64
+EPS_U   = 1e-12   # évite log(0)
+EPS_DIV = 1e-12   # évite division par ~0
+
+def z_support(k):
+    low  = -1.0 / (2.0 * jnp.sqrt(k))
+    high =  1.0 / (2.0 * jnp.sqrt(k))
+    return low + EPS_Z, high - EPS_Z
+
 def sum_psi_jax(y: jnp.ndarray, k: jnp.int32) -> jnp.ndarray:
     return jnp.sum(psi_jax(y, k))
 
@@ -13,21 +22,30 @@ def psi_jax(y: jnp.ndarray, k: jnp.int32) -> jnp.ndarray:
     return y / (k + y**2)
 
 def psi_inverse_jax(z: jnp.ndarray, k: jnp.int32):
-    discr = 1.0 - 4.0 * k * z**2
+    z_min, z_max = z_support(k)
+    z = jnp.clip(z, z_min, z_max)
+
+    tval = (2.0 * jnp.sqrt(k) * z)
+    discr = 1.0 - tval * tval
     discr = jnp.clip(discr, a_min=0.0)
     sqrt_discr = jnp.sqrt(discr)
 
-    eps = 1e-12
     denom = 2.0 * z
-    denom_safe = jnp.where(jnp.abs(denom) < eps, jnp.sign(denom) * eps + eps, denom)
+    denom_safe = jnp.where(jnp.abs(denom) < EPS_DIV, jnp.sign(denom) * EPS_DIV + EPS_DIV, denom)
 
     y_plus  = (1.0 + sqrt_discr) / denom_safe
     y_minus = (1.0 - sqrt_discr) / denom_safe
 
-    y_plus  = jnp.where(jnp.abs(z) < eps, 0.0, y_plus)
-    y_minus = jnp.where(jnp.abs(z) < eps, 0.0, y_minus)
+    y_plus  = jnp.where(jnp.abs(z) < EPS_DIV, 0.0, y_plus)
+    y_minus = jnp.where(jnp.abs(z) < EPS_DIV, 0.0, y_minus)
 
-    return jnp.minimum(y_minus, y_plus), jnp.maximum(y_minus, y_plus)
+    y_lo = jnp.minimum(y_minus, y_plus)
+    y_hi = jnp.maximum(y_minus, y_plus)
+
+    y_lo = jnp.where(jnp.isfinite(y_lo), y_lo, 0.0)
+    y_hi = jnp.where(jnp.isfinite(y_hi), y_hi, 0.0)
+    return y_lo, y_hi
+
 
 
 def psi_prime_abs_jax(y: jnp.ndarray, k: jnp.int32) -> jnp.ndarray:
@@ -61,7 +79,7 @@ def fy_logpdf_jax(y: jnp.ndarray, mu_current: jnp.ndarray, mu_star: jnp.ndarray,
 
 
 def q_logpdf_jax(z: jnp.ndarray, mu_current: jnp.ndarray, mu_star: jnp.ndarray, k: jnp.int32):
-    z_min, z_max = (-1/(2*jnp.sqrt(k)), 1/(2*jnp.sqrt(k)))
+    z_min, z_max = z_support(k)
     
     in_supp = (z > z_min) & (z < z_max)
 
@@ -85,39 +103,79 @@ def q_tilde_logpdf_jax(z: jnp.ndarray, delta: jnp.ndarray, mu_current: jnp.ndarr
     return log_q_z + log_q_partner
 
 
-def update_z_one(key: jax.random.PRNGKey, z_current: jnp.ndarray, delta: jnp.ndarray, mu_current: jnp.ndarray, mu_star: jnp.ndarray, k : jnp.int32, sigma_z: float) -> tuple:
+def update_z_one(
+    key: jax.random.PRNGKey,
+    z_current: jnp.ndarray,
+    delta: jnp.ndarray,
+    mu_current: jnp.ndarray,
+    mu_star: jnp.ndarray,
+    k: jnp.int32,
+    sigma_z: float
+) -> tuple:
     key_prop, key_u = random.split(key, 2)
-    low = -1/(2*jnp.sqrt(k))
-    high = 1/(2*jnp.sqrt(k))
-    z_prop = z_current + sigma_z * random.truncated_normal(key_prop, shape=(), lower=(low - z_current)/sigma_z, upper=(high - z_current)/sigma_z)
+
+    low, high = z_support(k)
     
-    log_kernel_current_to_prop = truncnorm.logpdf(z_prop, a=(low - z_current)/sigma_z, b=(high - z_current)/sigma_z, loc=z_current, scale=sigma_z)
-    log_kernel_prop_to_current = truncnorm.logpdf(z_current, a=(low - z_prop)/sigma_z, b=(high - z_prop)/sigma_z, loc=z_prop, scale=sigma_z)
+    low2  = delta - high
+    high2 = delta - low
 
-    log_post_current  = q_tilde_logpdf_jax(z_current, delta, mu_current, mu_star, k)
-    log_post_proposal = q_tilde_logpdf_jax(z_prop,     delta, mu_current, mu_star, k)
+    low_int  = jnp.maximum(low,  low2)
+    high_int = jnp.minimum(high, high2)
 
-    log_alpha = log_post_proposal - log_post_current + log_kernel_prop_to_current - log_kernel_current_to_prop
+    valid = low_int < high_int
 
-    u = random.uniform(key_u)
-    log_u = jnp.log(u)
-    accept = log_u < log_alpha
+    def do_reject(_):
+        return z_current, False
 
-    z_new = jnp.where(accept, z_prop, z_current)
-    return z_new, accept
+    def do_update(_):
+        a = (low_int  - z_current) / sigma_z
+        b = (high_int - z_current) / sigma_z
+        z_prop = z_current + sigma_z * random.truncated_normal(
+            key_prop, shape=(), lower=a, upper=b
+        )
+
+        log_k_cur_to_prop = truncnorm.logpdf(z_prop, a=a, b=b, loc=z_current, scale=sigma_z)
+
+        a_back = (low_int  - z_prop) / sigma_z
+        b_back = (high_int - z_prop) / sigma_z
+        log_k_prop_to_cur = truncnorm.logpdf(z_current, a=a_back, b=b_back, loc=z_prop, scale=sigma_z)
+
+        log_post_cur  = q_tilde_logpdf_jax(z_current, delta, mu_current, mu_star, k)
+        log_post_prop = q_tilde_logpdf_jax(z_prop,     delta, mu_current, mu_star, k)
+
+        log_alpha = log_post_prop - log_post_cur + log_k_prop_to_cur - log_k_cur_to_prop
+        log_alpha = jnp.where(jnp.isfinite(log_alpha), log_alpha, -jnp.inf)
+
+        u = random.uniform(key_u, minval=EPS_U, maxval=1.0)
+        accept = jnp.log(u) < log_alpha
+
+        z_new = jnp.where(accept, z_prop, z_current)
+        return z_new, accept
+
+    return jax.lax.cond(valid, do_update, do_reject, operand=None)
 
 
 def update_xi_xj_one(key, xi, xj, mu_current, mu_star, k, sigma_z):
+    def safe_choice_2(key, candidates, log_w):
+        log_w = jnp.where(jnp.isfinite(log_w), log_w, -jnp.inf)
+        logZ = logsumexp(log_w)
+
+        def fallback(_):
+            return candidates[0]
+
+        def sample(_):
+            probs = jnp.exp(log_w - logZ)
+            idx = random.choice(key, 2, p=probs)
+            return candidates[idx]
+
+        return jax.lax.cond(jnp.isfinite(logZ), sample, fallback, operand=None)
 
     key_z, key_i, key_j = random.split(key, 3)
 
-
-    # --- Step 1: delta ---
     yi, yj = xi - mu_star, xj - mu_star
     zi, zj = psi_jax(yi, k), psi_jax(yj, k)
     delta  = zi + zj
 
-    # --- Step 2: update_z_one ---
     zi_tilde, z_accepted = update_z_one(
         key_z, zi, delta, mu_current, mu_star, k, sigma_z
     )
@@ -136,15 +194,21 @@ def update_xi_xj_one(key, xi, xj, mu_current, mu_star, k, sigma_z):
         yi_candidates = jnp.array([yi_minus, yi_plus])
         yj_candidates = jnp.array([yj_minus, yj_plus])
         
-        log_wi = fy_logpdf_jax(yi_candidates, mu_current, mu_star, k) - log_psi_prime_abs_jax(yi_candidates, k) # try without the second term
-        pi = softmax(log_wi)
-        yi_tilde = yi_candidates[random.choice(key_i, 2, p=pi)]
+        # log_wi = fy_logpdf_jax(yi_candidates, mu_current, mu_star, k) - log_psi_prime_abs_jax(yi_candidates, k) # try without the second term
+        # pi = softmax(log_wi)
+        # yi_tilde = yi_candidates[random.choice(key_i, 2, p=pi)]
         
         
-        log_wj = fy_logpdf_jax(yj_candidates, mu_current, mu_star, k) - log_psi_prime_abs_jax(yj_candidates, k) # try without the second term
-        pj = softmax(log_wj)
-        yj_tilde = yj_candidates[random.choice(key_j, 2, p=pj)]
+        # log_wj = fy_logpdf_jax(yj_candidates, mu_current, mu_star, k) - log_psi_prime_abs_jax(yj_candidates, k) # try without the second term
+        # pj = softmax(log_wj)
+        # yj_tilde = yj_candidates[random.choice(key_j, 2, p=pj)]
         
+        log_wi = fy_logpdf_jax(yi_candidates, mu_current, mu_star, k) - log_psi_prime_abs_jax(yi_candidates, k)
+        yi_tilde = safe_choice_2(key_i, yi_candidates, log_wi)
+
+        log_wj = fy_logpdf_jax(yj_candidates, mu_current, mu_star, k) - log_psi_prime_abs_jax(yj_candidates, k)
+        yj_tilde = safe_choice_2(key_j, yj_candidates, log_wj)
+
     
         xi_tilde = yi_tilde + mu_star
         xj_tilde = yj_tilde + mu_star
@@ -207,16 +271,13 @@ def update_x_full_jax(key, x_current, mu_current, mu_star, k, sigma_z):
     deltas = delta_from_xi_xj_batch( xis, xjs, mu_star, k)
     deltas_new = delta_from_xi_xj_batch( xis_new, xjs_new, mu_star, k)
     
-    # Reconstruction des paires mélangées
     x_updated_pairs = jnp.stack([xis_new, xjs_new], axis=1).reshape(-1)
     x_perm_new = x_perm.at[0:m].set(x_updated_pairs)
-    # Réordonner selon la permutation originale
     x_new = x_perm_new[jnp.argsort(perm)]
 
     pair_accepted_count = jnp.sum(pair_accepted_vec)
     z_accepted_count    = jnp.sum(z_accepted_vec)
 
-    # x_new = jnp.round(x_new, decimals=6)  # avoid numerical issues
     return x_new, pair_accepted_count, z_accepted_count, deltas, deltas_new
 
 
@@ -264,11 +325,11 @@ def update_mu_metropolis_jax(key: jax.random.PRNGKey, mu_current: float, x_curre
         k=k
     )
 
-    log_acceptance_ratio = log_post_candidate - log_post_current
-    # avoid log(0)
-    u = random.uniform(key_u, minval=1e-12, maxval=1.0)
+    log_alpha = log_post_candidate - log_post_current
+    u = random.uniform(key_u, minval=EPS_U, maxval=1.0)
     log_u = jnp.log(u)
-    accept = log_u < log_acceptance_ratio
+    log_alpha = jnp.where(jnp.isfinite(log_alpha), log_alpha, -jnp.inf)
+    accept = log_u < log_alpha
     mu_new = jnp.where(accept, mu_candidate, mu_current)
     return mu_new, accept
 
