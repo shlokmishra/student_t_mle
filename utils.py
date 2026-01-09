@@ -75,7 +75,9 @@ def get_normalized_posterior_mle_pdf(mu_star, params, num_simulations=10000):
     mles = get_benchmark_mle_samples(params, num_simulations=num_simulations)
     prior_mean = params['prior_mean']
     prior_std = params['prior_std']
-    kde = stats.gaussian_kde(mles)
+    bw_method = params.get('kde_bw_method', 'scott')
+    print("Fitting KDE to MLE samples using bw_method =", bw_method)
+    kde = stats.gaussian_kde(mles, bw_method=bw_method)
 
     def log_unnorm(mu):
         log_prior = stats.norm.logpdf(mu, loc=prior_mean, scale=prior_std)
