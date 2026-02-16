@@ -151,3 +151,141 @@ def posterior_variance_from_kde(
     mean = np.trapezoid(mu_grid * pdf_vals, mu_grid)
     var = np.trapezoid((mu_grid - mean) ** 2 * pdf_vals, mu_grid)
     return float(mean), float(var)
+
+
+import jax_gibbs as gs_jax
+import jax.numpy as jnp
+
+
+def run_info_loss_sweep(
+    ks,
+    ms,
+    mu_true=2.0,
+    T_kde=50000,
+    T_fulldata=50000,
+    base_params=None,
+    seed=0,
+    burnin=1000,
+    verbose=True,
+):
+    """
+    Compute information loss ratio: Var(μ|μ*) / Var(μ|x) for each (k, m).
+
+    Var(μ|μ*) comes from the KDE posterior (ground truth for p(μ|μ*)).
+    Var(μ|x) comes from standard Metropolis-Hastings on the full data.
+
+    Returns dict suitable for pd.DataFrame with columns:
+        k, m, var_mle, var_fulldata, info_loss_ratio
+    """
+    if base_params is None:
+        base_params = validation._default_base_params(mu_true)
+
+    results = {
+        'k': [], 'm': [],
+        'var_mle': [], 'var_fulldata': [], 'info_loss_ratio': [],
+        'mle': [], 'mu_true': [],
+    }
+
+    key = random.PRNGKey(seed)
+    for k in ks:
+        for m in ms:
+            if verbose:
+                print(f"\n{'='*60}")
+                print(f"Info loss: k={k}, m={m}")
+                print(f"{'='*60}")
+
+            params = base_params.copy()
+            params['k'] = k
+            params['m'] = m
+            params['num_iterations_T'] = T_fulldata
+
+            # Generate data
+            key, subkey = random.split(key)
+            data = random.t(subkey, df=k, shape=(m,)) + mu_true
+            mle = utils.get_mle(data, params)
+
+            # --- Var(μ|μ*) from KDE posterior ---
+            kde_params = params.copy()
+            if k == 1.0:
+                kde_params['kde_bw_method'] = 0.001
+            if verbose:
+                print(f"  Computing KDE posterior (Var(μ|μ*))...")
+            kde_pdf = utils.get_normalized_posterior_mle_pdf(
+                mle, kde_params, num_simulations=T_kde
+            )
+            _, var_mle = posterior_variance_from_kde(kde_pdf)
+
+            # --- Var(μ|x) from full-data MCMC ---
+            if verbose:
+                print(f"  Running full-data MCMC (Var(μ|x))...")
+            key, key_full = random.split(key)
+            full_results = gs_jax.run_metropolis_x_jax(
+                key_full, jnp.asarray(data), params.copy()
+            )
+            mu_chain_full = np.array(full_results['mu_chain'])
+            mu_chain_full_post = mu_chain_full[burnin:]
+            var_fulldata = float(mu_chain_full_post.var())
+
+            ratio = var_mle / var_fulldata if var_fulldata > 0 else np.nan
+
+            results['k'].append(k)
+            results['m'].append(m)
+            results['var_mle'].append(var_mle)
+            results['var_fulldata'].append(var_fulldata)
+            results['info_loss_ratio'].append(ratio)
+            results['mle'].append(float(mle))
+            results['mu_true'].append(mu_true)
+
+            if verbose:
+                print(f"  Var(μ|μ*) = {var_mle:.6f}")
+                print(f"  Var(μ|x)  = {var_fulldata:.6f}")
+                print(f"  Info loss ratio Var(μ|μ*)/Var(μ|x) = {ratio:.4f}")
+
+    return results
+
+
+def run_kl_vs_m_multi_k(
+    ks,
+    ms,
+    mu_true=2.0,
+    T_gibbs=50000,
+    T_kde=50000,
+    base_params=None,
+    seed=0,
+    burnin=1000,
+    verbose=True,
+):
+    """
+    Run KL(Gibbs || KDE) study for multiple k values.
+    Returns dict suitable for pd.DataFrame with columns: k, m, kl, variance_ratio.
+    """
+    if base_params is None:
+        base_params = validation._default_base_params(mu_true)
+
+    results = {'k': [], 'm': [], 'kl': [], 'gibbs_variance': [], 'kde_variance': [], 'variance_ratio': []}
+
+    key = random.PRNGKey(seed)
+    for k in ks:
+        for m in ms:
+            if verbose:
+                print(f"\n--- k={k}, m={m} ---")
+            out = validation.run_single_comparison(
+                key, m=m, k=k, mu_true=mu_true,
+                T_gibbs=T_gibbs, T_kde=T_kde,
+                base_params=base_params, burnin=burnin, verbose=verbose,
+            )
+            key = out['key']
+            kl = kl_divergence_estimate(out['mu_chain_post_burnin'], out['kde_posterior_pdf'])
+            ratio = out['gibbs_variance'] / out['kde_variance']
+
+            results['k'].append(k)
+            results['m'].append(m)
+            results['kl'].append(kl)
+            results['gibbs_variance'].append(out['gibbs_variance'])
+            results['kde_variance'].append(out['kde_variance'])
+            results['variance_ratio'].append(ratio)
+
+            if verbose:
+                print(f"  KL(Gibbs || KDE): {kl:.4f}, Variance ratio: {ratio:.4f}")
+
+    return results
