@@ -1,6 +1,7 @@
 import numpy as np
 import scipy.stats as stats
 from scipy.optimize import root_scalar
+from scipy.integrate import quad
 
 
 def get_mle(data, params):
@@ -62,7 +63,6 @@ def get_benchmark_mle_samples(params, num_simulations=10000):
     return mle_samples
 
 
-from scipy.integrate import quad
 
 
 def get_normalized_posterior_mle_pdf(mu_star, params, num_simulations=10000):
