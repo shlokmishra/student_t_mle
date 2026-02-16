@@ -1,13 +1,17 @@
 """
 Analysis utilities: KL divergence, posterior predictive, DP-related metrics.
+Supports optional caching via cache_dir parameter.
 """
 
 import numpy as np
 import scipy.stats as stats
 import jax.random as random
+import jax.numpy as jnp
 
 import validation
 import utils
+import cache as _cache
+import jax_gibbs as gs_jax
 
 
 def kl_divergence_estimate(
@@ -48,6 +52,7 @@ def run_kl_vs_m_study(
     seed=0,
     burnin=1000,
     verbose=True,
+    cache_dir=None,
 ):
     """
     Run Gibbs vs KDE for each m, compute KL divergence.
@@ -78,6 +83,8 @@ def run_kl_vs_m_study(
             base_params=base_params,
             burnin=burnin,
             verbose=verbose,
+            cache_dir=cache_dir,
+            seed_hint=seed,
         )
         key = out['key']
 
@@ -153,10 +160,6 @@ def posterior_variance_from_kde(
     return float(mean), float(var)
 
 
-import jax_gibbs as gs_jax
-import jax.numpy as jnp
-
-
 def run_info_loss_sweep(
     ks,
     ms,
@@ -167,6 +170,7 @@ def run_info_loss_sweep(
     seed=0,
     burnin=1000,
     verbose=True,
+    cache_dir=None,
 ):
     """
     Compute information loss ratio: Var(μ|μ*) / Var(μ|x) for each (k, m).
@@ -199,32 +203,68 @@ def run_info_loss_sweep(
             params['m'] = m
             params['num_iterations_T'] = T_fulldata
 
-            # Generate data
-            key, subkey = random.split(key)
-            data = random.t(subkey, df=k, shape=(m,)) + mu_true
-            mle = utils.get_mle(data, params)
+            # --- Cache paths ---
+            kde_path = None
+            fulldata_path = None
+            if cache_dir:
+                kde_path = _cache.cache_path('kde', k, m, T_kde, seed, cache_dir)
+                fulldata_path = _cache.cache_path('fulldata', k, m, T_fulldata, seed, cache_dir)
+
+            # Generate data (or load from fulldata cache which has data+mle)
+            if cache_dir and _cache.is_cached(fulldata_path):
+                if verbose:
+                    print(f"  [cache hit] Loading full-data chain from {fulldata_path}")
+                cached_fd = _cache.load_fulldata(fulldata_path)
+                data = cached_fd['data']
+                mle = cached_fd['mle']
+                mu_chain_full = cached_fd['mu_chain']
+                mu_chain_full_post = mu_chain_full[burnin:]
+                var_fulldata = float(mu_chain_full_post.var())
+            else:
+                key, subkey = random.split(key)
+                data = random.t(subkey, df=k, shape=(m,)) + mu_true
+                mle = utils.get_mle(data, params)
+
+                if verbose:
+                    print(f"  Running full-data MCMC (Var(μ|x))...")
+                key, key_full = random.split(key)
+                full_results = gs_jax.run_metropolis_x_jax(
+                    key_full, jnp.asarray(data), params.copy()
+                )
+                mu_chain_full = np.array(full_results['mu_chain'])
+                mu_chain_full_post = mu_chain_full[burnin:]
+                var_fulldata = float(mu_chain_full_post.var())
+
+                if cache_dir:
+                    _cache.save_fulldata(fulldata_path, mu_chain_full, data, mle)
+                    if verbose:
+                        print(f"  [cache save] Full-data chain saved to {fulldata_path}")
 
             # --- Var(μ|μ*) from KDE posterior ---
             kde_params = params.copy()
             if k == 1.0:
                 kde_params['kde_bw_method'] = 0.001
-            if verbose:
-                print(f"  Computing KDE posterior (Var(μ|μ*))...")
-            kde_pdf = utils.get_normalized_posterior_mle_pdf(
-                mle, kde_params, num_simulations=T_kde
-            )
-            _, var_mle = posterior_variance_from_kde(kde_pdf)
 
-            # --- Var(μ|x) from full-data MCMC ---
-            if verbose:
-                print(f"  Running full-data MCMC (Var(μ|x))...")
-            key, key_full = random.split(key)
-            full_results = gs_jax.run_metropolis_x_jax(
-                key_full, jnp.asarray(data), params.copy()
-            )
-            mu_chain_full = np.array(full_results['mu_chain'])
-            mu_chain_full_post = mu_chain_full[burnin:]
-            var_fulldata = float(mu_chain_full_post.var())
+            if cache_dir and _cache.is_cached(kde_path):
+                if verbose:
+                    print(f"  [cache hit] Loading KDE samples from {kde_path}")
+                mle_samples = _cache.load_kde_samples(kde_path)
+                kde_pdf = utils.get_normalized_posterior_mle_pdf(
+                    mle, kde_params, mle_samples=mle_samples
+                )
+            else:
+                if verbose:
+                    print(f"  Computing KDE posterior (Var(μ|μ*))...")
+                mle_samples = utils.get_benchmark_mle_samples(kde_params, num_simulations=T_kde)
+                kde_pdf = utils.get_normalized_posterior_mle_pdf(
+                    mle, kde_params, mle_samples=mle_samples
+                )
+                if cache_dir:
+                    _cache.save_kde_samples(kde_path, mle_samples)
+                    if verbose:
+                        print(f"  [cache save] KDE samples saved to {kde_path}")
+
+            _, var_mle = posterior_variance_from_kde(kde_pdf)
 
             ratio = var_mle / var_fulldata if var_fulldata > 0 else np.nan
 
@@ -254,6 +294,7 @@ def run_kl_vs_m_multi_k(
     seed=0,
     burnin=1000,
     verbose=True,
+    cache_dir=None,
 ):
     """
     Run KL(Gibbs || KDE) study for multiple k values.
@@ -273,6 +314,7 @@ def run_kl_vs_m_multi_k(
                 key, m=m, k=k, mu_true=mu_true,
                 T_gibbs=T_gibbs, T_kde=T_kde,
                 base_params=base_params, burnin=burnin, verbose=verbose,
+                cache_dir=cache_dir, seed_hint=seed,
             )
             key = out['key']
             kl = kl_divergence_estimate(out['mu_chain_post_burnin'], out['kde_posterior_pdf'])

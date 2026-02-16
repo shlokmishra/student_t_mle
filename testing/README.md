@@ -10,11 +10,17 @@
 
 ## Other notebooks
 
+- **precompute.ipynb** – Run once to populate `cache/` with all Gibbs chains, KDE samples, and full-data MCMC chains. After this, all analysis notebooks load from cache instantly.
 - **x_kernel_diagnosis.ipynb** – x-transition kernel diagnostics (extreme values near z≈0)
 
 ## Modules
 
-- `validation.py` – run_single_gibbs_kde, run_variance_sweep
-- `analysis.py` – kl_divergence_estimate, run_kl_vs_m_study, run_kl_vs_m_multi_k, run_info_loss_sweep, posterior_predictive_samples
+- `validation.py` – run_single_gibbs_kde, run_variance_sweep (supports `cache_dir`)
+- `analysis.py` – kl_divergence_estimate, run_kl_vs_m_study, run_kl_vs_m_multi_k, run_info_loss_sweep, posterior_predictive_samples (supports `cache_dir`)
+- `cache.py` – save/load helpers for `.npz` cache files
+
+## Cache
+
+Run `precompute.ipynb` once to populate `cache/`. All analysis notebooks pass `cache_dir='cache'` and will load cached results instead of re-sampling. Cache files are `.npz` keyed by `(k, m, T, seed)`.
 
 Run from project root or from `testing/` (path setup is automatic).

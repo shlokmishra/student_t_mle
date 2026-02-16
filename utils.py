@@ -65,14 +65,19 @@ def get_benchmark_mle_samples(params, num_simulations=10000):
 
 
 
-def get_normalized_posterior_mle_pdf(mu_star, params, num_simulations=10000):
+def get_normalized_posterior_mle_pdf(mu_star, params, num_simulations=10000, mle_samples=None):
     """
     Returns a callable for the *normalized* posterior density p(mu | mu_hat = mu_star),
     using numerical integration to compute the normalizing constant.
+
+    If mle_samples is provided, skip the expensive simulation and use them directly.
     """
 
-    # Same KDE and prior as above to ensure consistency
-    mles = get_benchmark_mle_samples(params, num_simulations=num_simulations)
+    if mle_samples is None:
+        mles = get_benchmark_mle_samples(params, num_simulations=num_simulations)
+    else:
+        mles = np.asarray(mle_samples)
+
     prior_mean = params['prior_mean']
     prior_std = params['prior_std']
     bw_method = params.get('kde_bw_method', 'scott')
@@ -90,4 +95,4 @@ def get_normalized_posterior_mle_pdf(mu_star, params, num_simulations=10000):
     def normalized_pdf(mu):
         return np.exp(log_unnorm(mu)) / integral
 
-    return normalized_pdf   
+    return normalized_pdf
