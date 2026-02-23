@@ -1,304 +1,278 @@
 """
-Validation utilities: Gibbs vs KDE comparison, variance sweep.
-Supports optional caching via cache_dir parameter.
+Run Gibbs vs KDE for a given model; compare variances via analysis.posterior_variance_from_kde.
 """
 
 import time
 import numpy as np
 import jax.random as random
 
-import jax_gibbs as gs_jax
-import utils
+from models import student, laplace, logistic
+from kde_ref.posterior import get_normalized_posterior_pdf, validate_posterior_1d
+from analysis import posterior_variance_from_kde
 import cache as _cache
+
+_MODELS = {
+    "student": student,
+    "laplace": laplace,
+    "logistic": logistic,
+}
 
 
 def _default_base_params(mu_true=2.0):
+    """Prior: N(prior_mean, prior_std^2). KDE bandwidth: kde_bw_method ('scott', float, or callable)."""
     return {
-        'mu_true': mu_true,
-        'prior_mean': 0.0,
-        'prior_std': 10.0,
-        'proposal_std_mu': 0.9,
-        'proposal_std_z': 0.03,
+        "mu_true": mu_true,
+        "prior_mean": 0.0,
+        "prior_std": 10.0,
+        "proposal_std_mu": 0.9,
+        "proposal_std_z": 0.03,
+        "kde_bw_method": "scott",
     }
 
 
+def _build_params(model, n, mu_true, T_gibbs, base_params, **model_kw):
+    base = _default_base_params(mu_true).copy()
+    if base_params:
+        base.update(base_params)
+    base["n"] = n
+    base["num_iterations_T"] = T_gibbs
+    if model == "student":
+        base["k"] = model_kw.get("k", 2.0)
+    elif model == "laplace":
+        base["b"] = model_kw.get("b", 1.0)
+    base.setdefault("kde_bw_method", "scott")
+    return base
+
+
+def _shape_key(model, params):
+    if model == "student":
+        return (params["k"], params["n"])
+    if model == "laplace":
+        return (params["b"], params["n"])
+    return (params["n"],)
+
+
 def run_single_comparison(
+    model,
     key,
-    m,
-    k,
-    mu_true,
-    T_gibbs,
-    T_kde,
+    n,
+    mu_true=2.0,
+    T_gibbs=5000,
+    T_kde=5000,
+    T_fulldata=None,
     base_params=None,
     burnin=1000,
     verbose=True,
     cache_dir=None,
     seed_hint=0,
+    **model_kw,
 ):
     """
-    Run Gibbs sampler and KDE posterior for one (m, k) pair.
-    Returns Gibbs chain, KDE stats, and timing.
+    Run Gibbs, KDE reference, and (optionally) full-data MH for one model and (n, ...).
 
-    If cache_dir is set, loads cached Gibbs chain and KDE samples when available,
-    and saves them after computing.
-    seed_hint is used as part of the cache key (for deterministic runs).
+    Compares:
+      - p(theta | MLE): Gibbs chain and KDE trick
+      - p(theta | x): full-data MH chain (if T_fulldata is set)
+
+    model: "student" | "laplace" | "logistic"
+    n: sample size (number of observations).
+    model_kw: for student pass k=...; for laplace pass b=...; for logistic nothing extra.
+    T_fulldata: if set, run (or load) MH on p(theta|x) and add full_data_variance, info_loss_ratio.
+    Returns dict with mu_chain_gibbs, mu_chain_post_burnin, kde_posterior_pdf, gibbs_variance,
+    kde_variance, and if T_fulldata: mu_chain_fulldata, full_data_variance, info_loss_ratio.
     """
-    if base_params is None:
-        base_params = _default_base_params(mu_true)
-    params = base_params.copy()
-    params['k'] = k
-    params['m'] = m
-    params['num_iterations_T'] = T_gibbs
+    if model not in _MODELS:
+        raise ValueError(f"Unknown model: {model}. Use one of {list(_MODELS)}")
+    mod = _MODELS[model]
+    params = _build_params(model, n, mu_true, T_gibbs, base_params, **model_kw)
+    shape_key = _shape_key(model, params)
 
-    # --- Cache paths ---
-    gibbs_path = None
-    kde_path = None
-    if cache_dir:
-        gibbs_path = _cache.cache_path('gibbs', k, m, T_gibbs, seed_hint, cache_dir)
-        kde_path = _cache.cache_path('kde', k, m, T_kde, seed_hint, cache_dir)
+    prior_mean = params["prior_mean"]
+    prior_std = params["prior_std"]
+    gibbs_path = (
+        _cache.cache_path("gibbs", model, shape_key, T_gibbs, seed_hint, cache_dir, prior_mean=prior_mean, prior_std=prior_std)
+        if cache_dir else None
+    )
+    # KDE MLE samples do not depend on the prior; use same cache for all priors and apply current prior in get_normalized_posterior_pdf.
+    kde_path = (
+        _cache.cache_path("kde", model, shape_key, T_kde, seed_hint, cache_dir, include_prior=False)
+        if cache_dir else None
+    )
+    fulldata_path = (
+        _cache.cache_path("fulldata", model, shape_key, T_fulldata, seed_hint, cache_dir, prior_mean=prior_mean, prior_std=prior_std)
+        if (cache_dir and T_fulldata) else None
+    )
 
     # --- Gibbs chain ---
-    if cache_dir and _cache.is_cached(gibbs_path):
+    gibbs_accept = {}
+    if cache_dir and gibbs_path and _cache.is_cached(gibbs_path):
         if verbose:
-            print(f"  [cache hit] Loading Gibbs chain from {gibbs_path}")
+            print(f"  [cache hit] Loading Gibbs from {gibbs_path}")
         cached = _cache.load_gibbs(gibbs_path)
-        mu_chain_gibbs = cached['mu_chain']
-        data = cached['data']
-        mle = cached['mle']
+        mu_chain_gibbs = cached["mu_chain"]
+        data = cached["data"]
+        mle = cached["mle"]
         time_gibbs = 0.0
+        if "mu_acceptance_rate" in cached:
+            gibbs_accept["mu"] = cached["mu_acceptance_rate"]
+        if "pair_acceptance_rate" in cached:
+            gibbs_accept["pair"] = cached["pair_acceptance_rate"]
+        if "z_acceptance_rate" in cached:
+            gibbs_accept["z"] = cached["z_acceptance_rate"]
     else:
         key, subkey = random.split(key)
-        data = random.t(subkey, df=k, shape=(m,)) + mu_true
-        mle = utils.get_mle(data, params)
-
-        if verbose:
-            print(f"  Running Gibbs sampler (T={T_gibbs:,})...")
+        data = np.asarray(mod.sample_data(subkey, params, loc=mu_true))
+        mle = mod.get_mle(data, params)
         key, key_gibbs = random.split(key)
+        if verbose:
+            print(f"  Running Gibbs ({model}, T={T_gibbs})...")
         t0 = time.time()
-        gibbs_results = gs_jax.run_gibbs_sampler_mle_jax(key_gibbs, mle, params.copy())
+        gibbs_results = mod.run_gibbs(key_gibbs, float(mle), params.copy(), verbose=verbose)
         time_gibbs = time.time() - t0
-        mu_chain_gibbs = np.array(gibbs_results['mu_chain'])
-
-        if cache_dir:
-            _cache.save_gibbs(gibbs_path, mu_chain_gibbs, data, mle)
+        mu_chain_gibbs = np.asarray(gibbs_results["mu_chain"])
+        gibbs_accept["mu"] = float(gibbs_results["mu_acceptance_rate"])
+        if "pair_acceptance_rate" in gibbs_results:
+            gibbs_accept["pair"] = float(gibbs_results["pair_acceptance_rate"])
+        if "z_acceptance_rate" in gibbs_results:
+            gibbs_accept["z"] = float(gibbs_results["z_acceptance_rate"])
+        if cache_dir and gibbs_path:
+            _cache.save_gibbs(
+                gibbs_path,
+                mu_chain_gibbs,
+                data,
+                mle,
+                mu_acceptance_rate=gibbs_accept["mu"],
+                pair_acceptance_rate=gibbs_accept.get("pair"),
+                z_acceptance_rate=gibbs_accept.get("z"),
+                prior_mean=prior_mean,
+                prior_std=prior_std,
+            )
             if verbose:
-                print(f"  [cache save] Gibbs chain saved to {gibbs_path}")
+                print(f"  [cache save] Gibbs saved to {gibbs_path}")
 
     burnin = min(burnin, len(mu_chain_gibbs) - 10)
     mu_chain_post_burnin = mu_chain_gibbs[burnin:]
 
     # --- KDE posterior ---
-    if k == 1.0:
-        params['kde_bw_method'] = 0.001
+    kde_params = params.copy()
+    # kde_bw_method from params (default "scott"); use a small float (e.g. 0.001) for very heavy tails if needed.
 
-    if cache_dir and _cache.is_cached(kde_path):
+    if cache_dir and kde_path and _cache.is_cached(kde_path):
         if verbose:
             print(f"  [cache hit] Loading KDE samples from {kde_path}")
-        mle_samples = _cache.load_kde_samples(kde_path)
-        t0 = time.time()
-        kde_posterior_pdf = utils.get_normalized_posterior_mle_pdf(
-            mle, params, mle_samples=mle_samples
-        )
-        time_kde = time.time() - t0
+        kde_loaded = _cache.load_kde_samples(kde_path)
+        mle_samples = kde_loaded["mle_samples"]
+        kde_posterior_pdf = get_normalized_posterior_pdf(mle, kde_params, mle_samples, verbose=False)
+        time_kde = 0.0
     else:
         if verbose:
-            print(f"  Computing KDE posterior ({T_kde:,} simulations)...")
+            print(f"  Computing KDE posterior ({model}, {T_kde} sims)...")
         t0 = time.time()
-        mle_samples = utils.get_benchmark_mle_samples(params, num_simulations=T_kde)
-        kde_posterior_pdf = utils.get_normalized_posterior_mle_pdf(
-            mle, params, mle_samples=mle_samples
-        )
+        mle_samples = mod.get_benchmark_mle_samples(kde_params, num_simulations=T_kde, verbose=False)
+        kde_posterior_pdf = get_normalized_posterior_pdf(mle, kde_params, mle_samples, verbose=verbose)
         time_kde = time.time() - t0
-
-        if cache_dir:
-            _cache.save_kde_samples(kde_path, mle_samples)
+        if cache_dir and kde_path:
+            _cache.save_kde_samples(kde_path, mle_samples, prior_mean=prior_mean, prior_std=prior_std)
             if verbose:
                 print(f"  [cache save] KDE samples saved to {kde_path}")
 
-    # --- Compute KDE stats ---
-    mu_grid = np.linspace(
-        mu_chain_post_burnin.min() - 2,
-        mu_chain_post_burnin.max() + 2,
-        2000,
-    )
-    kde_pdf_values = kde_posterior_pdf(mu_grid)
-    kde_pdf_values = kde_pdf_values / np.trapezoid(kde_pdf_values, mu_grid)
-    kde_mean = np.trapezoid(mu_grid * kde_pdf_values, mu_grid)
-    kde_variance = np.trapezoid((mu_grid - kde_mean) ** 2 * kde_pdf_values, mu_grid)
+    kde_mean, kde_var = posterior_variance_from_kde(kde_posterior_pdf)
+    gibbs_var = float(mu_chain_post_burnin.var())
+    gibbs_mean = float(mu_chain_post_burnin.mean())
+    # Validate 1D posterior: post = like * prior / norm_const => integral should be 1
+    kde_posterior_integral = validate_posterior_1d(kde_posterior_pdf)
 
     out = {
-        'key': key,
-        'data': data,
-        'mle': mle,
-        'mu_chain_gibbs': mu_chain_gibbs,
-        'mu_chain_post_burnin': mu_chain_post_burnin,
-        'kde_posterior_pdf': kde_posterior_pdf,
-        'mu_grid': mu_grid,
-        'kde_pdf_values': kde_pdf_values,
-        'gibbs_mean': float(mu_chain_post_burnin.mean()),
-        'gibbs_variance': float(mu_chain_post_burnin.var()),
-        'kde_mean': float(kde_mean),
-        'kde_variance': float(kde_variance),
-        'time_gibbs': time_gibbs,
-        'time_kde': time_kde,
+        "key": key,
+        "model": model,
+        "data": data,
+        "mle": mle,
+        "mu_chain_gibbs": mu_chain_gibbs,
+        "mu_chain_post_burnin": mu_chain_post_burnin,
+        "kde_posterior_pdf": kde_posterior_pdf,
+        "gibbs_mean": gibbs_mean,
+        "gibbs_variance": gibbs_var,
+        "kde_mean": kde_mean,
+        "kde_variance": kde_var,
+        "kde_posterior_integral": kde_posterior_integral,
+        "time_gibbs": time_gibbs,
+        "time_kde": time_kde,
+        "gibbs_acceptance": gibbs_accept,
     }
+
+    # --- Full-data MH: p(theta | x) ---
+    if T_fulldata is not None:
+        params_fd = _build_params(model, n, mu_true, T_fulldata, base_params, **model_kw)
+        fulldata_mu_accept = None
+        if cache_dir and fulldata_path and _cache.is_cached(fulldata_path):
+            if verbose:
+                print(f"  [cache hit] Loading full-data chain from {fulldata_path}")
+            cached_fd = _cache.load_fulldata(fulldata_path)
+            mu_chain_fulldata = cached_fd["mu_chain"]
+            time_fulldata = 0.0
+            fulldata_mu_accept = cached_fd.get("mu_acceptance_rate")
+        else:
+            key, key_fd = random.split(key)
+            if verbose:
+                print(f"  Running full-data MH ({model}, T={T_fulldata})...")
+            t0 = time.time()
+            fd_results = mod.run_full_data_mh(key_fd, data, params_fd.copy(), verbose=verbose)
+            time_fulldata = time.time() - t0
+            mu_chain_fulldata = np.asarray(fd_results["mu_chain"])
+            fulldata_mu_accept = float(fd_results["mu_acceptance_rate"])
+            if cache_dir and fulldata_path:
+                _cache.save_fulldata(
+                    fulldata_path,
+                    mu_chain_fulldata,
+                    data,
+                    mle,
+                    mu_acceptance_rate=fulldata_mu_accept,
+                    prior_mean=prior_mean,
+                    prior_std=prior_std,
+                )
+                if verbose:
+                    print(f"  [cache save] Full-data chain saved to {fulldata_path}")
+            key = key_fd
+        burnin_fd = min(burnin, len(mu_chain_fulldata) - 10)
+        full_data_var = float(mu_chain_fulldata[burnin_fd:].var())
+        full_data_mean = float(mu_chain_fulldata[burnin_fd:].mean())
+        info_loss_ratio = (kde_var / full_data_var) if full_data_var > 0 else float("nan")
+        out["key"] = key
+        out["mu_chain_fulldata"] = mu_chain_fulldata
+        out["full_data_mean"] = full_data_mean
+        out["full_data_variance"] = full_data_var
+        out["info_loss_ratio"] = info_loss_ratio
+        out["time_fulldata"] = time_fulldata
+        if fulldata_mu_accept is not None:
+            out["fulldata_mu_acceptance_rate"] = fulldata_mu_accept
+
     return out
 
 
 def run_variance_sweep(
-    ks,
-    ms,
+    model,
+    key_or_seed,
+    ns,
     mu_true=2.0,
-    T_gibbs=50000,
-    T_kde=50000,
+    T_gibbs=5000,
+    T_kde=5000,
     base_params=None,
-    seed=0,
     burnin=1000,
     verbose=True,
     cache_dir=None,
+    **model_kw,
 ):
-    """
-    Run Gibbs vs KDE for all (k, m) combinations.
-    Returns a dict suitable for pandas DataFrame.
-    """
-    if base_params is None:
-        base_params = _default_base_params(mu_true)
-    key = random.PRNGKey(seed)
-
-    results = {
-        'k': [],
-        'm': [],
-        'gibbs_variance': [],
-        'kde_variance': [],
-        'gibbs_mean': [],
-        'kde_mean': [],
-        'mle': [],
-        'time_gibbs': [],
-        'time_kde': [],
-    }
-
-    for k in ks:
-        for m in ms:
-            if verbose:
-                print(f"\n{'='*60}")
-                print(f"Processing k={k}, m={m}")
-                print(f"{'='*60}")
-            out = run_single_comparison(
-                key,
-                m=m,
-                k=k,
-                mu_true=mu_true,
-                T_gibbs=T_gibbs,
-                T_kde=T_kde,
-                base_params=base_params,
-                burnin=burnin,
-                verbose=verbose,
-                cache_dir=cache_dir,
-                seed_hint=seed,
-            )
-            key = out['key']
-
-            results['k'].append(k)
-            results['m'].append(m)
-            results['gibbs_variance'].append(out['gibbs_variance'])
-            results['kde_variance'].append(out['kde_variance'])
-            results['gibbs_mean'].append(out['gibbs_mean'])
-            results['kde_mean'].append(out['kde_mean'])
-            results['mle'].append(out['mle'])
-            results['time_gibbs'].append(out['time_gibbs'])
-            results['time_kde'].append(out['time_kde'])
-
-            if verbose:
-                ratio = out['gibbs_variance'] / out['kde_variance']
-                print(f"  Gibbs variance: {out['gibbs_variance']:.6f}")
-                print(f"  KDE variance:   {out['kde_variance']:.6f}")
-                print(f"  Variance ratio (Gibbs/KDE): {ratio:.4f}")
-                print(f"  Time - Gibbs: {out['time_gibbs']:.2f}s, KDE: {out['time_kde']:.2f}s")
-
+    """Run run_single_comparison for each n; return list of results (e.g. for DataFrame)."""
+    key = key_or_seed if hasattr(key_or_seed, "shape") else random.PRNGKey(int(key_or_seed))
+    seed = int(key_or_seed) if not hasattr(key_or_seed, "shape") else 0
+    results = []
+    for n in ns:
+        out = run_single_comparison(
+            model, key, n,
+            mu_true=mu_true, T_gibbs=T_gibbs, T_kde=T_kde,
+            base_params=base_params, burnin=burnin, verbose=verbose,
+            cache_dir=cache_dir, seed_hint=seed, **model_kw,
+        )
+        key = out["key"]
+        results.append(out)
     return results
-
-
-def run_single_gibbs_kde(
-    k,
-    m,
-    mu_true=2.0,
-    T_gibbs=50000,
-    T_kde=50000,
-    base_params=None,
-    data_seed=42,
-    gibbs_seed=123,
-    burnin=1000,
-    cache_dir=None,
-):
-    """
-    Run Gibbs + KDE for a single (k, m) for trace/density comparison.
-    Returns dict with chain, KDE pdf, data, mle, etc.
-    """
-    if base_params is None:
-        base_params = _default_base_params(mu_true)
-    params = base_params.copy()
-    params['k'] = k
-    params['m'] = m
-    params['num_iterations_T'] = T_gibbs
-
-    # --- Cache paths ---
-    gibbs_path = None
-    kde_path = None
-    if cache_dir:
-        gibbs_path = _cache.cache_path('gibbs', k, m, T_gibbs, data_seed, cache_dir)
-        kde_path = _cache.cache_path('kde', k, m, T_kde, data_seed, cache_dir)
-
-    # --- Gibbs chain ---
-    if cache_dir and _cache.is_cached(gibbs_path):
-        print(f"  [cache hit] Loading Gibbs chain from {gibbs_path}")
-        cached = _cache.load_gibbs(gibbs_path)
-        mu_chain_gibbs = cached['mu_chain']
-        data = cached['data']
-        mle = cached['mle']
-    else:
-        key = random.PRNGKey(data_seed)
-        key, subkey = random.split(key)
-        data = random.t(subkey, df=k, shape=(m,)) + mu_true
-        mle = utils.get_mle(data, params)
-
-        key_gibbs = random.PRNGKey(gibbs_seed)
-        gibbs_results = gs_jax.run_gibbs_sampler_mle_jax(key_gibbs, mle, params.copy())
-        mu_chain_gibbs = np.array(gibbs_results['mu_chain'])
-
-        if cache_dir:
-            _cache.save_gibbs(gibbs_path, mu_chain_gibbs, data, mle)
-            print(f"  [cache save] Gibbs chain saved to {gibbs_path}")
-
-    burnin = min(burnin, len(mu_chain_gibbs) - 10)
-    mu_chain_post_burnin = mu_chain_gibbs[burnin:]
-
-    # --- KDE posterior ---
-    if k == 1.0:
-        params['kde_bw_method'] = 0.001
-
-    if cache_dir and _cache.is_cached(kde_path):
-        print(f"  [cache hit] Loading KDE samples from {kde_path}")
-        mle_samples = _cache.load_kde_samples(kde_path)
-        kde_posterior_pdf = utils.get_normalized_posterior_mle_pdf(
-            mle, params, mle_samples=mle_samples
-        )
-    else:
-        mle_samples = utils.get_benchmark_mle_samples(params, num_simulations=T_kde)
-        kde_posterior_pdf = utils.get_normalized_posterior_mle_pdf(
-            mle, params, mle_samples=mle_samples
-        )
-        if cache_dir:
-            _cache.save_kde_samples(kde_path, mle_samples)
-            print(f"  [cache save] KDE samples saved to {kde_path}")
-
-    return {
-        'data': data,
-        'mle': mle,
-        'mu_chain_gibbs': mu_chain_gibbs,
-        'mu_chain_post_burnin': mu_chain_post_burnin,
-        'kde_posterior_pdf': kde_posterior_pdf,
-        'k': k,
-        'm': m,
-        'mu_true': mu_true,
-        'burnin': burnin,
-    }

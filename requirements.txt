@@ -1,9 +1,4 @@
-numpy
-scipy
-pandas
-matplotlib
-seaborn
-tqdm
-statsmodels
-ipython
-
+jax[cpu]>=0.4.0
+numpy>=1.20
+scipy>=1.7
+tqdm>=4.60
