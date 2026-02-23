@@ -37,14 +37,15 @@ def sample_data(key, params, loc=0.0):
     return loc + jnp.log(u / (1.0 - u))
 
 
-def get_benchmark_mle_samples(params, num_simulations=10000, verbose=False):
+def get_benchmark_mle_samples(key, params, num_simulations=10000, verbose=False):
     """Samples from p(hat_theta | theta=0) for logistic."""
     n = params["n"]
     rng = np.random.default_rng(0)
     mle_samples = np.zeros(num_simulations)
+    keys = random.split(key, num_simulations)
     for i in range(num_simulations):
-        u = rng.uniform(EPS_U, 1.0 - EPS_U, size=n)
-        x = np.log(u / (1.0 - u))
+        u = random.uniform(keys[i], shape=(n,), minval=EPS_U, maxval=1.0 - EPS_U)
+        x = jnp.log(u / (1.0 - u))
         mle_samples[i] = get_mle(x, params)
         if verbose and (i + 1) % 10000 == 0:
             print(f"  Benchmark: {i+1}/{num_simulations}")

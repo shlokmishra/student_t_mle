@@ -15,7 +15,7 @@ def _prior_suffix(prior_mean, prior_std):
 
 def cache_path(prefix, model, shape_key, T, seed, cache_dir="cache", prior_mean=0.0, prior_std=10.0, include_prior=True):
     """
-    shape_key: for student (k, n), for laplace (b, n), for logistic (n,) only.
+    shape_key: for loc_student (k, n), for loc_laplace (b, n), for loc_logistic (n,) only.
     prior_mean, prior_std: used in path only if include_prior=True (Gibbs and fulldata depend on prior; KDE samples do not).
     include_prior: if False, path is prior-independent (use for KDE MLE samples only).
     """

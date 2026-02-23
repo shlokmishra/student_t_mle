@@ -6,15 +6,15 @@ import time
 import numpy as np
 import jax.random as random
 
-from models import student, laplace, logistic
+from models import loc_student, loc_laplace, loc_logistic
 from kde_ref.posterior import get_normalized_posterior_pdf, validate_posterior_1d
 from analysis import posterior_variance_from_kde
 import cache as _cache
 
 _MODELS = {
-    "student": student,
-    "laplace": laplace,
-    "logistic": logistic,
+    "loc_student": loc_student,
+    "loc_laplace": loc_laplace,
+    "loc_logistic": loc_logistic,
 }
 
 
@@ -74,7 +74,7 @@ def run_single_comparison(
       - p(theta | MLE): Gibbs chain and KDE trick
       - p(theta | x): full-data MH chain (if T_fulldata is set)
 
-    model: "student" | "laplace" | "logistic"
+    model: "loc_student" | "loc_laplace" | "loc_logistic"
     n: sample size (number of observations).
     model_kw: for student pass k=...; for laplace pass b=...; for logistic nothing extra.
     T_fulldata: if set, run (or load) MH on p(theta|x) and add full_data_variance, info_loss_ratio.

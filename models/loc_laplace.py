@@ -28,19 +28,19 @@ def sample_data(key, params, loc=0.0):
     return jnp.where(u < 0.5, left, right)
 
 
-def get_benchmark_mle_samples(params, num_simulations=10000, verbose=False):
+def get_benchmark_mle_samples(key, params, num_simulations=10000, verbose=False):
     """Samples from p(hat_theta | theta=0): median of Laplace(0, b) samples."""
     b = params.get("b", 1.0)
     n = params["n"]
     rng = np.random.default_rng(0)
     mle_samples = np.zeros(num_simulations)
+    keys = random.split(key, num_simulations)
     for i in range(num_simulations):
-        u = rng.uniform(0.0, 1.0, size=n)
-        u = np.clip(u, EPS_U, 1.0 - EPS_U)
-        left = 0.0 + b * np.log(2.0 * u)
-        right = 0.0 - b * np.log(2.0 * (1.0 - u))
-        x = np.where(u < 0.5, left, right)
-        mle_samples[i] = np.median(x)
+        u = random.uniform(keys[i], shape=(n,), minval=EPS_U, maxval=1.0 - EPS_U)
+        left = 0.0 + b * jnp.log(2.0 * u)
+        right = 0.0 - b * jnp.log(2.0 * (1.0 - u))
+        x = jnp.where(u < 0.5, left, right)
+        mle_samples[i] = jnp.median(x)
         if verbose and (i + 1) % 10000 == 0:
             print(f"  Benchmark: {i+1}/{num_simulations}")
     return mle_samples

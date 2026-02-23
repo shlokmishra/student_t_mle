@@ -38,17 +38,11 @@ def sample_data(key, params, loc=0.0):
     return random.t(key, df=k, shape=(n,)) + loc
 
 
-def get_benchmark_mle_samples(params, num_simulations=10000, verbose=False):
+def get_benchmark_mle_samples(key, params, num_simulations=10000, verbose=False):
     """Samples from p(hat_theta | theta=0)."""
     k, n = params["k"], params["n"]
-    all_data = stats.t.rvs(df=k, loc=0, scale=1, size=(num_simulations, n))
-    mle_samples = np.zeros(num_simulations)
-    for i in range(num_simulations):
-        mle_samples[i] = get_mle(all_data[i], params)
-        if verbose and (i + 1) % 10000 == 0:
-            print(f"  Benchmark: {i+1}/{num_simulations}")
-    return mle_samples
-
+    all_data = np.array(random.t(key, df=k, shape=(num_simulations, n)))
+    return np.array([get_mle(data, params) for data in all_data])
 
 # --- JAX Gibbs (z = psi(y), pairwise updates) ---
 

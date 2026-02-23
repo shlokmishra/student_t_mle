@@ -23,11 +23,3 @@ See [ARCHITECTURE.md](ARCHITECTURE.md).
 ```bash
 pip install -r requirements.txt
 ```
-
-## Run
-
-```bash
-python run_compare.py --model student --k 2 --n 20
-```
-
-(Exact CLI to be defined.)
