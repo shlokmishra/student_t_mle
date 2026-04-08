@@ -207,23 +207,9 @@ class _StudentAbramsonKDE:
 
         return np.log(np.maximum(np.exp(out), self.eps))
 
-# ---------------------------------------------------------------------
-# Main function (extended)
-# ---------------------------------------------------------------------
-
-def get_normalized_posterior_pdf(
-    mu_star,
-    params,
-    mle_samples,
-    verbose=False,
-    use_grid=True,
-    n_grid=4000,
-):
+def build_likelihood_kde_backend(mle_samples, params, bw_method=None, verbose=False):
     """
-    Return a callable for the normalized posterior density p(mu | hat_mu = mu_star).
-
-    Likelihood proxy: p(hat_mu=mu_star | mu) ≈ f0(mu_star - mu),
-    where f0 is KDE fit once to MLE samples generated under mu=0.
+    Build the likelihood KDE backend used for the MLE sampling distribution.
 
     bw_method options:
       - "scott" / "silverman" / float: scipy.stats.gaussian_kde on raw MLE samples
@@ -231,11 +217,8 @@ def get_normalized_posterior_pdf(
       - "SJ_transform": asinh-transform + Sheather-Jones KDE on transformed scale (heavy-tail friendly)
     """
     mles = np.asarray(mle_samples)
-    prior_mean = params["prior_mean"]
-    prior_std = params["prior_std"]
-    bw_method = params.get("kde_bw_method", "scott")
+    bw_method = params.get("kde_bw_method", "scott") if bw_method is None else bw_method
 
-    # Build likelihood KDE backend
     if isinstance(bw_method, str) and bw_method.lower() == "t_abram":
         nu = params.get("t_nu", 3)
         pilot_nu = params.get("t_pilot_nu", 5)
@@ -261,6 +244,31 @@ def get_normalized_posterior_pdf(
         if verbose:
             print("Fitting Gaussian KDE on MLE samples using bw_method =", bw_method)
         kde_like = _GaussianKDEWrapper(mles, bw_method=bw_method)
+    return kde_like
+
+
+# ---------------------------------------------------------------------
+# Main function (extended)
+# ---------------------------------------------------------------------
+
+def get_normalized_posterior_pdf(
+    mu_star,
+    params,
+    mle_samples,
+    verbose=False,
+    use_grid=True,
+    n_grid=4000,
+):
+    """
+    Return a callable for the normalized posterior density p(mu | hat_mu = mu_star).
+
+    Likelihood proxy: p(hat_mu=mu_star | mu) ≈ f0(mu_star - mu),
+    where f0 is KDE fit once to MLE samples generated under mu=0.
+    """
+    mles = np.asarray(mle_samples)
+    prior_mean = params["prior_mean"]
+    prior_std = params["prior_std"]
+    kde_like = build_likelihood_kde_backend(mles, params, verbose=verbose)
 
     def log_unnorm(mu):
         mu_a = np.atleast_1d(mu)

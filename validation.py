@@ -6,9 +6,9 @@ import time
 import numpy as np
 import jax.random as random
 
-from models import loc_student, loc_laplace, loc_logistic
+from models import loc_student, loc_student_rattle, loc_laplace, loc_logistic, loc_logistic_rattle
 from kde_ref.posterior import get_normalized_posterior_pdf, validate_posterior_1d
-from analysis import posterior_variance_from_kde
+from analysis import posterior_variance_from_kde, effective_sample_size_1d, ess_per_second
 import cache as _cache
 
 _MODELS = {
@@ -36,18 +36,18 @@ def _build_params(model, n, mu_true, T_gibbs, base_params, **model_kw):
         base.update(base_params)
     base["n"] = n
     base["num_iterations_T"] = T_gibbs
-    if model == "student":
+    if model == "loc_student":
         base["k"] = model_kw.get("k", 2.0)
-    elif model == "laplace":
+    elif model == "loc_laplace":
         base["b"] = model_kw.get("b", 1.0)
     base.setdefault("kde_bw_method", "scott")
     return base
 
 
 def _shape_key(model, params):
-    if model == "student":
+    if model == "loc_student":
         return (params["k"], params["n"])
-    if model == "laplace":
+    if model == "loc_laplace":
         return (params["b"], params["n"])
     return (params["n"],)
 
@@ -58,6 +58,7 @@ def run_single_comparison(
     n,
     mu_true=2.0,
     T_gibbs=5000,
+    T_baseline=None,
     T_kde=5000,
     T_fulldata=None,
     base_params=None,
@@ -68,18 +69,18 @@ def run_single_comparison(
     **model_kw,
 ):
     """
-    Run Gibbs, KDE reference, and (optionally) full-data MH for one model and (n, ...).
+    Run Gibbs, KDE reference, and optional RATTLE / full-data MH baselines.
 
     Compares:
       - p(theta | MLE): Gibbs chain and KDE trick
+      - p(theta | MLE): model-specific RATTLE baseline if T_baseline is set and implemented
       - p(theta | x): full-data MH chain (if T_fulldata is set)
 
     model: "loc_student" | "loc_laplace" | "loc_logistic"
     n: sample size (number of observations).
     model_kw: for student pass k=...; for laplace pass b=...; for logistic nothing extra.
     T_fulldata: if set, run (or load) MH on p(theta|x) and add full_data_variance, info_loss_ratio.
-    Returns dict with mu_chain_gibbs, mu_chain_post_burnin, kde_posterior_pdf, gibbs_variance,
-    kde_variance, and if T_fulldata: mu_chain_fulldata, full_data_variance, info_loss_ratio.
+    Returns dict with Gibbs / KDE summaries, and optional RATTLE / full-data outputs.
     """
     if model not in _MODELS:
         raise ValueError(f"Unknown model: {model}. Use one of {list(_MODELS)}")
@@ -152,6 +153,7 @@ def run_single_comparison(
 
     burnin = min(burnin, len(mu_chain_gibbs) - 10)
     mu_chain_post_burnin = mu_chain_gibbs[burnin:]
+    gibbs_ess, gibbs_ess_sec = ess_per_second(mu_chain_post_burnin, time_gibbs)
 
     # --- KDE posterior ---
     kde_params = params.copy()
@@ -167,8 +169,9 @@ def run_single_comparison(
     else:
         if verbose:
             print(f"  Computing KDE posterior ({model}, {T_kde} sims)...")
+        key, key_kde = random.split(key)
         t0 = time.time()
-        mle_samples = mod.get_benchmark_mle_samples(kde_params, num_simulations=T_kde, verbose=False)
+        mle_samples = mod.get_benchmark_mle_samples(key_kde, kde_params, num_simulations=T_kde, verbose=False)
         kde_posterior_pdf = get_normalized_posterior_pdf(mle, kde_params, mle_samples, verbose=verbose)
         time_kde = time.time() - t0
         if cache_dir and kde_path:
@@ -192,6 +195,8 @@ def run_single_comparison(
         "kde_posterior_pdf": kde_posterior_pdf,
         "gibbs_mean": gibbs_mean,
         "gibbs_variance": gibbs_var,
+        "gibbs_ess": gibbs_ess,
+        "gibbs_ess_per_sec": gibbs_ess_sec,
         "kde_mean": kde_mean,
         "kde_variance": kde_var,
         "kde_posterior_integral": kde_posterior_integral,
@@ -199,6 +204,42 @@ def run_single_comparison(
         "time_kde": time_kde,
         "gibbs_acceptance": gibbs_accept,
     }
+
+    # --- Constrained-HMC / RATTLE baseline ---
+    if T_baseline is not None:
+        if model == "loc_logistic":
+            rattle_mod = loc_logistic_rattle
+            label = "logistic"
+        elif model == "loc_student":
+            rattle_mod = loc_student_rattle
+            label = "student"
+        else:
+            raise ValueError("T_baseline is currently only supported for model='loc_logistic' or model='loc_student'.")
+
+        baseline_params = _build_params(model, n, mu_true, T_baseline, base_params, **model_kw)
+        key, key_rattle = random.split(key)
+        if verbose:
+            print(f"  Running {label} RATTLE baseline (T={T_baseline})...")
+        t0 = time.time()
+        rattle_results = rattle_mod.run_rattle(key_rattle, float(mle), baseline_params.copy(), verbose=verbose)
+        time_rattle = time.time() - t0
+        mu_chain_rattle = np.asarray(rattle_results["mu_chain"])
+        burnin_rattle = min(burnin, len(mu_chain_rattle) - 10)
+        mu_chain_rattle_post = mu_chain_rattle[burnin_rattle:]
+        rattle_ess, rattle_ess_sec = ess_per_second(mu_chain_rattle_post, time_rattle)
+
+        out["mu_chain_rattle"] = mu_chain_rattle
+        out["mu_chain_rattle_post_burnin"] = mu_chain_rattle_post
+        out["rattle_mean"] = float(mu_chain_rattle_post.mean())
+        out["rattle_variance"] = float(mu_chain_rattle_post.var())
+        out["rattle_ess"] = rattle_ess
+        out["rattle_ess_per_sec"] = rattle_ess_sec
+        out["time_rattle"] = time_rattle
+        out["rattle_acceptance"] = {
+            "mu": float(rattle_results["mu_acceptance_rate"]),
+            "x": float(rattle_results["x_acceptance_rate"]),
+        }
+        out["rattle_projection_diagnostics"] = dict(rattle_results["projection_diagnostics"])
 
     # --- Full-data MH: p(theta | x) ---
     if T_fulldata is not None:
@@ -234,13 +275,17 @@ def run_single_comparison(
                     print(f"  [cache save] Full-data chain saved to {fulldata_path}")
             key = key_fd
         burnin_fd = min(burnin, len(mu_chain_fulldata) - 10)
-        full_data_var = float(mu_chain_fulldata[burnin_fd:].var())
-        full_data_mean = float(mu_chain_fulldata[burnin_fd:].mean())
+        mu_chain_fulldata_post = mu_chain_fulldata[burnin_fd:]
+        full_data_var = float(mu_chain_fulldata_post.var())
+        full_data_mean = float(mu_chain_fulldata_post.mean())
+        fulldata_ess, fulldata_ess_sec = ess_per_second(mu_chain_fulldata_post, time_fulldata)
         info_loss_ratio = (kde_var / full_data_var) if full_data_var > 0 else float("nan")
         out["key"] = key
         out["mu_chain_fulldata"] = mu_chain_fulldata
         out["full_data_mean"] = full_data_mean
         out["full_data_variance"] = full_data_var
+        out["fulldata_ess"] = fulldata_ess
+        out["fulldata_ess_per_sec"] = fulldata_ess_sec
         out["info_loss_ratio"] = info_loss_ratio
         out["time_fulldata"] = time_fulldata
         if fulldata_mu_accept is not None:
