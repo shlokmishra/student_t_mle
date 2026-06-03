@@ -174,7 +174,17 @@ def coerce_cost_columns(df: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
-def apply_filters(df: pd.DataFrame, model_filter: str, method_filter: str, n_filter: str, k_filter: str, seed_filter: int) -> pd.DataFrame:
+def available_seed_options(*frames: pd.DataFrame) -> list[str]:
+    seeds: set[int] = set()
+    for frame in frames:
+        if frame.empty or "seed" not in frame.columns:
+            continue
+        values = pd.to_numeric(frame["seed"], errors="coerce").dropna().astype(int)
+        seeds.update(values.tolist())
+    return ["all"] + [str(seed) for seed in sorted(seeds)]
+
+
+def apply_filters(df: pd.DataFrame, model_filter: str, method_filter: str, n_filter: str, k_filter: str, seed_filter: str) -> pd.DataFrame:
     if df.empty:
         return df
     out = df.copy()
@@ -186,7 +196,7 @@ def apply_filters(df: pd.DataFrame, model_filter: str, method_filter: str, n_fil
         out = out[out["n"].astype(int).eq(int(n_filter))]
     if k_filter != "all" and "k" in out.columns:
         out = out[np.isclose(out["k"].astype(float), float(k_filter))]
-    if "seed" in out.columns:
+    if seed_filter != "all" and "seed" in out.columns:
         out = out[out["seed"].astype(int).eq(int(seed_filter))]
     return out.reset_index(drop=True)
 
@@ -617,15 +627,15 @@ if use_dashboard_cache:
         method_filter = st.selectbox("method", ["both", "gibbs", "rattle"], index=0)
         n_filter = st.selectbox("n", ["all", "10", "20", "50"], index=0)
         k_filter = st.selectbox("k", ["all", "1.0", "2.0", "3.0"], index=0)
-        seed_filter = st.number_input("seed", min_value=0, value=0, step=1)
+        seed_filter = st.selectbox("seed", available_seed_options(ledger, normalized, summaries, chains), index=0)
         show_raw = st.checkbox("show raw counters", value=False)
         show_normalized = st.checkbox("show normalized counters", value=True)
 
-    ledger_f = apply_filters(ledger, model_filter, method_filter, n_filter, k_filter, int(seed_filter))
-    normalized_f = apply_filters(normalized, model_filter, method_filter, n_filter, k_filter, int(seed_filter))
-    summaries_f = apply_filters(summaries, model_filter, method_filter, n_filter, k_filter, int(seed_filter))
-    chains_f = apply_filters(chains, model_filter, method_filter, n_filter, k_filter, int(seed_filter))
-    suspicious_f = apply_filters(suspicious, model_filter, method_filter, n_filter, k_filter, int(seed_filter)) if not suspicious.empty else suspicious
+    ledger_f = apply_filters(ledger, model_filter, method_filter, n_filter, k_filter, str(seed_filter))
+    normalized_f = apply_filters(normalized, model_filter, method_filter, n_filter, k_filter, str(seed_filter))
+    summaries_f = apply_filters(summaries, model_filter, method_filter, n_filter, k_filter, str(seed_filter))
+    chains_f = apply_filters(chains, model_filter, method_filter, n_filter, k_filter, str(seed_filter))
+    suspicious_f = apply_filters(suspicious, model_filter, method_filter, n_filter, k_filter, str(seed_filter)) if not suspicious.empty else suspicious
     headline_f = headline_cost_table(ledger_f, normalized_f)
 
     st.subheader("Cost Conclusions")
@@ -694,7 +704,7 @@ with st.sidebar:
     method_filter = st.selectbox("method", ["both", "gibbs", "rattle"], index=0)
     n_filter = st.selectbox("n", ["all", "10", "20", "50"], index=0)
     k_filter = st.selectbox("k", ["all", "1.0", "2.0", "3.0"], index=0)
-    seed_filter = st.number_input("seed", min_value=0, value=0, step=1)
+    seed_filter = st.selectbox("seed", ["all", "0", "123", "456", "789"], index=0)
     show_raw = st.checkbox("show raw counters", value=False)
     show_normalized = st.checkbox("show normalized counters", value=True)
     st.header("Reference Overlay")
@@ -738,11 +748,11 @@ if missing:
 if "smoke" in smoke_status(ledger, chains):
     st.warning("Smoke run only. Do not interpret posterior accuracy or cost scientifically.")
 
-ledger_f = apply_filters(ledger, model_filter, method_filter, n_filter, k_filter, int(seed_filter))
-summaries_f = apply_filters(summaries, model_filter, method_filter, n_filter, k_filter, int(seed_filter))
-diagnostics_f = apply_filters(diagnostics, model_filter, method_filter, n_filter, k_filter, int(seed_filter))
-chains_f = apply_filters(chains, model_filter, method_filter, n_filter, k_filter, int(seed_filter))
-suspicious_f = apply_filters(suspicious, model_filter, method_filter, n_filter, k_filter, int(seed_filter)) if not suspicious.empty else suspicious
+ledger_f = apply_filters(ledger, model_filter, method_filter, n_filter, k_filter, str(seed_filter))
+summaries_f = apply_filters(summaries, model_filter, method_filter, n_filter, k_filter, str(seed_filter))
+diagnostics_f = apply_filters(diagnostics, model_filter, method_filter, n_filter, k_filter, str(seed_filter))
+chains_f = apply_filters(chains, model_filter, method_filter, n_filter, k_filter, str(seed_filter))
+suspicious_f = apply_filters(suspicious, model_filter, method_filter, n_filter, k_filter, str(seed_filter)) if not suspicious.empty else suspicious
 normalized = coerce_cost_columns(normalized_cost_table(ledger_f))
 headline = headline_cost_table(ledger_f, normalized)
 

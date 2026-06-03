@@ -14,7 +14,7 @@ set -euo pipefail
 PYTHON_MODULE="${PYTHON_MODULE:-}"
 NUM_ITERATIONS="${NUM_ITERATIONS:-100000}"
 BURN_IN="${BURN_IN:-20000}"
-SEED="${SEED:-0}"
+SEEDS="${SEEDS:-${SEED:-0}}"
 N_VALUES="${N_VALUES:-10,20,50}"
 K_VALUES="${K_VALUES:-1,2,3}"
 OUT_DIR="${OUT_DIR:-results/cost_audit}"
@@ -47,6 +47,7 @@ mkdir -p logs "${OUT_DIR}" "${TASK_DIR}"
 
 IFS=',' read -r -a n_array <<< "${N_VALUES}"
 IFS=',' read -r -a k_array <<< "${K_VALUES}"
+IFS=',' read -r -a seed_array <<< "${SEEDS}"
 
 run_limited() {
   while [ "$(jobs -pr | wc -l | tr -d ' ')" -ge "${MAX_PARALLEL}" ]; do
@@ -59,44 +60,46 @@ task_index=0
 for model in student_t logistic laplace; do
   for method in gibbs rattle; do
     for n in "${n_array[@]}"; do
-      if [ "${model}" = "student_t" ]; then
-        for k in "${k_array[@]}"; do
+      for seed in "${seed_array[@]}"; do
+        if [ "${model}" = "student_t" ]; then
+          for k in "${k_array[@]}"; do
+            task_index=$((task_index + 1))
+            part_dir="${TASK_DIR}/part_$(printf '%04d' "${task_index}")_${model}_${method}_k${k}_n${n}_seed${seed}"
+            echo "submit cost task ${task_index}: model=${model} method=${method} k=${k} n=${n} seed=${seed}"
+            run_limited python scripts/run_cost_audit.py \
+              --models "${model}" \
+              --methods "${method}" \
+              --k-values "${k}" \
+              --n-values "${n}" \
+              --mu-star 0 \
+              --num-iterations "${NUM_ITERATIONS}" \
+              --burn-in "${BURN_IN}" \
+              --seed "${seed}" \
+              --out "${part_dir}" \
+              --run-status "${RUN_STATUS}" \
+              --save-latent-diagnostics \
+              --latent-diagnostic-thin "${LATENT_DIAGNOSTIC_THIN}" \
+              --latent-diagnostic-max-rows "${LATENT_DIAGNOSTIC_MAX_ROWS}"
+          done
+        else
           task_index=$((task_index + 1))
-          part_dir="${TASK_DIR}/part_$(printf '%04d' "${task_index}")_${model}_${method}_k${k}_n${n}"
-          echo "submit cost task ${task_index}: model=${model} method=${method} k=${k} n=${n}"
+          part_dir="${TASK_DIR}/part_$(printf '%04d' "${task_index}")_${model}_${method}_n${n}_seed${seed}"
+          echo "submit cost task ${task_index}: model=${model} method=${method} n=${n} seed=${seed}"
           run_limited python scripts/run_cost_audit.py \
             --models "${model}" \
             --methods "${method}" \
-            --k-values "${k}" \
             --n-values "${n}" \
             --mu-star 0 \
             --num-iterations "${NUM_ITERATIONS}" \
             --burn-in "${BURN_IN}" \
-            --seed "${SEED}" \
+            --seed "${seed}" \
             --out "${part_dir}" \
             --run-status "${RUN_STATUS}" \
             --save-latent-diagnostics \
             --latent-diagnostic-thin "${LATENT_DIAGNOSTIC_THIN}" \
             --latent-diagnostic-max-rows "${LATENT_DIAGNOSTIC_MAX_ROWS}"
-        done
-      else
-        task_index=$((task_index + 1))
-        part_dir="${TASK_DIR}/part_$(printf '%04d' "${task_index}")_${model}_${method}_n${n}"
-        echo "submit cost task ${task_index}: model=${model} method=${method} n=${n}"
-        run_limited python scripts/run_cost_audit.py \
-          --models "${model}" \
-          --methods "${method}" \
-          --n-values "${n}" \
-          --mu-star 0 \
-          --num-iterations "${NUM_ITERATIONS}" \
-          --burn-in "${BURN_IN}" \
-          --seed "${SEED}" \
-          --out "${part_dir}" \
-          --run-status "${RUN_STATUS}" \
-          --save-latent-diagnostics \
-          --latent-diagnostic-thin "${LATENT_DIAGNOSTIC_THIN}" \
-          --latent-diagnostic-max-rows "${LATENT_DIAGNOSTIC_MAX_ROWS}"
-      fi
+        fi
+      done
     done
   done
 done
