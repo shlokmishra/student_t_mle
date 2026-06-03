@@ -282,6 +282,8 @@ def method_label(value: str) -> str:
 
 def display_backend_label(row: pd.Series) -> str:
     backend = str(row.get("backend", ""))
+    if backend == "median_interval":
+        return "median interval reference"
     if backend == "t_abram" and bool(row.get("density_sample_capped", False)):
         b_used = row.get("B_used", row.get("density_sample_size", np.nan))
         if pd.notna(b_used):
@@ -897,9 +899,16 @@ if use_dashboard_cache:
             key="cached_sampler_seed",
         )
         st.caption("Reference seeds affect raw/KDE curves; sampler seeds affect Gibbs/RATTLE curves.")
-        show_scott_cached = st.checkbox("KDE scott", value=True, key="cached_scott")
-        show_sj_cached = st.checkbox("KDE SJ_transform", value=True, key="cached_sj")
-        show_tabram_cached = st.checkbox("KDE t_abram, capped diagnostic", value=False, key="cached_tabram")
+        laplace_selected = model_choice_cached == "laplace"
+        show_scott_cached = st.checkbox("KDE scott", value=not laplace_selected, disabled=laplace_selected, key="cached_scott")
+        show_sj_cached = st.checkbox("KDE SJ_transform", value=not laplace_selected, disabled=laplace_selected, key="cached_sj")
+        show_tabram_cached = st.checkbox("KDE t_abram, capped diagnostic", value=False, disabled=laplace_selected, key="cached_tabram")
+        show_laplace_interval_cached = st.checkbox(
+            "Laplace median-interval reference",
+            value=laplace_selected,
+            disabled=not laplace_selected,
+            key="cached_laplace_interval",
+        )
         show_gibbs_cached = st.checkbox("Gibbs", value=True, key="cached_gibbs")
         show_rattle_cached = st.checkbox("RATTLE", value=model_choice_cached != "laplace", disabled=model_choice_cached == "laplace", key="cached_rattle")
         cached_raw_marker_mode = st.selectbox(
@@ -925,6 +934,8 @@ if use_dashboard_cache:
         selected_backends_cached.append("SJ_transform")
     if show_tabram_cached:
         selected_backends_cached.append("t_abram")
+    if model_choice_cached == "laplace":
+        selected_backends_cached = ["median_interval"] if show_laplace_interval_cached else []
     sampler_methods_cached = []
     if show_gibbs_cached:
         sampler_methods_cached.append("gibbs")

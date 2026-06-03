@@ -100,6 +100,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--grid-size", type=int, default=2500)
     parser.add_argument("--out-csv", type=Path, default=OUT_CSV)
     parser.add_argument("--density-out-csv", type=Path, default=None)
+    parser.add_argument(
+        "--include-laplace-np-median-reference",
+        action="store_true",
+        help="Also emit deterministic np.median Laplace raw/KDE rows as a separate non-Gibbs-comparable convention.",
+    )
     parser.add_argument("--overwrite", action="store_true")
     return parser.parse_args()
 
@@ -156,15 +161,32 @@ def weighted_grid_summary(mu_grid: np.ndarray, weights: np.ndarray) -> dict:
     }
 
 
-def laplace_interval_reference(lower: np.ndarray, upper: np.ndarray, mu_star: float, prior_mean: float, prior_std: float, grid_size: int) -> dict:
+def laplace_interval_reference_and_density(
+    lower: np.ndarray,
+    upper: np.ndarray,
+    mu_star: float,
+    prior_mean: float,
+    prior_std: float,
+    grid_size: int,
+) -> tuple[dict, np.ndarray, np.ndarray, np.ndarray]:
     lo = float(mu_star - np.quantile(upper, 0.995) - 4.0 * prior_std)
     hi = float(mu_star - np.quantile(lower, 0.005) + 4.0 * prior_std)
     mu_grid = np.linspace(lo, hi, int(grid_size))
     z_grid = float(mu_star) - mu_grid
     likelihood = np.array([np.mean((lower <= z) & (z <= upper)) for z in z_grid], dtype=float)
     prior = stats.norm.pdf(mu_grid, loc=float(prior_mean), scale=float(prior_std))
-    out = weighted_grid_summary(mu_grid, prior * likelihood)
+    weights = prior * likelihood
+    out = weighted_grid_summary(mu_grid, weights)
     out["weighted_ess"] = np.nan
+    integral = float(out["marginal_likelihood_estimate"])
+    density = weights / integral if integral > 0 and np.isfinite(integral) else np.full_like(mu_grid, np.nan, dtype=float)
+    cdf = density_cdf(mu_grid, density, 1.0)
+    out["density_integral"] = float(np.trapezoid(density, mu_grid)) if np.isfinite(density).any() else np.nan
+    return out, mu_grid, density, cdf
+
+
+def laplace_interval_reference(lower: np.ndarray, upper: np.ndarray, mu_star: float, prior_mean: float, prior_std: float, grid_size: int) -> dict:
+    out, _, _, _ = laplace_interval_reference_and_density(lower, upper, mu_star, prior_mean, prior_std, grid_size)
     return out
 
 
@@ -248,7 +270,17 @@ def append_density_rows(path: Path, rows: Iterable[dict]) -> None:
             writer.writerow({key: row.get(key, "") for key in DENSITY_FIELDNAMES})
 
 
-def density_rows(base: dict, backend: str, summary: dict, mu_grid: np.ndarray, density: np.ndarray, cdf: np.ndarray) -> list[dict]:
+def density_rows(
+    base: dict,
+    backend: str,
+    summary: dict,
+    mu_grid: np.ndarray,
+    density: np.ndarray,
+    cdf: np.ndarray,
+    *,
+    method: str = "KDE smoothed density",
+    estimator_type: str = "kde_grid",
+) -> list[dict]:
     plot_grid_lo = float(mu_grid[0]) if mu_grid.size else np.nan
     plot_grid_hi = float(mu_grid[-1]) if mu_grid.size else np.nan
     density_integral = summary.get("density_integral", summary["marginal_likelihood_estimate"])
@@ -258,8 +290,8 @@ def density_rows(base: dict, backend: str, summary: dict, mu_grid: np.ndarray, d
         rows.append(
             {
                 **base,
-                "method": "KDE smoothed density",
-                "estimator_type": "kde_grid",
+                "method": method,
+                "estimator_type": estimator_type,
                 "backend": backend,
                 "mu": float(mu),
                 "density": float(dens),
@@ -285,8 +317,49 @@ def emit_rows(args: argparse.Namespace) -> None:
             for n in args.n_values:
                 for b in args.B_values:
                     for seed in args.seeds:
+                        if model == "laplace":
+                            lower, upper = simulate_laplace_order_stats(n, b, seed, args.laplace_b)
+                            interval, mu_grid, density, cdf = laplace_interval_reference_and_density(
+                                lower,
+                                upper,
+                                args.mu_star,
+                                args.prior_mean,
+                                args.prior_std,
+                                args.grid_size,
+                            )
+                            interval_base = row_base(model, k, n, args.mu_star, b, seed, LAPLACE_MEDIAN_INTERVAL_TARGET)
+                            append_row(
+                                args.out_csv,
+                                {
+                                    **interval_base,
+                                    "method": "raw MC interval reference",
+                                    "estimator_type": "raw_mc_interval_reference",
+                                    "backend": "median_interval",
+                                    **interval,
+                                    "source_file": "computed",
+                                },
+                            )
+                            if args.density_out_csv is not None:
+                                append_density_rows(
+                                    args.density_out_csv,
+                                    density_rows(
+                                        interval_base,
+                                        "median_interval",
+                                        interval,
+                                        mu_grid,
+                                        density,
+                                        cdf,
+                                        method="raw MC interval reference",
+                                        estimator_type="raw_mc_interval_reference",
+                                    ),
+                                )
+                            if not args.include_laplace_np_median_reference:
+                                print(f"completed model={model} n={n} k={k} B={b} seed={seed}")
+                                continue
+                            target = LAPLACE_NP_MEDIAN_TARGET
+                        else:
+                            target = None
                         z_samples = simulate_mle_errors(model, k, n, b, seed, args.laplace_b)
-                        target = LAPLACE_NP_MEDIAN_TARGET if model == "laplace" else None
                         raw = raw_weighted_posterior_moments(z_samples, args.mu_star, args.prior_mean, args.prior_std)
                         append_row(
                             args.out_csv,
@@ -333,20 +406,6 @@ def emit_rows(args: argparse.Namespace) -> None:
                             )
                             if args.density_out_csv is not None:
                                 append_density_rows(args.density_out_csv, density_rows(base, backend, kde, mu_grid, density, cdf))
-                        if model == "laplace":
-                            lower, upper = simulate_laplace_order_stats(n, b, seed, args.laplace_b)
-                            interval = laplace_interval_reference(lower, upper, args.mu_star, args.prior_mean, args.prior_std, args.grid_size)
-                            append_row(
-                                args.out_csv,
-                                {
-                                    **row_base(model, k, n, args.mu_star, b, seed, LAPLACE_MEDIAN_INTERVAL_TARGET),
-                                    "method": "raw MC interval reference",
-                                    "estimator_type": "raw_mc_interval_reference",
-                                    "backend": "none",
-                                    **interval,
-                                    "source_file": "computed",
-                                },
-                            )
                         print(f"completed model={model} n={n} k={k} B={b} seed={seed}")
 
 
