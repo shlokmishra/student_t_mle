@@ -10,12 +10,24 @@ set -euo pipefail
 #
 # Optional overrides:
 #   BANDWIDTHS=scott,SJ_transform,t_abram NUM_ITERATIONS=100000 bash scripts/grace_submit_all.sh
+#
+# By default this keeps total requested cores at 8 by running the two big jobs
+# sequentially. If your allocation allows 16 cores, set:
+#   CONCURRENT_BIG_JOBS=1 bash scripts/grace_submit_all.sh
 
 mkdir -p logs
 
+echo "Using up to ${MAX_PARALLEL:-8} parallel workers per job."
+echo "Each worker pins BLAS/OpenMP thread counts to 1 to avoid oversubscription."
+
 ref_job="$(sbatch --parsable scripts/grace_reference_audit.sbatch)"
-cost_job="$(sbatch --parsable scripts/grace_cost_audit.sbatch)"
-post_job="$(sbatch --parsable --dependency=afterok:${ref_job}:${cost_job} scripts/grace_postprocess_dashboard.sbatch)"
+if [ "${CONCURRENT_BIG_JOBS:-0}" = "1" ]; then
+  cost_job="$(sbatch --parsable scripts/grace_cost_audit.sbatch)"
+  post_job="$(sbatch --parsable --dependency=afterok:${ref_job}:${cost_job} scripts/grace_postprocess_dashboard.sbatch)"
+else
+  cost_job="$(sbatch --parsable --dependency=afterok:${ref_job} scripts/grace_cost_audit.sbatch)"
+  post_job="$(sbatch --parsable --dependency=afterok:${cost_job} scripts/grace_postprocess_dashboard.sbatch)"
+fi
 
 echo "Submitted reference audit job: ${ref_job}"
 echo "Submitted cost audit job: ${cost_job}"
@@ -26,4 +38,3 @@ echo "  squeue -u \$USER"
 echo "  tail -f logs/ref_all_${ref_job}.out"
 echo "  tail -f logs/cost_all_${cost_job}.out"
 echo "  tail -f logs/postproc_${post_job}.out"
-
