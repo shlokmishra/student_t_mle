@@ -71,7 +71,9 @@ def _silverman_bandwidth(x):
 
 class _GaussianKDEWrapper:
     def __init__(self, samples, bw_method):
-        self.kde = stats.gaussian_kde(np.asarray(samples), bw_method=bw_method)
+        self.samples = np.asarray(samples)
+        self.kde = stats.gaussian_kde(self.samples, bw_method=bw_method)
+        self.bandwidth = float(self.kde.factor * np.std(self.samples, ddof=1))
 
     def logpdf(self, x):
         x = np.asarray(x)
@@ -100,10 +102,12 @@ class _SJAsinhKDE:
             self._use_statsmodels = True
             self.support = np.asarray(kde.support)
             self.density = np.asarray(kde.density)
+            self.bandwidth = float(kde.bw)
         except Exception:
             # Fallback: Gaussian KDE on y
             h = _silverman_bandwidth(y)
             self._fallback_kde = stats.gaussian_kde(y, bw_method=h / (np.std(y, ddof=1) + 1e-12))
+            self.bandwidth = float(h)
 
     def logpdf(self, m):
         m = np.asarray(m)
@@ -155,6 +159,7 @@ class _StudentAbramsonKDE:
         self.h0 = float(h0)
         self.pilot_h = float(pilot_h)
         self.pilot_nu = float(pilot_nu)
+        self.bandwidth = self.h0
 
         # Precompute pilot density at sample points: f_pilot(x_i)
         # Using fixed Student kernel with bandwidth pilot_h.
@@ -258,6 +263,7 @@ def get_normalized_posterior_pdf(
     verbose=False,
     use_grid=True,
     n_grid=4000,
+    return_info=False,
 ):
     """
     Return a callable for the normalized posterior density p(mu | hat_mu = mu_star).
@@ -294,5 +300,15 @@ def get_normalized_posterior_pdf(
 
     def normalized_pdf(mu):
         return np.exp(log_unnorm(mu)) / integral
+
+    if return_info:
+        info = {
+            "normalization_constant": float(integral),
+            "bandwidth": float(getattr(kde_like, "bandwidth", np.nan)),
+            "bw_method": params.get("kde_bw_method", "scott"),
+            "n_grid": int(n_grid),
+            "use_grid": bool(use_grid),
+        }
+        return normalized_pdf, info
 
     return normalized_pdf

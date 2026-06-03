@@ -2,6 +2,13 @@ venv/
 cache/
 artifacts/
 __pycache__/
+*.pyc
+.pytest_cache/
 *.pdf
 .DS_Store
 .cursor/rules/
+reporting/diagnostic_outputs/kde_reference_audit/mle_sample_cache/
+results/
+data/
+reporting/diagnostic_outputs/
+models/artifacts/

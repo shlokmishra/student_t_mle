@@ -204,7 +204,7 @@ def _update_mu_mh(key, mu_current, x_current, sigma_mu, prior_loc, prior_scale, 
     return jnp.where(accept, mu_cand, mu_current), accept
 
 
-def run_gibbs(key, mu_star, params, verbose=True):
+def run_gibbs(key, mu_star, params, verbose=True, cost_ledger=None):
     """Two-step Gibbs: (1) mu | x MH, (2) x | mu, MLE=mu_star.
 
     Note: For Cauchy (k=1) with small n (< 20), instability when outliers appear
@@ -231,24 +231,51 @@ def run_gibbs(key, mu_star, params, verbose=True):
     for t in iters:
         key, key_mu, key_x = random.split(key, 3)
         x_cur = xs[t - 1]
+        if cost_ledger is not None:
+            cost_ledger.inc("iterations")
+            cost_ledger.inc("sweep_count")
+            cost_ledger.inc("mu_mh_proposals")
+            # Current/candidate log posterior for mu: two Student-t sums over n plus two prior logpdfs.
+            cost_ledger.inc("student_logpdf_evals", 2 * n)
+            cost_ledger.inc("prior_logpdf_evals", 2)
         mu_new, acc_mu = _update_mu_mh(
             key_mu, mus[t - 1], x_cur,
             params["proposal_std_mu"], params["prior_mean"], params["prior_std"], k
         )
         mus = mus.at[t].set(mu_new)
         mu_acc += int(acc_mu)
+        if cost_ledger is not None:
+            cost_ledger.inc("mu_mh_accepts", int(acc_mu))
         x_new, npairs, nz = _update_x_full(key_x, x_cur, mu_new, mu_star, k, params["proposal_std_z"])
         xs = xs.at[t, :].set(x_new)
         pair_acc += int(npairs)
         z_acc += int(nz)
+        if cost_ledger is not None:
+            attempted = n // 2
+            completed = int(npairs)
+            q_logpdf_evals = 4 * attempted
+            cost_ledger.inc("pair_updates_attempted", attempted)
+            cost_ledger.inc("pair_updates_completed", completed)
+            cost_ledger.inc("pair_rejections", attempted - completed)
+            cost_ledger.inc("constraint_evals", attempted)
+            cost_ledger.inc("pair_grid_evals", q_logpdf_evals)
+            # Each q(z) evaluates two inverse branches and two Student-t branch densities.
+            cost_ledger.inc("pair_inverse_branch_evals", 2 * q_logpdf_evals + 4 * completed)
+            cost_ledger.inc("pair_weight_evals", 4 * completed)
+            cost_ledger.inc("student_logpdf_evals", 2 * q_logpdf_evals + 4 * completed)
 
-    return {
+    result = {
         "mu_chain": mus,
         "x_chain": xs,
         "mu_acceptance_rate": mu_acc / T,
         "pair_acceptance_rate": pair_acc / total_pairs,
         "z_acceptance_rate": z_acc / total_pairs,
     }
+    if cost_ledger is not None:
+        cost_ledger.set("iterations", T)
+        cost_ledger.set("mu_mh_accepts", mu_acc)
+        cost_ledger.set("pair_updates_completed", pair_acc)
+    return result
 
 
 def run_full_data_mh(key, x, params, verbose=True):
