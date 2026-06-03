@@ -3,7 +3,7 @@
 #SBATCH --ntasks=1
 #SBATCH --time=48:00:00
 #SBATCH --cpus-per-task=8
-#SBATCH --mem=64G
+#SBATCH --mem=256G
 #SBATCH --output=logs/ref_all_%j.out
 
 set -euo pipefail

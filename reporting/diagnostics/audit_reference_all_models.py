@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from kde_ref.moments import raw_weighted_posterior_moments
+from kde_ref.moments import posterior_grid_bounds, raw_weighted_posterior_moments
 from kde_ref.posterior import get_normalized_posterior_pdf
 from models import loc_laplace, loc_logistic, loc_student
 from models.model_registry import (
@@ -49,6 +49,29 @@ FIELDNAMES = [
     "source_file",
 ]
 
+DENSITY_FIELDNAMES = [
+    "model",
+    "k",
+    "n",
+    "mu_star",
+    "method",
+    "estimator_type",
+    "backend",
+    "mu",
+    "density",
+    "cdf",
+    "marginal_likelihood_estimate",
+    "posterior_integral_check",
+    "B",
+    "seed",
+    "mle_convention",
+    "target_description",
+    "plot_grid_lo",
+    "plot_grid_hi",
+    "plot_grid_size",
+    "source_file",
+]
+
 
 def _ints(text: str) -> list[int]:
     return [int(part) for part in text.split(",") if part.strip()]
@@ -76,6 +99,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--laplace-b", type=float, default=1.0)
     parser.add_argument("--grid-size", type=int, default=2500)
     parser.add_argument("--out-csv", type=Path, default=OUT_CSV)
+    parser.add_argument("--density-out-csv", type=Path, default=None)
     parser.add_argument("--overwrite", action="store_true")
     return parser.parse_args()
 
@@ -144,7 +168,24 @@ def laplace_interval_reference(lower: np.ndarray, upper: np.ndarray, mu_star: fl
     return out
 
 
-def kde_grid_summary(z_samples: np.ndarray, model: str, k: float, n: int, mu_star: float, prior_mean: float, prior_std: float, backend: str, grid_size: int) -> dict:
+def density_cdf(mu_grid: np.ndarray, density: np.ndarray, integral: float) -> np.ndarray:
+    if integral <= 0 or not np.isfinite(integral):
+        return np.full_like(mu_grid, np.nan, dtype=float)
+    cdf = np.concatenate([[0.0], np.cumsum((density[:-1] + density[1:]) * np.diff(mu_grid) / 2.0)])
+    return np.clip(cdf / integral, 0.0, 1.0)
+
+
+def kde_grid_summary_and_density(
+    z_samples: np.ndarray,
+    model: str,
+    k: float,
+    n: int,
+    mu_star: float,
+    prior_mean: float,
+    prior_std: float,
+    backend: str,
+    grid_size: int,
+) -> tuple[dict, np.ndarray, np.ndarray, np.ndarray]:
     params = {
         "k": float(k) if np.isfinite(k) else np.nan,
         "n": int(n),
@@ -156,8 +197,19 @@ def kde_grid_summary(z_samples: np.ndarray, model: str, k: float, n: int, mu_sta
     raw = raw_weighted_posterior_moments(z_samples, mu_star, prior_mean, prior_std)
     width = max(raw["posterior_q975"] - raw["posterior_q025"], raw["posterior_sd"], 1e-3)
     mu_grid = np.linspace(raw["posterior_q025"] - width, raw["posterior_q975"] + width, int(grid_size))
-    density = np.maximum(posterior_pdf(mu_grid), 0.0)
-    out = weighted_grid_summary(mu_grid, density)
+    summary_density = np.maximum(posterior_pdf(mu_grid), 0.0)
+    out = weighted_grid_summary(mu_grid, summary_density)
+    density_lo, density_hi = posterior_grid_bounds(mu_star, prior_mean, prior_std, z_samples)
+    density_mu_grid = np.linspace(density_lo, density_hi, int(grid_size))
+    density = np.maximum(posterior_pdf(density_mu_grid), 0.0)
+    density_integral = float(np.trapezoid(density, density_mu_grid))
+    cdf = density_cdf(density_mu_grid, density, density_integral)
+    density_summary = {**out, "density_integral": density_integral}
+    return density_summary, density_mu_grid, density, cdf
+
+
+def kde_grid_summary(z_samples: np.ndarray, model: str, k: float, n: int, mu_star: float, prior_mean: float, prior_std: float, backend: str, grid_size: int) -> dict:
+    out, _, _, _ = kde_grid_summary_and_density(z_samples, model, k, n, mu_star, prior_mean, prior_std, backend, grid_size)
     return out
 
 
@@ -185,9 +237,49 @@ def append_row(path: Path, row: dict) -> None:
         writer.writerow({key: row.get(key, "") for key in FIELDNAMES})
 
 
+def append_density_rows(path: Path, rows: Iterable[dict]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    exists = path.exists()
+    with path.open("a", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=DENSITY_FIELDNAMES)
+        if not exists:
+            writer.writeheader()
+        for row in rows:
+            writer.writerow({key: row.get(key, "") for key in DENSITY_FIELDNAMES})
+
+
+def density_rows(base: dict, backend: str, summary: dict, mu_grid: np.ndarray, density: np.ndarray, cdf: np.ndarray) -> list[dict]:
+    plot_grid_lo = float(mu_grid[0]) if mu_grid.size else np.nan
+    plot_grid_hi = float(mu_grid[-1]) if mu_grid.size else np.nan
+    density_integral = summary.get("density_integral", summary["marginal_likelihood_estimate"])
+    marginal_likelihood = summary["marginal_likelihood_estimate"]
+    rows = []
+    for mu, dens, prob in zip(mu_grid, density, cdf, strict=True):
+        rows.append(
+            {
+                **base,
+                "method": "KDE smoothed density",
+                "estimator_type": "kde_grid",
+                "backend": backend,
+                "mu": float(mu),
+                "density": float(dens),
+                "cdf": float(prob),
+                "marginal_likelihood_estimate": marginal_likelihood,
+                "posterior_integral_check": density_integral,
+                "plot_grid_lo": plot_grid_lo,
+                "plot_grid_hi": plot_grid_hi,
+                "plot_grid_size": int(mu_grid.size),
+                "source_file": "computed",
+            }
+        )
+    return rows
+
+
 def emit_rows(args: argparse.Namespace) -> None:
     if args.overwrite and args.out_csv.exists():
         args.out_csv.unlink()
+    if args.overwrite and args.density_out_csv is not None and args.density_out_csv.exists():
+        args.density_out_csv.unlink()
     for model in args.models:
         for k in model_k_values(model, args.k_values):
             for n in args.n_values:
@@ -215,11 +307,22 @@ def emit_rows(args: argparse.Namespace) -> None:
                             },
                         )
                         for backend in args.bandwidths:
-                            kde = kde_grid_summary(z_samples, model, k, n, args.mu_star, args.prior_mean, args.prior_std, backend, args.grid_size)
+                            kde, mu_grid, density, cdf = kde_grid_summary_and_density(
+                                z_samples,
+                                model,
+                                k,
+                                n,
+                                args.mu_star,
+                                args.prior_mean,
+                                args.prior_std,
+                                backend,
+                                args.grid_size,
+                            )
+                            base = row_base(model, k, n, args.mu_star, b, seed, target)
                             append_row(
                                 args.out_csv,
                                 {
-                                    **row_base(model, k, n, args.mu_star, b, seed, target),
+                                    **base,
                                     "method": "KDE smoothed density",
                                     "estimator_type": "kde_grid",
                                     "backend": backend,
@@ -228,6 +331,8 @@ def emit_rows(args: argparse.Namespace) -> None:
                                     "source_file": "computed",
                                 },
                             )
+                            if args.density_out_csv is not None:
+                                append_density_rows(args.density_out_csv, density_rows(base, backend, kde, mu_grid, density, cdf))
                         if model == "laplace":
                             lower, upper = simulate_laplace_order_stats(n, b, seed, args.laplace_b)
                             interval = laplace_interval_reference(lower, upper, args.mu_star, args.prior_mean, args.prior_std, args.grid_size)
