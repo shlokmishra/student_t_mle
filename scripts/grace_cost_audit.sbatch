@@ -10,9 +10,9 @@ set -euo pipefail
 # Long Gibbs/RATTLE cost audit for Student-t, logistic, and Laplace.
 # Laplace RATTLE is intentionally not applicable and is reported as such.
 
-PYTHON_MODULE="${PYTHON_MODULE:-Python/3.11}"
-NUM_ITERATIONS="${NUM_ITERATIONS:-50000}"
-BURN_IN="${BURN_IN:-10000}"
+PYTHON_MODULE="${PYTHON_MODULE:-}"
+NUM_ITERATIONS="${NUM_ITERATIONS:-100000}"
+BURN_IN="${BURN_IN:-20000}"
 SEED="${SEED:-0}"
 N_VALUES="${N_VALUES:-10,20,50}"
 K_VALUES="${K_VALUES:-1,2,3}"
@@ -28,9 +28,11 @@ export OPENBLAS_NUM_THREADS=1
 export MKL_NUM_THREADS=1
 export NUMEXPR_NUM_THREADS=1
 
-if command -v module >/dev/null 2>&1; then
+if command -v module >/dev/null 2>&1 && [ -n "${PYTHON_MODULE}" ]; then
   module purge
-  module load "${PYTHON_MODULE}"
+  # PYTHON_MODULE may contain a prerequisite toolchain plus Python.
+  # shellcheck disable=SC2086
+  module load ${PYTHON_MODULE}
 fi
 
 if [ ! -f .venv/bin/activate ]; then

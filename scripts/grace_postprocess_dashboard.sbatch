@@ -9,13 +9,15 @@ set -euo pipefail
 
 # Build dashboard-ready summaries after the reference and cost jobs finish.
 
-PYTHON_MODULE="${PYTHON_MODULE:-Python/3.11}"
+PYTHON_MODULE="${PYTHON_MODULE:-}"
 REFERENCE_CSV="${REFERENCE_CSV:-reporting/diagnostic_outputs/model_reference_audit/reference_all_models.csv}"
 SUMMARY_DIR="${SUMMARY_DIR:-reporting/diagnostic_outputs/model_reference_audit/full_summary}"
 
-if command -v module >/dev/null 2>&1; then
+if command -v module >/dev/null 2>&1 && [ -n "${PYTHON_MODULE}" ]; then
   module purge
-  module load "${PYTHON_MODULE}"
+  # PYTHON_MODULE may contain a prerequisite toolchain plus Python.
+  # shellcheck disable=SC2086
+  module load ${PYTHON_MODULE}
 fi
 
 if [ ! -f .venv/bin/activate ]; then
@@ -33,4 +35,3 @@ python reporting/diagnostics/summarize_reference_all_models.py \
 python scripts/prepare_dashboard_cache.py
 python scripts/check_dashboard_cache.py
 python scripts/check_dashboard_data.py
-

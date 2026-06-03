@@ -9,7 +9,7 @@ set -euo pipefail
 #   bash scripts/grace_submit_all.sh
 #
 # Optional overrides:
-#   BANDWIDTHS=scott,SJ_transform,t_abram NUM_ITERATIONS=100000 bash scripts/grace_submit_all.sh
+#   PYTHON_MODULE="GCCcore/10.2.0 Python/3.8.6" bash scripts/grace_submit_all.sh
 #
 # By default this keeps total requested cores at 8 by running the two big jobs
 # sequentially. If your allocation allows 16 cores, set:
@@ -19,6 +19,8 @@ mkdir -p logs
 
 echo "Using up to ${MAX_PARALLEL:-8} parallel workers per job."
 echo "Each worker pins BLAS/OpenMP thread counts to 1 to avoid oversubscription."
+echo "Reference defaults: B=${B_VALUES:-100000}, bandwidths=${BANDWIDTHS:-scott,SJ_transform,t_abram}."
+echo "Cost defaults: NUM_ITERATIONS=${NUM_ITERATIONS:-100000}, BURN_IN=${BURN_IN:-20000}."
 
 ref_job="$(sbatch --parsable scripts/grace_reference_audit.sbatch)"
 if [ "${CONCURRENT_BIG_JOBS:-0}" = "1" ]; then

@@ -8,16 +8,15 @@
 set -euo pipefail
 
 # Full all-model reference audit for the dashboard.
-# Defaults avoid exact adaptive t_abram because it can be much slower at B=100000.
-# To request all three KDE forms:
-#   BANDWIDTHS=scott,SJ_transform,t_abram sbatch scripts/grace_reference_audit.sbatch
+# Defaults run all three KDE forms. Exact adaptive t_abram can be much slower
+# than scott/SJ_transform at B=100000.
 
-PYTHON_MODULE="${PYTHON_MODULE:-Python/3.11}"
+PYTHON_MODULE="${PYTHON_MODULE:-}"
 B_VALUES="${B_VALUES:-100000}"
 SEEDS="${SEEDS:-123,456,789}"
 N_VALUES="${N_VALUES:-10,20,50}"
 K_VALUES="${K_VALUES:-1,2,3}"
-BANDWIDTHS="${BANDWIDTHS:-scott,SJ_transform}"
+BANDWIDTHS="${BANDWIDTHS:-scott,SJ_transform,t_abram}"
 GRID_SIZE="${GRID_SIZE:-2500}"
 OUT_CSV="${OUT_CSV:-reporting/diagnostic_outputs/model_reference_audit/reference_all_models.csv}"
 MAX_PARALLEL="${MAX_PARALLEL:-${SLURM_CPUS_PER_TASK:-8}}"
@@ -28,9 +27,11 @@ export OPENBLAS_NUM_THREADS=1
 export MKL_NUM_THREADS=1
 export NUMEXPR_NUM_THREADS=1
 
-if command -v module >/dev/null 2>&1; then
+if command -v module >/dev/null 2>&1 && [ -n "${PYTHON_MODULE}" ]; then
   module purge
-  module load "${PYTHON_MODULE}"
+  # PYTHON_MODULE may contain a prerequisite toolchain plus Python.
+  # shellcheck disable=SC2086
+  module load ${PYTHON_MODULE}
 fi
 
 if [ ! -f .venv/bin/activate ]; then
