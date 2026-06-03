@@ -22,13 +22,26 @@ echo "Each worker pins BLAS/OpenMP thread counts to 1 to avoid oversubscription.
 echo "Reference defaults: B=${B_VALUES:-100000}, bandwidths=${BANDWIDTHS:-scott,SJ_transform,t_abram}."
 echo "Cost defaults: NUM_ITERATIONS=${NUM_ITERATIONS:-100000}, BURN_IN=${BURN_IN:-20000}."
 
-ref_job="$(sbatch --parsable scripts/grace_reference_audit.sbatch)"
+submit_job() {
+  local output
+  if ! output="$("$@")"; then
+    echo "Submission failed: $*" >&2
+    exit 2
+  fi
+  if [ -z "${output}" ]; then
+    echo "Submission returned an empty job id: $*" >&2
+    exit 2
+  fi
+  printf '%s\n' "${output}"
+}
+
+ref_job="$(submit_job sbatch --parsable scripts/grace_reference_audit.sbatch)"
 if [ "${CONCURRENT_BIG_JOBS:-0}" = "1" ]; then
-  cost_job="$(sbatch --parsable scripts/grace_cost_audit.sbatch)"
-  post_job="$(sbatch --parsable --dependency=afterok:${ref_job}:${cost_job} scripts/grace_postprocess_dashboard.sbatch)"
+  cost_job="$(submit_job sbatch --parsable scripts/grace_cost_audit.sbatch)"
+  post_job="$(submit_job sbatch --parsable --dependency=afterok:${ref_job}:${cost_job} scripts/grace_postprocess_dashboard.sbatch)"
 else
-  cost_job="$(sbatch --parsable --dependency=afterok:${ref_job} scripts/grace_cost_audit.sbatch)"
-  post_job="$(sbatch --parsable --dependency=afterok:${cost_job} scripts/grace_postprocess_dashboard.sbatch)"
+  cost_job="$(submit_job sbatch --parsable --dependency=afterok:${ref_job} scripts/grace_cost_audit.sbatch)"
+  post_job="$(submit_job sbatch --parsable --dependency=afterok:${cost_job} scripts/grace_postprocess_dashboard.sbatch)"
 fi
 
 echo "Submitted reference audit job: ${ref_job}"
