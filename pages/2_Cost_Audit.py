@@ -71,6 +71,73 @@ RATTLE_COLUMNS = [
     "reverse_momentum_error",
 ]
 
+IDENTITY_COLUMNS = ["model", "method", "n", "k", "mu_star", "seed", "run_status", "target_description"]
+HEADLINE_COST_COLUMNS = [
+    "model",
+    "k",
+    "n",
+    "method",
+    "ess_per_sec",
+    "wall_time_per_ess",
+    "acceptance_rate",
+    "projection_failure_rate",
+    "reverse_check_failure_rate",
+    "run_status",
+]
+NORMALIZED_DEFAULT_COLUMNS = [
+    "model",
+    "k",
+    "n",
+    "method",
+    "wall_time_per_iteration",
+    "wall_time_per_ess",
+    "constraint_evals_per_iteration",
+    "projection_evals_per_iteration",
+    "leapfrog_steps_per_iteration",
+    "reverse_check_fail_rate",
+]
+HEADLINE_EXTRA_COLUMNS = [
+    "seed",
+    "iterations",
+    "ess_mu",
+    "wall_time_sec",
+    "wall_time_per_iteration",
+    "student_logpdf_evals_per_iteration",
+    "student_grad_evals_per_iteration",
+    "newton_iters_per_iteration",
+    "pair_grid_evals_per_iteration",
+    "projection_mode",
+    "gram_correction_enabled",
+    "rattle_status",
+]
+RAW_LEDGER_FRONT_COLUMNS = [
+    "model",
+    "method",
+    "n",
+    "k",
+    "seed",
+    "iterations",
+    "ess_mu",
+    "ess_per_sec",
+    "acceptance_rate",
+    "wall_time_sec",
+    "run_status",
+    "rattle_status",
+    "projection_mode",
+    "gram_correction_enabled",
+    "student_logpdf_evals",
+    "student_grad_evals",
+    "constraint_evals",
+    "constraint_grad_evals",
+    "gram_evals",
+    "projection_evals",
+    "projection_failures",
+    "pair_grid_evals",
+    "hmc_proposals",
+    "hmc_accepts",
+    "leapfrog_steps",
+]
+
 
 @st.cache_data(show_spinner=False)
 def read_csv_if_exists(path: str) -> pd.DataFrame:
@@ -83,6 +150,27 @@ def ensure_columns(df: pd.DataFrame, columns: list[str]) -> pd.DataFrame:
     for column in columns:
         if column not in out.columns:
             out[column] = np.nan
+    return out
+
+
+def reorder_columns(df: pd.DataFrame, priority: list[str]) -> pd.DataFrame:
+    if df.empty:
+        return df
+    front = [column for column in priority if column in df.columns]
+    rest = [column for column in df.columns if column not in front]
+    return df[front + rest]
+
+
+def coerce_cost_columns(df: pd.DataFrame) -> pd.DataFrame:
+    out = df.copy()
+    aliases = {
+        "wall_time_per_ess": "cost_per_effective_sample_sec",
+        "wall_time_per_iteration": "wall_time_per_iteration_sec",
+        "reverse_check_failure_rate": "reverse_check_fail_rate",
+    }
+    for canonical, alias in aliases.items():
+        if canonical not in out.columns and alias in out.columns:
+            out[canonical] = out[alias]
     return out
 
 
@@ -143,16 +231,23 @@ def normalized_cost_table(ledger: pd.DataFrame) -> pd.DataFrame:
     out["newton_iters_per_iteration"] = (out["forward_newton_iters"] + out["reverse_newton_iters"]) / iterations
     out["leapfrog_steps_per_iteration"] = out["leapfrog_steps"] / iterations
     out["reverse_check_fail_rate"] = out["reverse_check_failures"] / reverse_attempts.replace(0, np.nan)
+    out["reverse_check_failure_rate"] = out["reverse_check_fail_rate"]
     out["projection_failure_rate"] = out["projection_failures"] / out["projection_evals"].replace(0, np.nan)
     out["pair_grid_evals_per_iteration"] = out["pair_grid_evals"] / iterations
 
     columns = [
-        "method",
         "model",
+        "method",
         "n",
         "k",
         "mu_star",
         "seed",
+        "run_status",
+        "iterations",
+        "wall_time_sec",
+        "ess_mu",
+        "ess_per_sec",
+        "acceptance_rate",
         "wall_time_per_iteration",
         "wall_time_per_ess",
         "student_logpdf_evals_per_iteration",
@@ -164,16 +259,105 @@ def normalized_cost_table(ledger: pd.DataFrame) -> pd.DataFrame:
         "newton_iters_per_iteration",
         "leapfrog_steps_per_iteration",
         "reverse_check_fail_rate",
+        "reverse_check_failure_rate",
         "projection_failure_rate",
-        "acceptance_rate",
-        "ess_mu",
-        "ess_per_sec",
         "pair_grid_evals_per_iteration",
+        "projection_mode",
+        "gram_correction_enabled",
+        "rattle_status",
+        "target_description",
     ]
     return ensure_columns(out, columns)[columns]
 
 
-def plot_metric(df: pd.DataFrame, metric: str, title: str, ylabel: str | None = None, method_filter: str = "both") -> None:
+def add_series_label(df: pd.DataFrame) -> pd.DataFrame:
+    out = df.copy()
+    labels = []
+    for row in out.itertuples(index=False):
+        model = str(getattr(row, "model", ""))
+        method = str(getattr(row, "method", ""))
+        k = getattr(row, "k", np.nan)
+        if model == "student_t" and pd.notna(k):
+            labels.append(f"Student k={float(k):g} {method}")
+        else:
+            labels.append(f"{model} {method}")
+    out["series_label"] = labels
+    return out
+
+
+def headline_cost_table(ledger: pd.DataFrame, normalized: pd.DataFrame) -> pd.DataFrame:
+    if ledger.empty and normalized.empty:
+        return pd.DataFrame(columns=HEADLINE_COST_COLUMNS)
+    base_cols = [column for column in IDENTITY_COLUMNS + ["iterations", "wall_time_sec", "ess_mu", "ess_per_sec", "acceptance_rate", "projection_mode", "gram_correction_enabled", "rattle_status"] if column in ledger.columns]
+    base = ledger[base_cols].copy() if not ledger.empty else pd.DataFrame()
+    norm_cols = [
+        column
+        for column in [
+            "model",
+            "method",
+            "n",
+            "k",
+            "mu_star",
+            "seed",
+            "wall_time_per_iteration",
+            "wall_time_per_ess",
+            "student_logpdf_evals_per_iteration",
+            "student_grad_evals_per_iteration",
+            "constraint_evals_per_iteration",
+            "projection_evals_per_iteration",
+            "newton_iters_per_iteration",
+            "leapfrog_steps_per_iteration",
+            "pair_grid_evals_per_iteration",
+            "reverse_check_fail_rate",
+            "projection_failure_rate",
+        ]
+        if column in normalized.columns
+    ]
+    if base.empty:
+        out = normalized.copy()
+    else:
+        keys = [column for column in ["model", "method", "n", "k", "mu_star", "seed"] if column in base.columns and column in normalized.columns]
+        out = base.merge(normalized[norm_cols], on=keys, how="left") if keys and not normalized.empty else base
+    return reorder_columns(ensure_columns(out, HEADLINE_COST_COLUMNS + HEADLINE_EXTRA_COLUMNS), HEADLINE_COST_COLUMNS + HEADLINE_EXTRA_COLUMNS)
+
+
+def cost_summary_cards(ledger: pd.DataFrame, normalized: pd.DataFrame, suspicious: pd.DataFrame | None = None) -> None:
+    cols = st.columns(6)
+    if not normalized.empty and "ess_per_sec" in normalized.columns:
+        finite_ess = normalized[np.isfinite(pd.to_numeric(normalized["ess_per_sec"], errors="coerce"))]
+    else:
+        finite_ess = pd.DataFrame()
+    if finite_ess.empty:
+        best_ess = "unavailable"
+    else:
+        row = finite_ess.sort_values("ess_per_sec", ascending=False).iloc[0]
+        best_ess = f"{row.get('model', '')} {row.get('method', '')} n={int(row.get('n', 0))}"
+    if not normalized.empty and "wall_time_per_ess" in normalized.columns:
+        finite_cost = normalized[np.isfinite(pd.to_numeric(normalized["wall_time_per_ess"], errors="coerce"))]
+    else:
+        finite_cost = pd.DataFrame()
+    if finite_cost.empty:
+        best_cost = "unavailable"
+    else:
+        row = finite_cost.sort_values("wall_time_per_ess", ascending=True).iloc[0]
+        best_cost = f"{row.get('model', '')} {row.get('method', '')} n={int(row.get('n', 0))}"
+    rattle = ledger[ledger.get("method", pd.Series(dtype=str)).astype(str).eq("rattle")] if not ledger.empty else pd.DataFrame()
+    acceptance_warnings = 0
+    if not rattle.empty and "acceptance_rate" in rattle.columns:
+        rates = pd.to_numeric(rattle["acceptance_rate"], errors="coerce")
+        acceptance_warnings = int(((rates < 0.5) | (rates > 0.995)).sum())
+    projection_failures = int(pd.to_numeric(ledger.get("projection_failures", pd.Series(dtype=float)), errors="coerce").fillna(0).sum()) if not ledger.empty else 0
+    reverse_failures = int(pd.to_numeric(ledger.get("reverse_check_failures", pd.Series(dtype=float)), errors="coerce").fillna(0).sum()) if not ledger.empty else 0
+    suspicious_count = int(len(suspicious)) if suspicious is not None and not suspicious.empty else 0
+    cols[0].metric("Best ESS/sec", best_ess)
+    cols[1].metric("Lowest cost/ESS", best_cost)
+    cols[2].metric("RATTLE acceptance warnings", acceptance_warnings)
+    cols[3].metric("Projection failures", projection_failures)
+    cols[4].metric("Reverse-check failures", reverse_failures)
+    cols[5].metric("Suspicious cases", suspicious_count)
+
+
+def plot_metric(df: pd.DataFrame, metric: str, title: str, ylabel: str | None = None, method_filter: str = "both", chart: str = "points") -> None:
     if df.empty or metric not in df.columns:
         st.info(f"No data available for {title}.")
         return
@@ -184,16 +368,39 @@ def plot_metric(df: pd.DataFrame, metric: str, title: str, ylabel: str | None = 
     if plot_df.empty:
         st.info(f"No finite values available for {title}.")
         return
+    plot_df = add_series_label(plot_df)
 
-    fig, ax = plt.subplots(figsize=(7.5, 4.2))
-    for method, part in plot_df.groupby("method", sort=False):
-        part = part.sort_values("n")
-        ax.plot(part["n"], part[metric], marker="o", linewidth=2, label=str(method))
+    if chart == "bars":
+        labels = plot_df["series_label"].drop_duplicates().tolist()
+        n_values = sorted(plot_df["n"].dropna().astype(int).unique())
+        x = np.arange(len(n_values))
+        width = 0.8 / max(len(labels), 1)
+        fig, ax = plt.subplots(figsize=(10.5, 5.4))
+        for index, label in enumerate(labels):
+            part = plot_df[plot_df["series_label"].eq(label)]
+            values = [
+                float(part[part["n"].astype(int).eq(int(n_value))][metric].mean())
+                if not part[part["n"].astype(int).eq(int(n_value))].empty
+                else np.nan
+                for n_value in n_values
+            ]
+            ax.bar(x + (index - (len(labels) - 1) / 2.0) * width, values, width=width, label=label)
+        ax.set_xticks(x)
+        ax.set_xticklabels([str(n_value) for n_value in n_values])
+    else:
+        fig, ax = plt.subplots(figsize=(10.5, 5.4))
+        for label, part in plot_df.groupby("series_label", sort=False):
+            part = part.sort_values("n")
+            ax.plot(part["n"], part[metric], marker="o", linewidth=0, markersize=7, label=str(label))
+            if len(part["n"].dropna().unique()) > 1:
+                ax.plot(part["n"], part[metric], linewidth=1.2, alpha=0.45)
+        ax.set_xticks(sorted(plot_df["n"].dropna().astype(int).unique()))
+
     ax.set_title(title)
     ax.set_xlabel("n")
     ax.set_ylabel(ylabel or metric)
     ax.grid(alpha=0.2)
-    ax.legend(loc="best")
+    ax.legend(loc="best", fontsize=8)
     fig.tight_layout()
     st.pyplot(fig, clear_figure=True)
 
@@ -213,26 +420,75 @@ def acf(values: np.ndarray, max_lag: int = 50) -> tuple[np.ndarray, np.ndarray]:
     return lags, vals
 
 
-def plot_chain_diagnostics(chain: pd.DataFrame, reference_summary: pd.DataFrame) -> None:
+def plot_chain_diagnostics(chain: pd.DataFrame, reference_summary: pd.DataFrame, ledger: pd.DataFrame | None = None) -> None:
     if chain.empty:
         st.info("chain_samples.csv is missing; chain plots are unavailable.")
         return
 
     st.subheader("Chain Diagnostics")
+    show_multiple = st.checkbox("Show multiple chains", value=False)
+    models = list(chain["model"].dropna().astype(str).unique()) if "model" in chain.columns else ["student_t"]
+    model_index = models.index("student_t") if "student_t" in models else 0
     methods = list(chain["method"].dropna().astype(str).unique())
+    method_index = methods.index("gibbs") if "gibbs" in methods else 0
     n_values = sorted(chain["n"].dropna().astype(int).unique())
-    col1, col2 = st.columns(2)
-    chosen_method = col1.selectbox("chain method", methods, index=0)
-    chosen_n = col2.selectbox("chain n", n_values, index=0)
-    part = chain[(chain["method"].astype(str).eq(chosen_method)) & (chain["n"].astype(int).eq(int(chosen_n)))]
+    n_index = n_values.index(20) if 20 in n_values else 0
+    seed_values = sorted(chain["seed"].dropna().astype(int).unique()) if "seed" in chain.columns else [0]
+    seed_index = seed_values.index(0) if 0 in seed_values else 0
+    k_values = sorted(chain["k"].dropna().astype(float).unique()) if "k" in chain.columns else [2.0]
+    k_index = list(k_values).index(2.0) if 2.0 in list(k_values) else 0
+    col1, col2, col3, col4, col5 = st.columns(5)
+    chosen_model = col1.selectbox("chain model", models, index=model_index)
+    chosen_k = col2.selectbox("chain k", k_values, index=k_index, disabled=chosen_model != "student_t")
+    chosen_n = col3.selectbox("chain n", n_values, index=n_index)
+    chosen_method = col4.selectbox("chain method", methods, index=method_index)
+    chosen_seed = col5.selectbox("chain seed", seed_values, index=seed_index)
+    part = chain.copy()
+    if "model" in part.columns:
+        part = part[part["model"].astype(str).eq(str(chosen_model))]
+    if "k" in part.columns and chosen_model == "student_t":
+        part = part[np.isclose(part["k"].astype(float), float(chosen_k))]
+    part = part[part["n"].astype(int).eq(int(chosen_n))]
+    if not show_multiple:
+        part = part[part["method"].astype(str).eq(chosen_method)]
+        if "seed" in part.columns:
+            part = part[part["seed"].astype(int).eq(int(chosen_seed))]
     if part.empty:
         st.info("No matching chain samples.")
         return
 
     post = part[~part["is_burn_in"].astype(bool)] if "is_burn_in" in part.columns else part
+    ledger_part = pd.DataFrame()
+    if ledger is not None and not ledger.empty:
+        ledger_part = ledger.copy()
+        if "model" in ledger_part.columns:
+            ledger_part = ledger_part[ledger_part["model"].astype(str).eq(str(chosen_model))]
+        if "k" in ledger_part.columns and chosen_model == "student_t":
+            ledger_part = ledger_part[np.isclose(ledger_part["k"].astype(float), float(chosen_k))]
+        ledger_part = ledger_part[ledger_part["n"].astype(int).eq(int(chosen_n))]
+        if not show_multiple:
+            ledger_part = ledger_part[ledger_part["method"].astype(str).eq(chosen_method)]
+            if "seed" in ledger_part.columns:
+                ledger_part = ledger_part[ledger_part["seed"].astype(int).eq(int(chosen_seed))]
+    summary_cols = st.columns(5)
+    summary_cols[0].metric("mean", f"{post['mu'].mean():.3g}")
+    summary_cols[1].metric("sd", f"{post['mu'].std():.3g}")
+    ess_value = pd.to_numeric(ledger_part.get("ess_mu", pd.Series(dtype=float)), errors="coerce").mean() if not ledger_part.empty else np.nan
+    ess_sec_value = pd.to_numeric(ledger_part.get("ess_per_sec", pd.Series(dtype=float)), errors="coerce").mean() if not ledger_part.empty else np.nan
+    accept_value = pd.to_numeric(ledger_part.get("acceptance_rate", pd.Series(dtype=float)), errors="coerce").mean() if not ledger_part.empty else np.nan
+    summary_cols[2].metric("ESS", "n/a" if not np.isfinite(ess_value) else f"{ess_value:.3g}")
+    summary_cols[3].metric("ESS/sec", "n/a" if not np.isfinite(ess_sec_value) else f"{ess_sec_value:.3g}")
+    summary_cols[4].metric("acceptance", "n/a" if not np.isfinite(accept_value) else f"{accept_value:.3g}")
+
     fig, ax = plt.subplots(figsize=(8, 3.8))
-    ax.plot(part["iteration"], part["mu"], linewidth=1)
-    ax.set_title(f"Trace of mu: {chosen_method}, n={chosen_n}")
+    group_cols = [col for col in ["method", "seed"] if col in part.columns]
+    if show_multiple and group_cols:
+        for label, sub in part.groupby(group_cols, sort=False):
+            ax.plot(sub["iteration"], sub["mu"], linewidth=0.9, alpha=0.75, label=str(label))
+        ax.legend(loc="best", fontsize=8)
+    else:
+        ax.plot(part["iteration"], part["mu"], linewidth=1)
+    ax.set_title(f"Trace of mu: {chosen_model}, k={chosen_k:g}, n={chosen_n}")
     ax.set_xlabel("iteration")
     ax.set_ylabel("mu")
     ax.grid(alpha=0.2)
@@ -250,9 +506,9 @@ def plot_chain_diagnostics(chain: pd.DataFrame, reference_summary: pd.DataFrame)
     st.pyplot(fig, clear_figure=True)
 
     fig, ax = plt.subplots(figsize=(8, 4.2))
-    for method, method_part in chain[chain["n"].astype(int).eq(int(chosen_n))].groupby("method", sort=False):
+    for method, method_part in part.groupby("method", sort=False):
         samples = method_part[~method_part["is_burn_in"].astype(bool)]["mu"] if "is_burn_in" in method_part.columns else method_part["mu"]
-        ax.hist(samples, bins=40, density=True, alpha=0.35, label=str(method))
+        ax.hist(samples, bins=min(40, max(12, int(np.sqrt(len(samples))))), density=True, alpha=0.28, label=str(method))
     if not reference_summary.empty:
         raw = reference_summary[
             reference_summary["estimator_type"].astype(str).eq("raw_weighted_mc")
@@ -350,9 +606,10 @@ if use_dashboard_cache:
         st.stop()
 
     ledger = read_cache_csv(str(dashboard_cache_dir), "cost_ledger_cache.csv")
-    normalized = read_cache_csv(str(dashboard_cache_dir), "cost_efficiency_cache.csv")
+    normalized = coerce_cost_columns(read_cache_csv(str(dashboard_cache_dir), "cost_efficiency_cache.csv"))
     summaries = read_cache_csv(str(dashboard_cache_dir), "posterior_summaries_cache.csv")
     chains = read_cache_csv(str(dashboard_cache_dir), "chain_samples_thinned_cache.csv")
+    suspicious = read_cache_csv(str(dashboard_cache_dir), "suspicious_cases_cache.csv")
 
     with st.sidebar:
         st.header("Cached Filters")
@@ -361,13 +618,18 @@ if use_dashboard_cache:
         n_filter = st.selectbox("n", ["all", "10", "20", "50"], index=0)
         k_filter = st.selectbox("k", ["all", "1.0", "2.0", "3.0"], index=0)
         seed_filter = st.number_input("seed", min_value=0, value=0, step=1)
-        show_raw = st.checkbox("show raw counters", value=True)
+        show_raw = st.checkbox("show raw counters", value=False)
         show_normalized = st.checkbox("show normalized counters", value=True)
 
     ledger_f = apply_filters(ledger, model_filter, method_filter, n_filter, k_filter, int(seed_filter))
     normalized_f = apply_filters(normalized, model_filter, method_filter, n_filter, k_filter, int(seed_filter))
     summaries_f = apply_filters(summaries, model_filter, method_filter, n_filter, k_filter, int(seed_filter))
     chains_f = apply_filters(chains, model_filter, method_filter, n_filter, k_filter, int(seed_filter))
+    suspicious_f = apply_filters(suspicious, model_filter, method_filter, n_filter, k_filter, int(seed_filter)) if not suspicious.empty else suspicious
+    headline_f = headline_cost_table(ledger_f, normalized_f)
+
+    st.subheader("Cost Conclusions")
+    cost_summary_cards(ledger_f, normalized_f, suspicious_f)
 
     st.subheader("Cached Audit Data Status")
     status_cols = st.columns(5)
@@ -377,36 +639,49 @@ if use_dashboard_cache:
     status_cols[3].metric("seeds", values_status(ledger_f if not ledger_f.empty else chains_f, "seed"))
     status_cols[4].metric("run status", smoke_status(ledger_f, chains_f))
 
-    if show_raw:
-        st.subheader("Raw Cost Ledger")
-        st.dataframe(ledger_f, use_container_width=True)
+    st.subheader("Cost Overview")
+    st.caption("Main comparison columns are kept at the front so model/method/n stay visible while scanning.")
+    st.dataframe(headline_f[HEADLINE_COST_COLUMNS], use_container_width=True, hide_index=True)
+
     if show_normalized:
         st.subheader("Normalized Cost Table")
-        st.dataframe(normalized_f, use_container_width=True)
+        st.dataframe(ensure_columns(normalized_f, NORMALIZED_DEFAULT_COLUMNS)[NORMALIZED_DEFAULT_COLUMNS], use_container_width=True, hide_index=True)
 
-    st.subheader("Gibbs-Specific Counters")
-    gibbs_table = ensure_columns(ledger_f[ledger_f.get("method", pd.Series(dtype=str)).astype(str).eq("gibbs")], GIBBS_COLUMNS)
-    st.dataframe(gibbs_table[GIBBS_COLUMNS], use_container_width=True)
+    st.subheader("Suspicious Cases")
+    if suspicious_f.empty:
+        st.info("No suspicious cases for the selected filters.")
+    else:
+        st.dataframe(reorder_columns(suspicious_f, ["model", "method", "n", "k", "seed", "warning", "reason", "metric", "value"]), use_container_width=True, hide_index=True)
 
-    st.subheader("RATTLE-Specific Counters")
-    rattle_table = ensure_columns(ledger_f[ledger_f.get("method", pd.Series(dtype=str)).astype(str).eq("rattle")], RATTLE_COLUMNS)
-    st.dataframe(rattle_table[RATTLE_COLUMNS], use_container_width=True)
+    if show_raw:
+        with st.expander("Raw Cost Ledger", expanded=False):
+            st.dataframe(reorder_columns(ledger_f, RAW_LEDGER_FRONT_COLUMNS), use_container_width=True, hide_index=True)
 
-    st.subheader("Posterior Summaries")
-    st.dataframe(summaries_f, use_container_width=True)
+    with st.expander("Gibbs-Specific Counters", expanded=False):
+        gibbs_table = ensure_columns(ledger_f[ledger_f.get("method", pd.Series(dtype=str)).astype(str).eq("gibbs")], GIBBS_COLUMNS)
+        st.dataframe(gibbs_table[GIBBS_COLUMNS], use_container_width=True, hide_index=True)
+
+    with st.expander("RATTLE-Specific Counters", expanded=False):
+        rattle_table = ensure_columns(ledger_f[ledger_f.get("method", pd.Series(dtype=str)).astype(str).eq("rattle")], RATTLE_COLUMNS)
+        st.dataframe(rattle_table[RATTLE_COLUMNS], use_container_width=True, hide_index=True)
+
+    with st.expander("Posterior Summaries", expanded=False):
+        st.dataframe(reorder_columns(summaries_f, ["model", "method", "n", "k", "seed", "mean_mu", "sd_mu", "q025_mu", "q50_mu", "q975_mu", "ess_mu", "ess_per_sec", "acceptance_rate"]), use_container_width=True, hide_index=True)
 
     st.subheader("Cost Plots")
-    plot_cols = st.columns(2)
-    with plot_cols[0]:
-        plot_metric(normalized_f, "ess_per_sec", "ESS/sec vs n", "ESS/sec")
-    with plot_cols[1]:
-        plot_metric(normalized_f, "wall_time_per_iteration", "wall time per iteration vs n", "seconds")
-    with plot_cols[0]:
-        plot_metric(normalized_f, "wall_time_per_ess", "wall time per ESS vs n", "seconds")
-    with plot_cols[1]:
-        plot_metric(normalized_f, "acceptance_rate", "acceptance rate vs n", "acceptance rate")
+    tab_ess, tab_cost, tab_accept, tab_diag = st.tabs(["ESS/sec", "Cost per ESS", "Acceptance", "Constraint/projection diagnostics"])
+    with tab_ess:
+        plot_metric(normalized_f, "ess_per_sec", "ESS/sec by n", "ESS/sec", chart="bars")
+    with tab_cost:
+        plot_metric(normalized_f, "wall_time_per_ess", "wall time per ESS by n", "seconds")
+        plot_metric(normalized_f, "wall_time_per_iteration", "wall time per iteration by n", "seconds")
+    with tab_accept:
+        plot_metric(normalized_f, "acceptance_rate", "acceptance rate by n", "acceptance rate", chart="bars")
+    with tab_diag:
+        plot_metric(normalized_f, "projection_evals_per_iteration", "projection evals per iteration by n")
+        plot_metric(normalized_f, "constraint_evals_per_iteration", "constraint evals per iteration by n")
 
-    plot_chain_diagnostics(chains_f, pd.DataFrame())
+    plot_chain_diagnostics(chains_f, pd.DataFrame(), ledger_f)
     st.stop()
 
 with st.sidebar:
@@ -420,7 +695,7 @@ with st.sidebar:
     n_filter = st.selectbox("n", ["all", "10", "20", "50"], index=0)
     k_filter = st.selectbox("k", ["all", "1.0", "2.0", "3.0"], index=0)
     seed_filter = st.number_input("seed", min_value=0, value=0, step=1)
-    show_raw = st.checkbox("show raw counters", value=True)
+    show_raw = st.checkbox("show raw counters", value=False)
     show_normalized = st.checkbox("show normalized counters", value=True)
     st.header("Reference Overlay")
     overlay_reference = st.checkbox("overlay posterior reference from KDE audit CSV", value=False)
@@ -443,6 +718,7 @@ ledger = read_csv_if_exists(str(LEDGER_PATH))
 summaries = read_csv_if_exists(str(SUMMARY_PATH))
 diagnostics = read_csv_if_exists(str(DIAG_PATH))
 chains = read_csv_if_exists(str(CHAIN_PATH))
+suspicious = read_csv_if_exists("results/analysis_report/suspicious_cases.csv")
 
 st.subheader("Audit Data Status")
 status_cols = st.columns(7)
@@ -466,52 +742,63 @@ ledger_f = apply_filters(ledger, model_filter, method_filter, n_filter, k_filter
 summaries_f = apply_filters(summaries, model_filter, method_filter, n_filter, k_filter, int(seed_filter))
 diagnostics_f = apply_filters(diagnostics, model_filter, method_filter, n_filter, k_filter, int(seed_filter))
 chains_f = apply_filters(chains, model_filter, method_filter, n_filter, k_filter, int(seed_filter))
-normalized = normalized_cost_table(ledger_f)
+suspicious_f = apply_filters(suspicious, model_filter, method_filter, n_filter, k_filter, int(seed_filter)) if not suspicious.empty else suspicious
+normalized = coerce_cost_columns(normalized_cost_table(ledger_f))
+headline = headline_cost_table(ledger_f, normalized)
+
+st.subheader("Cost Conclusions")
+cost_summary_cards(ledger_f, normalized, suspicious_f)
+
+st.subheader("Cost Overview")
+st.caption("Main comparison columns are kept at the front so model/method/n stay visible while scanning.")
+st.dataframe(headline[HEADLINE_COST_COLUMNS], use_container_width=True, hide_index=True)
 
 if show_raw:
-    st.subheader("Raw Cost Ledger")
-    st.dataframe(ledger_f, use_container_width=True)
+    with st.expander("Raw Cost Ledger", expanded=False):
+        st.dataframe(reorder_columns(ledger_f, RAW_LEDGER_FRONT_COLUMNS), use_container_width=True, hide_index=True)
 
 if show_normalized:
     st.subheader("Normalized Cost Table")
-    st.dataframe(normalized, use_container_width=True)
+    st.dataframe(ensure_columns(normalized, NORMALIZED_DEFAULT_COLUMNS)[NORMALIZED_DEFAULT_COLUMNS], use_container_width=True, hide_index=True)
 
-st.subheader("Gibbs-Specific Counters")
-gibbs_table = ensure_columns(ledger_f[ledger_f.get("method", pd.Series(dtype=str)).astype(str).eq("gibbs")], GIBBS_COLUMNS)
-st.dataframe(gibbs_table[GIBBS_COLUMNS], use_container_width=True)
+st.subheader("Suspicious Cases")
+if suspicious_f.empty:
+    st.info("No suspicious cases for the selected filters.")
+else:
+    st.dataframe(reorder_columns(suspicious_f, ["model", "method", "n", "k", "seed", "warning", "reason", "metric", "value"]), use_container_width=True, hide_index=True)
 
-st.subheader("RATTLE-Specific Counters")
-rattle_table = ensure_columns(ledger_f[ledger_f.get("method", pd.Series(dtype=str)).astype(str).eq("rattle")], RATTLE_COLUMNS)
-st.dataframe(rattle_table[RATTLE_COLUMNS], use_container_width=True)
+with st.expander("Gibbs-Specific Counters", expanded=False):
+    gibbs_table = ensure_columns(ledger_f[ledger_f.get("method", pd.Series(dtype=str)).astype(str).eq("gibbs")], GIBBS_COLUMNS)
+    st.dataframe(gibbs_table[GIBBS_COLUMNS], use_container_width=True, hide_index=True)
 
-st.subheader("Posterior Summaries")
-st.dataframe(summaries_f, use_container_width=True)
+with st.expander("RATTLE-Specific Counters", expanded=False):
+    rattle_table = ensure_columns(ledger_f[ledger_f.get("method", pd.Series(dtype=str)).astype(str).eq("rattle")], RATTLE_COLUMNS)
+    st.dataframe(rattle_table[RATTLE_COLUMNS], use_container_width=True, hide_index=True)
+
+with st.expander("Posterior Summaries", expanded=False):
+    st.dataframe(reorder_columns(summaries_f, ["model", "method", "n", "k", "seed", "mean_mu", "sd_mu", "q025_mu", "q50_mu", "q975_mu", "ess_mu", "ess_per_sec", "acceptance_rate"]), use_container_width=True, hide_index=True)
 
 if not diagnostics_f.empty:
     st.subheader("Diagnostic Summary")
-    st.dataframe(diagnostics_f, use_container_width=True)
+    st.dataframe(reorder_columns(diagnostics_f, ["model", "method", "n", "k", "seed", "ess_per_sec", "cost_per_effective_sample_sec", "wall_time_per_iteration_sec", "acceptance_rate", "projection_failure_rate", "reverse_check_failure_rate"]), use_container_width=True, hide_index=True)
 
 st.subheader("Cost Plots")
-plot_cols = st.columns(2)
-with plot_cols[0]:
-    plot_metric(normalized, "ess_per_sec", "ESS/sec vs n", "ESS/sec")
-with plot_cols[1]:
-    plot_metric(normalized, "wall_time_per_iteration", "wall time per iteration vs n", "seconds")
-with plot_cols[0]:
-    plot_metric(normalized, "wall_time_per_ess", "wall time per ESS vs n", "seconds")
-with plot_cols[1]:
-    plot_metric(normalized, "acceptance_rate", "acceptance rate vs n", "acceptance rate")
-with plot_cols[0]:
-    plot_metric(normalized, "constraint_evals_per_iteration", "constraint evals per iteration vs n")
-with plot_cols[1]:
-    plot_metric(normalized, "projection_evals_per_iteration", "projection evals per iteration vs n")
-with plot_cols[0]:
-    plot_metric(ledger_f, "reverse_check_failures", "reverse check failures vs n for RATTLE", "failures", method_filter="rattle")
-with plot_cols[1]:
-    plot_metric(normalized, "pair_grid_evals_per_iteration", "pair grid evals per iteration vs n for Gibbs", method_filter="gibbs")
+tab_ess, tab_cost, tab_accept, tab_diag = st.tabs(["ESS/sec", "Cost per ESS", "Acceptance", "Constraint/projection diagnostics"])
+with tab_ess:
+    plot_metric(normalized, "ess_per_sec", "ESS/sec by n", "ESS/sec", chart="bars")
+with tab_cost:
+    plot_metric(normalized, "wall_time_per_ess", "wall time per ESS by n", "seconds")
+    plot_metric(normalized, "wall_time_per_iteration", "wall time per iteration by n", "seconds")
+with tab_accept:
+    plot_metric(normalized, "acceptance_rate", "acceptance rate by n", "acceptance rate", chart="bars")
+with tab_diag:
+    plot_metric(normalized, "constraint_evals_per_iteration", "constraint evals per iteration by n")
+    plot_metric(normalized, "projection_evals_per_iteration", "projection evals per iteration by n")
+    plot_metric(ledger_f, "reverse_check_failures", "reverse check failures by n for RATTLE", "failures", method_filter="rattle", chart="bars")
+    plot_metric(normalized, "pair_grid_evals_per_iteration", "pair grid evals per iteration by n for Gibbs", method_filter="gibbs", chart="bars")
 
 reference_summary = load_reference_summary(Path(reference_csv)) if overlay_reference else pd.DataFrame()
-plot_chain_diagnostics(chains_f, reference_summary)
+plot_chain_diagnostics(chains_f, reference_summary, ledger_f)
 
 exports = st.columns(3)
 exports[0].download_button(

@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import streamlit as st
+from scipy import stats
 
 from dashboard_cache import read_cache_csv, require_cache_file, sidebar_cache_controls, show_cache_badge
 from kde_ref.moments import posterior_grid_bounds
@@ -225,7 +226,9 @@ def cached_audit_summary(
 def selected_backends() -> tuple[str, ...]:
     chosen = []
     for backend in DEFAULT_BACKENDS:
-        if st.sidebar.checkbox(backend, value=True, key=f"backend_{backend}"):
+        label = "KDE t_abram, capped diagnostic" if backend == "t_abram" else f"KDE {backend}"
+        default = backend != "t_abram"
+        if st.sidebar.checkbox(label, value=default, key=f"backend_{backend}"):
             chosen.append(backend)
     return tuple(chosen)
 
@@ -257,6 +260,53 @@ def ensure_columns(df: pd.DataFrame, columns: list[str]) -> pd.DataFrame:
         if column not in out.columns:
             out[column] = np.nan
     return out
+
+
+MODEL_LABELS = {"student_t": "Student-t", "logistic": "Logistic", "laplace": "Laplace"}
+METHOD_LABELS = {
+    "raw_weighted_mc": "Raw weighted-MC",
+    "raw_mc_interval_reference": "Raw interval reference",
+    "kde_grid": "KDE smoothed density",
+    "kde_quad": "KDE quadrature summary",
+    "sampler": "Sampler",
+}
+
+
+def model_label(model: str) -> str:
+    return MODEL_LABELS.get(str(model), str(model))
+
+
+def method_label(value: str) -> str:
+    return METHOD_LABELS.get(str(value), str(value))
+
+
+def display_backend_label(row: pd.Series) -> str:
+    backend = str(row.get("backend", ""))
+    if backend == "t_abram" and bool(row.get("density_sample_capped", False)):
+        b_used = row.get("B_used", row.get("density_sample_size", np.nan))
+        if pd.notna(b_used):
+            return f"t_abram, plot-only B={int(float(b_used))} cap"
+        return "t_abram, plot-only cap"
+    return backend
+
+
+def display_table(df: pd.DataFrame) -> pd.DataFrame:
+    out = df.copy()
+    if "model" in out.columns:
+        out["model"] = out["model"].map(model_label)
+    if "estimator_type" in out.columns:
+        out["method"] = out["estimator_type"].map(method_label)
+    elif "method" in out.columns:
+        out["method"] = out["method"].map(method_label)
+    if "backend" in out.columns:
+        out["backend"] = out.apply(display_backend_label, axis=1)
+    if "density_note" in out.columns and "note" not in out.columns:
+        out["note"] = out["density_note"]
+    return out
+
+
+def default_columns(df: pd.DataFrame, columns: list[str]) -> pd.DataFrame:
+    return ensure_columns(display_table(df), columns)[columns]
 
 
 def with_status_metadata(df: pd.DataFrame, status_df: pd.DataFrame) -> pd.DataFrame:
@@ -305,12 +355,34 @@ def add_plot_labels(density_df: pd.DataFrame, overlay_mode: str) -> pd.DataFrame
     out = density_df.copy()
     sampler_mask = out.get("estimator_type", pd.Series("", index=out.index)).eq("sampler_density")
     if overlay_mode == "compare n=10,20,50 for fixed backend":
-        out["plot_label"] = "n=" + out["n"].astype(str)
+        out["plot_label"] = out.get("backend", pd.Series("", index=out.index)).astype(str) + " n=" + out["n"].astype(str)
         out.loc[sampler_mask, "plot_label"] = out.loc[sampler_mask, "method"].astype(str) + " n=" + out.loc[sampler_mask, "n"].astype(str)
     else:
-        out["plot_label"] = out["backend"].astype(str)
+        out["plot_label"] = out.apply(display_backend_label, axis=1)
         out.loc[sampler_mask, "plot_label"] = out.loc[sampler_mask, "method"].astype(str)
     return out
+
+
+def posterior_mass_xlim(summary_df: pd.DataFrame) -> tuple[float, float] | None:
+    if summary_df.empty or not {"q025", "q975"}.issubset(summary_df.columns):
+        return None
+    raw = summary_df[
+        summary_df.get("estimator_type", pd.Series("", index=summary_df.index)).astype(str).isin(
+            ["raw_weighted_mc", "raw_mc_interval_reference"]
+        )
+    ].copy()
+    if raw.empty:
+        return None
+    raw["q025"] = pd.to_numeric(raw["q025"], errors="coerce")
+    raw["q975"] = pd.to_numeric(raw["q975"], errors="coerce")
+    raw = raw[np.isfinite(raw["q025"]) & np.isfinite(raw["q975"])]
+    raw = raw[raw["q975"] > raw["q025"]]
+    if raw.empty:
+        return None
+    width = raw["q975"] - raw["q025"]
+    lo = float((raw["q025"] - 0.25 * width).min())
+    hi = float((raw["q975"] + 0.25 * width).max())
+    return (lo, hi) if np.isfinite(lo) and np.isfinite(hi) and hi > lo else None
 
 
 def plot_density_overlay(
@@ -321,15 +393,29 @@ def plot_density_overlay(
     raw_marker_mode: str,
     selected_marker_n: int,
     show_log_density: bool,
+    visible_xlim: tuple[float, float] | None = None,
 ) -> plt.Figure:
     fig, ax = plt.subplots(figsize=(9, 5))
     plot_df = add_plot_labels(plot_density_df, overlay_mode)
-    plot_lo = float(plot_density_df["plot_grid_lo"].iloc[0])
-    plot_hi = float(plot_density_df["plot_grid_hi"].iloc[0])
+    if {"plot_grid_lo", "plot_grid_hi"}.issubset(plot_density_df.columns):
+        lo_values = pd.to_numeric(plot_density_df["plot_grid_lo"], errors="coerce")
+        hi_values = pd.to_numeric(plot_density_df["plot_grid_hi"], errors="coerce")
+        finite_lo = lo_values[np.isfinite(lo_values)]
+        finite_hi = hi_values[np.isfinite(hi_values)]
+        plot_lo = float(finite_lo.min()) if not finite_lo.empty else float(plot_density_df["mu"].min())
+        plot_hi = float(finite_hi.max()) if not finite_hi.empty else float(plot_density_df["mu"].max())
+    else:
+        plot_lo = float(plot_density_df["mu"].min())
+        plot_hi = float(plot_density_df["mu"].max())
 
     for label, part in plot_df.groupby("plot_label", sort=False):
         y = np.log(np.maximum(part["density"].to_numpy(dtype=float), 1e-300)) if show_log_density else part["density"]
-        ax.plot(part["mu"], y, label=str(label), linewidth=2)
+        is_sampler = part.get("estimator_type", pd.Series(dtype=str)).astype(str).eq("sampler_density").any()
+        if is_sampler and not show_log_density:
+            ax.fill_between(part["mu"], y, alpha=0.22, step="mid", label=str(label))
+            ax.plot(part["mu"], y, alpha=0.45, linewidth=1.0)
+        else:
+            ax.plot(part["mu"], y, label=str(label), linewidth=2 if not is_sampler else 1.4, alpha=0.9 if not is_sampler else 0.65)
 
     if raw_marker_mode != "none" and not summary_df.empty:
         raw = summary_df[
@@ -337,14 +423,26 @@ def plot_density_overlay(
         ]
         if raw_marker_mode == "selected n only":
             raw = raw[raw["n"].astype(int).eq(int(selected_marker_n))]
+        raw = raw.sort_values(["estimator_type", "n"]).drop_duplicates(
+            subset=[col for col in ["estimator_type", "n", "k", "mu_star", "seed"] if col in raw.columns]
+        )
+        legend_labels_used: set[str] = set()
         for _, row in raw.iterrows():
             suffix = f" n={int(row['n'])}" if overlay_mode == "compare n=10,20,50 for fixed backend" else ""
             marker_label = "interval reference" if row.get("estimator_type", "") == "raw_mc_interval_reference" else "raw"
-            ax.axvline(row["mean"], color="black", linestyle="-", linewidth=1.2, label=f"{marker_label} mean{suffix}")
-            ax.axvline(row["q025"], color="black", linestyle=":", linewidth=1.0, label=f"{marker_label} 95% interval{suffix}")
+            mean_label = f"{marker_label} mean{suffix}"
+            interval_label = f"{marker_label} 95% interval{suffix}"
+            median_label = f"{marker_label} median{suffix}"
+            ax.axvline(row["mean"], color="black", linestyle="-", linewidth=1.2, label=mean_label if mean_label not in legend_labels_used else None)
+            legend_labels_used.add(mean_label)
+            ax.axvline(row["q025"], color="black", linestyle=":", linewidth=1.0, label=interval_label if interval_label not in legend_labels_used else None)
+            legend_labels_used.add(interval_label)
             ax.axvline(row["q975"], color="black", linestyle=":", linewidth=1.0)
-            ax.axvline(row["q50"], color="black", linestyle="--", linewidth=1.0, label=f"{marker_label} median{suffix}")
+            ax.axvline(row["q50"], color="black", linestyle="--", linewidth=1.0, label=median_label if median_label not in legend_labels_used else None)
+            legend_labels_used.add(median_label)
 
+    if visible_xlim is not None and np.isfinite(visible_xlim[0]) and np.isfinite(visible_xlim[1]) and visible_xlim[1] > visible_xlim[0]:
+        plot_lo, plot_hi = visible_xlim
     ax.set_xlim(plot_lo, plot_hi)
     ax.set_xlabel("mu")
     ax.set_ylabel("log posterior density" if show_log_density else "posterior density")
@@ -575,10 +673,16 @@ def sampler_density_frames(
         samples = samples[np.isfinite(samples)]
         if samples.size < 2:
             continue
-        bins = min(max(int(np.sqrt(samples.size)), 20), 80)
-        hist, edges = np.histogram(samples, bins=bins, range=(float(plot_lo), float(plot_hi)), density=True)
-        centers = 0.5 * (edges[:-1] + edges[1:])
-        density = np.interp(grid, centers, hist, left=0.0, right=0.0)
+        try:
+            kde = stats.gaussian_kde(samples)
+            density = np.asarray(kde(grid), dtype=float)
+            density_method = "gaussian_kde_scott"
+        except Exception:
+            bins = min(max(int(np.sqrt(samples.size)), 20), 80)
+            hist, edges = np.histogram(samples, bins=bins, range=(float(plot_lo), float(plot_hi)), density=True)
+            centers = 0.5 * (edges[:-1] + edges[1:])
+            density = np.interp(grid, centers, hist, left=0.0, right=0.0)
+            density_method = "histogram_fallback"
         integral = float(np.trapezoid(density, grid))
         if integral > 0:
             density = density / integral
@@ -600,6 +704,8 @@ def sampler_density_frames(
                     "cdf": cdf,
                     "marginal_likelihood_estimate": np.nan,
                     "posterior_integral_check": float(np.trapezoid(density, grid)),
+                    "density_method": density_method,
+                    "density_note": "Display-only KDE smoothing of Gibbs/RATTLE chain samples.",
                     "seed": int(first["seed"]) if "seed" in part.columns else np.nan,
                     "B": np.nan,
                     "source_file": str(source_file),
@@ -758,6 +864,8 @@ if use_dashboard_cache:
     comparison_cache = read_cache_csv(str(dashboard_cache_dir), "posterior_comparison_cache.csv")
     cost_cache = read_cache_csv(str(dashboard_cache_dir), "cost_efficiency_cache.csv")
     figures_cache = read_cache_csv(str(dashboard_cache_dir), "figure_index.csv")
+    reference_seed_values = sorted(reference_cache["seed"].dropna().astype(int).unique().tolist()) if "seed" in reference_cache.columns else [123]
+    sampler_seed_values = sorted(sampler_density_cache["seed"].dropna().astype(int).unique().tolist()) if "seed" in sampler_density_cache.columns else [0]
 
     with st.sidebar:
         st.header("Cached Posterior View")
@@ -765,20 +873,48 @@ if use_dashboard_cache:
             "model",
             ["student_t", "logistic", "laplace"],
             index=0,
-            format_func=lambda x: {"student_t": "Student", "logistic": "Logistic", "laplace": "Laplace"}[x],
+            format_func=model_label,
             key="cached_model",
         )
         k_cached = st.selectbox("k", [1.0, 2.0, 3.0], index=1, disabled=model_choice_cached != "student_t", key="cached_k")
-        n_cached = st.selectbox("n", [10, 20, 50], index=1, key="cached_n")
+        cached_overlay_mode = st.radio(
+            "overlay mode",
+            ["compare methods for fixed n", "compare n=10,20,50 for fixed method"],
+            index=0,
+            key="cached_overlay_mode",
+        )
+        n_cached = st.selectbox("n", [10, 20, 50], index=1, disabled=cached_overlay_mode != "compare methods for fixed n", key="cached_n")
+        reference_seed_cached = st.selectbox(
+            "reference seed (raw/KDE)",
+            reference_seed_values,
+            index=reference_seed_values.index(123) if 123 in reference_seed_values else 0,
+            key="cached_reference_seed",
+        )
+        sampler_seed_cached = st.selectbox(
+            "sampler seed (Gibbs/RATTLE)",
+            sampler_seed_values,
+            index=sampler_seed_values.index(0) if 0 in sampler_seed_values else 0,
+            key="cached_sampler_seed",
+        )
+        st.caption("Reference seeds affect raw/KDE curves; sampler seeds affect Gibbs/RATTLE curves.")
         show_scott_cached = st.checkbox("KDE scott", value=True, key="cached_scott")
         show_sj_cached = st.checkbox("KDE SJ_transform", value=True, key="cached_sj")
-        show_tabram_cached = st.checkbox("KDE t_abram", value=True, key="cached_tabram")
+        show_tabram_cached = st.checkbox("KDE t_abram, capped diagnostic", value=False, key="cached_tabram")
         show_gibbs_cached = st.checkbox("Gibbs", value=True, key="cached_gibbs")
         show_rattle_cached = st.checkbox("RATTLE", value=model_choice_cached != "laplace", disabled=model_choice_cached == "laplace", key="cached_rattle")
+        cached_raw_marker_mode = st.selectbox(
+            "Raw reference markers",
+            ["none", "selected n only", "all n"],
+            index=1,
+            key="cached_raw_marker_mode",
+        )
         show_log_density_cached = st.checkbox("Show log density", value=False, key="cached_log_density")
+        show_full_grid_cached = st.checkbox("Show full computational grid", value=False, key="cached_show_full_grid")
 
     if model_choice_cached == "laplace" and int(n_cached) % 2 == 0:
         st.error("Laplace Gibbs and deterministic np.median KDE/raw-MC references are not directly comparable for even n.")
+        st.warning("Laplace exact RATTLE is not applicable because the median/order constraint is nonsmooth.")
+        st.info("Laplace Gibbs is compared only to median_interval_contains_mu_star.")
     if model_choice_cached == "student_t" and float(k_cached) == 1.0 and int(n_cached) == 10:
         st.warning("Student k=1,n=10 unresolved: see Analysis Report for score-root vs selected-MLE diagnostics.")
 
@@ -789,27 +925,85 @@ if use_dashboard_cache:
         selected_backends_cached.append("SJ_transform")
     if show_tabram_cached:
         selected_backends_cached.append("t_abram")
-
-    def cached_filter(df: pd.DataFrame) -> pd.DataFrame:
-        if df.empty or "model" not in df.columns:
-            return pd.DataFrame()
-        out = df[df["model"].astype(str).eq(model_choice_cached)].copy()
-        if "n" in out.columns:
-            out = out[out["n"].astype(int).eq(int(n_cached))]
-        if model_choice_cached == "student_t" and "k" in out.columns:
-            out = out[np.isclose(out["k"].astype(float), float(k_cached))]
-        return out
-
-    reference_view = cached_filter(reference_cache)
-    kde_view = cached_filter(posterior_density_cache)
-    if selected_backends_cached and not kde_view.empty:
-        kde_view = kde_view[kde_view["backend"].astype(str).isin(selected_backends_cached)]
-    sampler_view = cached_filter(sampler_density_cache)
     sampler_methods_cached = []
     if show_gibbs_cached:
         sampler_methods_cached.append("gibbs")
     if show_rattle_cached:
         sampler_methods_cached.append("rattle")
+    fixed_family_cached = None
+    if cached_overlay_mode == "compare n=10,20,50 for fixed method":
+        selected_families = [f"KDE {backend}" for backend in selected_backends_cached] + [method for method in sampler_methods_cached]
+        if selected_families:
+            default_family = "gibbs" if "gibbs" in selected_families else selected_families[0]
+            with st.sidebar:
+                fixed_family_cached = st.selectbox(
+                    "fixed method/backend",
+                    selected_families,
+                    index=selected_families.index(default_family),
+                    key="cached_fixed_family",
+                )
+            if fixed_family_cached.startswith("KDE "):
+                selected_backends_cached = [fixed_family_cached.replace("KDE ", "", 1)]
+                sampler_methods_cached = []
+            else:
+                selected_backends_cached = []
+                sampler_methods_cached = [fixed_family_cached]
+
+    selected_ns_cached = [10, 20, 50] if cached_overlay_mode == "compare n=10,20,50 for fixed method" else [int(n_cached)]
+
+    def cached_filter(df: pd.DataFrame, seed: int | None = None) -> pd.DataFrame:
+        if df.empty or "model" not in df.columns:
+            return pd.DataFrame()
+        out = df[df["model"].astype(str).eq(model_choice_cached)].copy()
+        if "n" in out.columns:
+            out = out[out["n"].astype(int).isin([int(n) for n in selected_ns_cached])]
+        if model_choice_cached == "student_t" and "k" in out.columns:
+            out = out[np.isclose(out["k"].astype(float), float(k_cached))]
+        if seed is not None and "seed" in out.columns:
+            seed_values = pd.to_numeric(out["seed"], errors="coerce")
+            if seed_values.notna().any():
+                out = out[np.isclose(seed_values, int(seed))]
+        return out
+
+    reference_view = cached_filter(reference_cache, seed=int(reference_seed_cached))
+    visible_xlim_cached = None if show_full_grid_cached else posterior_mass_xlim(reference_view)
+    kde_view = cached_filter(posterior_density_cache, seed=int(reference_seed_cached))
+    if not selected_backends_cached:
+        kde_view = pd.DataFrame()
+    elif not kde_view.empty:
+        kde_view = kde_view[kde_view["backend"].astype(str).isin(selected_backends_cached)]
+    missing_kde_backends = []
+    if selected_backends_cached:
+        cached_kde_backends = set(kde_view.get("backend", pd.Series(dtype=str)).dropna().astype(str).unique()) if not kde_view.empty else set()
+        missing_kde_backends = [backend for backend in selected_backends_cached if backend not in cached_kde_backends]
+        if missing_kde_backends:
+            st.warning(
+                "Missing KDE density grid for this exact selection: "
+                f"model={model_label(model_choice_cached)}, "
+                f"k={k_cached if model_choice_cached == 'student_t' else 'n/a'}, "
+                f"n={','.join(map(str, selected_ns_cached))}, "
+                f"reference seed={int(reference_seed_cached)}, "
+                f"backend(s)={', '.join(missing_kde_backends)}."
+            )
+        elif not kde_view.empty:
+            kde_b = pd.to_numeric(kde_view.get("B", pd.Series(dtype=float)), errors="coerce").dropna()
+            kde_b_used = pd.to_numeric(kde_view.get("B_used", kde_view.get("B", pd.Series(dtype=float))), errors="coerce").dropna()
+            b_text = int(kde_b.max()) if not kde_b.empty else "unknown"
+            b_used_text = int(kde_b_used.max()) if not kde_b_used.empty else b_text
+            st.caption(
+                f"Selected KDE density cache ready: B={b_text}, B_used={b_used_text}, "
+                f"reference seed={int(reference_seed_cached)}."
+            )
+    tabram_view = cached_filter(posterior_density_cache, seed=int(reference_seed_cached))
+    tabram_view = tabram_view[tabram_view.get("backend", pd.Series(dtype=str)).astype(str).eq("t_abram")] if not tabram_view.empty else tabram_view
+    tabram_capped = bool(
+        not tabram_view.empty
+        and "density_sample_capped" in tabram_view.columns
+        and tabram_view["density_sample_capped"].fillna(False).astype(bool).any()
+    )
+    if tabram_capped:
+        st.warning("t_abram is adaptive and expensive; cached t_abram curve is capped for visualization only.")
+    sampler_view = cached_filter(sampler_density_cache, seed=int(sampler_seed_cached))
     if sampler_methods_cached and not sampler_view.empty:
         sampler_view = sampler_view[sampler_view["method"].astype(str).isin(sampler_methods_cached)]
     else:
@@ -818,6 +1012,10 @@ if use_dashboard_cache:
     plot_parts = [part for part in [kde_view, sampler_view] if not part.empty]
     plot_ready = pd.concat(plot_parts, ignore_index=True) if plot_parts else pd.DataFrame()
     if not plot_ready.empty:
+        if show_full_grid_cached:
+            st.warning("Showing the full computational grid; narrow posteriors can look compressed in this view.")
+        elif visible_xlim_cached is not None:
+            st.caption("Visible x-axis uses the raw weighted-MC 95% posterior-mass zoom; cached density curves still come from the full computational/reference grid.")
         notes = sorted(
             {
                 str(note)
@@ -837,38 +1035,72 @@ if use_dashboard_cache:
             plot_density_overlay(
                 plot_ready,
                 reference_view,
-                overlay_mode="compare backends for fixed n",
-                raw_marker_mode="selected n only",
+                overlay_mode="compare n=10,20,50 for fixed backend"
+                if cached_overlay_mode == "compare n=10,20,50 for fixed method"
+                else "compare backends for fixed n",
+                raw_marker_mode=cached_raw_marker_mode,
                 selected_marker_n=int(n_cached),
                 show_log_density=bool(show_log_density_cached),
+                visible_xlim=visible_xlim_cached,
             ),
             clear_figure=True,
         )
     else:
-        figure_key = "laplace_kna" if model_choice_cached == "laplace" else "logistic_kna" if model_choice_cached == "logistic" else f"student_t_k{int(k_cached)}"
-        figure_match = f"posterior_overlay_{figure_key}_n{int(n_cached)}.png"
-        figure_rows = figures_cache[figures_cache["figure"].astype(str).eq(figure_match)] if not figures_cache.empty else pd.DataFrame()
-        st.warning("No plot-ready KDE density-grid cache is available for this selected case yet.")
-        if not figure_rows.empty:
-            st.caption("Showing the cached full-analysis posterior overlay figure instead.")
-            st.image(str(figure_rows["path"].iloc[0]))
+        st.warning("No selected density curves are available for this exact cache selection.")
+        available_density = cached_filter(posterior_density_cache)
+        available_sampler = cached_filter(sampler_density_cache)
+        available_rows = []
+        if not available_density.empty:
+            available_rows.append(
+                available_density[["model", "k", "n", "seed", "backend"]]
+                .drop_duplicates()
+                .assign(cache_type="KDE density grid")
+            )
+        if not available_sampler.empty:
+            available_rows.append(
+                available_sampler[["model", "k", "n", "seed", "method"]]
+                .drop_duplicates()
+                .rename(columns={"method": "backend"})
+                .assign(cache_type="sampler density")
+            )
+        if available_rows:
+            st.caption("Available cached density selections for the current model/k/n filter:")
+            st.dataframe(display_table(pd.concat(available_rows, ignore_index=True)), use_container_width=True, hide_index=True)
         else:
-            st.error("No cached posterior overlay figure matched this case.")
-        st.dataframe(cached_filter(density_status_cache), use_container_width=True)
+            st.error("No plot-ready density cache exists for this model/k/n filter.")
+        st.dataframe(cached_filter(density_status_cache, seed=int(reference_seed_cached)), use_container_width=True)
         st.code("python scripts/prepare_dashboard_cache.py", language="bash")
 
     st.subheader("Reference Summaries")
     st.caption("Raw weighted-MC is the summary benchmark. KDE curves are smoothed visualization/backend sensitivity diagnostics.")
-    st.dataframe(reference_view, use_container_width=True)
+    ref_default_columns = ["method", "backend", "mean", "sd", "q025", "q50", "q975", "B", "B_used", "note"]
+    st.dataframe(default_columns(reference_view, ref_default_columns), use_container_width=True, hide_index=True)
+    with st.expander("Show full reference table", expanded=False):
+        st.dataframe(display_table(reference_view), use_container_width=True, hide_index=True)
 
     st.subheader("Posterior Accuracy Deltas")
-    st.dataframe(cached_filter(comparison_cache), use_container_width=True)
+    comparison_view = cached_filter(comparison_cache, seed=int(sampler_seed_cached))
+    if tabram_capped and "backend" in comparison_view.columns:
+        comparison_view = comparison_view[~comparison_view["backend"].astype(str).eq("t_abram")]
+    delta_columns = ["method", "backend", "delta_mean", "delta_sd", "rel_sd_error", "delta_q025", "delta_q50", "delta_q975", "ess_per_sec"]
+    st.dataframe(default_columns(comparison_view, delta_columns), use_container_width=True, hide_index=True)
+    with st.expander("Show full posterior accuracy table", expanded=False):
+        st.dataframe(display_table(comparison_view), use_container_width=True, hide_index=True)
 
     st.subheader("Cost Efficiency")
     st.dataframe(cached_filter(cost_cache), use_container_width=True)
 
     st.subheader("Density Cache Status")
-    st.dataframe(cached_filter(density_status_cache), use_container_width=True)
+    density_status_view = cached_filter(density_status_cache, seed=int(reference_seed_cached))
+    b_values = pd.to_numeric(density_status_view.get("B", pd.Series(dtype=float)), errors="coerce").dropna()
+    b_used_values = pd.to_numeric(density_status_view.get("B_used", pd.Series(dtype=float)), errors="coerce").dropna()
+    b_text = int(b_values.max()) if not b_values.empty else "unknown"
+    b_used_text = int(b_used_values.max()) if not b_used_values.empty else b_text
+    capped_text = bool(density_status_view.get("t_abram_capped", pd.Series(dtype=bool)).fillna(False).astype(bool).any()) if not density_status_view.empty else False
+    st.info(f"Current density cache: B={b_text}; B_used={b_used_text}; t_abram capped={capped_text}.")
+    if b_values.empty or float(b_values.max()) < 100000:
+        st.warning("Preview density cache only.")
+    st.dataframe(display_table(density_status_view), use_container_width=True, hide_index=True)
     st.stop()
 
 st.subheader("Sampler Outputs")
@@ -952,6 +1184,8 @@ if model_choice != "student_t":
     st.warning("Using generalized all-model reference CSV for non-Student models. The UI will not run reference audits automatically.")
     if model_choice == "laplace" and any(int(n) % 2 == 0 for n in selected_ns):
         st.error("Laplace Gibbs and np.median KDE/raw-MC references are not directly comparable for even n.")
+        st.warning("Laplace exact RATTLE is not applicable because the median/order constraint is nonsmooth.")
+        st.info("Laplace Gibbs is compared only to median_interval_contains_mu_star.")
     all_ref_path = Path(all_model_reference_csv_path)
     if not all_ref_path.exists():
         st.info("Generalized reference CSV is missing.")
@@ -1319,7 +1553,10 @@ elif show_density or any_sampler_overlay:
     st.info("Requested posterior density curves are unavailable until matching inputs or artifacts are present.")
 
 st.subheader("Summary")
-st.dataframe(summary_export_df[SUMMARY_COLUMNS], use_container_width=True)
+summary_default_columns = ["method", "backend", "mean", "sd", "q025", "q50", "q975", "B", "B_used", "note"]
+st.dataframe(default_columns(summary_export_df, summary_default_columns), use_container_width=True, hide_index=True)
+with st.expander("Show full reference table", expanded=False):
+    st.dataframe(display_table(summary_export_df[SUMMARY_COLUMNS]), use_container_width=True, hide_index=True)
 
 st.subheader("Sampler vs Reference Summary")
 if method_comparison_baseline == "kde_scott_fallback":
@@ -1329,7 +1566,10 @@ elif method_comparison_baseline == "none":
 st.dataframe(method_comparison_df, use_container_width=True)
 
 st.subheader("Difference From Raw Weighted-MC")
-st.dataframe(difference_export_df[DIFFERENCE_COLUMNS], use_container_width=True)
+difference_default_columns = ["method", "backend", "delta_mean", "delta_sd", "rel_sd_error", "delta_q025", "delta_q50", "delta_q975", "ess_per_sec"]
+st.dataframe(default_columns(difference_export_df, difference_default_columns), use_container_width=True, hide_index=True)
+with st.expander("Show full posterior accuracy table", expanded=False):
+    st.dataframe(display_table(difference_export_df[DIFFERENCE_COLUMNS]), use_container_width=True, hide_index=True)
 
 st.subheader("Diagnostics")
 grid_diag_cols = ["n", "backend", "estimator_type", "grid_lo", "grid_hi", "bandwidth"]
@@ -1337,7 +1577,18 @@ summary_diag = summary_df[summary_df["estimator_type"].isin(["kde_grid", "kde_qu
 summary_diag = summary_diag[[col for col in grid_diag_cols if col in summary_diag.columns]]
 if not summary_diag.empty and not diag.empty:
     diag = diag.merge(summary_diag, on=["n", "backend"], how="left")
-st.dataframe(diag, use_container_width=True)
+b_values_diag = pd.to_numeric(density_export_df.get("B", pd.Series(dtype=float)), errors="coerce").dropna()
+b_used_diag = pd.to_numeric(density_export_df.get("B_used", pd.Series(dtype=float)), errors="coerce").dropna()
+tabram_capped_diag = bool(
+    "density_sample_capped" in density_export_df.columns
+    and density_export_df["density_sample_capped"].fillna(False).astype(bool).any()
+)
+b_text_diag = int(b_values_diag.max()) if not b_values_diag.empty else "unknown"
+b_used_text_diag = int(b_used_diag.max()) if not b_used_diag.empty else b_text_diag
+st.info(f"Current density cache: B={b_text_diag}; B_used={b_used_text_diag}; t_abram capped={tabram_capped_diag}.")
+if b_values_diag.empty or float(b_values_diag.max()) < 100000:
+    st.warning("Preview density cache only.")
+st.dataframe(diag, use_container_width=True, hide_index=True)
 
 st.subheader("Tail Diagnostics")
 tail_df = with_plot_metadata(tail_diagnostics(density_df, summary_df), plot_lo, plot_hi, actual_plot_grid_size)

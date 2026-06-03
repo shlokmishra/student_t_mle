@@ -1,13 +1,13 @@
-"""Streamlit router for the Student-t MLE comparison dashboard."""
+"""Streamlit router for the location-model comparison dashboard."""
 
 from __future__ import annotations
 
 import streamlit as st
 
 
-st.set_page_config(page_title="Student-t MLE Dashboard", layout="wide")
+st.set_page_config(page_title="Location-Model MLE Dashboard", layout="wide")
 
-st.title("Student-t MLE Comparison Dashboard")
+st.title("Location-Model MLE Comparison Dashboard")
 st.caption(
     "Posterior correctness lives on the Posterior Comparison page; exact Gibbs/RATTLE "
     "cost counters live on the Cost Audit page."

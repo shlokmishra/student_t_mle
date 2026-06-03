@@ -13,6 +13,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from scipy import stats
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
@@ -24,6 +25,7 @@ from models.model_registry import model_validity_rows
 
 CACHE_DIR = Path("results/dashboard_cache")
 REFERENCE_CSV = Path("reporting/diagnostic_outputs/model_reference_audit/reference_all_models.csv")
+REFERENCE_DENSITY_CSV = Path("reporting/diagnostic_outputs/model_reference_audit/reference_all_models_density_grid.csv")
 REFERENCE_SUMMARY_CSV = Path("reporting/diagnostic_outputs/model_reference_audit/full_summary/reference_summary.csv")
 COST_DIR = Path("results/cost_audit")
 ANALYSIS_DIR = Path("results/analysis_report")
@@ -31,6 +33,7 @@ FIGURE_DIR = ANALYSIS_DIR / "figures"
 
 EXPECTED_INPUTS = {
     "reference_csv": REFERENCE_CSV,
+    "reference_density_csv": REFERENCE_DENSITY_CSV,
     "reference_summary_csv": REFERENCE_SUMMARY_CSV,
     "cost_ledger_csv": COST_DIR / "cost_ledger.csv",
     "diagnostic_summary_csv": COST_DIR / "diagnostic_summary.csv",
@@ -187,75 +190,76 @@ def thinned_chain(chain: pd.DataFrame, thin: int = 20) -> pd.DataFrame:
     return out[[col for col in keep_cols if col in out.columns]]
 
 
-def cached_student_k2_density_grid(grid_size: int = 2000) -> tuple[pd.DataFrame, pd.DataFrame]:
+def cached_student_k2_density_grid(grid_size: int = 2000, seeds: tuple[int, ...] = (123, 456, 789)) -> tuple[pd.DataFrame, pd.DataFrame]:
     rows = []
     status_rows = []
     for n in [10, 20, 50]:
-        path = mle_sample_cache_path(k=2.0, n=int(n), B=100000, seed=123, audit_dir=DEFAULT_AUDIT_DIR)
-        status = {
-            "model": "student_t",
-            "k": 2.0,
-            "n": int(n),
-            "B": 100000,
-            "seed": 123,
-            "sample_cache_path": str(path),
-            "sample_cache_exists": path.exists(),
-            "density_cache_status": "missing samples",
-        }
-        if path.exists():
-            z_samples = np.asarray(np.load(path)["z_samples"], dtype=float)
-            full_backends = tuple(backend for backend in DEFAULT_BACKENDS if backend != "t_abram")
-            density_parts = []
-            if full_backends:
-                density_parts.append(
-                    build_posterior_density_grid(
-                        z_samples=z_samples,
+        for seed in seeds:
+            path = mle_sample_cache_path(k=2.0, n=int(n), B=100000, seed=int(seed), audit_dir=DEFAULT_AUDIT_DIR)
+            status = {
+                "model": "student_t",
+                "k": 2.0,
+                "n": int(n),
+                "B": 100000,
+                "seed": int(seed),
+                "sample_cache_path": str(path),
+                "sample_cache_exists": path.exists(),
+                "density_cache_status": "missing samples",
+            }
+            if path.exists():
+                z_samples = np.asarray(np.load(path)["z_samples"], dtype=float)
+                full_backends = tuple(backend for backend in DEFAULT_BACKENDS if backend != "t_abram")
+                density_parts = []
+                if full_backends:
+                    density_parts.append(
+                        build_posterior_density_grid(
+                            z_samples=z_samples,
+                            k=2.0,
+                            n=int(n),
+                            mu_star=0.0,
+                            prior_mean=0.0,
+                            prior_std=10.0,
+                            B=100000,
+                            seed=int(seed),
+                            backends=full_backends,
+                            grid_size=int(grid_size),
+                            bound_multiplier=5.0,
+                        )
+                    )
+                if "t_abram" in DEFAULT_BACKENDS:
+                    rng = np.random.default_rng(20260603 + 1000 * int(seed) + int(n))
+                    cap = min(z_samples.size, 5000)
+                    idx = np.sort(rng.choice(z_samples.size, size=cap, replace=False))
+                    t_samples = z_samples[idx]
+                    t_density = build_posterior_density_grid(
+                        z_samples=t_samples,
                         k=2.0,
                         n=int(n),
                         mu_star=0.0,
                         prior_mean=0.0,
                         prior_std=10.0,
-                        B=100000,
-                        seed=123,
-                        backends=full_backends,
+                        B=int(z_samples.size),
+                        seed=int(seed),
+                        backends=("t_abram",),
                         grid_size=int(grid_size),
                         bound_multiplier=5.0,
                     )
-                )
-            if "t_abram" in DEFAULT_BACKENDS:
-                rng = np.random.default_rng(20260603 + int(n))
-                cap = min(z_samples.size, 5000)
-                idx = np.sort(rng.choice(z_samples.size, size=cap, replace=False))
-                t_samples = z_samples[idx]
-                t_density = build_posterior_density_grid(
-                    z_samples=t_samples,
-                    k=2.0,
-                    n=int(n),
-                    mu_star=0.0,
-                    prior_mean=0.0,
-                    prior_std=10.0,
-                    B=int(z_samples.size),
-                    seed=123,
-                    backends=("t_abram",),
-                    grid_size=int(grid_size),
-                    bound_multiplier=5.0,
-                )
-                t_density["density_sample_size"] = int(cap)
-                t_density["density_note"] = "t_abram cached from deterministic subsample; scott/SJ_transform use full B=100000 samples."
-                density_parts.append(t_density)
-            density = pd.concat(density_parts, ignore_index=True) if density_parts else pd.DataFrame()
-            if "density_sample_size" not in density.columns:
-                density["density_sample_size"] = int(z_samples.size)
-            density["density_sample_size"] = density["density_sample_size"].fillna(int(z_samples.size))
-            if "density_note" not in density.columns:
-                density["density_note"] = ""
-            density["density_note"] = density["density_note"].fillna("")
-            density["model"] = "student_t"
-            density["source_file"] = str(path)
-            rows.append(density)
-            status["density_cache_status"] = "ready"
-            status["density_note"] = "scott/SJ_transform full B=100000; t_abram deterministic subsample."
-        status_rows.append(status)
+                    t_density["density_sample_size"] = int(cap)
+                    t_density["density_note"] = "t_abram cached from deterministic subsample; scott/SJ_transform use full B=100000 samples."
+                    density_parts.append(t_density)
+                density = pd.concat(density_parts, ignore_index=True) if density_parts else pd.DataFrame()
+                if "density_sample_size" not in density.columns:
+                    density["density_sample_size"] = int(z_samples.size)
+                density["density_sample_size"] = density["density_sample_size"].fillna(int(z_samples.size))
+                if "density_note" not in density.columns:
+                    density["density_note"] = ""
+                density["density_note"] = density["density_note"].fillna("")
+                density["model"] = "student_t"
+                density["source_file"] = str(path)
+                rows.append(density)
+                status["density_cache_status"] = "ready"
+                status["density_note"] = "scott/SJ_transform full B=100000; t_abram deterministic subsample."
+            status_rows.append(status)
     density_df = pd.concat(rows, ignore_index=True) if rows else pd.DataFrame()
     return density_df, pd.DataFrame(status_rows)
 
@@ -290,10 +294,16 @@ def sampler_density_cache(chain: pd.DataFrame, reference: pd.DataFrame, grid_siz
             lo = float(q025 - 0.25 * width)
             hi = float(q975 + 0.25 * width)
         grid = np.linspace(lo, hi, int(grid_size))
-        bins = min(max(int(np.sqrt(samples.size)), 30), 120)
-        hist, edges = np.histogram(samples, bins=bins, range=(lo, hi), density=True)
-        centers = 0.5 * (edges[:-1] + edges[1:])
-        density = np.interp(grid, centers, hist, left=0.0, right=0.0)
+        try:
+            kde = stats.gaussian_kde(samples)
+            density = np.asarray(kde(grid), dtype=float)
+            density_method = "gaussian_kde_scott"
+        except Exception:
+            bins = min(max(int(np.sqrt(samples.size)), 30), 120)
+            hist, edges = np.histogram(samples, bins=bins, range=(lo, hi), density=True)
+            centers = 0.5 * (edges[:-1] + edges[1:])
+            density = np.interp(grid, centers, hist, left=0.0, right=0.0)
+            density_method = "histogram_fallback"
         integral = float(np.trapezoid(density, grid))
         if integral > 0:
             density = density / integral
@@ -319,6 +329,8 @@ def sampler_density_cache(chain: pd.DataFrame, reference: pd.DataFrame, grid_siz
                     "plot_grid_lo": lo,
                     "plot_grid_hi": hi,
                     "plot_grid_size": int(grid_size),
+                    "density_method": density_method,
+                    "density_note": "Display-only KDE smoothing of Gibbs/RATTLE chain samples.",
                     "source_file": str(source),
                 }
             )
@@ -329,6 +341,7 @@ def sampler_density_cache(chain: pd.DataFrame, reference: pd.DataFrame, grid_siz
 def main() -> None:
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
     reference = read_csv(REFERENCE_CSV)
+    reference_density = read_csv(REFERENCE_DENSITY_CSV)
     reference_summary = read_csv(REFERENCE_SUMMARY_CSV)
     cost_ledger = read_csv(COST_DIR / "cost_ledger.csv")
     diagnostics = read_csv(COST_DIR / "diagnostic_summary.csv")
@@ -343,7 +356,45 @@ def main() -> None:
     validity = pd.DataFrame(model_validity_rows())
     figures = figure_index()
     views = build_views(reference, accuracy, cost_efficiency, rankings, figures)
-    posterior_density, density_status = cached_student_k2_density_grid()
+    stale_density_reason = ""
+    if not reference.empty and not reference_density.empty and "B" in reference.columns and "B" in reference_density.columns:
+        reference_b = pd.to_numeric(reference["B"], errors="coerce").max()
+        density_b = pd.to_numeric(reference_density["B"], errors="coerce").max()
+        if pd.notna(reference_b) and pd.notna(density_b) and density_b < reference_b:
+            stale_density_reason = (
+                f"Ignored reference density grid because it is preview B={int(density_b)} "
+                f"while reference summaries are B={int(reference_b)}."
+            )
+            reference_density = pd.DataFrame()
+
+    if reference_density.empty:
+        posterior_density, density_status = cached_student_k2_density_grid()
+    else:
+        posterior_density = reference_density.copy()
+        if "B_used" not in posterior_density.columns:
+            posterior_density["B_used"] = pd.to_numeric(posterior_density.get("B", np.nan), errors="coerce")
+        if "density_sample_size" not in posterior_density.columns:
+            posterior_density["density_sample_size"] = posterior_density["B_used"]
+        posterior_density["density_sample_capped"] = pd.to_numeric(
+            posterior_density["density_sample_size"], errors="coerce"
+        ) < pd.to_numeric(posterior_density.get("B", np.nan), errors="coerce")
+        if "density_note" not in posterior_density.columns:
+            posterior_density["density_note"] = ""
+        posterior_density.loc[
+            posterior_density["backend"].astype(str).eq("t_abram") & posterior_density["density_sample_capped"].fillna(False),
+            "density_note",
+        ] = "t_abram is adaptive and expensive; cached t_abram curve is capped for visualization only."
+        density_status = (
+            posterior_density.groupby(["model", "k", "n", "B", "seed"], dropna=False, as_index=False)
+            .agg(
+                sample_cache_path=("source_file", "first"),
+                sample_cache_exists=("source_file", lambda value: True),
+                density_cache_status=("backend", lambda value: "ready"),
+                B_used=("B_used", "max"),
+                t_abram_capped=("density_sample_capped", "max"),
+                density_note=("density_note", lambda value: " ".join(sorted({str(item) for item in value if str(item).strip()})) or "loaded from reference_all_models_density_grid.csv"),
+            )
+        )
     sampler_density = sampler_density_cache(chain, reference)
 
     cache_files = {
@@ -385,6 +436,8 @@ def main() -> None:
     warnings = []
     if files_missing:
         warnings.append("Some expected source artifacts are missing.")
+    if stale_density_reason:
+        warnings.append(stale_density_reason)
     if not student_diag.empty:
         warnings.append("Student k=1,n=10 unresolved; see student_k1_n10_diagnostic.md.")
     else:

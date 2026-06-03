@@ -12,7 +12,6 @@ import streamlit as st
 DEFAULT_CACHE_DIR = Path("results/dashboard_cache")
 
 
-@st.cache_data(show_spinner=False)
 def load_manifest(cache_dir: str) -> dict:
     path = Path(cache_dir) / "cache_manifest.json"
     if not path.exists():
@@ -20,7 +19,6 @@ def load_manifest(cache_dir: str) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-@st.cache_data(show_spinner=False)
 def read_cache_csv(cache_dir: str, filename: str) -> pd.DataFrame:
     path = Path(cache_dir) / filename
     return pd.read_csv(path) if path.exists() else pd.DataFrame()
@@ -44,17 +42,38 @@ def show_cache_badge(use_cache: bool, cache_dir: Path, manifest: dict) -> None:
         st.info("Dashboard cache disabled: page is using the normal interactive loaders.")
         return
     status = "ready" if manifest.get("dashboard_ready") else "partial" if manifest else "missing"
-    data_level = manifest.get("data_level", "missing")
+    raw_data_level = manifest.get("data_level", "missing")
+    data_level = "preview" if raw_data_level == "smoke" else raw_data_level
     created_at = manifest.get("created_at", "unavailable")
-    caveat = "Student k=1,n=10 unresolved"
-    cols = st.columns(4)
+    cols = st.columns(3)
     cols[0].metric("Data level", data_level)
     cols[1].metric("Cache status", status)
     cols[2].metric("Last prepared", created_at)
-    cols[3].metric("Major caveat", caveat)
+    st.caption(f"Cache path: {cache_dir}")
+    if raw_data_level == "smoke":
+        st.warning("Preview cache only — do not use for final scientific conclusions.")
     if status != "ready":
         missing = manifest.get("files_missing", []) if manifest else ["cache_manifest.json"]
-        st.error(f"Dashboard cache is {status}. Missing: {', '.join(map(str, missing))}. Cache path: {cache_dir}")
+        if missing:
+            st.error(f"Dashboard cache is {status}. Missing: {', '.join(map(str, missing))}. Cache path: {cache_dir}")
+        else:
+            st.info(f"Dashboard cache is {status}. This is expected for smoke/preview data. Cache path: {cache_dir}")
+    cache_warnings = []
+    model_caveats = []
+    for warning in manifest.get("warnings", []) if manifest else []:
+        if not warning:
+            continue
+        text = str(warning)
+        if text.lower().startswith(("student ", "laplace ", "logistic ")):
+            model_caveats.append(text)
+        else:
+            cache_warnings.append(text)
+    for warning in cache_warnings:
+        st.warning(warning)
+    if model_caveats:
+        with st.expander("Model caveats in this cache", expanded=False):
+            for caveat in model_caveats:
+                st.info(caveat)
 
 
 def require_cache_file(cache_dir: Path, filename: str) -> Path | None:
