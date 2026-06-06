@@ -16,6 +16,7 @@ PYTHON_MODULE="${PYTHON_MODULE:-}"
 B_VALUES="${B_VALUES:-100000}"
 SEEDS="${SEEDS:-123,456,789}"
 N_VALUES="${N_VALUES:-10,20,50}"
+LAPLACE_N_VALUES="${LAPLACE_N_VALUES:-11,21,51}"
 K_VALUES="${K_VALUES:-1,2,3}"
 BANDWIDTHS="${BANDWIDTHS:-scott,SJ_transform,t_abram}"
 GRID_SIZE="${GRID_SIZE:-2500}"
@@ -46,6 +47,7 @@ rm -rf "${TASK_DIR}"
 mkdir -p logs "$(dirname "${OUT_CSV}")" "$(dirname "${DENSITY_OUT_CSV}")" "${TASK_DIR}"
 
 IFS=',' read -r -a n_array <<< "${N_VALUES}"
+IFS=',' read -r -a laplace_n_array <<< "${LAPLACE_N_VALUES}"
 IFS=',' read -r -a k_array <<< "${K_VALUES}"
 IFS=',' read -r -a seed_array <<< "${SEEDS}"
 
@@ -58,7 +60,12 @@ run_limited() {
 
 task_index=0
 for model in student_t logistic laplace; do
-  for n in "${n_array[@]}"; do
+  if [ "${model}" = "laplace" ]; then
+    model_n_array=("${laplace_n_array[@]}")
+  else
+    model_n_array=("${n_array[@]}")
+  fi
+  for n in "${model_n_array[@]}"; do
     for seed in "${seed_array[@]}"; do
       if [ "${model}" = "student_t" ]; then
         for k in "${k_array[@]}"; do

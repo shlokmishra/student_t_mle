@@ -53,9 +53,9 @@ st.dataframe(validity_df[preferred_columns], use_container_width=True)
 laplace_warnings = validity_df[validity_df["model"].eq("laplace") & validity_df["warnings"].astype(str).ne("")]
 if not laplace_warnings.empty:
     st.error("Laplace caveat: exact RATTLE is not applicable because the median constraint is nonsmooth/order-based.")
-    st.warning(
-        "Laplace Gibbs should be compared to the median-interval reference. "
-        "The deterministic np.median KDE/raw-MC reference is a different target for even n."
+    st.info(
+        "Laplace defaults to odd n=11,21,51, where the sample median is unique and deterministic np.median KDE/raw-MC "
+        "matches the Gibbs target. For even n, compare Gibbs only to the median-interval reference."
     )
 
 st.subheader("Implementation Notes")
@@ -64,6 +64,6 @@ st.markdown(
 - Student Gibbs uses `psi(y)=y/(k+y^2)` with branch weights including `-log|psi'(y)|`.
 - Logistic Gibbs uses monotone `psi(y)=tanh(y/2)`, inverse `2*atanh(z)`, and the pushforward Jacobian in `q(z)`.
 - Student and Logistic RATTLE use paper-fixed-direction projection with Gram correction enabled by default.
-- Laplace `get_mle` uses `numpy.median`, which averages the middle two observations for even `n`; current Laplace Gibbs conditions on the median interval via half-below/half-above samples.
+- Laplace defaults to odd `n` so `numpy.median` is the unique sample median and matches Gibbs. Even `n` remains available as a separate median-interval target.
 """
 )

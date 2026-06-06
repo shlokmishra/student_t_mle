@@ -37,10 +37,13 @@ def _floats(text: str) -> list[float]:
 
 
 def parse_args() -> argparse.Namespace:
+    n_values_explicit = "--n-values" in sys.argv
+    laplace_n_values_explicit = "--laplace-n-values" in sys.argv
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--models", nargs="+", default=["student_t"], choices=["student_t", "logistic", "laplace"])
     parser.add_argument("--methods", nargs="+", default=["gibbs", "rattle"], choices=["gibbs", "rattle"])
     parser.add_argument("--n-values", type=_ints, default=[10, 20, 50])
+    parser.add_argument("--laplace-n-values", type=_ints, default=[11, 21, 51])
     parser.add_argument("--k-values", type=_floats, default=[2.0])
     parser.add_argument("--k", type=float, default=None, help="Backward-compatible single Student-t k.")
     parser.add_argument("--mu-star", type=float, default=0.0)
@@ -81,7 +84,10 @@ def parse_args() -> argparse.Namespace:
         default=2000,
         help="Maximum latent diagnostic rows per model/method/n/k run; use 0 for no cap.",
     )
-    return parser.parse_args()
+    args = parser.parse_args()
+    args.n_values_explicit = n_values_explicit
+    args.laplace_n_values_explicit = laplace_n_values_explicit
+    return args
 
 
 def effective_sample_size(values: np.ndarray) -> float:
@@ -114,7 +120,9 @@ def infer_run_status(args: argparse.Namespace) -> str:
         return "medium"
     if "tuning" in out_text:
         return "tuning"
-    if int(args.num_iterations) >= 10000 and set(map(int, args.n_values)) >= {10, 20, 50}:
+    n_values = set(map(int, args.n_values))
+    laplace_n_values = set(map(int, getattr(args, "laplace_n_values", [])))
+    if int(args.num_iterations) >= 10000 and n_values >= {10, 20, 50} and laplace_n_values >= {11, 21, 51}:
         return "full"
     return "partial"
 
@@ -232,13 +240,17 @@ def latent_diagnostic_rows(
     return rows
 
 
-def _metadata(model: str, method: str) -> dict:
+def _metadata(model: str, method: str, n: int | None = None) -> dict:
     spec = get_model_spec(model)
     target_description = spec.target_description
     mle_convention = spec.mle_convention
     if model == "laplace" and method == "gibbs":
-        target_description = LAPLACE_MEDIAN_INTERVAL_TARGET["target_description"]
-        mle_convention = LAPLACE_MEDIAN_INTERVAL_TARGET["mle_convention"]
+        target = LAPLACE_MEDIAN_INTERVAL_TARGET if n is not None and int(n) % 2 == 0 else {
+            "target_description": "deterministic_median_equals_mu_star",
+            "mle_convention": "unique sample median pinned at mu_star for odd n",
+        }
+        target_description = target["target_description"]
+        mle_convention = target["mle_convention"]
     if model == "laplace" and method == "rattle":
         target_description = LAPLACE_MEDIAN_INTERVAL_TARGET["target_description"]
         mle_convention = LAPLACE_MEDIAN_INTERVAL_TARGET["mle_convention"]
@@ -259,7 +271,7 @@ def summarize_chain(model: str, method: str, n: int, k: float, mu_star: float, s
     acceptance_rate = float(chain.get("mu_acceptance_rate", chain.get("x_acceptance_rate", np.nan)))
     if method == "rattle":
         acceptance_rate = float(chain.get("x_acceptance_rate", acceptance_rate))
-    meta = _metadata(model, method)
+    meta = _metadata(model, method, n)
     meta.update({"num_iterations": int(args.num_iterations), "burn_in": int(args.burn_in), "run_status": infer_run_status(args)})
     ledger.counters.update(meta)
     ledger_row = ledger.output_row(ess_mu=ess, ess_per_sec=ess_per_sec, acceptance_rate=acceptance_rate)
@@ -327,7 +339,7 @@ def diagnostic_summary_row(ledger_row: dict) -> dict:
 
 def not_applicable_row(model: str, method: str, n: int, k: float, args: argparse.Namespace) -> tuple[dict, dict, dict]:
     spec = get_model_spec(model)
-    meta = _metadata(model, method)
+    meta = _metadata(model, method, n)
     base = {
         **meta,
         "method": method,
@@ -366,7 +378,7 @@ def run_one(
     params = base_params(args, model, n, k, rattle_settings)
     key = random.PRNGKey(seed)
     ledger = CostLedger(method=method, model=model, n=n, k=k, mu_star=args.mu_star, seed=seed, iterations=args.num_iterations)
-    meta = _metadata(model, method)
+    meta = _metadata(model, method, n)
     meta.update({"num_iterations": int(args.num_iterations), "burn_in": int(args.burn_in), "run_status": infer_run_status(args)})
     ledger.counters.update(meta)
     ledger.start()
@@ -404,6 +416,14 @@ def model_k_values(args: argparse.Namespace, model: str) -> list[float]:
     return [np.nan]
 
 
+def model_n_values(args: argparse.Namespace, model: str) -> list[int]:
+    if model == "laplace" and (
+        getattr(args, "laplace_n_values_explicit", False) or not getattr(args, "n_values_explicit", False)
+    ):
+        return [int(n) for n in args.laplace_n_values]
+    return [int(n) for n in args.n_values]
+
+
 def main() -> None:
     args = parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
@@ -418,7 +438,7 @@ def main() -> None:
             if method not in MODEL_MODULES.get(model, {}) and not (model == "laplace" and method == "rattle"):
                 continue
             for k in model_k_values(args, model):
-                for n in args.n_values:
+                for n in model_n_values(args, model):
                     rows, ledger_row, summary, diagnostic, latent_rows = run_one(model, method, int(n), float(k), args, int(args.seed), rattle_settings)
                     chain_rows_all.extend(rows)
                     latent_rows_all.extend(latent_rows)

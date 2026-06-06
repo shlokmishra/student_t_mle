@@ -1,5 +1,9 @@
 """
-Laplace location model (scale b known). MLE = median; Gibbs with half-below / half-above constraint.
+Laplace location model (scale b known).
+
+For odd n, Gibbs pins the unique sample median at mu_star. For even n, Gibbs
+keeps the older median-interval target with half the state below and half above
+mu_star.
 """
 
 import numpy as np
@@ -90,12 +94,15 @@ _sample_trunc_right_batch = vmap(_sample_trunc_right, in_axes=(0, None, None, No
 def _update_x_full(key, x_current, mu_current, mu_star, b):
     n = x_current.shape[0]
     half = n // 2
+    is_odd = n % 2 == 1
     key_perm, key_left, key_right = random.split(key, 3)
-    perm = random.permutation(key_perm, n)
     keys_left = random.split(key_left, half)
     keys_right = random.split(key_right, half)
     x_left = _sample_trunc_left_batch(keys_left, mu_current, b, mu_star)
     x_right = _sample_trunc_right_batch(keys_right, mu_current, b, mu_star)
+    if is_odd:
+        return jnp.concatenate([x_left, jnp.asarray([mu_star]), x_right], axis=0)
+    perm = random.permutation(key_perm, n)
     x_new_perm = jnp.concatenate([x_left, x_right], axis=0)
     return x_new_perm[jnp.argsort(perm)]
 
@@ -117,17 +124,28 @@ def _update_mu_mh(key, mu_current, x_current, sigma_mu, prior_loc, prior_scale, 
 
 
 def run_gibbs(key, mu_star, params, verbose=True):
-    """Two-step Gibbs: (1) mu | x MH, (2) x | mu with median = mu_star (half below, half above)."""
+    """Two-step Gibbs for Laplace median conditioning.
+
+    Odd n pins the unique median at mu_star. Even n keeps the median-interval
+    conditioning with half below and half above mu_star.
+    """
     T = int(params["num_iterations_T"])
     n = int(params["n"])
     b = params.get("b", 1.0)
     mus = jnp.zeros(T + 1)
     xs = jnp.zeros((T + 1, n))
     half = n // 2
-    x0 = jnp.concatenate([
-        (mu_star - 1.0) * jnp.ones(half),
-        (mu_star + 1.0) * jnp.ones(half),
-    ])
+    if n % 2 == 1:
+        x0 = jnp.concatenate([
+            (mu_star - 1.0) * jnp.ones(half),
+            jnp.asarray([mu_star]),
+            (mu_star + 1.0) * jnp.ones(half),
+        ])
+    else:
+        x0 = jnp.concatenate([
+            (mu_star - 1.0) * jnp.ones(half),
+            (mu_star + 1.0) * jnp.ones(half),
+        ])
     mus = mus.at[0].set(mu_star)
     xs = xs.at[0, :].set(x0)
     mu_acc = 0

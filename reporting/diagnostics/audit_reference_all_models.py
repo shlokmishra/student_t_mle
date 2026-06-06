@@ -86,10 +86,13 @@ def _strings(text: str) -> list[str]:
 
 
 def parse_args() -> argparse.Namespace:
+    n_values_explicit = "--n-values" in sys.argv
+    laplace_n_values_explicit = "--laplace-n-values" in sys.argv
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--models", nargs="+", default=["student_t", "logistic", "laplace"], choices=["student_t", "logistic", "laplace"])
     parser.add_argument("--k-values", type=_floats, default=[1.0, 2.0, 3.0])
     parser.add_argument("--n-values", type=_ints, default=[10, 20, 50])
+    parser.add_argument("--laplace-n-values", type=_ints, default=[11, 21, 51])
     parser.add_argument("--B-values", type=_ints, default=[100000])
     parser.add_argument("--seeds", type=_ints, default=[123, 456, 789])
     parser.add_argument("--bandwidths", type=_strings, default=["scott", "SJ_transform"])
@@ -106,11 +109,22 @@ def parse_args() -> argparse.Namespace:
         help="Also emit deterministic np.median Laplace raw/KDE rows as a separate non-Gibbs-comparable convention.",
     )
     parser.add_argument("--overwrite", action="store_true")
-    return parser.parse_args()
+    args = parser.parse_args()
+    args.n_values_explicit = n_values_explicit
+    args.laplace_n_values_explicit = laplace_n_values_explicit
+    return args
 
 
 def model_k_values(model: str, k_values: Iterable[float]) -> list[float]:
     return [float(k) for k in k_values] if model == "student_t" else [np.nan]
+
+
+def model_n_values(args: argparse.Namespace, model: str) -> list[int]:
+    if model == "laplace" and (
+        getattr(args, "laplace_n_values_explicit", False) or not getattr(args, "n_values_explicit", False)
+    ):
+        return [int(n) for n in args.laplace_n_values]
+    return [int(n) for n in args.n_values]
 
 
 def simulate_mle_errors(model: str, k: float, n: int, b: int, seed: int, laplace_b: float) -> np.ndarray:
@@ -314,10 +328,10 @@ def emit_rows(args: argparse.Namespace) -> None:
         args.density_out_csv.unlink()
     for model in args.models:
         for k in model_k_values(model, args.k_values):
-            for n in args.n_values:
+            for n in model_n_values(args, model):
                 for b in args.B_values:
                     for seed in args.seeds:
-                        if model == "laplace":
+                        if model == "laplace" and int(n) % 2 == 0:
                             lower, upper = simulate_laplace_order_stats(n, b, seed, args.laplace_b)
                             interval, mu_grid, density, cdf = laplace_interval_reference_and_density(
                                 lower,
@@ -356,6 +370,8 @@ def emit_rows(args: argparse.Namespace) -> None:
                             if not args.include_laplace_np_median_reference:
                                 print(f"completed model={model} n={n} k={k} B={b} seed={seed}")
                                 continue
+                            target = LAPLACE_NP_MEDIAN_TARGET
+                        elif model == "laplace":
                             target = LAPLACE_NP_MEDIAN_TARGET
                         else:
                             target = None

@@ -59,20 +59,17 @@ MODEL_REGISTRY: dict[str, ModelSpec] = {
         supports_rattle=False,
         supports_cost_audit=True,
         mle_type="median",
-        mle_convention="numpy median / average of middle two for even n in get_mle and benchmark MLE samples",
+        mle_convention="unique sample median for odd n; numpy median averages middle two for even n",
         constraint_type="nonsmooth_median",
-        default_parameters={"n": 20, "b": 1.0, "prior_mean": 0.0, "prior_std": 10.0},
-        target_description=(
-            "KDE/raw-MC use deterministic numpy-median MLE errors; current Gibbs conditions on "
-            "mu_star lying in the median interval via half-below/half-above samples."
-        ),
+        default_parameters={"n": 21, "n_values": [11, 21, 51], "b": 1.0, "prior_mean": 0.0, "prior_std": 10.0},
+        target_description="deterministic_median_equals_mu_star",
     ),
 }
 
 LAPLACE_NP_MEDIAN_TARGET = {
     "target_id": "laplace_np_median_target",
-    "target_description": "deterministic_np_median_equals_mu_star",
-    "mle_convention": "numpy median / average of middle two for even n",
+    "target_description": "deterministic_median_equals_mu_star",
+    "mle_convention": "unique sample median for odd n; numpy median convention otherwise",
 }
 
 LAPLACE_MEDIAN_INTERVAL_TARGET = {
@@ -87,6 +84,10 @@ def get_model_spec(model: str) -> ModelSpec:
     if key not in MODEL_REGISTRY:
         raise KeyError(f"Unknown model: {model}")
     return MODEL_REGISTRY[key]
+
+
+def laplace_target_for_n(n: int) -> dict[str, str]:
+    return LAPLACE_NP_MEDIAN_TARGET if int(n) % 2 == 1 else LAPLACE_MEDIAN_INTERVAL_TARGET
 
 
 def model_validity_rows() -> list[dict[str, Any]]:
@@ -106,16 +107,15 @@ def model_validity_rows() -> list[dict[str, Any]]:
                 target_matches_reference = False
                 warnings = "Exact RATTLE not applicable: Laplace median constraint is nonsmooth/order-based."
             if model == "laplace" and method == "gibbs":
-                target_matches_reference = False
-                warnings = "Laplace Gibbs and np.median KDE/raw-MC references are not directly comparable for even n."
+                warnings = "For even n, Laplace Gibbs uses median_interval_contains_mu_star; odd-n default uses deterministic_median_equals_mu_star."
             rows.append(
                 {
                     "model": model,
                     "k": "1,2,3" if model == "student_t" else "",
                     "method": method,
                     "implementation_exists": implementation_exists,
-                    "target_description": spec.target_description if not (model == "laplace" and method == "gibbs") else LAPLACE_MEDIAN_INTERVAL_TARGET["target_description"],
-                    "mle_convention": spec.mle_convention if not (model == "laplace" and method == "gibbs") else LAPLACE_MEDIAN_INTERVAL_TARGET["mle_convention"],
+                    "target_description": spec.target_description,
+                    "mle_convention": spec.mle_convention,
                     "target_defined": target_defined,
                     "target_matches_reference": target_matches_reference,
                     "smooth_constraint": smooth_constraint,

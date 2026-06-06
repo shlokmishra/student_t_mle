@@ -19,8 +19,8 @@ mkdir -p logs
 
 echo "Using up to ${MAX_PARALLEL:-8} parallel workers per job."
 echo "Each worker pins BLAS/OpenMP thread counts to 1 to avoid oversubscription."
-echo "Reference defaults: B=${B_VALUES:-100000}, bandwidths=${BANDWIDTHS:-scott,SJ_transform,t_abram}."
-echo "Cost defaults: NUM_ITERATIONS=${NUM_ITERATIONS:-100000}, BURN_IN=${BURN_IN:-20000}, SEEDS=${SEEDS:-${SEED:-0}}."
+echo "Reference defaults: B=${B_VALUES:-100000}, bandwidths=${BANDWIDTHS:-scott,SJ_transform,t_abram}, N_VALUES=${N_VALUES:-10,20,50}, LAPLACE_N_VALUES=${LAPLACE_N_VALUES:-11,21,51}."
+echo "Cost defaults: NUM_ITERATIONS=${NUM_ITERATIONS:-100000}, BURN_IN=${BURN_IN:-20000}, SEEDS=${SEEDS:-${SEED:-0}}, N_VALUES=${N_VALUES:-10,20,50}, LAPLACE_N_VALUES=${LAPLACE_N_VALUES:-11,21,51}."
 
 submit_job() {
   local output

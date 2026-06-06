@@ -88,7 +88,7 @@ def sampler_summary(cost_dir: Path) -> pd.DataFrame:
 
 
 def reference_for_sampler(row: pd.Series, raw_agg: pd.DataFrame, interval_agg: pd.DataFrame) -> pd.Series | None:
-    if row["model"] == "laplace":
+    if row["model"] == "laplace" and int(row["n"]) % 2 == 0:
         ref = interval_agg[
             interval_agg["model"].eq("laplace")
             & interval_agg["n"].eq(int(row["n"]))
@@ -386,7 +386,19 @@ def suspicious_cases(accuracy: pd.DataFrame, cost: pd.DataFrame, rat: pd.DataFra
         if row["method"] == "rattle" and row.get("rattle_status") == "not_applicable":
             add(row, "laplace_rattle_not_applicable", "info", "rattle_status", row["rattle_status"], "Do not compare Laplace RATTLE.")
     if "laplace" in set(reference["model"].astype(str)):
-        add({"model": "laplace", "k": np.nan, "n": "even", "method": "gibbs"}, "laplace_target_mismatch", "info", "target_description", "deterministic_np_median_equals_mu_star", "Use median_interval_contains_mu_star reference for Laplace Gibbs.")
+        laplace_even = reference[
+            reference["model"].astype(str).eq("laplace")
+            & reference["n"].astype(int).mod(2).eq(0)
+        ]
+        if not laplace_even.empty:
+            add(
+                {"model": "laplace", "k": np.nan, "n": "even", "method": "gibbs"},
+                "laplace_target_mismatch",
+                "info",
+                "target_description",
+                "deterministic_median_equals_mu_star",
+                "Use median_interval_contains_mu_star reference for even-n Laplace Gibbs.",
+            )
     if chain_diag.empty:
         rows.append({"model": "", "k": np.nan, "n": np.nan, "method": "", "issue_type": "missing_chain", "severity": "high", "metric": "chain_samples.csv", "value": "missing", "recommended_action": "Run cost audit with chain export."})
     return pd.DataFrame(rows)
@@ -618,8 +630,8 @@ def executive_summary(
         "",
         "## What Is Valid To Compare",
         "- Student-t and Logistic Gibbs/RATTLE are compared against raw weighted-MC posterior summaries.",
-        "- Laplace Gibbs is compared only against `median_interval_contains_mu_star`.",
-        "- Laplace deterministic `np.median` reference is reported separately and is not used for even-n Gibbs deltas.",
+        "- Laplace odd-n Gibbs is compared against deterministic unique-median raw/KDE summaries.",
+        "- Laplace even-n Gibbs is compared only against `median_interval_contains_mu_star`.",
         "",
         "## Main Posterior Accuracy Findings",
     ]
@@ -697,7 +709,7 @@ def executive_summary(
                     f"rel_sd_error={row.rel_sd_error:.3f}, ESS/sec={row.ess_per_sec:.3f}, acceptance={row.acceptance_rate:.3f}."
                 )
     lines.extend(["", "## Laplace Notes"])
-    lines.append("- Laplace RATTLE is not applicable. Laplace Gibbs is analyzed against the interval reference.")
+    lines.append("- Laplace RATTLE is not applicable. Odd-n Laplace Gibbs is analyzed against the deterministic unique-median reference; even-n Laplace Gibbs uses the interval reference.")
     lines.extend(["", "## Suspicious Cases"])
     if suspicious.empty:
         lines.append("- No suspicious cases were flagged.")
@@ -739,9 +751,8 @@ def laplace_notes(reference: pd.DataFrame) -> str:
     return (
         "# Laplace Target Notes\n\n"
         f"Targets present: {', '.join(targets)}.\n\n"
-        "Laplace deterministic `np.median` MLE errors and the median-interval Gibbs target are distinct for even n. "
-        "The analysis report compares Laplace Gibbs only to `median_interval_contains_mu_star`. "
-        "The deterministic `np.median` raw/KDE rows remain useful for reference sensitivity but should not be used as Gibbs posterior-correctness deltas.\n"
+        "For odd n, the Laplace sample median is unique, so deterministic `np.median` raw/KDE rows match the Gibbs target. "
+        "For even n, deterministic `np.median` and the median interval are distinct; even-n Gibbs should be compared only to `median_interval_contains_mu_star`.\n"
     )
 
 

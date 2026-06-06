@@ -27,12 +27,13 @@ def test_laplace_get_mle_uses_numpy_even_median_convention():
     assert loc_laplace.get_mle(x, {"n": 4, "b": 1.0}) == 1.0
 
 
-def test_laplace_validity_matrix_warns_on_gibbs_reference_mismatch():
+def test_laplace_validity_matrix_defaults_to_odd_unique_median_target():
     rows = model_validity_rows()
     laplace_gibbs = [row for row in rows if row["model"] == "laplace" and row["method"] == "gibbs"][0]
     laplace_rattle = [row for row in rows if row["model"] == "laplace" and row["method"] == "rattle"][0]
-    assert laplace_gibbs["target_matches_reference"] is False
-    assert "not directly comparable" in laplace_gibbs["warnings"]
+    assert laplace_gibbs["target_description"] == "deterministic_median_equals_mu_star"
+    assert laplace_gibbs["target_matches_reference"] is True
+    assert "odd-n default" in laplace_gibbs["warnings"]
     assert laplace_rattle["rattle_applicable"] is False
     assert "not applicable" in laplace_rattle["warnings"]
 

@@ -103,10 +103,13 @@ def laplace_target_summary(df: pd.DataFrame) -> pd.DataFrame:
 def warnings_markdown(df: pd.DataFrame) -> str:
     lines = ["# Reference Audit Warnings", ""]
     targets = set(df.get("target_description", pd.Series(dtype=str)).dropna().astype(str))
-    if {"deterministic_np_median_equals_mu_star", "median_interval_contains_mu_star"} <= targets:
+    if (
+        {"deterministic_median_equals_mu_star", "median_interval_contains_mu_star"} <= targets
+        or {"deterministic_np_median_equals_mu_star", "median_interval_contains_mu_star"} <= targets
+    ):
         lines.append(
-            "- Laplace has two valid but distinct targets. Gibbs should be compared to "
-            "`median_interval_contains_mu_star`, not the deterministic `np.median` reference for even `n`."
+            "- Laplace has two valid targets depending on n. Odd-n Gibbs matches deterministic median references; "
+            "even-n Gibbs should be compared to `median_interval_contains_mu_star`."
         )
     missing_sj = df[df["estimator_type"].astype(str).eq("kde_grid")].groupby(
         ["model", "k", "n", "target_description"], dropna=False

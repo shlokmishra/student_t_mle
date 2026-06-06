@@ -16,6 +16,7 @@ NUM_ITERATIONS="${NUM_ITERATIONS:-100000}"
 BURN_IN="${BURN_IN:-20000}"
 SEEDS="${SEEDS:-${SEED:-0}}"
 N_VALUES="${N_VALUES:-10,20,50}"
+LAPLACE_N_VALUES="${LAPLACE_N_VALUES:-11,21,51}"
 K_VALUES="${K_VALUES:-1,2,3}"
 OUT_DIR="${OUT_DIR:-results/cost_audit}"
 RUN_STATUS="${RUN_STATUS:-full}"
@@ -46,6 +47,7 @@ rm -rf "${TASK_DIR}"
 mkdir -p logs "${OUT_DIR}" "${TASK_DIR}"
 
 IFS=',' read -r -a n_array <<< "${N_VALUES}"
+IFS=',' read -r -a laplace_n_array <<< "${LAPLACE_N_VALUES}"
 IFS=',' read -r -a k_array <<< "${K_VALUES}"
 IFS=',' read -r -a seed_array <<< "${SEEDS}"
 
@@ -59,7 +61,12 @@ run_limited() {
 task_index=0
 for model in student_t logistic laplace; do
   for method in gibbs rattle; do
-    for n in "${n_array[@]}"; do
+    if [ "${model}" = "laplace" ]; then
+      model_n_array=("${laplace_n_array[@]}")
+    else
+      model_n_array=("${n_array[@]}")
+    fi
+    for n in "${model_n_array[@]}"; do
       for seed in "${seed_array[@]}"; do
         if [ "${model}" = "student_t" ]; then
           for k in "${k_array[@]}"; do

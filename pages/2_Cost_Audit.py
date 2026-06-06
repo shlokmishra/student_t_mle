@@ -25,7 +25,7 @@ RATTLE_SETTINGS = Path("results/rattle_tuning/recommended_rattle_settings.json")
 
 RUN_COMMAND = (
     "python scripts/run_cost_audit.py --methods gibbs rattle --n-values 10,20,50 "
-    "--k 2 --mu-star 0 --num-iterations 10000 --burn-in 2000 --seed 0 --out results/cost_audit/"
+    "--laplace-n-values 11,21,51 --k 2 --mu-star 0 --num-iterations 10000 --burn-in 2000 --seed 0 --out results/cost_audit/"
 )
 
 GIBBS_COLUMNS = [
@@ -577,7 +577,8 @@ def smoke_status(ledger: pd.DataFrame, chain: pd.DataFrame) -> str:
         n_values.update(chain["n"].dropna().astype(int).tolist())
     if not ledger.empty and "iterations" in ledger.columns and ledger["iterations"].dropna().astype(float).min() < 1000:
         return "smoke"
-    if n_values and n_values != {10, 20, 50}:
+    expected_n_values = {10, 20, 50, 11, 21, 51}
+    if n_values and not n_values.issubset(expected_n_values):
         return "smoke"
     if chain.empty and ledger.empty:
         return "missing"
@@ -625,7 +626,7 @@ if use_dashboard_cache:
         st.header("Cached Filters")
         model_filter = st.selectbox("model", ["all", "student_t", "logistic", "laplace"], index=0)
         method_filter = st.selectbox("method", ["both", "gibbs", "rattle"], index=0)
-        n_filter = st.selectbox("n", ["all", "10", "20", "50"], index=0)
+        n_filter = st.selectbox("n", ["all", "10", "11", "20", "21", "50", "51"], index=0)
         k_filter = st.selectbox("k", ["all", "1.0", "2.0", "3.0"], index=0)
         seed_filter = st.selectbox("seed", available_seed_options(ledger, normalized, summaries, chains), index=0)
         show_raw = st.checkbox("show raw counters", value=False)
@@ -702,7 +703,7 @@ with st.sidebar:
     st.header("Filters")
     model_filter = st.selectbox("model", ["all", "student_t", "logistic", "laplace"], index=0)
     method_filter = st.selectbox("method", ["both", "gibbs", "rattle"], index=0)
-    n_filter = st.selectbox("n", ["all", "10", "20", "50"], index=0)
+    n_filter = st.selectbox("n", ["all", "10", "11", "20", "21", "50", "51"], index=0)
     k_filter = st.selectbox("k", ["all", "1.0", "2.0", "3.0"], index=0)
     seed_filter = st.selectbox("seed", ["all", "0", "123", "456", "789"], index=0)
     show_raw = st.checkbox("show raw counters", value=False)

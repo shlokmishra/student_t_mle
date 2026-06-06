@@ -85,16 +85,16 @@ def main() -> None:
             & validity["method"].astype(str).str.contains("gibbs", case=False, na=False)
         ]
         laplace_gibbs_ok = not laplace_gibbs.empty and laplace_gibbs["target_description"].astype(str).str.contains(
-            "median_interval_contains_mu_star", case=False, na=False
+            "deterministic_median_equals_mu_star", case=False, na=False
         ).any()
         laplace_warning_ok = validity["warnings"].fillna("").astype(str).str.contains(
-            "np.median|not directly comparable|median interval", case=False, regex=True
+            "odd-n|median_interval|median interval|not applicable", case=False, regex=True
         ).any() or validity.get("warning", pd.Series([""])).fillna("").astype(str).str.contains(
-            "np.median|not directly comparable|median interval", case=False, regex=True
+            "odd-n|median_interval|median interval|not applicable", case=False, regex=True
         ).any()
     check(results, "Laplace RATTLE marked not_applicable", laplace_rattle_ok)
-    check(results, "Laplace Gibbs target is median_interval_contains_mu_star", laplace_gibbs_ok)
-    check(results, "Laplace deterministic np.median warning exists", laplace_warning_ok)
+    check(results, "Laplace Gibbs target is deterministic_median_equals_mu_star", laplace_gibbs_ok)
+    check(results, "Laplace odd/even target caveat exists", laplace_warning_ok)
 
     pages = [
         Path("app.py"),

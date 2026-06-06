@@ -26,6 +26,7 @@ from kde_ref.reference_adapter import (
 )
 
 STUDENT_N_VALUES = (10, 20, 50)
+LAPLACE_N_VALUES = (11, 21, 51)
 SUMMARY_COLUMNS = [
     "method",
     "estimator_type",
@@ -101,11 +102,11 @@ SAMPLER_LEVEL_PATHS = {
 }
 SAMPLER_AUDIT_COMMAND = (
     "python scripts/run_cost_audit.py --methods gibbs rattle --n-values 10,20,50 "
-    "--k 2 --mu-star 0 --num-iterations 10000 --burn-in 2000 --seed 0 --out results/cost_audit/"
+    "--laplace-n-values 11,21,51 --k 2 --mu-star 0 --num-iterations 10000 --burn-in 2000 --seed 0 --out results/cost_audit/"
 )
 ALL_MODEL_REFERENCE_COMMAND = (
     "python reporting/diagnostics/audit_reference_all_models.py --models student_t logistic laplace "
-    "--k-values 1,2,3 --n-values 10,20,50 --B-values 100000 --seeds 123,456,789 "
+    "--k-values 1,2,3 --n-values 10,20,50 --laplace-n-values 11,21,51 --B-values 100000 --seeds 123,456,789 "
     "--bandwidths scott,SJ_transform --out-csv reporting/diagnostic_outputs/model_reference_audit/reference_all_models.csv"
 )
 
@@ -356,9 +357,11 @@ def make_plot_density_grid(
 def add_plot_labels(density_df: pd.DataFrame, overlay_mode: str) -> pd.DataFrame:
     out = density_df.copy()
     sampler_mask = out.get("estimator_type", pd.Series("", index=out.index)).eq("sampler_density")
-    if overlay_mode == "compare n=10,20,50 for fixed backend":
+    if overlay_mode in {"compare n values for fixed backend", "compare n values for fixed method"}:
         out["plot_label"] = out.get("backend", pd.Series("", index=out.index)).astype(str) + " n=" + out["n"].astype(str)
         out.loc[sampler_mask, "plot_label"] = out.loc[sampler_mask, "method"].astype(str) + " n=" + out.loc[sampler_mask, "n"].astype(str)
+    elif overlay_mode == "compare seeds for fixed density type":
+        out["plot_label"] = "seed=" + out.get("seed", pd.Series("", index=out.index)).astype(str)
     else:
         out["plot_label"] = out.apply(display_backend_label, axis=1)
         out.loc[sampler_mask, "plot_label"] = out.loc[sampler_mask, "method"].astype(str)
@@ -430,7 +433,12 @@ def plot_density_overlay(
         )
         legend_labels_used: set[str] = set()
         for _, row in raw.iterrows():
-            suffix = f" n={int(row['n'])}" if overlay_mode == "compare n=10,20,50 for fixed backend" else ""
+            if overlay_mode in {"compare n values for fixed backend", "compare n values for fixed method"}:
+                suffix = f" n={int(row['n'])}"
+            elif overlay_mode == "compare seeds for fixed density type":
+                suffix = f" seed={int(row['seed'])}" if pd.notna(row.get("seed", np.nan)) else ""
+            else:
+                suffix = ""
             marker_label = "interval reference" if row.get("estimator_type", "") == "raw_mc_interval_reference" else "raw"
             mean_label = f"{marker_label} mean{suffix}"
             interval_label = f"{marker_label} 95% interval{suffix}"
@@ -625,7 +633,8 @@ def sampler_smoke_status(ledger: pd.DataFrame, chain: pd.DataFrame) -> str:
         iterations = ledger["iterations"].dropna().astype(float).tolist()
     if iterations and min(iterations) < 1000:
         return "smoke"
-    if n_values and n_values != set(STUDENT_N_VALUES):
+    expected_n_values = set(STUDENT_N_VALUES) | set(LAPLACE_N_VALUES)
+    if n_values and not n_values.issubset(expected_n_values):
         return "smoke"
     if not iterations and not chain.empty and len(chain) < 1000:
         return "smoke"
@@ -879,13 +888,20 @@ if use_dashboard_cache:
             key="cached_model",
         )
         k_cached = st.selectbox("k", [1.0, 2.0, 3.0], index=1, disabled=model_choice_cached != "student_t", key="cached_k")
+        n_options_cached = list(LAPLACE_N_VALUES if model_choice_cached == "laplace" else STUDENT_N_VALUES)
         cached_overlay_mode = st.radio(
             "overlay mode",
-            ["compare methods for fixed n", "compare n=10,20,50 for fixed method"],
+            ["compare methods for fixed n", "compare n values for fixed method", "compare seeds for fixed density type"],
             index=0,
             key="cached_overlay_mode",
         )
-        n_cached = st.selectbox("n", [10, 20, 50], index=1, disabled=cached_overlay_mode != "compare methods for fixed n", key="cached_n")
+        n_cached = st.selectbox(
+            "n",
+            n_options_cached,
+            index=1,
+            disabled=cached_overlay_mode == "compare n values for fixed method",
+            key="cached_n",
+        )
         reference_seed_cached = st.selectbox(
             "reference seed (raw/KDE)",
             reference_seed_values,
@@ -900,15 +916,29 @@ if use_dashboard_cache:
         )
         st.caption("Reference seeds affect raw/KDE curves; sampler seeds affect Gibbs/RATTLE curves.")
         laplace_selected = model_choice_cached == "laplace"
-        show_scott_cached = st.checkbox("KDE scott", value=not laplace_selected, disabled=laplace_selected, key="cached_scott")
-        show_sj_cached = st.checkbox("KDE SJ_transform", value=not laplace_selected, disabled=laplace_selected, key="cached_sj")
-        show_tabram_cached = st.checkbox("KDE t_abram, capped diagnostic", value=False, disabled=laplace_selected, key="cached_tabram")
-        show_laplace_interval_cached = st.checkbox(
-            "Laplace median-interval reference",
-            value=laplace_selected,
-            disabled=not laplace_selected,
-            key="cached_laplace_interval",
-        )
+        laplace_even_cached = laplace_selected and int(n_cached) % 2 == 0
+        show_scott_cached = st.checkbox("KDE scott", value=not laplace_even_cached, disabled=laplace_even_cached, key="cached_scott")
+        show_sj_cached = st.checkbox("KDE SJ_transform", value=not laplace_even_cached, disabled=laplace_even_cached, key="cached_sj")
+        show_tabram_cached = st.checkbox("KDE t_abram, capped diagnostic", value=False, disabled=laplace_even_cached, key="cached_tabram")
+        if laplace_even_cached:
+            st.caption("Laplace reference curve: median interval contains mu_star.")
+        elif laplace_selected:
+            st.caption("Laplace odd-n reference: deterministic sample median KDE.")
+        seed_density_family_cached = None
+        if cached_overlay_mode == "compare seeds for fixed density type":
+            if laplace_even_cached:
+                seed_family_options = ["median_interval", "gibbs"]
+            elif laplace_selected:
+                seed_family_options = ["KDE scott", "KDE SJ_transform", "KDE t_abram", "gibbs"]
+            else:
+                seed_family_options = ["KDE scott", "KDE SJ_transform", "KDE t_abram", "gibbs", "rattle"]
+            seed_density_family_cached = st.selectbox(
+                "density type",
+                seed_family_options,
+                index=0,
+                format_func=lambda value: "median interval reference" if value == "median_interval" else str(value),
+                key="cached_seed_density_family",
+            )
         show_gibbs_cached = st.checkbox("Gibbs", value=True, key="cached_gibbs")
         show_rattle_cached = st.checkbox("RATTLE", value=model_choice_cached != "laplace", disabled=model_choice_cached == "laplace", key="cached_rattle")
         cached_raw_marker_mode = st.selectbox(
@@ -921,9 +951,11 @@ if use_dashboard_cache:
         show_full_grid_cached = st.checkbox("Show full computational grid", value=False, key="cached_show_full_grid")
 
     if model_choice_cached == "laplace" and int(n_cached) % 2 == 0:
-        st.error("Laplace Gibbs and deterministic np.median KDE/raw-MC references are not directly comparable for even n.")
+        st.info("Laplace deterministic np.median KDE/raw-MC references are hidden by default because they target a different even-n convention.")
         st.warning("Laplace exact RATTLE is not applicable because the median/order constraint is nonsmooth.")
-        st.info("Laplace Gibbs is compared only to median_interval_contains_mu_star.")
+        st.info("Laplace Gibbs is compared to median_interval_contains_mu_star.")
+    elif model_choice_cached == "laplace":
+        st.info("Laplace odd-n comparison uses the unique sample median target; deterministic median KDE/raw-MC and Gibbs are directly comparable.")
     if model_choice_cached == "student_t" and float(k_cached) == 1.0 and int(n_cached) == 10:
         st.warning("Student k=1,n=10 unresolved: see Analysis Report for score-root vs selected-MLE diagnostics.")
 
@@ -934,15 +966,25 @@ if use_dashboard_cache:
         selected_backends_cached.append("SJ_transform")
     if show_tabram_cached:
         selected_backends_cached.append("t_abram")
-    if model_choice_cached == "laplace":
-        selected_backends_cached = ["median_interval"] if show_laplace_interval_cached else []
+    if model_choice_cached == "laplace" and int(n_cached) % 2 == 0:
+        selected_backends_cached = ["median_interval"]
     sampler_methods_cached = []
     if show_gibbs_cached:
         sampler_methods_cached.append("gibbs")
     if show_rattle_cached:
         sampler_methods_cached.append("rattle")
+    if cached_overlay_mode == "compare seeds for fixed density type" and seed_density_family_cached is not None:
+        if str(seed_density_family_cached).startswith("KDE "):
+            selected_backends_cached = [str(seed_density_family_cached).replace("KDE ", "", 1)]
+            sampler_methods_cached = []
+        elif str(seed_density_family_cached) == "median_interval":
+            selected_backends_cached = ["median_interval"]
+            sampler_methods_cached = []
+        else:
+            selected_backends_cached = []
+            sampler_methods_cached = [str(seed_density_family_cached)]
     fixed_family_cached = None
-    if cached_overlay_mode == "compare n=10,20,50 for fixed method":
+    if cached_overlay_mode == "compare n values for fixed method":
         selected_families = [f"KDE {backend}" for backend in selected_backends_cached] + [method for method in sampler_methods_cached]
         if selected_families:
             default_family = "gibbs" if "gibbs" in selected_families else selected_families[0]
@@ -960,7 +1002,8 @@ if use_dashboard_cache:
                 selected_backends_cached = []
                 sampler_methods_cached = [fixed_family_cached]
 
-    selected_ns_cached = [10, 20, 50] if cached_overlay_mode == "compare n=10,20,50 for fixed method" else [int(n_cached)]
+    selected_ns_cached = n_options_cached if cached_overlay_mode == "compare n values for fixed method" else [int(n_cached)]
+    compare_seed_overlay_cached = cached_overlay_mode == "compare seeds for fixed density type"
 
     def cached_filter(df: pd.DataFrame, seed: int | None = None) -> pd.DataFrame:
         if df.empty or "model" not in df.columns:
@@ -976,9 +1019,9 @@ if use_dashboard_cache:
                 out = out[np.isclose(seed_values, int(seed))]
         return out
 
-    reference_view = cached_filter(reference_cache, seed=int(reference_seed_cached))
+    reference_view = cached_filter(reference_cache, seed=None if compare_seed_overlay_cached else int(reference_seed_cached))
     visible_xlim_cached = None if show_full_grid_cached else posterior_mass_xlim(reference_view)
-    kde_view = cached_filter(posterior_density_cache, seed=int(reference_seed_cached))
+    kde_view = cached_filter(posterior_density_cache, seed=None if compare_seed_overlay_cached else int(reference_seed_cached))
     if not selected_backends_cached:
         kde_view = pd.DataFrame()
     elif not kde_view.empty:
@@ -988,12 +1031,13 @@ if use_dashboard_cache:
         cached_kde_backends = set(kde_view.get("backend", pd.Series(dtype=str)).dropna().astype(str).unique()) if not kde_view.empty else set()
         missing_kde_backends = [backend for backend in selected_backends_cached if backend not in cached_kde_backends]
         if missing_kde_backends:
+            density_kind = "median-interval reference density grid" if laplace_even_cached else "KDE density grid"
             st.warning(
-                "Missing KDE density grid for this exact selection: "
+                f"Missing {density_kind} for this exact selection: "
                 f"model={model_label(model_choice_cached)}, "
                 f"k={k_cached if model_choice_cached == 'student_t' else 'n/a'}, "
                 f"n={','.join(map(str, selected_ns_cached))}, "
-                f"reference seed={int(reference_seed_cached)}, "
+                f"reference seed={'all' if compare_seed_overlay_cached else int(reference_seed_cached)}, "
                 f"backend(s)={', '.join(missing_kde_backends)}."
             )
         elif not kde_view.empty:
@@ -1001,11 +1045,12 @@ if use_dashboard_cache:
             kde_b_used = pd.to_numeric(kde_view.get("B_used", kde_view.get("B", pd.Series(dtype=float))), errors="coerce").dropna()
             b_text = int(kde_b.max()) if not kde_b.empty else "unknown"
             b_used_text = int(kde_b_used.max()) if not kde_b_used.empty else b_text
+            density_kind = "median-interval density cache" if laplace_even_cached else "KDE density cache"
             st.caption(
-                f"Selected KDE density cache ready: B={b_text}, B_used={b_used_text}, "
-                f"reference seed={int(reference_seed_cached)}."
+                f"Selected {density_kind} ready: B={b_text}, B_used={b_used_text}, "
+                f"reference seed={'all' if compare_seed_overlay_cached else int(reference_seed_cached)}."
             )
-    tabram_view = cached_filter(posterior_density_cache, seed=int(reference_seed_cached))
+    tabram_view = cached_filter(posterior_density_cache, seed=None if compare_seed_overlay_cached else int(reference_seed_cached))
     tabram_view = tabram_view[tabram_view.get("backend", pd.Series(dtype=str)).astype(str).eq("t_abram")] if not tabram_view.empty else tabram_view
     tabram_capped = bool(
         not tabram_view.empty
@@ -1014,7 +1059,7 @@ if use_dashboard_cache:
     )
     if tabram_capped:
         st.warning("t_abram is adaptive and expensive; cached t_abram curve is capped for visualization only.")
-    sampler_view = cached_filter(sampler_density_cache, seed=int(sampler_seed_cached))
+    sampler_view = cached_filter(sampler_density_cache, seed=None if compare_seed_overlay_cached else int(sampler_seed_cached))
     if sampler_methods_cached and not sampler_view.empty:
         sampler_view = sampler_view[sampler_view["method"].astype(str).isin(sampler_methods_cached)]
     else:
@@ -1046,9 +1091,13 @@ if use_dashboard_cache:
             plot_density_overlay(
                 plot_ready,
                 reference_view,
-                overlay_mode="compare n=10,20,50 for fixed backend"
-                if cached_overlay_mode == "compare n=10,20,50 for fixed method"
-                else "compare backends for fixed n",
+                overlay_mode=(
+                    "compare seeds for fixed density type"
+                    if cached_overlay_mode == "compare seeds for fixed density type"
+                    else "compare n values for fixed backend"
+                    if cached_overlay_mode == "compare n values for fixed method"
+                    else "compare backends for fixed n"
+                ),
                 raw_marker_mode=cached_raw_marker_mode,
                 selected_marker_n=int(n_cached),
                 show_log_density=bool(show_log_density_cached),
@@ -1127,20 +1176,21 @@ with st.sidebar:
 
     st.header("Model")
     model_choice = st.selectbox("model", ["student_t", "logistic", "laplace"], format_func=lambda x: {"student_t": "Student", "logistic": "Logistic", "laplace": "Laplace"}[x])
+    model_n_values = LAPLACE_N_VALUES if model_choice == "laplace" else STUDENT_N_VALUES
 
     st.header("Compare")
     overlay_mode = st.radio(
         "overlay mode",
-        ["compare backends for fixed n", "compare n=10,20,50 for fixed backend"],
+        ["compare backends for fixed n", "compare n values for fixed backend"],
     )
 
     st.header("Case")
     if overlay_mode == "compare backends for fixed n":
-        selected_ns = (st.selectbox("n", STUDENT_N_VALUES, index=1),)
+        selected_ns = (st.selectbox("n", model_n_values, index=1),)
         st.header("KDE Backends")
         backends = selected_backends()
     else:
-        selected_ns = STUDENT_N_VALUES
+        selected_ns = model_n_values
         fixed_backend = st.selectbox("fixed backend", DEFAULT_BACKENDS, index=0)
         backends = (fixed_backend,)
 
@@ -1174,7 +1224,7 @@ with st.sidebar:
     show_full_grid = st.checkbox("Show full computational grid", value=False)
     show_log_density = st.checkbox("Show log density", value=False)
     raw_marker_mode = st.selectbox("Raw reference markers", ["none", "selected n only", "all n"], index=1)
-    selected_marker_n = st.selectbox("raw marker n", STUDENT_N_VALUES, index=STUDENT_N_VALUES.index(selected_ns[0]))
+    selected_marker_n = st.selectbox("raw marker n", model_n_values, index=model_n_values.index(selected_ns[0]))
 
     st.header("Grid")
     grid_size = st.slider("computational_grid_size", min_value=2000, max_value=12000, value=2000, step=250)
@@ -1268,7 +1318,7 @@ if model_choice != "student_t":
         st.code(SAMPLER_AUDIT_COMMAND, language="bash")
 
     comparison_ref_df = ref_df
-    if model_choice == "laplace":
+    if model_choice == "laplace" and any(int(n) % 2 == 0 for n in selected_ns):
         interval_ref = ref_df[ref_df["estimator_type"].astype(str).eq("raw_mc_interval_reference")]
         if not interval_ref.empty:
             comparison_ref_df = interval_ref
@@ -1276,6 +1326,8 @@ if model_choice != "student_t":
         else:
             st.warning("Laplace median-interval reference is unavailable; sampler deltas are suppressed.")
             sampler_summary_rows = pd.DataFrame()
+    elif model_choice == "laplace":
+        st.info("Laplace odd-n sampler deltas use the deterministic unique sample median reference.")
     method_comparison_df, method_comparison_baseline = comparison_summary_table(comparison_ref_df, sampler_summary_rows)
     st.subheader("Sampler vs Reference Summary")
     st.dataframe(method_comparison_df, use_container_width=True)
@@ -1608,7 +1660,7 @@ st.dataframe(tail_df, use_container_width=True)
 if not audit_path.exists() or audit_summary.empty:
     cmd = audit_command(
         k_values=[float(k)],
-        n_values=STUDENT_N_VALUES,
+        n_values=model_n_values,
         B_values=[100000],
         seeds=[123],
         backends=DEFAULT_BACKENDS,

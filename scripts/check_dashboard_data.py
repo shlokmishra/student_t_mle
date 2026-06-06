@@ -96,7 +96,9 @@ def check_reference_files() -> dict:
             )
             info["laplace_has_np_median_reference"] = bool(
                 "target_description" in df.columns
-                and df["target_description"].astype(str).eq("deterministic_np_median_equals_mu_star").any()
+                and df["target_description"].astype(str).isin(
+                    ["deterministic_median_equals_mu_star", "deterministic_np_median_equals_mu_star"]
+                ).any()
             )
         out[level] = info
         line("OK" if path.exists() else "MISSING", f"{level} reference CSV", f"rows={info['rows']}")

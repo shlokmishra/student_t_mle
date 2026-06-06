@@ -78,9 +78,9 @@ DEFAULT_VIEWS = [
         "view_id": "laplace",
         "model": "laplace",
         "k": np.nan,
-        "n_values": [10, 20, 50],
-        "methods": ["median-interval reference", "Gibbs"],
-        "warning": "Laplace RATTLE is not applicable; even-n np.median references are not directly comparable to median-interval Gibbs.",
+        "n_values": [11, 21, 51],
+        "methods": ["raw weighted-MC", "KDE scott", "KDE SJ_transform", "Gibbs"],
+        "warning": "Laplace RATTLE is not applicable; odd-n default uses the unique deterministic sample median target.",
     },
     {
         "view_id": "student_k1",
@@ -113,7 +113,10 @@ def infer_data_level(reference: pd.DataFrame, cost_ledger: pd.DataFrame) -> str:
         return "partial"
     b_full = "B" in reference.columns and reference["B"].dropna().astype(float).max() >= 100000
     iter_full = "iterations" in cost_ledger.columns and cost_ledger["iterations"].dropna().astype(float).max() >= 10000
-    n_full = set(reference["n"].dropna().astype(int).unique()) >= {10, 20, 50}
+    ref_models = reference["model"].astype(str) if "model" in reference.columns else pd.Series(dtype=str)
+    smooth_n = set(reference[ref_models.isin(["student_t", "logistic"])]["n"].dropna().astype(int).unique())
+    laplace_n = set(reference[ref_models.eq("laplace")]["n"].dropna().astype(int).unique())
+    n_full = smooth_n >= {10, 20, 50} and laplace_n >= {11, 21, 51}
     if b_full and iter_full and n_full:
         return "full"
     if iter_full:
