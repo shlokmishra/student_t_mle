@@ -293,6 +293,65 @@ def display_backend_label(row: pd.Series) -> str:
     return backend
 
 
+def _format_value(value: object) -> str:
+    if value is None:
+        return ""
+    try:
+        numeric = float(value)
+    except (TypeError, ValueError):
+        return str(value)
+    if not np.isfinite(numeric):
+        return ""
+    return str(int(numeric)) if numeric.is_integer() else f"{numeric:g}"
+
+
+def _format_values(values: list[object] | tuple[object, ...]) -> str:
+    formatted = [_format_value(value) for value in values]
+    return ",".join(value for value in formatted if value)
+
+
+def posterior_plot_title(
+    *,
+    model: str,
+    k: float | None = None,
+    mu_star: float | None = None,
+    selected_ns: list[int] | tuple[int, ...] = (),
+    overlay_mode: str = "",
+    reference_seed: int | str | None = None,
+    sampler_seed: int | str | None = None,
+    density_family: str | None = None,
+    selected_backends: list[str] | tuple[str, ...] = (),
+    sampler_methods: list[str] | tuple[str, ...] = (),
+    show_log_density: bool = False,
+) -> str:
+    parts = [model_label(model)]
+    if model == "student_t" and k is not None and np.isfinite(float(k)):
+        parts.append(f"k={_format_value(k)}")
+    ns = [int(n) for n in selected_ns]
+    if len(ns) == 1:
+        parts.append(f"n={ns[0]}")
+    elif ns:
+        parts.append(f"n varies: {_format_values(ns)}")
+
+    if density_family:
+        parts.append(str(density_family))
+    elif overlay_mode in {"compare n values for fixed backend", "compare n values for fixed method"}:
+        if selected_backends:
+            parts.append("backend=" + ",".join(str(item) for item in selected_backends))
+        elif sampler_methods:
+            parts.append("method=" + ",".join(str(item) for item in sampler_methods))
+
+    compare_seeds = overlay_mode == "compare seeds for fixed density type"
+    if not compare_seeds:
+        if reference_seed is not None:
+            parts.append(f"ref seed={reference_seed}")
+        if sampler_methods and sampler_seed is not None:
+            parts.append(f"sampler seed={sampler_seed}")
+
+    prefix = "Log posterior density" if show_log_density else "Posterior density"
+    return f"{prefix}: " + ", ".join(part for part in parts if part)
+
+
 def display_table(df: pd.DataFrame) -> pd.DataFrame:
     out = df.copy()
     if "model" in out.columns:
@@ -398,6 +457,7 @@ def plot_density_overlay(
     raw_marker_mode: str,
     selected_marker_n: int,
     show_log_density: bool,
+    title: str | None = None,
     visible_xlim: tuple[float, float] | None = None,
 ) -> plt.Figure:
     fig, ax = plt.subplots(figsize=(9, 5))
@@ -436,7 +496,7 @@ def plot_density_overlay(
             if overlay_mode in {"compare n values for fixed backend", "compare n values for fixed method"}:
                 suffix = f" n={int(row['n'])}"
             elif overlay_mode == "compare seeds for fixed density type":
-                suffix = f" seed={int(row['seed'])}" if pd.notna(row.get("seed", np.nan)) else ""
+                suffix = ""
             else:
                 suffix = ""
             marker_label = "interval reference" if row.get("estimator_type", "") == "raw_mc_interval_reference" else "raw"
@@ -456,8 +516,8 @@ def plot_density_overlay(
     ax.set_xlim(plot_lo, plot_hi)
     ax.set_xlabel("mu")
     ax.set_ylabel("log posterior density" if show_log_density else "posterior density")
-    ax.set_title("Posterior density")
-    ax.legend(loc="best")
+    ax.set_title(title or ("Log posterior density" if show_log_density else "Posterior density"))
+    ax.legend(loc="upper right", framealpha=0.85)
     ax.grid(alpha=0.2)
     fig.tight_layout()
     return fig
@@ -1087,20 +1147,39 @@ if use_dashboard_cache:
             plot_ready["plot_grid_hi"] = float(plot_ready["mu"].max())
         if "plot_grid_size" not in plot_ready.columns:
             plot_ready["plot_grid_size"] = int(plot_ready["mu"].nunique())
+        plot_overlay_mode = (
+            "compare seeds for fixed density type"
+            if cached_overlay_mode == "compare seeds for fixed density type"
+            else "compare n values for fixed backend"
+            if cached_overlay_mode == "compare n values for fixed method"
+            else "compare backends for fixed n"
+        )
+        density_family_title = None
+        if cached_overlay_mode == "compare seeds for fixed density type":
+            density_family_title = str(seed_density_family_cached)
+        elif cached_overlay_mode == "compare n values for fixed method":
+            density_family_title = str(fixed_family_cached) if fixed_family_cached else None
         st.pyplot(
             plot_density_overlay(
                 plot_ready,
                 reference_view,
-                overlay_mode=(
-                    "compare seeds for fixed density type"
-                    if cached_overlay_mode == "compare seeds for fixed density type"
-                    else "compare n values for fixed backend"
-                    if cached_overlay_mode == "compare n values for fixed method"
-                    else "compare backends for fixed n"
-                ),
+                overlay_mode=plot_overlay_mode,
                 raw_marker_mode=cached_raw_marker_mode,
                 selected_marker_n=int(n_cached),
                 show_log_density=bool(show_log_density_cached),
+                title=posterior_plot_title(
+                    model=model_choice_cached,
+                    k=float(k_cached) if model_choice_cached == "student_t" else None,
+                    mu_star=0.0,
+                    selected_ns=tuple(int(n) for n in selected_ns_cached),
+                    overlay_mode=plot_overlay_mode,
+                    reference_seed=None if compare_seed_overlay_cached else int(reference_seed_cached),
+                    sampler_seed=None if compare_seed_overlay_cached else int(sampler_seed_cached),
+                    density_family=density_family_title,
+                    selected_backends=tuple(selected_backends_cached),
+                    sampler_methods=tuple(sampler_methods_cached),
+                    show_log_density=bool(show_log_density_cached),
+                ),
                 visible_xlim=visible_xlim_cached,
             ),
             clear_figure=True,
@@ -1310,6 +1389,19 @@ if model_choice != "student_t":
                 raw_marker_mode=raw_marker_mode,
                 selected_marker_n=int(selected_marker_n),
                 show_log_density=bool(show_log_density),
+                title=posterior_plot_title(
+                    model=model_choice,
+                    k=float(k) if model_choice == "student_t" else None,
+                    mu_star=float(mu_star),
+                    selected_ns=tuple(int(n) for n in selected_ns),
+                    overlay_mode=overlay_mode,
+                    reference_seed=int(seed),
+                    sampler_seed=int(seed),
+                    density_family=str(fixed_backend) if overlay_mode == "compare n values for fixed backend" else None,
+                    selected_backends=tuple(backends),
+                    sampler_methods=tuple(sorted(sampler_methods)),
+                    show_log_density=bool(show_log_density),
+                ),
             ),
             clear_figure=True,
         )
@@ -1609,6 +1701,19 @@ if (show_density or any_sampler_overlay) and not plot_density_for_plot.empty:
             raw_marker_mode=raw_marker_mode,
             selected_marker_n=int(selected_marker_n),
             show_log_density=bool(show_log_density),
+            title=posterior_plot_title(
+                model=model_choice,
+                k=float(k) if model_choice == "student_t" else None,
+                mu_star=float(mu_star),
+                selected_ns=tuple(int(n) for n in selected_ns),
+                overlay_mode=overlay_mode,
+                reference_seed=int(seed),
+                sampler_seed=int(seed) if sampler_methods else None,
+                density_family=str(fixed_backend) if overlay_mode == "compare n values for fixed backend" else None,
+                selected_backends=tuple(backends),
+                sampler_methods=tuple(sorted(sampler_methods)),
+                show_log_density=bool(show_log_density),
+            ),
         ),
         clear_figure=True,
     )

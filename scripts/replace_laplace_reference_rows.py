@@ -15,6 +15,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--new-parts-glob", required=True)
     parser.add_argument("--out-csv", type=Path, required=True)
     parser.add_argument("--model", default="laplace")
+    parser.add_argument("--skip-if-empty", action="store_true")
+    parser.add_argument("--allow-missing-main", action="store_true")
     return parser.parse_args()
 
 
@@ -22,25 +24,46 @@ def read_parts(pattern: str) -> pd.DataFrame:
     parts = [Path(path) for path in sorted(glob.glob(pattern))]
     if not parts:
         raise FileNotFoundError(f"No replacement part CSVs matched: {pattern}")
-    frames = [pd.read_csv(path) for path in parts]
+    frames = []
+    for path in parts:
+        try:
+            frames.append(pd.read_csv(path))
+        except pd.errors.EmptyDataError:
+            print(f"skipping empty replacement part: {path}")
+    if not frames:
+        raise ValueError(f"All replacement part CSVs were empty for pattern: {pattern}")
     return pd.concat(frames, ignore_index=True)
 
 
 def main() -> None:
     args = parse_args()
-    if not args.main_csv.exists():
-        raise FileNotFoundError(f"Existing main CSV not found: {args.main_csv}")
-
-    current = pd.read_csv(args.main_csv)
-    replacement = read_parts(args.new_parts_glob)
-    if "model" not in current.columns or "model" not in replacement.columns:
-        raise ValueError("Both current and replacement CSVs must contain a 'model' column.")
+    try:
+        replacement = read_parts(args.new_parts_glob)
+    except ValueError:
+        if args.skip_if_empty:
+            print(f"No nonempty replacement rows for model={args.model}; leaving {args.main_csv} unchanged.")
+            return
+        raise
+    if "model" not in replacement.columns:
+        raise ValueError("Replacement CSVs must contain a 'model' column.")
 
     model = str(args.model)
-    kept = current[~current["model"].astype(str).eq(model)].copy()
     fresh = replacement[replacement["model"].astype(str).eq(model)].copy()
     if fresh.empty:
         raise ValueError(f"Replacement CSVs contain no rows for model={model!r}.")
+
+    if not args.main_csv.exists():
+        if not args.allow_missing_main:
+            raise FileNotFoundError(f"Existing main CSV not found: {args.main_csv}")
+        args.out_csv.parent.mkdir(parents=True, exist_ok=True)
+        fresh.to_csv(args.out_csv, index=False)
+        print(f"created {args.out_csv}: replacement_rows={len(fresh)}")
+        return
+
+    current = pd.read_csv(args.main_csv)
+    if "model" not in current.columns:
+        raise ValueError("Current CSV must contain a 'model' column.")
+    kept = current[~current["model"].astype(str).eq(model)].copy()
 
     missing_in_fresh = [column for column in current.columns if column not in fresh.columns]
     for column in missing_in_fresh:
