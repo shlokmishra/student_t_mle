@@ -1,0 +1,101 @@
+defaults:
+  num_iterations: 30000
+  burn_in: 5000
+  diagnostic_thin: 20
+  seeds: [0, 1, 2]
+  initializations: [central]
+
+cases:
+  - case_id: student_t_k1_n10_gibbs
+    model: student_t
+    k: 1
+    n: 10
+    method: gibbs
+    diagnostic_only: true
+    initializations: [central, tail_heavy, random]
+  - case_id: student_t_k1_n10_rattle
+    model: student_t
+    k: 1
+    n: 10
+    method: rattle
+    diagnostic_only: true
+    initializations: [central, tail_heavy, random]
+  - case_id: student_t_k1_n20_gibbs
+    model: student_t
+    k: 1
+    n: 20
+    method: gibbs
+    initializations: [central, tail_heavy, random]
+  - case_id: student_t_k1_n20_rattle
+    model: student_t
+    k: 1
+    n: 20
+    method: rattle
+    initializations: [central, tail_heavy, random]
+  - case_id: student_t_k1_n50_gibbs
+    model: student_t
+    k: 1
+    n: 50
+    method: gibbs
+  - case_id: student_t_k1_n50_rattle
+    model: student_t
+    k: 1
+    n: 50
+    method: rattle
+  - case_id: student_t_k2_n10_gibbs
+    model: student_t
+    k: 2
+    n: 10
+    method: gibbs
+    initializations: [central, tail_heavy, random]
+  - case_id: student_t_k2_n10_rattle
+    model: student_t
+    k: 2
+    n: 10
+    method: rattle
+    initializations: [central, tail_heavy, random]
+  - case_id: student_t_k2_n20_rattle
+    model: student_t
+    k: 2
+    n: 20
+    method: rattle
+  - case_id: student_t_k3_n10_gibbs
+    model: student_t
+    k: 3
+    n: 10
+    method: gibbs
+    initializations: [central, tail_heavy, random]
+  - case_id: student_t_k3_n10_rattle
+    model: student_t
+    k: 3
+    n: 10
+    method: rattle
+    initializations: [central, tail_heavy, random]
+  - case_id: logistic_n20_gibbs
+    model: logistic
+    k:
+    n: 20
+    method: gibbs
+    initializations: [central, tail_heavy, random]
+  - case_id: logistic_n20_rattle
+    model: logistic
+    k:
+    n: 20
+    method: rattle
+    initializations: [central, tail_heavy, random]
+  - case_id: student_t_k3_n20_gibbs
+    model: student_t
+    k: 3
+    n: 20
+    method: gibbs
+  - case_id: student_t_k3_n20_rattle
+    model: student_t
+    k: 3
+    n: 20
+    method: rattle
+  - case_id: laplace_n21_gibbs
+    model: laplace
+    k:
+    n: 21
+    method: gibbs
+    initializations: [central, tail_heavy, random]

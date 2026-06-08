@@ -20,6 +20,7 @@ from .loc_student import (
     get_benchmark_mle_samples,
     run_full_data_mh,
     _update_mu_mh,
+    _initial_x,
 )
 
 EPS_U = 1e-12
@@ -463,7 +464,7 @@ def run_rattle(key, mu_star, params, verbose=True, cost_ledger=None):
 
     mus = np.zeros(T + 1, dtype=float)
     xs = np.zeros((T + 1, n), dtype=float)
-    x0 = np.ones(n, dtype=float) * float(mu_star)
+    x0 = np.asarray(_initial_x(mu_star, n, k, params), dtype=float)
     mus[0] = float(mu_star)
     xs[0, :] = x0
 

@@ -16,6 +16,29 @@ EPS_Z = 1e-12
 EPS_U = 1e-12
 
 
+def _initial_x(mu_star, n, params):
+    init = str(params.get("initialization", "central"))
+    if init == "central":
+        return jnp.ones(n) * mu_star
+    if init == "tail_heavy":
+        amp = float(params.get("initialization_tail_amplitude", 5.0))
+        vals = [mu_star + amp, mu_star - amp] * (n // 2)
+        if n % 2:
+            vals.append(mu_star)
+        return jnp.asarray(vals[:n], dtype=float)
+    if init == "random":
+        rng = np.random.default_rng(int(params.get("initialization_seed", 0)))
+        vals = []
+        for _ in range(n // 2):
+            amp = float(np.exp(rng.normal(0.0, 1.0)))
+            vals.extend([mu_star + amp, mu_star - amp])
+        if n % 2:
+            vals.append(mu_star)
+        rng.shuffle(vals)
+        return jnp.asarray(vals[:n], dtype=float)
+    raise ValueError(f"Unknown initialization: {init}")
+
+
 def get_mle(data, params):
     """MLE for logistic location: root of score sum_i tanh((x_i - mu)/2) = 0."""
     x = np.asarray(data)
@@ -190,7 +213,7 @@ def run_gibbs(key, mu_star, params, verbose=True):
     n = int(params["n"])
     mus = jnp.zeros(T + 1)
     xs = jnp.zeros((T + 1, n))
-    x0 = jnp.ones(n) * mu_star
+    x0 = _initial_x(mu_star, n, params)
     mus = mus.at[0].set(mu_star)
     xs = xs.at[0, :].set(x0)
     total_pairs = T * (n // 2)

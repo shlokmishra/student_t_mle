@@ -67,6 +67,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--reverse-check", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--rattle-settings-json", type=Path, default=None)
     parser.add_argument("--run-status", default=None, help="Label rows as smoke, medium, full, tuning, or partial.")
+    parser.add_argument("--initialization", choices=["central", "tail_heavy", "random"], default="central")
     parser.add_argument(
         "--save-latent-diagnostics",
         action="store_true",
@@ -162,6 +163,8 @@ def base_params(args: argparse.Namespace, model: str, n: int, k: float | None, r
         "rattle_projection_mode": str(args.rattle_projection_mode),
         "rattle_include_gram_correction": bool(args.rattle_include_gram_correction),
         "reverse_check": bool(args.reverse_check),
+        "initialization": str(getattr(args, "initialization", "central")),
+        "initialization_seed": int(getattr(args, "seed", 0)),
     }
     if model == "student_t":
         params["k"] = float(k)
