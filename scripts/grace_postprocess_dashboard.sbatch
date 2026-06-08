@@ -33,6 +33,6 @@ python reporting/diagnostics/summarize_reference_all_models.py \
   --in-csv "${REFERENCE_CSV}" \
   --out-dir "${SUMMARY_DIR}"
 
-python scripts/prepare_dashboard_cache.py
-python scripts/check_dashboard_cache.py
+python dashboard/scripts/prepare_dashboard_cache.py
+python dashboard/scripts/check_dashboard_cache.py
 python scripts/check_dashboard_data.py

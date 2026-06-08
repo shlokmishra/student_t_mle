@@ -1,1 +1,1 @@
-"""Diagnostics helpers."""
+"""Generic diagnostic helpers shared by reporting scripts."""

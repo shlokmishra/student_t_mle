@@ -116,10 +116,15 @@ def result_dict(result: CommandResult) -> dict:
 
 def preflight() -> list[CommandResult]:
     required = [
-        ROOT / "app.py",
-        ROOT / "pages" / "1_Posterior_Comparison.py",
-        ROOT / "pages" / "2_Cost_Audit.py",
-        ROOT / "pages" / "3_Model_Validity_Audit.py",
+        ROOT / "dashboard" / "app.py",
+        ROOT / "dashboard" / "pages" / "1_Posterior_Comparison.py",
+        ROOT / "dashboard" / "pages" / "2_Cost_Audit.py",
+        ROOT / "dashboard" / "pages" / "3_Model_Validity_Audit.py",
+        ROOT / "dashboard" / "pages" / "4_Analysis_Report.py",
+        ROOT / "dashboard" / "pages" / "5_KDE_Correctness.py",
+        ROOT / "dashboard" / "pages" / "6_Sampler_Correctness.py",
+        ROOT / "dashboard" / "pages" / "7_Efficiency.py",
+        ROOT / "dashboard" / "pages" / "8_Geometry.py",
         ROOT / "models" / "model_registry.py",
         ROOT / "reporting" / "diagnostics" / "audit_reference_all_models.py",
         ROOT / "scripts" / "run_cost_audit.py",

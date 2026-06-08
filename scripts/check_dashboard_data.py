@@ -14,11 +14,15 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 HEALTH_PATH = ROOT / "results" / "analysis_pipeline" / "dashboard_health.json"
 PAGES = [
-    ROOT / "app.py",
-    ROOT / "pages" / "1_Posterior_Comparison.py",
-    ROOT / "pages" / "2_Cost_Audit.py",
-    ROOT / "pages" / "3_Model_Validity_Audit.py",
-    ROOT / "pages" / "4_Analysis_Report.py",
+    ROOT / "dashboard" / "app.py",
+    ROOT / "dashboard" / "pages" / "1_Posterior_Comparison.py",
+    ROOT / "dashboard" / "pages" / "2_Cost_Audit.py",
+    ROOT / "dashboard" / "pages" / "3_Model_Validity_Audit.py",
+    ROOT / "dashboard" / "pages" / "4_Analysis_Report.py",
+    ROOT / "dashboard" / "pages" / "5_KDE_Correctness.py",
+    ROOT / "dashboard" / "pages" / "6_Sampler_Correctness.py",
+    ROOT / "dashboard" / "pages" / "7_Efficiency.py",
+    ROOT / "dashboard" / "pages" / "8_Geometry.py",
 ]
 REFERENCE_FILES = {
     "full": ROOT / "reporting" / "diagnostic_outputs" / "model_reference_audit" / "reference_all_models.csv",
@@ -37,6 +41,30 @@ ANALYSIS_REPORT_FILES = [
     ROOT / "results" / "analysis_report" / "cost_efficiency.csv",
     ROOT / "results" / "analysis_report" / "method_rankings.csv",
     ROOT / "results" / "analysis_report" / "suspicious_cases.csv",
+]
+EFFICIENCY_AUDIT_FILES = [
+    ROOT / "results" / "efficiency_audit" / "efficiency_report.md",
+    ROOT / "results" / "efficiency_audit" / "efficiency_summary.csv",
+    ROOT / "results" / "efficiency_audit" / "functional_ess.csv",
+    ROOT / "results" / "efficiency_audit" / "cost_decomposition.csv",
+    ROOT / "results" / "efficiency_audit" / "method_winners.csv",
+    ROOT / "results" / "efficiency_audit" / "rattle_movement_diagnostics.csv",
+    ROOT / "results" / "efficiency_audit" / "caveat_efficiency_cases.csv",
+    ROOT / "results" / "efficiency_audit" / "timing_warnings.csv",
+]
+GEOMETRY_AUDIT_FILES = [
+    ROOT / "results" / "geometry_audit" / "geometry_report.md",
+    ROOT / "results" / "geometry_audit" / "geometry_summary.csv",
+    ROOT / "results" / "geometry_audit" / "latent_tail_geometry.csv",
+    ROOT / "results" / "geometry_audit" / "geometry_conditioned_posterior.csv",
+    ROOT / "results" / "geometry_audit" / "rattle_geometry_explanation.csv",
+    ROOT / "results" / "geometry_audit" / "gibbs_geometry_explanation.csv",
+    ROOT / "results" / "geometry_audit" / "branch_exploration.csv",
+    ROOT / "results" / "geometry_audit" / "rattle_tail_failure_analysis.csv",
+    ROOT / "results" / "geometry_audit" / "gibbs_local_move_analysis.csv",
+    ROOT / "results" / "geometry_audit" / "geometry_win_loss_table.csv",
+    ROOT / "results" / "geometry_audit" / "missing_geometry_diagnostics.csv",
+    ROOT / "results" / "geometry_audit" / "unresolved_geometry_cases.csv",
 ]
 
 
@@ -158,6 +186,41 @@ def check_analysis_report() -> dict:
     return out
 
 
+def check_efficiency_audit() -> dict:
+    out = {}
+    for path in EFFICIENCY_AUDIT_FILES:
+        exists = path.exists()
+        rows = int(len(read_csv(path))) if path.suffix == ".csv" and exists else 0
+        out[str(path.relative_to(ROOT))] = {"exists": exists, "rows": rows}
+        detail = f"rows={rows}" if path.suffix == ".csv" and exists else ""
+        line("OK" if exists else "MISSING", str(path.relative_to(ROOT)), detail)
+    return out
+
+
+def check_geometry_audit() -> dict:
+    out = {}
+    for path in GEOMETRY_AUDIT_FILES:
+        exists = path.exists()
+        rows = int(len(read_csv(path))) if path.suffix == ".csv" and exists else 0
+        out[str(path.relative_to(ROOT))] = {"exists": exists, "rows": rows}
+        detail = f"rows={rows}" if path.suffix == ".csv" and exists else ""
+        line("OK" if exists else "MISSING", str(path.relative_to(ROOT)), detail)
+    missing_path = ROOT / "results" / "geometry_audit" / "missing_geometry_diagnostics.csv"
+    if missing_path.exists():
+        missing = read_csv(missing_path)
+        high = missing[missing.get("severity", pd.Series(dtype=str)).astype(str).isin(["high", "medium"])]
+        if not high.empty:
+            line("WARN", "geometry diagnostics incomplete", f"medium/high missing={len(high)}")
+            out["missing_medium_high"] = int(len(high))
+    targeted_dir = ROOT / "results" / "targeted_validation_runs"
+    if not targeted_dir.exists():
+        line("WARN", "targeted validation runset", "results/targeted_validation_runs is not present yet")
+        out["targeted_validation_present"] = False
+    else:
+        out["targeted_validation_present"] = True
+    return out
+
+
 def main() -> None:
     print("Dashboard Data Check")
     print("====================")
@@ -177,6 +240,8 @@ def main() -> None:
         "reference": check_reference_files(),
         "cost": check_cost_dirs(),
         "analysis_report": check_analysis_report(),
+        "efficiency_audit": check_efficiency_audit(),
+        "geometry_audit": check_geometry_audit(),
     }
     health["current_data_level"] = current_data_level(health["reference"], health["cost"])
     HEALTH_PATH.parent.mkdir(parents=True, exist_ok=True)

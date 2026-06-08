@@ -1,0 +1,23 @@
+baseline_full:
+  run_dir: results/cost_audit/
+  reference_csv: reporting/diagnostic_outputs/model_reference_audit/reference_all_models.csv
+  label: baseline_full
+  optional: true
+
+multiseed:
+  run_dir: results/cost_audit_multiseed/
+  reference_csv: reporting/diagnostic_outputs/model_reference_audit/reference_all_models.csv
+  label: multiseed
+  optional: true
+
+targeted_validation:
+  run_dir: results/targeted_validation_runs/
+  reference_csv: reporting/diagnostic_outputs/model_reference_audit/reference_all_models.csv
+  label: targeted_validation
+  optional: true
+
+final_production_v1:
+  run_dir: results/final_production_v1/
+  reference_csv: reporting/diagnostic_outputs/model_reference_audit/reference_all_models.csv
+  label: final_production_v1
+  optional: true
