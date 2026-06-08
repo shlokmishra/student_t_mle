@@ -17,6 +17,36 @@ from tqdm import tqdm
 EPS_U = 1e-12
 
 
+def _initial_x(mu_star, n, params):
+    init = str(params.get("initialization", "central"))
+    half = n // 2
+    if init == "random":
+        rng = np.random.default_rng(int(params.get("initialization_seed", 0)))
+        left = -np.exp(rng.normal(0.0, 1.0, size=half))
+        right = np.exp(rng.normal(0.0, 1.0, size=half))
+        vals = list(mu_star + left)
+        if n % 2:
+            vals.append(mu_star)
+        vals.extend(list(mu_star + right))
+        return jnp.asarray(vals, dtype=float)
+    if init == "central":
+        amp = 1.0
+    elif init == "tail_heavy":
+        amp = float(params.get("initialization_tail_amplitude", 5.0))
+    else:
+        raise ValueError(f"Unknown initialization: {init}")
+    if n % 2 == 1:
+        return jnp.concatenate([
+            (mu_star - amp) * jnp.ones(half),
+            jnp.asarray([mu_star]),
+            (mu_star + amp) * jnp.ones(half),
+        ])
+    return jnp.concatenate([
+        (mu_star - amp) * jnp.ones(half),
+        (mu_star + amp) * jnp.ones(half),
+    ])
+
+
 def get_mle(data, params):
     """MLE for Laplace location is the median."""
     return float(np.median(np.asarray(data)))
@@ -134,18 +164,7 @@ def run_gibbs(key, mu_star, params, verbose=True):
     b = params.get("b", 1.0)
     mus = jnp.zeros(T + 1)
     xs = jnp.zeros((T + 1, n))
-    half = n // 2
-    if n % 2 == 1:
-        x0 = jnp.concatenate([
-            (mu_star - 1.0) * jnp.ones(half),
-            jnp.asarray([mu_star]),
-            (mu_star + 1.0) * jnp.ones(half),
-        ])
-    else:
-        x0 = jnp.concatenate([
-            (mu_star - 1.0) * jnp.ones(half),
-            (mu_star + 1.0) * jnp.ones(half),
-        ])
+    x0 = _initial_x(mu_star, n, params)
     mus = mus.at[0].set(mu_star)
     xs = xs.at[0, :].set(x0)
     mu_acc = 0

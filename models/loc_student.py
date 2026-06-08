@@ -18,6 +18,29 @@ EPS_U = 1e-12
 EPS_DIV = 1e-12
 
 
+def _initial_x(mu_star, n, k, params):
+    init = str(params.get("initialization", "central"))
+    if init == "central":
+        return jnp.ones(n) * mu_star
+    if init == "tail_heavy":
+        amp = float(params.get("initialization_tail_amplitude", max(5.0, 5.0 * float(np.sqrt(k)))))
+        vals = [mu_star + amp, mu_star - amp] * (n // 2)
+        if n % 2:
+            vals.append(mu_star)
+        return jnp.asarray(vals[:n], dtype=float)
+    if init == "random":
+        rng = np.random.default_rng(int(params.get("initialization_seed", 0)))
+        vals = []
+        for _ in range(n // 2):
+            amp = float(np.exp(rng.normal(0.0, 1.0)))
+            vals.extend([mu_star + amp, mu_star - amp])
+        if n % 2:
+            vals.append(mu_star)
+        rng.shuffle(vals)
+        return jnp.asarray(vals[:n], dtype=float)
+    raise ValueError(f"Unknown initialization: {init}")
+
+
 def get_mle(data, params):
     """MLE for location of t-distribution (fixed df k, scale 1). Solves score equation."""
     k = params["k"]
@@ -219,7 +242,7 @@ def run_gibbs(key, mu_star, params, verbose=True, cost_ledger=None):
     k = params["k"]
     mus = jnp.zeros(T + 1)
     xs = jnp.zeros((T + 1, n))
-    x0 = jnp.ones(n) * mu_star
+    x0 = _initial_x(mu_star, n, k, params)
     mus = mus.at[0].set(mu_star)
     xs = xs.at[0, :].set(x0)
     total_pairs = T * (n // 2)
