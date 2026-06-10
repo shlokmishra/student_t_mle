@@ -98,8 +98,12 @@ def student_geometry(x: np.ndarray, mu_star: float, k: float) -> dict:
     z = y / (k + y * y)
     sqrt_k = float(np.sqrt(k))
     tail_count = int(np.sum(abs_y > sqrt_k))
+    tail_2_count = int(np.sum(abs_y > 2.0 * sqrt_k))
     extreme_count = int(np.sum(abs_y > 5.0 * sqrt_k))
+    far_tail_count = int(np.sum(abs_y > 20.0 * sqrt_k))
     entropy, concentration = entropy_concentration(z)
+    abs_z = np.abs(z)
+    abs_z_sum = float(np.sum(abs_z))
     if extreme_count > 0:
         geom_class = "extreme_tail"
     elif tail_count == 0:
@@ -117,9 +121,16 @@ def student_geometry(x: np.ndarray, mu_star: float, k: float) -> dict:
         "q90_abs_y": float(np.quantile(abs_y, 0.90)),
         "q95_abs_y": float(np.quantile(abs_y, 0.95)),
         "num_extreme_y_gt_sqrt_k": tail_count,
-        "num_extreme_y_gt_2sqrt_k": int(np.sum(abs_y > 2.0 * sqrt_k)),
+        "num_extreme_y_gt_2sqrt_k": tail_2_count,
         "num_extreme_y_gt_5sqrt_k": extreme_count,
+        "num_extreme_y_gt_20sqrt_k": far_tail_count,
+        "fraction_y_gt_sqrt_k": float(tail_count / len(x)),
+        "fraction_y_gt_2sqrt_k": float(tail_2_count / len(x)),
+        "fraction_y_gt_5sqrt_k": float(extreme_count / len(x)),
+        "fraction_y_gt_20sqrt_k": float(far_tail_count / len(x)),
         "max_abs_z": float(np.max(np.abs(z))),
+        "sum_abs_z": abs_z_sum,
+        "score_collapse_ratio": float(np.max(abs_y) / max(float(np.max(abs_z)), 1e-300)),
         "z_entropy": entropy,
         "fraction_score_largest_abs_z": concentration,
         "central_branch_count": int(np.sum(abs_y < sqrt_k)),
@@ -231,10 +242,17 @@ def latent_geometry_rows(latent: pd.DataFrame, runset: str) -> pd.DataFrame:
             max_abs_y = float(data.get("x_abs_max", data.get("max_abs_y", np.nan)))
             x_sd = float(data.get("x_sd", np.nan))
             constraint = float(data.get("constraint_residual", np.nan))
+            cached_class = data.get("latent_tail_geometry_class", data.get("latent_geometry_class", np.nan))
+            cached_class = str(cached_class) if pd.notna(cached_class) else ""
+            tail_fraction = float(data.get("tail_fraction", np.nan))
+            extreme_tail_fraction = float(data.get("extreme_tail_fraction", np.nan))
+            gram_value = float(data.get("gram_value", np.nan))
             base["num_x"] = n
             if model == "student_t" and np.isfinite(k):
                 sqrt_k = float(np.sqrt(k))
-                if np.isfinite(max_abs_y) and max_abs_y > 5.0 * sqrt_k:
+                if cached_class:
+                    geom_class = cached_class
+                elif np.isfinite(max_abs_y) and max_abs_y > 5.0 * sqrt_k:
                     geom_class = "extreme_tail"
                 elif np.isfinite(max_abs_y) and max_abs_y > sqrt_k:
                     geom_class = "multiple_tail"
@@ -246,10 +264,12 @@ def latent_geometry_rows(latent: pd.DataFrame, runset: str) -> pd.DataFrame:
                     "mean_abs_y": np.nan,
                     "q90_abs_y": np.nan,
                     "q95_abs_y": np.nan,
-                    "tail_branch_fraction": np.nan,
+                    "tail_branch_fraction": tail_fraction,
+                    "extreme_tail_fraction": extreme_tail_fraction,
                     "latent_geometry_class": geom_class,
                     "geometry_family": "student_tail_branch_summary",
                     "x_sd": x_sd,
+                    "gram_value": gram_value,
                 }
             elif model == "logistic":
                 geom = {
@@ -258,10 +278,12 @@ def latent_geometry_rows(latent: pd.DataFrame, runset: str) -> pd.DataFrame:
                     "mean_abs_y": np.nan,
                     "q90_abs_y": np.nan,
                     "q95_abs_y": np.nan,
-                    "saturation_fraction": np.nan,
-                    "latent_geometry_class": "logistic_summary",
+                    "saturation_fraction": tail_fraction,
+                    "extreme_tail_fraction": extreme_tail_fraction,
+                    "latent_geometry_class": cached_class or "logistic_summary",
                     "geometry_family": "logistic_saturation_summary",
                     "x_sd": x_sd,
+                    "gram_value": gram_value,
                 }
             elif model == "laplace":
                 geom = {
@@ -270,9 +292,10 @@ def latent_geometry_rows(latent: pd.DataFrame, runset: str) -> pd.DataFrame:
                     "mean_abs_y": np.nan,
                     "q90_abs_y": np.nan,
                     "q95_abs_y": np.nan,
-                    "latent_geometry_class": "standard_odd_median" if n % 2 == 1 else "laplace_summary",
+                    "latent_geometry_class": cached_class or ("standard_odd_median" if n % 2 == 1 else "laplace_summary"),
                     "geometry_family": "laplace_order_median_summary",
                     "x_sd": x_sd,
+                    "gram_value": gram_value,
                 }
             else:
                 geom = {"latent_geometry_class": "unsupported_summary", "geometry_family": "unsupported"}
@@ -291,6 +314,14 @@ def summarize_geometry(latent_geom: pd.DataFrame) -> pd.DataFrame:
         "tail_branch_fraction": ["mean", "max"],
         "saturation_fraction": ["mean", "max"],
         "fraction_score_largest_abs_z": ["mean", "max"],
+        "max_abs_z": ["mean", "max"],
+        "sum_abs_z": ["mean"],
+        "score_collapse_ratio": ["mean", "max"],
+        "fraction_y_gt_sqrt_k": ["mean", "max"],
+        "fraction_y_gt_2sqrt_k": ["mean", "max"],
+        "fraction_y_gt_5sqrt_k": ["mean", "max"],
+        "fraction_y_gt_20sqrt_k": ["mean", "max"],
+        "num_extreme_y_gt_20sqrt_k": ["mean", "max"],
         "median_residual": ["mean", "max"],
     }
     available = {metric: funcs for metric, funcs in agg_map.items() if metric in latent_geom.columns}
@@ -422,9 +453,57 @@ def class_transitions(latent_geom: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def gibbs_explanations(latent_geom: pd.DataFrame, correctness_dir: Path) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-    branch = read_csv(correctness_dir / "gibbs_branch_diagnostics.csv")
-    branch = add_k_key(branch) if not branch.empty else pd.DataFrame()
+def summarize_branch_diagnostics(branch: pd.DataFrame) -> pd.DataFrame:
+    if branch.empty:
+        return branch
+    branch = add_k_key(branch)
+    group_cols = [col for col in ["runset", "model", "k_key", "n", "method", "seed", "initialization"] if col in branch.columns]
+    if "branch_pair" in branch.columns and "frequency" in branch.columns:
+        pivot = (
+            branch.pivot_table(
+                index=group_cols,
+                columns="branch_pair",
+                values="frequency",
+                aggfunc="sum",
+                fill_value=0.0,
+            )
+            .reset_index()
+            .rename_axis(None, axis=1)
+        )
+    else:
+        pivot = branch[group_cols].drop_duplicates().copy() if group_cols else pd.DataFrame(index=[0])
+    rate = pd.DataFrame()
+    if "branch_switching_rate" in branch.columns:
+        rate = branch.groupby(group_cols, dropna=False)["branch_switching_rate"].mean().reset_index()
+    out = pivot.merge(rate, on=group_cols, how="left") if not rate.empty and not pivot.empty else (rate if pivot.empty else pivot)
+    if out.empty:
+        return out
+    for pair in ["lower/lower", "lower/upper", "upper/lower", "upper/upper"]:
+        if pair not in out.columns:
+            out[pair] = 0.0
+    out["branch_diagnostic_available"] = True
+    out["tail_tail_pair_fraction"] = out["upper/upper"]
+    out["mixed_pair_fraction"] = out["lower/upper"] + out["upper/lower"]
+    out["central_central_pair_fraction"] = out["lower/lower"]
+    out["branch_imbalance"] = (out["upper/upper"] - out["lower/lower"]).abs()
+    out["note"] = "Branch diagnostics loaded from runset branch_diagnostics.csv."
+    return out
+
+
+def gibbs_explanations(
+    latent_geom: pd.DataFrame,
+    correctness_dir: Path,
+    runset_branch: pd.DataFrame | None = None,
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    branch_frames = []
+    baseline_branch = read_csv(correctness_dir / "gibbs_branch_diagnostics.csv")
+    if not baseline_branch.empty:
+        baseline_branch["runset"] = "correctness_audit"
+        branch_frames.append(baseline_branch)
+    if runset_branch is not None and not runset_branch.empty:
+        branch_frames.append(runset_branch)
+    raw_branch = pd.concat(branch_frames, ignore_index=True, sort=False) if branch_frames else pd.DataFrame()
+    branch = summarize_branch_diagnostics(raw_branch) if not raw_branch.empty else pd.DataFrame()
     trans = class_transitions(latent_geom[latent_geom["method"].eq("gibbs")]) if not latent_geom.empty else pd.DataFrame()
     if trans.empty:
         local = pd.DataFrame()
@@ -443,9 +522,25 @@ def gibbs_explanations(latent_geom: pd.DataFrame, correctness_dir: Path) -> tupl
         return pd.DataFrame(), branch, local
     expl = local.copy()
     if not branch.empty and not expl.empty:
+        merge_keys = [key for key in ["runset", "model", "k_key", "n", "method", "seed", "initialization"] if key in expl.columns and key in branch.columns]
         expl = expl.merge(
-            branch[["model", "k_key", "n", "branch_diagnostic_available", "branch_switching_rate", "branch_imbalance", "note"]],
-            on=["model", "k_key", "n"],
+            branch[
+                [
+                    col
+                    for col in [
+                        *merge_keys,
+                        "branch_diagnostic_available",
+                        "branch_switching_rate",
+                        "branch_imbalance",
+                        "tail_tail_pair_fraction",
+                        "mixed_pair_fraction",
+                        "central_central_pair_fraction",
+                        "note",
+                    ]
+                    if col in branch.columns
+                ]
+            ],
+            on=merge_keys,
             how="left",
         )
     elif not branch.empty:
@@ -766,6 +861,16 @@ def write_figures(
         ax.set_ylabel("mean tail branch fraction")
         save(fig, "student_branch_occupancy.png")
 
+        cauchy = student[student["k_key"].astype(str).isin(["1", "1.0"])].copy()
+        if not cauchy.empty and {"max_abs_y", "max_abs_z"}.issubset(cauchy.columns):
+            fig, ax = plt.subplots(figsize=(7, 4))
+            ax.scatter(cauchy["max_abs_y"], cauchy["max_abs_z"], s=12, alpha=0.45)
+            ax.set_xscale("log")
+            ax.set_xlabel("max |x_i - mu_star|")
+            ax.set_ylabel("max |z_i|, z=y/(1+y^2)")
+            ax.set_title("Cauchy tail size versus bounded score coordinate")
+            save(fig, "student_k1_score_collapse_scatter.png")
+
     if not transitions.empty:
         summary = transitions[transitions["from_class"].ne("__summary__")]
         if not summary.empty:
@@ -805,14 +910,22 @@ def write_figures(
                 ax.set_ylabel(ylabel)
                 save(fig, name)
 
-    if not branch.empty and "approx_middle_fraction" in branch.columns:
+    if not branch.empty and ("approx_middle_fraction" in branch.columns or "branch_switching_rate" in branch.columns):
         fig, ax = plt.subplots(figsize=(7, 4))
         branch = add_k_key(branch)
-        labels = [f"k={r.k_key} n={r.n}" for r in branch.itertuples()]
-        ax.bar(np.arange(len(branch)), branch["approx_middle_fraction"])
-        ax.set_xticks(np.arange(len(branch)))
+        branch_plot = branch.copy()
+        if "approx_middle_fraction" in branch_plot.columns:
+            y = branch_plot["approx_middle_fraction"]
+            ylabel = "approx middle branch fraction"
+        else:
+            branch_plot = branch_plot.groupby(["k_key", "n"], dropna=False)["branch_switching_rate"].mean().reset_index()
+            y = branch_plot["branch_switching_rate"]
+            ylabel = "mean branch switching rate"
+        labels = [f"k={r.k_key} n={r.n}" for r in branch_plot.itertuples()]
+        ax.bar(np.arange(len(branch_plot)), y)
+        ax.set_xticks(np.arange(len(branch_plot)))
         ax.set_xticklabels(labels, rotation=70, ha="right", fontsize=7)
-        ax.set_ylabel("approx middle branch fraction")
+        ax.set_ylabel(ylabel)
         save(fig, "gibbs_branch_switching_rate_by_case.png")
 
     if not win_loss.empty:
@@ -901,21 +1014,30 @@ def main() -> None:
 
     outputs = []
     latent_frames = []
+    branch_frames = []
     for runset_name in args.runsets:
         runset = resolve_runset_paths(runset_name, registry)
         out = load_common_run_outputs(runset)
         outputs.append(out)
-        latent = out["tables"].get("latent_diagnostics", pd.DataFrame())
+        latent = out["tables"].get("latent_x_diagnostics", pd.DataFrame())
+        if latent.empty:
+            latent = out["tables"].get("latent_diagnostics", pd.DataFrame())
         if latent.empty:
             latent = out["tables"].get("geometry_diagnostics", pd.DataFrame())
         if not latent.empty:
             latent_frames.append(latent_geometry_rows(latent, runset.label))
+        branch = out["tables"].get("branch_diagnostics", pd.DataFrame())
+        if not branch.empty:
+            branch = branch.copy()
+            branch["runset"] = runset.label
+            branch_frames.append(branch)
 
     latent_geom = pd.concat(latent_frames, ignore_index=True, sort=False) if latent_frames else pd.DataFrame()
+    runset_branch = pd.concat(branch_frames, ignore_index=True, sort=False) if branch_frames else pd.DataFrame()
     reference = read_csv(args.reference_csv)
     geom_summary = summarize_geometry(latent_geom)
     conditioned = geometry_conditioned_posterior(latent_geom, reference)
-    gibbs_exp, branch, local_move = gibbs_explanations(latent_geom, args.correctness_dir)
+    gibbs_exp, branch, local_move = gibbs_explanations(latent_geom, args.correctness_dir, runset_branch)
     rattle_exp, rattle_tail = rattle_explanations(latent_geom, args.correctness_dir, args.efficiency_dir)
     win_loss = geometry_win_loss(geom_summary, args.correctness_dir, args.efficiency_dir)
     missing = missing_rows(outputs, latent_geom, args.correctness_dir)

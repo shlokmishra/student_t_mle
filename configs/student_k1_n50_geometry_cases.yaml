@@ -1,0 +1,14 @@
+defaults:
+  num_iterations: 500000
+  burn_in: 100000
+  diagnostic_thin: 100
+  seeds: [0, 1, 2, 3, 4]
+  initializations: [central, tail_heavy, random]
+
+cases:
+  - case_id: student_t_k1_n50_gibbs_geometry
+    model: student_t
+    k: 1
+    n: 50
+    method: gibbs
+    diagnostic_only: true

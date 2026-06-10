@@ -8,7 +8,17 @@ import pandas as pd
 import streamlit as st
 
 
-AUDIT_DIR = Path("results/geometry_audit")
+AUDIT_OPTIONS = {
+    "final_production_v1": Path("results/final_production_v1_geometry_audit"),
+    "student_k1_n50_geometry": Path("results/student_k1_n50_geometry_audit"),
+}
+available_options = [name for name, path in AUDIT_OPTIONS.items() if path.exists()]
+selected_audit = st.selectbox(
+    "Geometry audit runset",
+    available_options or list(AUDIT_OPTIONS),
+    index=0,
+)
+AUDIT_DIR = AUDIT_OPTIONS[selected_audit]
 FILES = {
     "report": AUDIT_DIR / "geometry_report.md",
     "geometry_summary": AUDIT_DIR / "geometry_summary.csv",
@@ -37,7 +47,12 @@ def read_csv(path: str) -> pd.DataFrame:
 
 
 st.title("Geometry")
-st.caption("Cached latent-geometry explanations for Gibbs/RATTLE behavior.")
+st.caption("Latent-geometry explanations for Gibbs/RATTLE behavior.")
+if selected_audit == "student_k1_n50_geometry":
+    st.info(
+        "Focused Student-t k=1,n=50 Gibbs audit: use this to inspect Cauchy heavy-tail geometry, "
+        "branch movement, and score-space collapse diagnostics."
+    )
 
 status = pd.DataFrame(
     [{"file": name, "path": str(path), "exists": path.exists()} for name, path in FILES.items()]
@@ -53,9 +68,9 @@ else:
     st.code(
         "python reporting/diagnostics/analyze_geometry.py "
         "--runsets final_production_v1 "
-        "--correctness-dir results/sampler_correctness_audit "
-        "--efficiency-dir results/efficiency_audit "
-        "--out-dir results/geometry_audit",
+        "--correctness-dir results/final_production_v1_correctness_audit "
+        "--efficiency-dir results/final_production_v1_efficiency_audit_cost_first "
+        "--out-dir results/final_production_v1_geometry_audit",
         language="bash",
     )
     st.stop()
@@ -73,6 +88,7 @@ local = read_csv(str(FILES["gibbs_local_move"]))
 unresolved = read_csv(str(FILES["unresolved"]))
 
 st.subheader("Geometry Win/Loss")
+st.info("Student k=1,n=10 is an unresolved heavy-tail geometry caveat; Laplace RATTLE is not applicable.")
 st.dataframe(win_loss, use_container_width=True)
 
 st.subheader("Missing Geometry Diagnostics")

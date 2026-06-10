@@ -15,6 +15,8 @@ CASE_TSV="${CASE_TSV:-hpc/grace/targeted_validation_cases.tsv}"
 OUT_DIR="${OUT_DIR:-results/targeted_validation_runs}"
 DIAGNOSTIC_THIN="${DIAGNOSTIC_THIN:-20}"
 FORCE_FLAG="${FORCE_FLAG:-}"
+SAVE_FULL_LATENT_DIAGNOSTICS="${SAVE_FULL_LATENT_DIAGNOSTICS:-}"
+FULL_LATENT_DIAGNOSTIC_MAX_ROWS="${FULL_LATENT_DIAGNOSTIC_MAX_ROWS:-0}"
 
 mkdir -p logs/targeted_validation "${OUT_DIR}"
 
@@ -58,4 +60,6 @@ python scripts/run_targeted_validation.py \
   --save-rattle-energy-diagnostics \
   --save-branch-diagnostics \
   --save-initialization-diagnostics \
+  --full-latent-diagnostic-max-rows "${FULL_LATENT_DIAGNOSTIC_MAX_ROWS}" \
+  ${SAVE_FULL_LATENT_DIAGNOSTICS} \
   ${FORCE_FLAG}

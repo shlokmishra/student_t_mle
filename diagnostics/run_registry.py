@@ -18,6 +18,7 @@ COMMON_OUTPUTS = {
     "diagnostic_summary": ("diagnostic_summary.csv", "diagnostic_summary.parquet"),
     "transition_diagnostics": ("transition_diagnostics.csv", "transition_diagnostics.parquet"),
     "latent_diagnostics": ("latent_diagnostics.csv", "latent_x_diagnostics.csv", "latent_diagnostics.parquet"),
+    "latent_x_diagnostics": ("latent_x_diagnostics.csv", "latent_x_diagnostics.parquet"),
     "geometry_diagnostics": ("geometry_diagnostics.csv", "geometry_diagnostics.parquet"),
     "rattle_energy_diagnostics": ("rattle_energy_diagnostics.csv", "rattle_energy_diagnostics.parquet"),
     "branch_diagnostics": ("branch_diagnostics.csv", "gibbs_branch_diagnostics.csv", "branch_diagnostics.parquet"),
@@ -175,10 +176,11 @@ def _attach_metadata(frame: pd.DataFrame, meta: dict[str, Any]) -> pd.DataFrame:
         "mu_star",
         "output_dir",
     ]:
+        value = meta.get(col)
         if col not in out.columns:
-            out[col] = meta.get(col)
-        else:
-            out[col] = out[col].fillna(meta.get(col))
+            out[col] = value
+        elif value is not None:
+            out[col] = out[col].fillna(value)
     if "iteration" in out.columns and "is_burn_in" not in out.columns and meta.get("burn_in") is not None:
         burn = pd.to_numeric(pd.Series([meta.get("burn_in")]), errors="coerce").iloc[0]
         if pd.notna(burn):

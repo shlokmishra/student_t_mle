@@ -16,9 +16,19 @@ import pandas as pd
 REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
+SCRIPTS_DIR = REPO_ROOT / "scripts"
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
 
-from scripts import run_cost_audit
-from scripts.targeted_validation_config import find_case
+try:
+    from scripts import run_cost_audit
+except ImportError:
+    import run_cost_audit
+
+try:
+    from scripts.targeted_validation_config import find_case
+except ModuleNotFoundError:
+    from targeted_validation_config import find_case
 
 
 def parse_args() -> argparse.Namespace:
@@ -36,6 +46,17 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--save-rattle-energy-diagnostics", action="store_true")
     parser.add_argument("--save-branch-diagnostics", action="store_true")
     parser.add_argument("--save-initialization-diagnostics", action="store_true")
+    parser.add_argument(
+        "--save-full-latent-diagnostics",
+        action="store_true",
+        help="Write thinned latent_x_diagnostics.csv with x_0...x_{n-1} snapshots.",
+    )
+    parser.add_argument(
+        "--full-latent-diagnostic-max-rows",
+        type=int,
+        default=0,
+        help="Maximum full-latent snapshot rows per case; use 0 for no cap.",
+    )
     return parser.parse_args()
 
 
@@ -346,6 +367,7 @@ def main() -> None:
         "rattle": case_dir / "rattle_energy_diagnostics.csv",
         "branch": case_dir / "branch_diagnostics.csv",
         "init": case_dir / "initialization_diagnostics.csv",
+        "latent_x": case_dir / "latent_x_diagnostics.csv",
     }
     key = random.PRNGKey(int(case["seed"]))
     k_value = np.nan if case.get("k") is None else float(case["k"])
@@ -420,9 +442,30 @@ def main() -> None:
 
     transition = transition_rows(case, chain, burn_in, thin, paths["transition"])
     latent = latent_rows(case, chain, burn_in, thin, paths["latent"])
+    full_latent = (
+        run_cost_audit.latent_diagnostic_rows(
+            str(case["model"]),
+            str(case["method"]),
+            int(case["n"]),
+            k_value,
+            0.0,
+            int(case["seed"]),
+            burn_in,
+            chain,
+            meta,
+            thin,
+            int(args.full_latent_diagnostic_max_rows),
+        )
+        if args.save_full_latent_diagnostics
+        else []
+    )
     branch = branch_rows(case, chain, burn_in, thin, paths["branch"])
     rattle = rattle_energy_rows(case, chain, transition, paths["rattle"])
     init = initialization_rows(case, chain, paths["init"])
+    for row in full_latent:
+        row["initialization"] = case["initialization"]
+        row["case_id"] = case["case_id"]
+        row["source_file"] = str(paths["latent_x"])
     if not transition:
         transition = [not_applicable_diagnostic_row(case, "transition", paths["transition"])]
     if not latent:
@@ -439,6 +482,8 @@ def main() -> None:
     write_csv([ledger_row], paths["ledger"])
     write_csv(transition, paths["transition"])
     write_csv(latent, paths["latent"])
+    if args.save_full_latent_diagnostics:
+        write_csv(full_latent, paths["latent_x"])
     write_csv(rattle, paths["rattle"])
     write_csv(branch, paths["branch"])
     write_csv(init, paths["init"])

@@ -14,8 +14,14 @@ import pandas as pd
 REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
+SCRIPTS_DIR = REPO_ROOT / "scripts"
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
 
-from scripts.targeted_validation_config import find_case
+try:
+    from scripts.targeted_validation_config import find_case
+except ModuleNotFoundError:
+    from targeted_validation_config import find_case
 
 
 REQUIRED_ALTERNATIVES = {
@@ -32,6 +38,7 @@ REQUIRED_FILES = [
 OPTIONAL_FILES = [
     "rattle_energy_diagnostics.csv",
     "branch_diagnostics.csv",
+    "latent_x_diagnostics.csv",
 ]
 ROW_COUNT_FILES = [
     "chain_samples.csv",
@@ -43,6 +50,7 @@ ROW_COUNT_FILES = [
     "initialization_diagnostics.csv",
     "rattle_energy_diagnostics.csv",
     "branch_diagnostics.csv",
+    "latent_x_diagnostics.csv",
 ]
 
 

@@ -21,3 +21,9 @@ final_production_v1:
   reference_csv: reporting/diagnostic_outputs/model_reference_audit/reference_all_models.csv
   label: final_production_v1
   optional: true
+
+student_k1_n50_geometry:
+  run_dir: results/student_k1_n50_geometry_runs/
+  reference_csv: reporting/diagnostic_outputs/model_reference_audit/reference_all_models.csv
+  label: student_k1_n50_geometry
+  optional: true
