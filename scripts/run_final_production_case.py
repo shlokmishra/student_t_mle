@@ -35,6 +35,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--burn-in", type=int, default=None)
     parser.add_argument("--seed", type=int, default=None)
     parser.add_argument("--diagnostic-thin", type=int, default=None)
+    parser.add_argument("--gibbs-backend", choices=["jax_loop", "jax_scan", "numba"], default="jax_loop")
     parser.add_argument("--force", action="store_true")
     return parser.parse_args()
 
@@ -421,7 +422,7 @@ def not_applicable_row(case: dict, diagnostic_name: str, out_path: Path) -> dict
     }
 
 
-def run_args(case: dict, out_dir: Path, num_iterations: int, burn_in: int) -> SimpleNamespace:
+def run_args(case: dict, out_dir: Path, num_iterations: int, burn_in: int, gibbs_backend: str = "jax_loop") -> SimpleNamespace:
     return SimpleNamespace(
         mu_star=0.0,
         num_iterations=int(num_iterations),
@@ -430,6 +431,7 @@ def run_args(case: dict, out_dir: Path, num_iterations: int, burn_in: int) -> Si
         out=out_dir,
         proposal_std_mu=0.3,
         proposal_std_z=0.02,
+        gibbs_backend=str(gibbs_backend),
         prior_mean=0.0,
         prior_std=10.0,
         laplace_b=1.0,
@@ -479,7 +481,7 @@ def main() -> None:
     }
     key = random.PRNGKey(int(case["seed"]))
     k_value = np.nan if case.get("k") is None else float(case["k"])
-    params = run_cost_audit.base_params(run_args(case, case_dir, num_iterations, burn_in), str(case["model"]), int(case["n"]), None if case.get("k") is None else float(case["k"]), {})
+    params = run_cost_audit.base_params(run_args(case, case_dir, num_iterations, burn_in, args.gibbs_backend), str(case["model"]), int(case["n"]), None if case.get("k") is None else float(case["k"]), {})
     runner = run_cost_audit.MODEL_MODULES[str(case["model"])][str(case["method"])]
     ledger = CostLedger(method=str(case["method"]), model=str(case["model"]), n=int(case["n"]), k=k_value, mu_star=0.0, seed=int(case["seed"]), iterations=num_iterations)
     meta = run_cost_audit._metadata(str(case["model"]), str(case["method"]), int(case["n"]))
@@ -495,7 +497,7 @@ def main() -> None:
         chain = runner(key, 0.0, params, verbose=False)
     ledger.stop()
 
-    summary_args = run_args(case, case_dir, num_iterations, burn_in)
+    summary_args = run_args(case, case_dir, num_iterations, burn_in, args.gibbs_backend)
     ledger_row, summary = run_cost_audit.summarize_chain(str(case["model"]), str(case["method"]), int(case["n"]), k_value, 0.0, int(case["seed"]), summary_args, chain, ledger)
     post = np.asarray(chain["mu_chain"], dtype=float)[min(burn_in, len(chain["mu_chain"]) - 1):]
     summary.update(

@@ -40,6 +40,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--burn-in", type=int, default=None)
     parser.add_argument("--seed", type=int, default=None)
     parser.add_argument("--diagnostic-thin", type=int, default=None)
+    parser.add_argument("--gibbs-backend", choices=["jax_loop", "jax_scan", "numba"], default="jax_loop")
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--save-transition-diagnostics", action="store_true")
     parser.add_argument("--save-latent-diagnostics", action="store_true")
@@ -284,7 +285,7 @@ def initialization_rows(case: dict, chain: dict, out_path: Path) -> list[dict]:
     ]
 
 
-def cost_args(case: dict, out_dir: Path, num_iterations: int, burn_in: int) -> SimpleNamespace:
+def cost_args(case: dict, out_dir: Path, num_iterations: int, burn_in: int, gibbs_backend: str = "jax_loop") -> SimpleNamespace:
     n = int(case["n"])
     k = np.nan if case.get("k") is None else float(case["k"])
     return SimpleNamespace(
@@ -303,6 +304,7 @@ def cost_args(case: dict, out_dir: Path, num_iterations: int, burn_in: int) -> S
         out=out_dir,
         proposal_std_mu=0.3,
         proposal_std_z=0.02,
+        gibbs_backend=str(gibbs_backend),
         prior_mean=0.0,
         prior_std=10.0,
         laplace_b=1.0,
@@ -357,7 +359,7 @@ def main() -> None:
         raise SystemExit(f"Refusing to overwrite completed case {case['case_id']}; pass --force to rerun.")
     case_dir.mkdir(parents=True, exist_ok=True)
 
-    run_args = cost_args(case, case_dir, num_iterations, burn_in)
+    run_args = cost_args(case, case_dir, num_iterations, burn_in, args.gibbs_backend)
     paths = {
         "chain": case_dir / "chain_samples.csv",
         "posterior": case_dir / "posterior_summaries.csv",

@@ -29,6 +29,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--seed", type=int, required=True)
     parser.add_argument("--repeat", type=int, required=True)
     parser.add_argument("--out", type=Path, default=Path("results/timing_fairness_audit"))
+    parser.add_argument("--gibbs-backend", choices=["jax_loop", "jax_scan", "numba"], default="jax_loop")
     return parser.parse_args()
 
 
@@ -92,6 +93,8 @@ def main() -> None:
             f"{base_case_id}_seed{case['seed']}_init_central",
             "--out",
             str(args.out),
+            "--gibbs-backend",
+            str(args.gibbs_backend),
             "--diagnostic-thin",
             "20",
             "--save-transition-diagnostics",

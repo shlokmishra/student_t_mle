@@ -3,15 +3,17 @@ Student-t location model (scale=1, df=k). MLE from score equation; Gibbs via psi
 """
 
 import numpy as np
-import scipy.stats as stats
 from scipy.optimize import root_scalar
 import jax
 jax.config.update("jax_enable_x64", True)
 import jax.numpy as jnp
-from jax import random, vmap, jit
+from jax import random, vmap, jit, lax
 from jax.scipy.stats import t, norm, truncnorm
 from jax.scipy.special import logsumexp
+from numba import njit, prange
 from tqdm import tqdm
+import math
+from functools import partial
 
 EPS_Z = 1e-12
 EPS_U = 1e-12
@@ -206,6 +208,231 @@ def _update_x_full(key, x_current, mu_current, mu_star, k, sigma_z):
     return x_new, jnp.sum(pair_acc), jnp.sum(z_acc)
 
 
+def _gibbs_transition(key, mu_current, x_current, mu_star, k, sigma_mu, sigma_z, prior_loc, prior_scale):
+    key, key_mu, key_x = random.split(key, 3)
+    mu_new, acc_mu = _update_mu_mh(key_mu, mu_current, x_current, sigma_mu, prior_loc, prior_scale, k)
+    x_new, pair_acc, z_acc = _update_x_full(key_x, x_current, mu_new, mu_star, k, sigma_z)
+    return key, mu_new, x_new, acc_mu, pair_acc, z_acc
+
+
+@jit
+def _gibbs_scan_step(carry, _):
+    key, mu_current, x_current, mu_star, k, sigma_mu, sigma_z, prior_loc, prior_scale = carry
+    key, mu_new, x_new, acc_mu, pair_acc, z_acc = _gibbs_transition(
+        key, mu_current, x_current, mu_star, k, sigma_mu, sigma_z, prior_loc, prior_scale
+    )
+    next_carry = (key, mu_new, x_new, mu_star, k, sigma_mu, sigma_z, prior_loc, prior_scale)
+    return next_carry, (mu_new, x_new, acc_mu, pair_acc, z_acc)
+
+
+@partial(jit, static_argnames=("T",))
+def _run_gibbs_jax_scan_kernel(key, x0, mu_star, k, sigma_mu, sigma_z, prior_loc, prior_scale, T):
+    carry = (
+        key,
+        jnp.asarray(mu_star, dtype=float),
+        x0,
+        jnp.asarray(mu_star, dtype=float),
+        jnp.asarray(k, dtype=float),
+        jnp.asarray(sigma_mu, dtype=float),
+        jnp.asarray(sigma_z, dtype=float),
+        jnp.asarray(prior_loc, dtype=float),
+        jnp.asarray(prior_scale, dtype=float),
+    )
+    _, draws = lax.scan(_gibbs_scan_step, carry, xs=None, length=T)
+    mus_tail, xs_tail, mu_acc, pair_acc, z_acc = draws
+    mus = jnp.concatenate([jnp.asarray([mu_star], dtype=float), mus_tail])
+    xs = jnp.concatenate([x0[None, :], xs_tail], axis=0)
+    return mus, xs, jnp.sum(mu_acc), jnp.sum(pair_acc), jnp.sum(z_acc)
+
+
+def _run_gibbs_jax_scan(key, mu_star, params):
+    T = int(params["num_iterations_T"])
+    n = int(params["n"])
+    k = float(params["k"])
+    x0 = _initial_x(mu_star, n, k, params)
+    mus, xs, mu_acc, pair_acc, z_acc = _run_gibbs_jax_scan_kernel(
+        key,
+        x0,
+        float(mu_star),
+        k,
+        float(params["proposal_std_mu"]),
+        float(params["proposal_std_z"]),
+        float(params["prior_mean"]),
+        float(params["prior_std"]),
+        T,
+    )
+    return {
+        "mu_chain": mus,
+        "x_chain": xs,
+        "mu_acceptance_count": mu_acc,
+        "pair_acceptance_count": pair_acc,
+        "z_acceptance_count": z_acc,
+    }
+
+
+@njit(cache=True)
+def _numba_z_support(k):
+    bound = 1.0 / (2.0 * math.sqrt(k))
+    return -bound + EPS_Z, bound - EPS_Z
+
+
+@njit(cache=True)
+def _numba_psi(y, k):
+    return y / (k + y * y)
+
+
+@njit(cache=True)
+def _numba_student_logpdf(y, loc, k):
+    half = 0.5
+    return (
+        math.lgamma((k + 1.0) * half)
+        - math.lgamma(k * half)
+        - half * math.log(k * math.pi)
+        - ((k + 1.0) * half) * math.log1p(((y - loc) * (y - loc)) / k)
+    )
+
+
+@njit(cache=True)
+def _numba_norm_logpdf(x, loc, scale):
+    z = (x - loc) / scale
+    return -0.5 * z * z - math.log(scale) - 0.5 * math.log(2.0 * math.pi)
+
+
+@njit(cache=True)
+def _numba_norm_cdf(x):
+    return 0.5 * (1.0 + math.erf(x / math.sqrt(2.0)))
+
+
+@njit(cache=True)
+def _numba_truncnorm_logpdf(x, loc, scale, low, high):
+    a = (low - loc) / scale
+    b = (high - loc) / scale
+    normalizer = _numba_norm_cdf(b) - _numba_norm_cdf(a)
+    if normalizer <= 0.0 or not math.isfinite(normalizer):
+        return -math.inf
+    return _numba_norm_logpdf(x, loc, scale) - math.log(normalizer)
+
+
+@njit(cache=True)
+def _numba_psi_inverse(z, k):
+    z_min, z_max = _numba_z_support(k)
+    zc = min(max(z, z_min), z_max)
+    if abs(zc) < EPS_DIV:
+        return 0.0, 0.0
+    tval = 2.0 * math.sqrt(k) * zc
+    discr = max(1.0 - tval * tval, 0.0)
+    root = math.sqrt(discr)
+    denom = 2.0 * zc
+    y_plus = (1.0 + root) / denom
+    y_minus = (1.0 - root) / denom
+    if not math.isfinite(y_plus):
+        y_plus = 0.0
+    if not math.isfinite(y_minus):
+        y_minus = 0.0
+    return min(y_minus, y_plus), max(y_minus, y_plus)
+
+
+@njit(cache=True)
+def _numba_log_psi_prime_abs(y, k):
+    return math.log(abs(k - y * y) + 1e-30) - 2.0 * math.log(k + y * y)
+
+
+@njit(cache=True)
+def _numba_q_logpdf(z, mu_current, mu_star, k):
+    z_min, z_max = _numba_z_support(k)
+    if not (z > z_min and z < z_max):
+        return -math.inf
+    loc = mu_current - mu_star
+    y_lo, y_hi = _numba_psi_inverse(z, k)
+    a = _numba_student_logpdf(y_lo, loc, k) - _numba_log_psi_prime_abs(y_lo, k)
+    b = _numba_student_logpdf(y_hi, loc, k) - _numba_log_psi_prime_abs(y_hi, k)
+    m = max(a, b)
+    if not math.isfinite(m):
+        return -math.inf
+    return m + math.log(math.exp(a - m) + math.exp(b - m))
+
+
+@njit(cache=True)
+def _numba_q_tilde_logpdf(z, delta, mu_current, mu_star, k):
+    return _numba_q_logpdf(z, mu_current, mu_star, k) + _numba_q_logpdf(delta - z, mu_current, mu_star, k)
+
+
+@njit(cache=True)
+def _numba_sample_truncated_normal(loc, scale, low, high):
+    for _ in range(10000):
+        cand = loc + scale * np.random.normal()
+        if cand >= low and cand <= high:
+            return cand
+    return min(max(loc, low), high)
+
+
+@njit(parallel=True, cache=True)
+def _numba_update_pairs(x_current, perm, mu_current, mu_star, k, sigma_z, x_out):
+    n_pairs = perm.shape[0] // 2
+    pair_acc = 0
+    z_acc = 0
+    for p in prange(n_pairs):
+        idx_i = perm[2 * p]
+        idx_j = perm[2 * p + 1]
+        xi = x_current[idx_i]
+        xj = x_current[idx_j]
+        yi = xi - mu_star
+        yj = xj - mu_star
+        zi = _numba_psi(yi, k)
+        zj = _numba_psi(yj, k)
+        delta = zi + zj
+        low, high = _numba_z_support(k)
+        low_int = max(low, delta - high)
+        high_int = min(high, delta - low)
+        if low_int >= high_int:
+            x_out[idx_i] = xi
+            x_out[idx_j] = xj
+            continue
+
+        z_prop = _numba_sample_truncated_normal(zi, sigma_z, low_int, high_int)
+        log_k_cur = _numba_truncnorm_logpdf(z_prop, zi, sigma_z, low_int, high_int)
+        log_k_back = _numba_truncnorm_logpdf(zi, z_prop, sigma_z, low_int, high_int)
+        log_cur = _numba_q_tilde_logpdf(zi, delta, mu_current, mu_star, k)
+        log_prop = _numba_q_tilde_logpdf(z_prop, delta, mu_current, mu_star, k)
+        log_alpha = log_prop - log_cur + log_k_back - log_k_cur
+        if math.isfinite(log_alpha) and math.log(max(np.random.random(), EPS_U)) < log_alpha:
+            zi_tilde = z_prop
+            z_acc += 1
+        else:
+            zi_tilde = zi
+        zj_tilde = delta - zi_tilde
+        if not (zj_tilde > low and zj_tilde < high):
+            x_out[idx_i] = xi
+            x_out[idx_j] = xj
+            continue
+
+        yi_lo, yi_hi = _numba_psi_inverse(zi_tilde, k)
+        yj_lo, yj_hi = _numba_psi_inverse(zj_tilde, k)
+        loc = mu_current - mu_star
+        wi_lo = _numba_student_logpdf(yi_lo, loc, k) - _numba_log_psi_prime_abs(yi_lo, k)
+        wi_hi = _numba_student_logpdf(yi_hi, loc, k) - _numba_log_psi_prime_abs(yi_hi, k)
+        wj_lo = _numba_student_logpdf(yj_lo, loc, k) - _numba_log_psi_prime_abs(yj_lo, k)
+        wj_hi = _numba_student_logpdf(yj_hi, loc, k) - _numba_log_psi_prime_abs(yj_hi, k)
+        mi = max(wi_lo, wi_hi)
+        mj = max(wj_lo, wj_hi)
+        if math.isfinite(mi):
+            pi_lo = math.exp(wi_lo - mi)
+            pi_hi = math.exp(wi_hi - mi)
+            yi_new = yi_lo if np.random.random() < pi_lo / (pi_lo + pi_hi) else yi_hi
+        else:
+            yi_new = yi_lo
+        if math.isfinite(mj):
+            pj_lo = math.exp(wj_lo - mj)
+            pj_hi = math.exp(wj_hi - mj)
+            yj_new = yj_lo if np.random.random() < pj_lo / (pj_lo + pj_hi) else yj_hi
+        else:
+            yj_new = yj_lo
+        x_out[idx_i] = yi_new + mu_star
+        x_out[idx_j] = yj_new + mu_star
+        pair_acc += 1
+    return pair_acc, z_acc
+
+
 def _unnorm_posterior_mu_logpdf(mu, x, prior_loc, prior_scale, k):
     mu = jnp.asarray(mu)
     x = jnp.asarray(x)
@@ -214,6 +441,66 @@ def _unnorm_posterior_mu_logpdf(mu, x, prior_loc, prior_scale, k):
     else:
         loglik = jnp.sum(t.logpdf(x[:, None], df=k, loc=mu[None, :], scale=1.0), axis=0)
     return loglik + norm.logpdf(mu, loc=prior_loc, scale=prior_scale)
+
+
+def _numba_mu_logpdf(mu, x, prior_loc, prior_scale, k):
+    x = np.asarray(x, dtype=float)
+    k = float(k)
+    log_const = math.lgamma((k + 1.0) / 2.0) - math.lgamma(k / 2.0) - 0.5 * math.log(k * math.pi)
+    y = x - float(mu)
+    loglik = float(np.sum(log_const - ((k + 1.0) / 2.0) * np.log1p((y * y) / k)))
+    prior = -0.5 * ((mu - prior_loc) / prior_scale) ** 2 - math.log(prior_scale) - 0.5 * math.log(2.0 * math.pi)
+    return float(loglik + prior)
+
+
+def _run_gibbs_numba(key, mu_star, params):
+    T = int(params["num_iterations_T"])
+    n = int(params["n"])
+    k = float(params["k"])
+    sigma_mu = float(params["proposal_std_mu"])
+    sigma_z = float(params["proposal_std_z"])
+    prior_loc = float(params["prior_mean"])
+    prior_scale = float(params["prior_std"])
+    seed = int(np.asarray(random.randint(key, (), minval=0, maxval=2**31 - 1)))
+    rng = np.random.default_rng(seed)
+    np.random.seed(seed)
+
+    mus = np.zeros(T + 1, dtype=float)
+    xs = np.zeros((T + 1, n), dtype=float)
+    mus[0] = float(mu_star)
+    xs[0, :] = np.asarray(_initial_x(mu_star, n, k, params), dtype=float)
+    mu_acc = 0
+    pair_acc = 0
+    z_acc = 0
+
+    for t_idx in range(1, T + 1):
+        x_cur = xs[t_idx - 1]
+        mu_cur = mus[t_idx - 1]
+        mu_cand = mu_cur + sigma_mu * rng.normal()
+        log_cur = _numba_mu_logpdf(mu_cur, x_cur, prior_loc, prior_scale, k)
+        log_cand = _numba_mu_logpdf(mu_cand, x_cur, prior_loc, prior_scale, k)
+        log_alpha = log_cand - log_cur if np.isfinite(log_cand - log_cur) else -np.inf
+        if np.log(max(rng.random(), EPS_U)) < log_alpha:
+            mu_new = mu_cand
+            mu_acc += 1
+        else:
+            mu_new = mu_cur
+        mus[t_idx] = mu_new
+
+        perm = rng.permutation(n).astype(np.int64)
+        x_out = x_cur.copy()
+        completed, accepted_z = _numba_update_pairs(x_cur, perm, mu_new, float(mu_star), k, sigma_z, x_out)
+        xs[t_idx, :] = x_out
+        pair_acc += int(completed)
+        z_acc += int(accepted_z)
+
+    return {
+        "mu_chain": mus,
+        "x_chain": xs,
+        "mu_acceptance_count": mu_acc,
+        "pair_acceptance_count": pair_acc,
+        "z_acceptance_count": z_acc,
+    }
 
 
 @jit
@@ -227,6 +514,31 @@ def _update_mu_mh(key, mu_current, x_current, sigma_mu, prior_loc, prior_scale, 
     return jnp.where(accept, mu_cand, mu_current), accept
 
 
+def _record_gibbs_costs(cost_ledger, T, n, mu_acc, pair_acc, backend):
+    if cost_ledger is None:
+        return
+    attempted = T * (n // 2)
+    q_logpdf_evals = 4 * attempted
+    cost_ledger.inc("iterations", T)
+    cost_ledger.inc("sweep_count", T)
+    cost_ledger.inc("mu_mh_proposals", T)
+    cost_ledger.inc("student_logpdf_evals", 2 * T * n)
+    cost_ledger.inc("prior_logpdf_evals", 2 * T)
+    cost_ledger.inc("mu_mh_accepts", int(mu_acc))
+    cost_ledger.inc("pair_updates_attempted", attempted)
+    cost_ledger.inc("pair_updates_completed", int(pair_acc))
+    cost_ledger.inc("pair_rejections", attempted - int(pair_acc))
+    cost_ledger.inc("constraint_evals", attempted)
+    cost_ledger.inc("pair_grid_evals", q_logpdf_evals)
+    cost_ledger.inc("pair_inverse_branch_evals", 2 * q_logpdf_evals + 4 * int(pair_acc))
+    cost_ledger.inc("pair_weight_evals", 4 * int(pair_acc))
+    cost_ledger.inc("student_logpdf_evals", 2 * q_logpdf_evals + 4 * int(pair_acc))
+    cost_ledger.set("iterations", T)
+    cost_ledger.set("mu_mh_accepts", int(mu_acc))
+    cost_ledger.set("pair_updates_completed", int(pair_acc))
+    cost_ledger.set("gibbs_backend", backend)
+
+
 def run_gibbs(key, mu_star, params, verbose=True, cost_ledger=None):
     """Two-step Gibbs: (1) mu | x MH, (2) x | mu, MLE=mu_star.
 
@@ -237,15 +549,49 @@ def run_gibbs(key, mu_star, params, verbose=True, cost_ledger=None):
     prior_std) to regularize mu; use larger n when possible; reduce
     proposal_std_mu to limit large mu jumps; or increase burn-in.
     """
+    backend = str(params.get("gibbs_backend", "jax_loop"))
+    if backend not in {"jax_loop", "jax_scan", "numba"}:
+        raise ValueError(f"Unknown Student Gibbs backend: {backend}")
     T = int(params["num_iterations_T"])
     n = int(params["n"])
     k = params["k"]
+    total_pairs = T * (n // 2)
+
+    if backend == "jax_scan":
+        out = _run_gibbs_jax_scan(key, mu_star, params)
+        mu_acc = int(out["mu_acceptance_count"])
+        pair_acc = int(out["pair_acceptance_count"])
+        z_acc = int(out["z_acceptance_count"])
+        _record_gibbs_costs(cost_ledger, T, n, mu_acc, pair_acc, backend)
+        return {
+            "mu_chain": out["mu_chain"],
+            "x_chain": out["x_chain"],
+            "mu_acceptance_rate": mu_acc / T,
+            "pair_acceptance_rate": pair_acc / total_pairs,
+            "z_acceptance_rate": z_acc / total_pairs,
+            "gibbs_backend": backend,
+        }
+
+    if backend == "numba":
+        out = _run_gibbs_numba(key, mu_star, params)
+        mu_acc = int(out["mu_acceptance_count"])
+        pair_acc = int(out["pair_acceptance_count"])
+        z_acc = int(out["z_acceptance_count"])
+        _record_gibbs_costs(cost_ledger, T, n, mu_acc, pair_acc, backend)
+        return {
+            "mu_chain": out["mu_chain"],
+            "x_chain": out["x_chain"],
+            "mu_acceptance_rate": mu_acc / T,
+            "pair_acceptance_rate": pair_acc / total_pairs,
+            "z_acceptance_rate": z_acc / total_pairs,
+            "gibbs_backend": backend,
+        }
+
     mus = jnp.zeros(T + 1)
     xs = jnp.zeros((T + 1, n))
     x0 = _initial_x(mu_star, n, k, params)
     mus = mus.at[0].set(mu_star)
     xs = xs.at[0, :].set(x0)
-    total_pairs = T * (n // 2)
     mu_acc, pair_acc, z_acc = 0, 0, 0
 
     iters = range(1, T + 1)
@@ -293,11 +639,13 @@ def run_gibbs(key, mu_star, params, verbose=True, cost_ledger=None):
         "mu_acceptance_rate": mu_acc / T,
         "pair_acceptance_rate": pair_acc / total_pairs,
         "z_acceptance_rate": z_acc / total_pairs,
+        "gibbs_backend": backend,
     }
     if cost_ledger is not None:
         cost_ledger.set("iterations", T)
         cost_ledger.set("mu_mh_accepts", mu_acc)
         cost_ledger.set("pair_updates_completed", pair_acc)
+        cost_ledger.set("gibbs_backend", backend)
     return result
 
 

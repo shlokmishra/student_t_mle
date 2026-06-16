@@ -1,0 +1,4 @@
+task_index	backend	k	n	seed	repeat	num_iterations	warmup_iterations
+1	jax_loop	2.0	10	0	0	200	20
+2	jax_scan	2.0	10	0	0	200	20
+3	numba	2.0	10	0	0	200	20
