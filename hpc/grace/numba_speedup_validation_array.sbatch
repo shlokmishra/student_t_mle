@@ -9,7 +9,7 @@
 
 set -euo pipefail
 
-PYTHON_MODULE="${PYTHON_MODULE:-}"
+PYTHON_MODULE="${PYTHON_MODULE:-GCCcore/14.3.0 Python/3.13.5}"
 CASE_TSV="${CASE_TSV:-hpc/grace/numba_speedup_validation_cases.tsv}"
 OUT_DIR="${OUT_DIR:-results/numba_speedup_validation}"
 
