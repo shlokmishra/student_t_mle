@@ -7,8 +7,9 @@ CASE_TSV="${CASE_TSV:-hpc/grace/numba_speedup_validation_cases.tsv}"
 OUT_DIR="${OUT_DIR:-results/numba_speedup_validation}"
 MANIFEST="${MANIFEST:-${OUT_DIR}/run_manifest.json}"
 MAX_PARALLEL="${MAX_PARALLEL:-12}"
+PYTHON_BIN="${PYTHON_BIN:-.venv/bin/python}"
 
-python scripts/make_grace_numba_speedup_jobs.py \
+"${PYTHON_BIN}" scripts/make_grace_numba_speedup_jobs.py \
   --config "${CONFIG}" \
   --case-tsv "${CASE_TSV}" \
   --manifest "${MANIFEST}" \
