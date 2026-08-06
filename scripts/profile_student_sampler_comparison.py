@@ -179,23 +179,39 @@ def mu_logpdf(mu: float, x: np.ndarray, prior_loc: float, prior_scale: float, k:
 
 
 def q_logpdf_no_const(z: np.ndarray, mu_current: float, mu_star: float, k: float, timer: Timer | None = None) -> np.ndarray:
-    z_min, z_max = z_support(k)
-    in_supp = (z > z_min) & (z < z_max)
     if timer is None:
+        z_min, z_max = z_support(k)
+        in_supp = (z > z_min) & (z < z_max)
         y_lo, y_hi = psi_inverse(z, k)
-    else:
-        with timer.section("gibbs.z_mh.inverse_branches_for_q"):
-            y_lo, y_hi = psi_inverse(z, k)
+        loc = mu_current - mu_star
+        vals = np.stack(
+            [
+                student_logpdf_no_const(y_lo, loc, k) - log_psi_prime_abs(y_lo, k),
+                student_logpdf_no_const(y_hi, loc, k) - log_psi_prime_abs(y_hi, k),
+            ],
+            axis=0,
+        )
+        out = logsumexp(vals, axis=0)
+        return np.where(in_supp, out, -np.inf)
+
+    with timer.section("gibbs.z_mh.q.support_mask"):
+        z_min, z_max = z_support(k)
+        in_supp = (z > z_min) & (z < z_max)
+    with timer.section("gibbs.z_mh.inverse_branches_for_q"):
+        y_lo, y_hi = psi_inverse(z, k)
     loc = mu_current - mu_star
-    vals = np.stack(
-        [
-            student_logpdf_no_const(y_lo, loc, k) - log_psi_prime_abs(y_lo, k),
-            student_logpdf_no_const(y_hi, loc, k) - log_psi_prime_abs(y_hi, k),
-        ],
-        axis=0,
-    )
-    out = logsumexp(vals, axis=0)
-    return np.where(in_supp, out, -np.inf)
+    with timer.section("gibbs.z_mh.q.student_logpdf"):
+        log_lo = student_logpdf_no_const(y_lo, loc, k)
+        log_hi = student_logpdf_no_const(y_hi, loc, k)
+    with timer.section("gibbs.z_mh.q.log_jacobian"):
+        jac_lo = log_psi_prime_abs(y_lo, k)
+        jac_hi = log_psi_prime_abs(y_hi, k)
+    with timer.section("gibbs.z_mh.q.stack_branch_terms"):
+        vals = np.stack([log_lo - jac_lo, log_hi - jac_hi], axis=0)
+    with timer.section("gibbs.z_mh.q.logsumexp_branches"):
+        out = logsumexp(vals, axis=0)
+    with timer.section("gibbs.z_mh.q.apply_support"):
+        return np.where(in_supp, out, -np.inf)
 
 
 def gibbs_base_params(args: argparse.Namespace, k: float, n: int, seed: int) -> dict[str, Any]:
@@ -533,12 +549,12 @@ def write_figures(out_dir: Path, summary: pd.DataFrame, block_summary: pd.DataFr
     for k, part in gibbs_blocks.groupby("k"):
         for n in sorted(part["n"].unique()):
             sub = part[part["n"].eq(n)].sort_values("sec_per_iteration_mean", ascending=False)
-            fig, ax = plt.subplots(figsize=(10, 5.2))
-            labels = [str(x).replace("gibbs.", "") for x in sub["block"]]
-            ax.bar(labels, sub["sec_per_iteration_mean"])
+            plot_sub = sub.iloc[::-1]
+            fig, ax = plt.subplots(figsize=(9.5, 6.2))
+            labels = [str(x).replace("gibbs.", "") for x in plot_sub["block"]]
+            ax.barh(labels, plot_sub["sec_per_iteration_mean"])
             ax.set_title(f"Gibbs granular cost breakup, k={float(k):g}, n={int(n)}")
-            ax.set_ylabel("seconds per iteration")
-            ax.tick_params(axis="x", rotation=55)
+            ax.set_xlabel("seconds per iteration")
             plt.tight_layout()
             path = fig_dir / f"gibbs_granular_cost_k{float(k):g}_n{int(n)}.png"
             plt.savefig(path, dpi=160)
