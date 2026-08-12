@@ -119,8 +119,9 @@ Key numbers:
   20k burn-in, and 50-step diagnostic thinning; 0 missing required output rows
   and 0 failed case rows.
 - Verdict counts: `{'pass_with_warning': 14, 'pass': 14, 'unresolved': 2}`.
-- Final dashboard verdicts: 14 clean, 11 caveat-only, 2 unresolved, and 3
-  not-applicable Laplace RATTLE rows.
+- Reconciled meeting verdicts: 14 clean, 9 clean with targeted-validation
+  support, 2 caveat-only, 2 unresolved, and 3 not-applicable Laplace RATTLE
+  rows.
 - Posterior agreement status counts: `{'pass': 14, 'warning': 13, 'not_applicable': 3}`.
 - High-severity suspicious sampler cases: `5`.
 - Clean Student-t examples: k=2,n=50 and k=3,n=20,50 for both Gibbs and
@@ -193,10 +194,21 @@ Plots/tables worth showing:
 - `results/final_production_v1_efficiency_audit_cost_first/method_winners.csv` for the "who wins and when" table.
 - `results/final_production_v1_efficiency_audit_cost_first/efficiency_summary.csv` for ESS/sec, sec/iteration, wall-time per
   ESS, split drift, and posterior-warning context.
+- `results/meeting_pack/cost_decomposition_summary.csv` for the compact
+  cost-decomposition table.
+- `docs/presentation/Images/final/sec_per_iteration_by_n.png` and
+  `docs/presentation/Images/final/ess_per_sec_by_n.png` for the presentation
+  version of the cost story.
 
 Reasoning to mention:
 
 - Use ESS/sec and wall-time per ESS, not raw runtime alone.
+- In this implementation, RATTLE is cheaper per iteration in smooth comparable
+  production rows; this is an empirical implementation result, not a universal
+  algorithmic guarantee.
+- Gibbs sweep cost grows with `n` because the cached production implementation
+  performs dimension-scaling latent/pair work; RATTLE proposals stayed nearly
+  flat in these smooth regimes.
 - Cost-only caveat rows are useful for engineering expectations after tuning,
   but should not become headline scientific correctness examples.
 - Laplace is Gibbs-only because RATTLE is not applicable for the nonsmooth median
@@ -248,6 +260,9 @@ Key numbers:
 Plots worth showing:
 
 - `results/final_production_v1_geometry_audit/figures/student_tail_geometry_histogram.png`
+- `docs/presentation/Images/final/representative_geometry_classes.png`
+  to compare one clean case, Student k=3,n=20, against the unresolved
+  Student k=1,n=10 regime without pooling all geometry cases.
 - `results/final_production_v1_geometry_audit/figures/student_branch_occupancy.png`
 - `results/final_production_v1_geometry_audit/figures/latent_geometry_class_transition_heatmap.png`
 - `results/final_production_v1_geometry_audit/figures/rattle_delta_H_vs_max_abs_y.png`
@@ -266,7 +281,9 @@ Reasoning to mention:
 
 Focused Student k=1,n=50 Gibbs follow-up:
 
-- Run 15 long chains on Grace: 5 seeds x central/tail-heavy/random
+- This is a parallel/follow-up investigation, not part of the completed meeting
+  evidence unless the run outputs are transferred and audited.
+- Planned run: 15 long chains on Grace, 5 seeds x central/tail-heavy/random
   initializations, 500k iterations, 100k burn-in, diagnostic thinning 100.
 - Save full thinned latent snapshots (`x_0` through `x_49`) so the audit can
   measure score-coordinate collapse `z=y/(1+y^2)`, branch occupancy, extreme
@@ -281,13 +298,13 @@ Focused Student k=1,n=50 Gibbs follow-up:
 
 Source artifacts:
 
-- Runset: `results/release_information_runs/`
-- Report: `results/final_production_v1_release_information_audit/release_information_report.md`
-- Decision memo: `results/final_production_v1_release_information_audit/release_information_decision_memo.md`
-- Information-loss table: `results/final_production_v1_release_information_audit/information_loss_summary.csv`
-- Privacy-leakage table: `results/final_production_v1_release_information_audit/privacy_leakage_summary.csv`
-- Observed-outlier table: `results/final_production_v1_release_information_audit/observed_outlier_summary.csv`
-- Figures: `results/final_production_v1_release_information_audit/figures/`
+- Runset: `results/release_information_runs_100_per_regime/`
+- Report: `results/final_production_v1_release_information_audit_100/release_information_report.md`
+- Information-loss table: `results/final_production_v1_release_information_audit_100/information_loss_summary.csv`
+- Privacy-leakage table: `results/final_production_v1_release_information_audit_100/privacy_leakage_summary.csv`
+- Observed-outlier table: `results/final_production_v1_release_information_audit_100/observed_outlier_summary.csv`
+- Figures: `results/final_production_v1_release_information_audit_100/figures/`
+- Old 30-dataset comparison: `results/meeting_pack/information_loss_30_vs_100_comparison.csv`
 
 Slide candidate: "What does releasing only the MLE preserve, distort, and leak?"
 
@@ -304,33 +321,34 @@ Main claim:
 
 Key numbers:
 
-- Paired information-loss runset: 540 simulated datasets = 18 regimes x 30
+- Paired information-loss runset: 1,800 simulated datasets = 18 regimes x 100
   datasets.
-- MLE-only posterior used raw weighted Monte Carlo from 30,000 centered-MLE
+- MLE-only posterior used raw weighted Monte Carlo from 50,000 centered-MLE
   simulations per regime.
 - Normal benchmark: median SD ratio = 1.000 and Wasserstein/quantile differences
   are numerical zero for n=10,20,50.
-- Logistic median SD ratios are about 1.041, 1.008, 1.010 for n=10,20,50;
-  median Wasserstein drops from about 0.030 to 0.009.
-- Student k=2 median SD ratios are about 1.058, 1.009, 1.006 for n=10,20,50.
-- Student k=3 median SD ratios are about 1.038, 0.989, 1.004 for n=10,20,50.
+- Logistic median SD ratios are about 1.021, 1.003, 0.998 for n=10,20,50;
+  median Wasserstein drops from about 0.030 to 0.008.
+- Student k=2 median SD ratios are about 1.076, 1.008, 0.997 for n=10,20,50.
+- Student k=3 median SD ratios are about 1.044, 1.029, 1.014 for n=10,20,50.
 - Student k=1,n=10 is the standout information-loss case: median SD ratio
-  about 1.54, median Wasserstein about 0.112, and max quantile-distance about
-  17.3 across the 30 datasets.
-- Actual simulated Student k=1 max-|x - hat_mu| is large: median 8.39, 17.73,
-  50.15 for n=10,20,50; 95th percentiles about 213, 239, 414.
+  about 1.59 and median Wasserstein about 0.117 across the 100 datasets.
+- Actual simulated Student k=1 max-|x - hat_mu| is large in the 100-dataset
+  pass: medians about 7.34, 14.61, 46.30 for n=10,20,50; 95th percentiles
+  about 83, 140, and 362.
 - Production latent privacy chains at `hat_mu=0` show substantial compatible
   extreme-outlier uncertainty. For Student k=1,n=10, posterior P(M>10 | hat_mu)
   is about 0.567 for both Gibbs and RATTLE versus prior about 0.481.
 
 Plots worth showing:
 
-- `results/final_production_v1_release_information_audit/figures/sd_ratio_heatmap.png`
-- `results/final_production_v1_release_information_audit/figures/wasserstein_heatmap.png`
-- `results/final_production_v1_release_information_audit/figures/interval_width_ratio_heatmap.png`
-- `results/final_production_v1_release_information_audit/figures/privacy_leakage_probability_shift.png`
-- `results/final_production_v1_release_information_audit/figures/posterior_extreme_probability_by_threshold.png`
-- `results/final_production_v1_release_information_audit/figures/representative_information_loss_cases.png`
+- `results/final_production_v1_release_information_audit_100/figures/sd_ratio_heatmap.png`
+- `results/final_production_v1_release_information_audit_100/figures/wasserstein_heatmap.png`
+- `results/final_production_v1_release_information_audit_100/figures/interval_width_ratio_heatmap.png`
+- `results/final_production_v1_release_information_audit_100/figures/privacy_leakage_probability_shift.png`
+- `results/final_production_v1_release_information_audit_100/figures/posterior_extreme_probability_by_threshold.png`
+- `results/final_production_v1_release_information_audit_100/figures/representative_information_loss_cases.png`
+- `docs/presentation/Images/final/information_loss_selected_bars.png`
 
 Reasoning to mention:
 

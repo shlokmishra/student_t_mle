@@ -2,14 +2,14 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 from pathlib import Path
 
 import pandas as pd
 
 
-CACHE_DIR = Path("results/dashboard_cache")
-CHECK_PATH = CACHE_DIR / "cache_check.json"
+DEFAULT_CACHE_DIR = Path("results/dashboard_cache/final_production_v1")
 
 
 def read_csv(path: Path) -> pd.DataFrame:
@@ -44,25 +44,34 @@ def page_has_no_long_auto_run(page: Path) -> bool:
     return not any(item in text for item in risky)
 
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--cache-dir", type=Path, default=DEFAULT_CACHE_DIR)
+    return parser.parse_args()
+
+
 def main() -> None:
-    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    args = parse_args()
+    cache_dir = args.cache_dir
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    check_path = cache_dir / "cache_check.json"
     results: list[dict] = []
-    manifest_path = CACHE_DIR / "cache_manifest.json"
+    manifest_path = cache_dir / "cache_manifest.json"
     check(results, "cache_manifest.json exists", manifest_path.exists(), str(manifest_path))
     manifest = json.loads(manifest_path.read_text(encoding="utf-8")) if manifest_path.exists() else {}
     check(results, "dashboard_ready is true", bool(manifest.get("dashboard_ready")), str(manifest.get("dashboard_ready")))
 
-    reference = read_csv(CACHE_DIR / "reference_cache.csv")
-    posterior_density = read_csv(CACHE_DIR / "posterior_density_cache.csv")
-    sampler_density = read_csv(CACHE_DIR / "sampler_density_cache.csv")
-    posterior = read_csv(CACHE_DIR / "posterior_comparison_cache.csv")
-    cost = read_csv(CACHE_DIR / "cost_ledger_cache.csv")
-    cost_eff = read_csv(CACHE_DIR / "cost_efficiency_cache.csv")
-    validity = read_csv(CACHE_DIR / "model_validity_cache.csv")
-    student_diag = read_csv(CACHE_DIR / "student_k1_n10_diagnostic_cache.csv")
-    sampler_verdicts = read_csv(CACHE_DIR / "sampler_final_verdict_cache.csv")
-    sampler_coverage = read_csv(CACHE_DIR / "sampler_diagnostic_coverage_cache.csv")
-    views = read_csv(CACHE_DIR / "dashboard_views_cache.csv")
+    reference = read_csv(cache_dir / "reference_cache.csv")
+    posterior_density = read_csv(cache_dir / "posterior_density_cache.csv")
+    sampler_density = read_csv(cache_dir / "sampler_density_cache.csv")
+    posterior = read_csv(cache_dir / "posterior_comparison_cache.csv")
+    cost = read_csv(cache_dir / "cost_ledger_cache.csv")
+    cost_eff = read_csv(cache_dir / "cost_efficiency_cache.csv")
+    validity = read_csv(cache_dir / "model_validity_cache.csv")
+    student_diag = read_csv(cache_dir / "student_k1_n10_diagnostic_cache.csv")
+    sampler_verdicts = read_csv(cache_dir / "sampler_final_verdict_cache.csv")
+    sampler_coverage = read_csv(cache_dir / "sampler_diagnostic_coverage_cache.csv")
+    views = read_csv(cache_dir / "dashboard_views_cache.csv")
 
     check(results, "reference cache exists and nonempty", not reference.empty, f"rows={len(reference)}")
     check(results, "posterior KDE density cache exists and nonempty", not posterior_density.empty, f"rows={len(posterior_density)}")
@@ -115,14 +124,15 @@ def main() -> None:
         Path("dashboard/pages/6_Sampler_Correctness.py"),
         Path("dashboard/pages/7_Efficiency.py"),
         Path("dashboard/pages/8_Geometry.py"),
+        Path("dashboard/pages/9_MLE_Release_Information.py"),
     ]
     for page in pages:
         check(results, f"{page} does not auto-run long audits", page_has_no_long_auto_run(page), str(page))
 
-    CHECK_PATH.write_text(json.dumps({"results": results}, indent=2), encoding="utf-8")
+    check_path.write_text(json.dumps({"cache_dir": str(cache_dir), "results": results}, indent=2), encoding="utf-8")
     missing = [row for row in results if row["status"] == "MISSING"]
     warnings = [row for row in results if row["status"] == "WARNING"]
-    print(f"wrote {CHECK_PATH}")
+    print(f"wrote {check_path}")
     if missing:
         raise SystemExit(1)
     if warnings:

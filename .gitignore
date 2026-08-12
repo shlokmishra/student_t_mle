@@ -1,10 +1,21 @@
 venv/
 cache/
 artifacts/
+logs/
+tmp/
 __pycache__/
 *.pyc
 .pytest_cache/
 *.pdf
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.nav
+*.out
+*.snm
+*.toc
+*.tar.gz
 .DS_Store
 .cursor/rules/
 reporting/diagnostic_outputs/kde_reference_audit/mle_sample_cache/
@@ -12,3 +23,4 @@ results/
 data/
 reporting/diagnostic_outputs/
 models/artifacts/
+_archive_repo_cleanup_*/

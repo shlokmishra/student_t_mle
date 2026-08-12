@@ -8,7 +8,7 @@ import pandas as pd
 import streamlit as st
 
 
-AUDIT_DIR = Path("results/release_information_audit")
+AUDIT_DIR = Path("results/final_production_v1_release_information_audit")
 FILES = {
     "report": AUDIT_DIR / "release_information_report.md",
     "coverage": AUDIT_DIR / "diagnostic_coverage.csv",
@@ -16,6 +16,7 @@ FILES = {
     "info_by_dataset": AUDIT_DIR / "information_loss_by_dataset.csv",
     "privacy_summary": AUDIT_DIR / "privacy_leakage_summary.csv",
     "privacy_by_case": AUDIT_DIR / "privacy_leakage_by_case.csv",
+    "observed_summary": AUDIT_DIR / "observed_outlier_summary.csv",
     "normal_baseline": AUDIT_DIR / "sufficient_baseline_normal.csv",
     "posterior_inputs": AUDIT_DIR / "posterior_summary_inputs.csv",
 }
@@ -33,7 +34,7 @@ def read_csv(path: str) -> pd.DataFrame:
 
 
 st.title("MLE Release Information")
-st.caption("Step 4: information loss and latent privacy leakage after sampler correctness is trusted.")
+st.caption("Final production Step 4: information loss and latent privacy leakage after sampler correctness is trusted.")
 
 status = pd.DataFrame(
     [{"file": name, "path": str(path), "exists": path.exists()} for name, path in FILES.items()]
@@ -50,7 +51,7 @@ else:
         "python reporting/diagnostics/analyze_release_information.py "
         "--mle-runset-dir results/final_production_v1 "
         "--release-runset-dir results/release_information_runs "
-        "--out-dir results/release_information_audit",
+        "--out-dir results/final_production_v1_release_information_audit",
         language="bash",
     )
     st.stop()
@@ -60,6 +61,7 @@ info_summary = read_csv(str(FILES["info_summary"]))
 info_by_dataset = read_csv(str(FILES["info_by_dataset"]))
 privacy_summary = read_csv(str(FILES["privacy_summary"]))
 privacy_by_case = read_csv(str(FILES["privacy_by_case"]))
+observed_summary = read_csv(str(FILES["observed_summary"]))
 normal = read_csv(str(FILES["normal_baseline"]))
 posterior_inputs = read_csv(str(FILES["posterior_inputs"]))
 
@@ -70,8 +72,8 @@ if not coverage.empty and "available" in coverage.columns:
         st.warning(f"{len(missing)} Step 4 diagnostics are not available yet.")
 st.dataframe(coverage, use_container_width=True)
 
-tab_info, tab_privacy, tab_baseline, tab_inputs, tab_figures = st.tabs(
-    ["Information Loss", "Privacy Leakage", "Normal Baseline", "Inputs", "Figures"]
+tab_info, tab_privacy, tab_observed, tab_baseline, tab_inputs, tab_figures = st.tabs(
+    ["Information Loss", "Privacy Leakage", "Observed Extremes", "Normal Baseline", "Inputs", "Figures"]
 )
 
 with tab_info:
@@ -83,6 +85,9 @@ with tab_privacy:
     st.dataframe(privacy_summary, use_container_width=True)
     st.subheader("Case-Level Rows")
     st.dataframe(privacy_by_case, use_container_width=True)
+
+with tab_observed:
+    st.dataframe(observed_summary, use_container_width=True)
 
 with tab_baseline:
     st.dataframe(normal, use_container_width=True)

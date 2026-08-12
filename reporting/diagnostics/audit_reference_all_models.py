@@ -204,6 +204,67 @@ def laplace_interval_reference(lower: np.ndarray, upper: np.ndarray, mu_star: fl
     return out
 
 
+def laplace_odd_median_reference_and_density(
+    n: int,
+    mu_star: float,
+    prior_mean: float,
+    prior_std: float,
+    laplace_b: float,
+    grid_size: int,
+) -> tuple[dict, np.ndarray, np.ndarray, np.ndarray]:
+    """Analytic posterior for odd-n Laplace conditioning on median(x)=mu_star."""
+    n = int(n)
+    if n % 2 == 0:
+        raise ValueError("Analytic Laplace median reference requires odd n")
+    h = n // 2
+    prior_mean = float(prior_mean)
+    prior_std = float(prior_std)
+    mu_star = float(mu_star)
+    laplace_b = float(laplace_b)
+    lo = min(prior_mean - 8.0 * prior_std, mu_star - 8.0 * laplace_b)
+    hi = max(prior_mean + 8.0 * prior_std, mu_star + 8.0 * laplace_b)
+    mu_grid = np.linspace(lo, hi, int(grid_size))
+    cdf = np.clip(stats.laplace.cdf(mu_star, loc=mu_grid, scale=laplace_b), 1e-300, 1.0 - 1e-15)
+    log_weights = (
+        stats.norm.logpdf(mu_grid, loc=prior_mean, scale=prior_std)
+        + stats.laplace.logpdf(mu_star, loc=mu_grid, scale=laplace_b)
+        + h * np.log(cdf)
+        + h * np.log1p(-cdf)
+    )
+    log_weight_shift = float(np.nanmax(log_weights))
+    weights = np.exp(log_weights - log_weight_shift)
+    out = weighted_grid_summary(mu_grid, weights)
+    out["weighted_ess"] = np.nan
+    shifted_integral = float(out["marginal_likelihood_estimate"])
+    if shifted_integral > 0 and np.isfinite(shifted_integral) and np.isfinite(log_weight_shift):
+        out["marginal_likelihood_estimate"] = float(np.exp(np.log(shifted_integral) + log_weight_shift))
+    integral = shifted_integral
+    density = weights / integral if integral > 0 and np.isfinite(integral) else np.full_like(mu_grid, np.nan)
+    posterior_cdf = density_cdf(mu_grid, density, 1.0)
+    out["density_integral"] = float(np.trapezoid(density, mu_grid)) if np.isfinite(density).any() else np.nan
+    out["laplace_median_h"] = h
+    return out, mu_grid, density, posterior_cdf
+
+
+def laplace_odd_median_reference(
+    n: int,
+    mu_star: float,
+    prior_mean: float,
+    prior_std: float,
+    laplace_b: float,
+    grid_size: int,
+) -> dict:
+    out, _, _, _ = laplace_odd_median_reference_and_density(
+        n=n,
+        mu_star=mu_star,
+        prior_mean=prior_mean,
+        prior_std=prior_std,
+        laplace_b=laplace_b,
+        grid_size=grid_size,
+    )
+    return out
+
+
 def density_cdf(mu_grid: np.ndarray, density: np.ndarray, integral: float) -> np.ndarray:
     if integral <= 0 or not np.isfinite(integral):
         return np.full_like(mu_grid, np.nan, dtype=float)

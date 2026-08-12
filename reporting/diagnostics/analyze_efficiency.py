@@ -154,19 +154,21 @@ def comparison_regime(row: pd.Series) -> str:
     method = str(row.get("method", ""))
     n = int(row.get("n")) if pd.notna(row.get("n")) else -1
     k = pd.to_numeric(pd.Series([row.get("k")]), errors="coerce").iloc[0]
-    safe = str(row.get("safe_to_present", ""))
+    verdict = str(row.get("verdict", ""))
+    if model == "laplace" and method == "rattle":
+        return "excluded"
+    if verdict == "not_applicable":
+        return "excluded"
     if model == "student_t" and pd.notna(k) and float(k) == 1.0 and n == 10:
         return "diagnostic_only"
-    if safe == "caveat_only":
-        return "caveat"
-    if safe != "yes":
-        return "excluded"
     if model == "logistic" and n in {10, 20, 50} and method in {"gibbs", "rattle"}:
         return "main_claim"
     if model == "student_t" and pd.notna(k) and float(k) in {2.0, 3.0} and n in {20, 50} and method in {"gibbs", "rattle"}:
         return "main_claim"
     if model == "laplace" and n in {11, 21, 51} and method == "gibbs":
         return "main_claim"
+    if model == "student_t" and method in {"gibbs", "rattle"}:
+        return "caveat_cost_only"
     return "auxiliary"
 
 
@@ -630,7 +632,11 @@ def caveat_cases(summary: pd.DataFrame, suspicious: pd.DataFrame) -> pd.DataFram
 
 
 def method_winners(cost: pd.DataFrame, functional: pd.DataFrame, summary: pd.DataFrame, rattle_moves: pd.DataFrame) -> pd.DataFrame:
-    main = cost[cost["safe_to_present"].eq("yes") & cost["comparison_regime"].eq("main_claim")].copy()
+    main = cost[
+        cost["method"].isin(["gibbs", "rattle"])
+        & ~cost["verdict"].astype(str).eq("not_applicable")
+        & ~cost["comparison_regime"].eq("excluded")
+    ].copy()
     if main.empty:
         return pd.DataFrame()
     func_available = functional[functional["status"].eq("available")].copy()
@@ -642,6 +648,9 @@ def method_winners(cost: pd.DataFrame, functional: pd.DataFrame, summary: pd.Dat
     main = main.merge(func_min, on=SEED_KEYS, how="left")
     agg = main.groupby(KEYS, dropna=False).agg(
         k=("k", "first"),
+        safe_to_present=("safe_to_present", lambda s: ";".join(sorted(set(map(str, s))))),
+        verdict=("verdict", lambda s: ";".join(sorted(set(map(str, s))))),
+        comparison_regime=("comparison_regime", lambda s: ";".join(sorted(set(map(str, s))))),
         ess_mu_per_sec=("ess_mu_per_sec", "median"),
         wall_time_per_ess_mu=("wall_time_per_ess_mu", "median"),
         min_functional_ess_per_sec=("min_functional_ess_per_sec", "median"),
@@ -668,6 +677,7 @@ def method_winners(cost: pd.DataFrame, functional: pd.DataFrame, summary: pd.Dat
                     "model": model,
                     "k": np.nan,
                     "n": int(n),
+                    "comparison_regime": "main_claim",
                     "winner_by_mu_ess_per_sec": "gibbs",
                     "winner_by_tail_min_ess_per_sec": "gibbs",
                     "winner_by_wall_time_per_ess": "gibbs",
@@ -684,6 +694,7 @@ def method_winners(cost: pd.DataFrame, functional: pd.DataFrame, summary: pd.Dat
                     "model": model,
                     "k": np.nan if k_key == "NA" else float(k_key),
                     "n": int(n),
+                    "comparison_regime": ";".join(sorted(part["comparison_regime"].dropna().astype(str).unique())),
                     "winner_by_mu_ess_per_sec": "not_comparable",
                     "winner_by_tail_min_ess_per_sec": "not_comparable",
                     "winner_by_wall_time_per_ess": "not_comparable",
@@ -727,6 +738,8 @@ def method_winners(cost: pd.DataFrame, functional: pd.DataFrame, summary: pd.Dat
                 recommended = "rattle_wins_but_conservative"
         if gibbs["main_warning"] != "none" or rattle["main_warning"] != "none":
             caveats.append("Correctness warning present; avoid a clean winner claim.")
+        if gibbs["safe_to_present"] != "yes" or rattle["safe_to_present"] != "yes":
+            caveats.append("Cost-only comparison: one or both methods are not clean correctness examples.")
         if rattle["projection_failure_rate"] > 0 or rattle["reverse_check_fail_rate"] > 0:
             caveats.append("RATTLE failure counters are nonzero.")
         rows.append(
@@ -734,6 +747,7 @@ def method_winners(cost: pd.DataFrame, functional: pd.DataFrame, summary: pd.Dat
                 "model": model,
                 "k": np.nan if k_key == "NA" else float(k_key),
                 "n": int(n),
+                "comparison_regime": ";".join(sorted(part["comparison_regime"].dropna().astype(str).unique())),
                 "winner_by_mu_ess_per_sec": mu_winner,
                 "winner_by_tail_min_ess_per_sec": tail_winner,
                 "winner_by_wall_time_per_ess": wall_winner,
@@ -762,7 +776,7 @@ def write_figures(out_dir: Path, cost: pd.DataFrame, functional: pd.DataFrame, r
         plt.close(fig)
         paths.append(str(path))
 
-    present = cost[cost["safe_to_present"].isin(PRESENTABLE)].copy()
+    present = cost[~cost["verdict"].astype(str).eq("not_applicable") & ~cost["comparison_regime"].eq("excluded")].copy()
     if not present.empty:
         for metric, name, ylabel in [
             ("ess_mu_per_sec", "ess_per_sec_mu_vs_n.png", "ESS/sec for mu"),
@@ -863,7 +877,7 @@ def write_report(
     lines = [
         "# Efficiency Audit",
         "",
-        "Efficiency is conditional on sampler correctness. Winner claims use only rows marked `safe_to_present == yes` in `final_sampler_verdict_table.csv`; caveat-only rows are analyzed separately. Raw weighted-MC remains the posterior-summary benchmark; KDE is only a visualization diagnostic.",
+        "Efficiency is a cost-first postprocess over completed production chains. Correctness verdicts are attached as labels/caveats, but runtime and ESS/sec comparisons are reported for all completed applicable Gibbs/RATTLE rows. Raw weighted-MC remains the posterior-summary benchmark; KDE is only a visualization diagnostic.",
         "",
         "## 1. Executive Summary",
         "",
@@ -875,11 +889,12 @@ def write_report(
         "",
         "## 2. Regimes Included/Excluded",
         "",
-        "- Main efficiency set: `safe_to_present == yes`.",
-        "- Caveat efficiency set: `safe_to_present == caveat_only`.",
-        "- Excluded: unresolved, not applicable, or absent from the correctness filter.",
+        "- Main claim regime: Logistic n=10,20,50; Student k=2,3 n=20,50; Laplace odd-n Gibbs.",
+        "- Caveat cost-only regime: Student small-n/heavy-tail cases that are not headline-clean correctness examples.",
+        "- Diagnostic-only: Student k=1,n=10.",
+        "- Excluded: not applicable rows, especially Laplace RATTLE.",
         "",
-        "## 3. Main Efficiency Winners",
+        "## 3. Efficiency Winners",
         "",
     ]
     if winners.empty:

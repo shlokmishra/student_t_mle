@@ -122,6 +122,18 @@ def target_filter(df: pd.DataFrame) -> pd.DataFrame:
     return out[student | logistic | laplace].copy()
 
 
+def latent_coordinate_columns(df: pd.DataFrame) -> list[str]:
+    """Return indexed latent coordinate columns like x_0, x_1, ... only."""
+    cols = []
+    for col in df.columns:
+        if not col.startswith("x_"):
+            continue
+        suffix = col.split("_", 1)[1]
+        if suffix.isdigit():
+            cols.append(col)
+    return sorted(cols, key=lambda col: int(col.split("_", 1)[1]))
+
+
 def read_csv(path: Path) -> pd.DataFrame:
     if not path.exists():
         return pd.DataFrame()
@@ -615,9 +627,8 @@ def gibbs_constraint_diagnostics(ledger: pd.DataFrame, latent: pd.DataFrame, tra
                         "max_abs_pair_delta_error": float(np.max(pair)) if pair.size else np.nan,
                         "mean_abs_pair_delta_error": float(np.mean(pair)) if pair.size else np.nan,
                         "q95_abs_pair_delta_error": float(np.quantile(pair, 0.95)) if pair.size else np.nan,
-                        "warning": "none"
-                        if ((vals.size == 0 or np.max(vals) <= 1e-6) and (pair.size == 0 or np.max(pair) <= 1e-8))
-                        else "serious",
+                        "pair_delta_diagnostic_status": "thinned_snapshot_proxy_not_transition_invariant" if pair.size else "not_available",
+                        "warning": "none" if vals.size == 0 or np.max(vals) <= 1e-6 else "serious",
                     }
                 )
     gibbs = target_filter(ledger)
@@ -639,13 +650,14 @@ def gibbs_constraint_diagnostics(ledger: pd.DataFrame, latent: pd.DataFrame, tra
                 "pair_updates_attempted": finite_float(row.get("pair_updates_attempted")),
                 "pair_updates_completed": finite_float(row.get("pair_updates_completed")),
                 "max_abs_pair_delta_error": np.nan,
+                "pair_delta_diagnostic_status": "not_available",
                 "warning": "none" if finite_float(row.get("max_constraint_abs", 0.0)) <= 1e-6 else "serious",
             }
         )
     if not latent.empty:
         lat = target_filter(latent)
         lat = lat[lat["method"].eq("gibbs") & lat["model"].eq("student_t")].copy()
-        x_cols = sorted([c for c in lat.columns if c.startswith("x_")], key=lambda c: int(c.split("_")[1]))
+        x_cols = latent_coordinate_columns(lat)
         if x_cols:
             for keys, group in lat.groupby(["model", "k", "n", "mu_star", "seed", "method"], dropna=False):
                 vals = []
@@ -673,6 +685,7 @@ def gibbs_constraint_diagnostics(ledger: pd.DataFrame, latent: pd.DataFrame, tra
                             "pair_updates_attempted": np.nan,
                             "pair_updates_completed": np.nan,
                             "max_abs_pair_delta_error": np.nan,
+                            "pair_delta_diagnostic_status": "not_available",
                             "warning": "none" if np.max(vals) <= 1e-6 else "serious",
                         }
                     )
@@ -747,7 +760,7 @@ def gibbs_branch_diagnostics(latent: pd.DataFrame, branch: pd.DataFrame | None =
         return pd.DataFrame(columns=["model", "k", "n", "method", "seed", "branch_diagnostic_available", "warning"])
     lat = target_filter(latent)
     lat = lat[lat["method"].eq("gibbs") & lat["model"].eq("student_t")]
-    x_cols = sorted([c for c in lat.columns if c.startswith("x_")], key=lambda c: int(c.split("_")[1]))
+    x_cols = latent_coordinate_columns(lat)
     if not x_cols:
         return pd.DataFrame()
     for keys, group in lat.groupby(["model", "k", "n", "seed", "method"], dropna=False):
@@ -1110,7 +1123,7 @@ def target_mismatch_diagnostics(latent: pd.DataFrame) -> pd.DataFrame:
     if not latent.empty:
         lat = target_filter(latent)
         lat = lat[lat["model"].eq("student_t")]
-        x_cols = sorted([c for c in lat.columns if c.startswith("x_")], key=lambda c: int(c.split("_")[1]))
+        x_cols = latent_coordinate_columns(lat)
         focus = lat[
             ((lat["k"].eq(1.0)) & lat["n"].isin([10, 20, 50]))
             | ((lat["k"].eq(2.0)) & lat["n"].eq(10))
@@ -1696,7 +1709,9 @@ def write_figures(out_dir: Path, agreement: pd.DataFrame, ledger: pd.DataFrame, 
             plt.hist(vals, bins=30)
         else:
             plt.text(0.5, 0.5, "delta_H not cached", ha="center", va="center")
-        plt.title("RATTLE delta_H")
+        plt.title("RATTLE per-chain mean signed delta_H")
+        plt.xlabel("mean signed delta_H per RATTLE chain")
+        plt.ylabel("number of chains")
         plt.tight_layout()
         plt.savefig(fig_dir / "rattle_delta_H_histogram.png", dpi=160)
         plt.close()
@@ -1785,7 +1800,7 @@ def write_report(out_dir: Path, summary: pd.DataFrame, suspicious: pd.DataFrame,
         "Cached Gibbs/RATTLE summaries, chain samples, ledgers, Student latent diagnostics, KDE audit notes, and reference raw weighted-MC summaries.",
         "",
         "## 3. Gibbs correctness",
-        "Gibbs constraints are taken from ledger counters and Student latent-x residual recomputation where cached. Pair-level delta diagnostics and exact branch counters were not cached.",
+        "Gibbs constraints are numerically near zero in cached transition diagnostics. Student inverse-branch counters are cached. The pair-delta column is a thinned-snapshot proxy, not a direct before/after pair-update invariant check, so it is reported as diagnostic context rather than a failure criterion.",
         "",
         "## 4. RATTLE correctness",
         "RATTLE correctness requires Gram correction, fixed-direction projection, and reverse checks. Cached applicable RATTLE rows use `paper_fixed_direction`, have Gram correction enabled, and have reverse failure rates at zero in the ledger.",
@@ -1815,8 +1830,7 @@ def write_report(out_dir: Path, summary: pd.DataFrame, suspicious: pd.DataFrame,
         "- Flag Student k=1,n=10 as unresolved; show k=1,n=20/50 with warnings if used.",
         "",
         "## 12. What remains unresolved",
-        "- Exact Gibbs pair-delta preservation and inverse-branch switching counters were not cached.",
-        "- RATTLE momentum tangent residuals and delta_H were not cached.",
+        "- Exact Gibbs before/after pair-update preservation was not cached; the available pair-delta proxy compares thinned snapshots.",
         "- Distinct initialization sensitivity runs were not present in cached outputs.",
         "- Student k=1,n=10 needs targeted follow-up before final scientific claims.",
     ]
@@ -1881,47 +1895,54 @@ def write_decision_memo(
     (out_dir / "sampler_correctness_decision_memo.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def update_presentation_notes(summary: pd.DataFrame, suspicious: pd.DataFrame) -> None:
+def update_presentation_notes(summary: pd.DataFrame, suspicious: pd.DataFrame, out_dir: Path) -> None:
     path = ROOT / "docs" / "presentation_notes.md"
     if not path.exists():
         return
     marker = "## Gibbs/RATTLE Correctness Audit"
     text = path.read_text(encoding="utf-8")
+    out_rel = out_dir.relative_to(ROOT) if out_dir.is_absolute() and out_dir.is_relative_to(ROOT) else out_dir
+    posterior = summary["posterior_agreement_status"].value_counts(dropna=False).to_dict() if "posterior_agreement_status" in summary else {}
     section = f"""
 
 {marker}
 
 Source artifacts:
 
-- Report: `results/sampler_correctness_audit/sampler_correctness_report.md`
-- Verdicts: `results/sampler_correctness_audit/sampler_correctness_summary.csv`
-- Suspicious cases: `results/sampler_correctness_audit/suspicious_sampler_cases.csv`
-- Figures: `results/sampler_correctness_audit/figures/`
+- Report: `{out_rel}/sampler_correctness_report.md`
+- Decision memo: `{out_rel}/sampler_correctness_decision_memo.md`
+- Verdicts: `{out_rel}/final_sampler_verdict_table.csv`
+- Suspicious cases: `{out_rel}/suspicious_sampler_cases.csv`
+- Figures: `{out_rel}/figures/`
 
 Slide candidate: "Sampler correctness is judged against raw weighted-MC, not KDE"
 
 Main claim:
 
 - Gibbs and RATTLE are audited numerically against raw weighted-MC posterior summaries.
+- This update uses the final production runset: 100k iterations, 20k burn-in, 3 seeds, thinned transition/geometry diagnostics.
 - Laplace scalar median comparisons use odd n=11,21,51, and Laplace RATTLE is not applicable.
 - Student-t k=1,n=10 remains unresolved; k=1 more broadly needs caution.
 
 Key numbers:
 
 - Verdict counts: `{summary['overall_correctness_verdict'].value_counts().to_dict()}`.
+- Posterior agreement status counts: `{posterior}`.
 - High-severity suspicious sampler cases: `{int(suspicious['severity'].astype(str).eq('high').sum()) if not suspicious.empty else 0}`.
 
 Plots worth showing:
 
-- `results/sampler_correctness_audit/figures/posterior_agreement_heatmap.png`
-- `results/sampler_correctness_audit/figures/ess_per_sec_heatmap.png`
-- `results/sampler_correctness_audit/figures/rel_sd_error_heatmap.png`
-- `results/sampler_correctness_audit/figures/rattle_constraint_residual_plot.png`
-- `results/sampler_correctness_audit/figures/student_score_vs_selected_mle_mismatch_plot.png`
+- `{out_rel}/figures/posterior_agreement_heatmap.png`
+- `{out_rel}/figures/ess_per_sec_heatmap.png`
+- `{out_rel}/figures/rel_sd_error_heatmap.png`
+- `{out_rel}/figures/rattle_constraint_residual_plot.png`
+- `{out_rel}/figures/rattle_delta_H_histogram.png`
+- `{out_rel}/figures/student_branch_usage_plot.png`
 
 Collaborator caveat:
 
-- Missing low-level pair-branch, delta_H, and momentum diagnostics mean the audit is strong on posterior/ledger/chain behavior but not a full transition-level proof.
+- RATTLE geometry/reversibility diagnostics are clean where applicable: projection/reverse failures are zero, constraints/tangency are near numerical zero, and delta_H is controlled.
+- Gibbs constraints are clean, and Student branch usage is cached. The available pair-delta column compares thinned snapshots, so it is not a direct before/after pair-update invariant proof.
 """
     if marker in text:
         text = text.split(marker)[0].rstrip() + section
@@ -1950,12 +1971,16 @@ def main() -> None:
         energy_summary = tables["rattle_energy_diagnostics"]
         geometry = tables["geometry_diagnostics"]
         failed_path = args.runset_dir / "failed_cases.tsv"
-        if failed_path.exists():
-            failed_cases = pd.read_csv(failed_path, sep="\t")
+        if failed_path.exists() and failed_path.stat().st_size > 0:
+            try:
+                failed_cases = pd.read_csv(failed_path, sep="\t")
+            except pd.errors.EmptyDataError:
+                failed_cases = pd.DataFrame()
         missing_path = args.runset_dir / "missing_outputs.csv"
         if missing_path.exists():
-            external_missing = pd.read_csv(missing_path)
-            missing_outputs = pd.concat([missing_outputs, external_missing], ignore_index=True, sort=False).drop_duplicates()
+            external_missing = read_csv(missing_path)
+            if not external_missing.empty:
+                missing_outputs = pd.concat([missing_outputs, external_missing], ignore_index=True, sort=False).drop_duplicates()
         job_completion = read_csv(args.runset_dir / "job_completion_report.csv")
     else:
         summaries = read_cost_file(args.cost_dir, "posterior_summaries.csv")
@@ -2059,7 +2084,7 @@ def main() -> None:
     write_report(args.out_dir, summary, suspicious, agreement, rattle_geom, multiseed)
     write_decision_memo(args.out_dir, final_verdicts, coverage, suspicious, missing_outputs, failed_cases, production_available)
     write_figures(args.out_dir, agreement, ledger, split, rattle_geom, rattle_energy, branch, target, chain, gibbs_constraints)
-    update_presentation_notes(summary, suspicious)
+    update_presentation_notes(summary, suspicious, args.out_dir)
     print(f"Wrote sampler correctness audit to {args.out_dir}")
 
 

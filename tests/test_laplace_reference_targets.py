@@ -1,12 +1,13 @@
 import numpy as np
 import pandas as pd
 import jax.random as random
+import pytest
 from types import SimpleNamespace
 
 from models import loc_laplace
 from models.model_registry import LAPLACE_MEDIAN_INTERVAL_TARGET, LAPLACE_NP_MEDIAN_TARGET, model_validity_rows
 from reporting.diagnostics import audit_reference_all_models as audit
-from reporting.diagnostics.audit_reference_all_models import laplace_interval_reference
+from reporting.diagnostics.audit_reference_all_models import laplace_interval_reference, laplace_odd_median_reference
 
 
 def test_laplace_target_metadata_is_explicit():
@@ -29,6 +30,36 @@ def test_laplace_interval_reference_returns_normalized_summary():
     assert np.isfinite(out["sd"])
     assert out["q025"] <= out["q50"] <= out["q975"]
     assert out["marginal_likelihood_estimate"] > 0.0
+
+
+def test_laplace_odd_median_reference_returns_symmetric_normalized_summary():
+    out = laplace_odd_median_reference(
+        n=11,
+        mu_star=0.0,
+        prior_mean=0.0,
+        prior_std=10.0,
+        laplace_b=1.0,
+        grid_size=1201,
+    )
+    assert np.isfinite(out["mean"])
+    assert np.isfinite(out["sd"])
+    assert out["sd"] > 0.0
+    assert abs(out["mean"]) < 1e-3
+    assert abs(out["q50"]) < 1e-3
+    assert out["q025"] <= out["q50"] <= out["q975"]
+    assert abs(out["density_integral"] - 1.0) < 1e-6
+
+
+def test_laplace_odd_median_reference_rejects_even_n():
+    with pytest.raises(ValueError, match="odd n"):
+        laplace_odd_median_reference(
+            n=10,
+            mu_star=0.0,
+            prior_mean=0.0,
+            prior_std=10.0,
+            laplace_b=1.0,
+            grid_size=201,
+        )
 
 
 def test_laplace_default_validity_uses_odd_unique_median_target():

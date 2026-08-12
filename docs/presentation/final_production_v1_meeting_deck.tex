@@ -59,7 +59,7 @@
 \section{Problem and Setup}
 
 \begin{frame}{The problem}
-  \claim{A released MLE is a compressed statistic. We want to understand the Bayesian posterior and the latent datasets still compatible with that release.}
+  \claim{A released MLE is a compressed statistic. I want to understand the Bayesian posterior and the latent datasets still compatible with that release.}
   \[
     p(\mu \mid x_{1:n}) \quad \text{versus} \quad p(\mu \mid \hat{\mu}=\mu^\star)
   \]
@@ -73,20 +73,20 @@
 \begin{frame}{Models and regimes}
   \begin{columns}[T,onlytextwidth]
     \begin{column}{0.48\textwidth}
-      \begin{block}{Main comparison regimes}
+      \begin{block}{Main evidence regimes}
         \begin{itemize}
           \item Logistic: $n=10,20,50$
-          \item Student: $k=2,3$, selected $n$
+          \item Student: $k=2,3$, validated $n$ regimes
           \item Laplace: odd $n=11,21,51$, Gibbs only
         \end{itemize}
       \end{block}
     \end{column}
     \begin{column}{0.48\textwidth}
-      \begin{block}{Caveat regimes}
+      \begin{block}{Separated / caveat regimes}
         \begin{itemize}
-          \item Student $k=1,n=10$: unresolved
           \item Student $k=1$: heavy-tail stress test
-          \item Laplace RATTLE: not applicable
+          \item Student $k=1,n=10$: unresolved
+          \item Laplace RATTLE: not applicable because the score/median constraint is non-smooth
         \end{itemize}
       \end{block}
     \end{column}
@@ -95,26 +95,13 @@
 
 \begin{frame}{Frozen evidence source}
   \claim{\texttt{final\_production\_v1} is the meeting dataset.}
-  \begin{columns}[T,onlytextwidth]
-    \begin{column}{0.55\textwidth}
-      \begin{itemize}
-        \item 81 completed sampler case directories
-        \item 100k iterations, 20k burn-in
-        \item 3 seeds per production case
-        \item 129,681 thinned latent geometry states
-        \item 540 paired release-information datasets
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.38\textwidth}
-      \begin{block}{Dashboard default}
-        \texttt{results/dashboard\_cache/}\\
-        \texttt{final\_production\_v1}
-        \medskip
-
-        Posterior page starts on Student $k=3,n=20$.
-      \end{block}
-    \end{column}
-  \end{columns}
+  \begin{itemize}
+    \item 81 completed sampler case directories
+    \item 100k iterations, 20k burn-in
+    \item 3 seeds per production case
+    \item 129,681 thinned latent geometry states
+    \item 1,800 paired release-information datasets
+  \end{itemize}
 \end{frame}
 
 \section{Reference Construction}
@@ -158,10 +145,6 @@
     \end{column}
     \begin{column}{0.37\textwidth}
       \claim{Student $k=1$ has no single universally reliable KDE display backend.}
-      \begin{itemize}
-        \item Treat as a stress-test regime.
-        \item Do not let a smooth overlay decide correctness.
-      \end{itemize}
     \end{column}
   \end{columns}
 \end{frame}
@@ -249,17 +232,15 @@
       \includegraphics[width=\linewidth]{reconciled_verdict_counts.png}
     \end{column}
     \begin{column}{0.39\textwidth}
-      \claim{Targeted validation upgrades 9 standalone caveats by adding multi-init and geometry evidence.}
+      \claim{The reconciled verdicts keep the main comparison clean and isolate the few caveat and unresolved rows.}
       \begin{itemize}
         \item 14 clean production rows
-        \item 9 clean with targeted support
-        \item 2 remaining caveat rows
-        \item 2 unresolved rows
+        \item caveat: Student $k=2,n=20$ Gibbs; Laplace $n=11$ Gibbs
+        \item unresolved: Student $k=1,n=10$ Gibbs/RATTLE
         \item 3 not applicable rows
       \end{itemize}
     \end{column}
   \end{columns}
-  \figsource{\texttt{results/meeting\_pack/reconciled\_sampler\_verdict\_table.csv}}
 \end{frame}
 
 \begin{frame}{Posterior agreement}
@@ -291,9 +272,82 @@
 \end{frame}
 
 \begin{frame}{Who wins in clean comparable regimes?}
-  \includegraphics[height=0.64\textheight]{efficiency_ratio_main_claim.png}
-  \claim{RATTLE has higher $\mu$ ESS/sec in every clean Gibbs/RATTLE production comparison.}
-  \figsource{\texttt{final\_production\_v1\_efficiency\_audit\_cost\_first/method\_winners.csv}}
+  \includegraphics[height=0.64\textheight]{efficiency_ratio_numba_adjusted_student.png}
+  \claim{After applying the Grace \texttt{numba} speedup estimate to Gibbs, RATTLE is still higher in the clean Student main-claim rows: $1.97\times$--$4.89\times$.}
+  \figsource{\texttt{method\_winners.csv} plus \texttt{numba\_speedup\_validation\_task\_results/benchmark\_results.csv}}
+\end{frame}
+
+\begin{frame}{Why RATTLE wins here}
+  \includegraphics[height=0.38\textheight]{efficiency_cost_decomposition_combined.png}
+  \claim{Numba narrows the Gibbs gap; RATTLE still wins the stable Student sensitivity check.}
+  \footnotesize
+  \begin{itemize}
+    \item Clean Student main-claim production RATTLE/Gibbs ESS/sec: $3.98\times$--$10.34\times$.
+    \item After applying Grace \texttt{numba}/\texttt{jax\_scan} speedups: estimated RATTLE/\texttt{numba}-Gibbs is $1.97\times$--$4.89\times$.
+    \item Read: \texttt{numba} makes Gibbs much more competitive, but the measured Gibbs sweep still scales faster with $n$.
+  \end{itemize}
+  {\scriptsize\color{gray}Sources: \texttt{cost\_decomposition\_summary.csv}; \texttt{numba\_speedup\_validation\_task\_results/benchmark\_results.csv}}
+\end{frame}
+
+\begin{frame}{Numba helps Gibbs, but does not flip the winner}
+  \claim{\texttt{numba} removes much of the Gibbs overhead, with one important correctness caveat.}
+  \begin{center}
+    \scriptsize
+    \begin{tabular}{lrr}
+      \toprule
+      Comparison & Mean speedup & Range over $(k,n)$ \\
+      \midrule
+      \texttt{numba} / \texttt{jax\_scan} & $1.95\times$ & $1.48\times$--$2.46\times$ \\
+      \texttt{numba} / \texttt{jax\_loop} & $46.9\times$ & $36.0\times$--$63.0\times$ \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+  \vspace{-0.05cm}
+  \footnotesize
+  \begin{itemize}
+    \item Pair acceptance matched exactly; mean $|\Delta$ mu-acceptance$| \approx 0.0012$.
+    \item Excluding Student $k=1,n=10$: mean $|\Delta \bar{\mu}| \approx 0.0021$, mean $|\Delta \mathrm{sd}| \approx 0.0068$ vs \texttt{jax\_scan}.
+    \item Student $k=1,n=10$ is not interchangeable: mean difference about $9.76$, SD difference about $1.67$.
+  \end{itemize}
+  \figsource{\texttt{results/numba\_speedup\_validation\_task\_results/benchmark\_results.csv}}
+\end{frame}
+
+\begin{frame}{Local RATTLE scaling check}
+  \claim{Raw RATTLE time/iteration grows slowly through $n=2000$ in this local check, even though the internal vector work still scales with $n$.}
+  \vspace{-0.2cm}
+  \begin{center}
+    \scriptsize
+    \begin{tabular}{rrrrr}
+      \toprule
+      $n$ & sec/iter & relative & ESS/sec & Student grad evals/iter \\
+      \midrule
+        10 & 0.000470 & 1.00$\times$ & 181 & 80 \\
+        50 & 0.000472 & 1.00$\times$ & 627 & 400 \\
+       200 & 0.000544 & 1.16$\times$ & 201 & 1600 \\
+       500 & 0.000569 & 1.21$\times$ & 229 & 4000 \\
+      1000 & 0.000648 & 1.38$\times$ & 136 & 8000 \\
+      2000 & 0.000771 & 1.64$\times$ & 94 & 16000 \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+  \vspace{-0.2cm}
+  \small
+  \begin{itemize}
+    \item Setup: Student $k=2$, 120 iterations, 20 burn-in, 2 seeds.
+    \item Projection/reverse-check failures were zero; $x$ acceptance was $0.996$--$1.000$.
+    \item Read: observed wall time is highly sublinear here. That is an implementation fact in this range, not evidence of dimension-free geometry.
+  \end{itemize}
+  \figsource{\texttt{results/local\_rattle\_scaling\_n2000/...summary.csv}}
+\end{frame}
+
+\begin{frame}{Why the local RATTLE curve stays flat for a while}
+  \claim{The slow observed growth is mostly a systems effect: fixed per-iteration overhead dominates until $n$ gets larger.}
+  \begin{itemize}
+    \item Each iteration pays substantial nearly-fixed costs: PRNG handling, leapfrog/projection scaffolding, reverse-check bookkeeping, and dispatch/synchronization overhead.
+    \item The coordinatewise gradient and projection work is fused into a small number of dense vector kernels, so doubling $n$ does not double wall time immediately.
+    \item At these local sizes, the kernels stay in a favorable memory/cache regime; the linear-in-$n$ arithmetic is present but not yet the dominant bottleneck.
+    \item The right interpretation is therefore ``sublinear over this measured range,'' not ``RATTLE avoids dimension dependence.''
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{Efficiency surface}
@@ -319,9 +373,63 @@
   \end{columns}
 \end{frame}
 
+\begin{frame}{How latent tail classes are defined}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.52\textwidth}
+      \includegraphics[width=\linewidth]{student_tail_class_definition.png}
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \claim{These are \textbf{geometry-tail} thresholds: $|y|=\sqrt{k}$ is where $|\psi(y)|$ is largest, not a classical outlier cutoff.}
+      \[
+        \psi(y)=\frac{y}{k+y^2}
+      \]
+      \begin{itemize}\setlength{\itemsep}{0.08em}
+        \item \textbf{central:} no $|y_i|>\sqrt{k}$
+        \item \textbf{mixed tail:} some, but fewer than half
+        \item \textbf{tail dominated:} at least half
+        \item \textbf{extreme tail:} at least one $|y_i|>4\sqrt{k}$
+      \end{itemize}
+    \end{column}
+  \end{columns}
+  \claim{Interpretation: the same threshold means "tail" much earlier for Cauchy than for $t_2$ or $t_3$. These are heuristic latent-geometry labels, not formal posterior modes.}
+\end{frame}
+
+\begin{frame}{Percentile interpretation of geometry tails}
+  \claim{The score-geometry thresholds are model-dependent. They do not mean equally rare outliers across $k$.}
+  \begin{center}
+    \begin{tabular}{rcc}
+      \toprule
+      $k$ & $P(|Y|\le \sqrt{k})$ & $P(|Y|\le 4\sqrt{k})$ \\
+      \midrule
+      1 & $0.50$ & $0.844$ \\
+      2 & $0.71$ & $0.970$ \\
+      3 & $0.82$ & $0.994$ \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+  \vspace{0.15cm}
+  \begin{itemize}
+    \item For Cauchy, the geometry-tail threshold starts around the median of $|Y|$.
+    \item For $t_2$ and $t_3$, the same rule is much further into the distribution.
+    \item So later class-based plots should be read as \textbf{geometry diagnostics}, not classical outlier counts.
+  \end{itemize}
+\end{frame}
+
 \begin{frame}{Student tail geometry}
   \includegraphics[height=0.62\textheight]{student_tail_geometry_histogram.png}
   \claim{Heavy tails create latent worlds with extreme observations compatible with the same $\hat{\mu}$.}
+\end{frame}
+
+\begin{frame}{Representative latent extreme size}
+  \includegraphics[height=0.62\textheight]{representative_max_abs_y_density.png}
+  \claim{The clean Student $k=3,n=20$ regime stays concentrated at modest latent extremes, while unresolved Student $k=1,n=10$ pushes substantial mass into much larger compatible extremes.}
+  \figsource{\texttt{results/meeting\_pack/representative\_max\_abs\_y\_density.csv}}
+\end{frame}
+
+\begin{frame}{Representative latent classes}
+  \includegraphics[height=0.62\textheight]{representative_geometry_classes.png}
+  \claim{A clean Student $k=3,n=20$ case is mostly mixed-tail; unresolved Student $k=1,n=10$ is dominated by extreme-tail states.}
+  \figsource{\texttt{results/meeting\_pack/representative\_geometry\_class\_occupancy.csv}}
 \end{frame}
 
 \begin{frame}{Sticky latent classes}
@@ -329,14 +437,45 @@
   \claim{The difficult cases are difficult because latent geometry classes are not explored uniformly.}
 \end{frame}
 
-\begin{frame}{Focused Cauchy follow-up}
-  \claim{Student $k=1,n=50$ now gets a dedicated Gibbs geometry runset rather than another generic caveat label.}
+\begin{frame}{Cauchy follow-up: what I ran}
+  \claim{I ran a dedicated Student $k=1,n=50$ Gibbs geometry audit rather than treating Cauchy as only a generic caveat.}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Run design}
+        \begin{itemize}
+          \item 15 chains: 5 seeds $\times$ 3 initializations
+          \item central, tail-heavy, and random starts
+          \item 500k iterations, 100k burn-in
+          \item 300{,}015 full latent snapshots analyzed
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Posterior stability}
+        \begin{itemize}
+          \item mean chain $\mu$: $-1.5\times 10^{-4}$
+          \item mean posterior SD: $0.211$
+          \item SD range: $0.210$--$0.213$
+          \item max $|\bar{\mu}_{chain}|$: about $0.001$
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+  \figsource{\texttt{results/student\_k1\_n50\_geometry\_audit}}
+\end{frame}
+
+\begin{frame}{Cauchy geometry: what we learned}
+  \claim{The $\mu$ marginal is stable; the latent worlds remain genuinely heavy-tailed.}
   \begin{itemize}
-    \item 15 Grace chains: 5 seeds $\times$ central, tail-heavy, and random initializations.
-    \item 500k iterations, 100k burn-in, thinned full latent snapshots.
-    \item New diagnostics track $z=y/(1+y^2)$, branch occupancy, extreme-tail thresholds, class switching, and geometry-conditioned $\mu$.
-    \item Success criterion: explain heavy-tail geometry; do not force Student $k=1$ into a clean headline comparison.
+    \item Any $|y_i|>20$ appears in about $80.9\%$ of thinned states.
+    \item Every chain saw a latent coordinate above $2.6\times 10^5$; the maximum was $4.6\times 10^6$.
+    \item Mean number of coordinates with $|y_i|>20$ is about $1.63$ out of 50.
+    \item About $50.7\%$ of coordinates are on the Student tail branch $|y_i|>1$.
+    \item Gibbs branch switching is balanced at about $0.500$.
+    \item Tail size is effectively decoupled from $\mu$: $\mathrm{corr}(\mu,\max_i |y_i|)\approx -0.001$.
   \end{itemize}
+  \vspace{0.15cm}
+  \claim{The caveat is geometric, not posterior instability: huge $|y|$ values are common, but they collapse into bounded score coordinates $z=y/(1+y^2)$.}
 \end{frame}
 
 \begin{frame}{RATTLE near tail geometry}
@@ -347,7 +486,7 @@
 \section{MLE Release Payoff}
 
 \begin{frame}{Final payoff question}
-  \claim{Once the sampler is trusted, we ask what the released MLE preserves and what it leaks about hidden data.}
+  \claim{Once the sampler is trusted, I ask what the released MLE preserves and what it leaks about hidden data.}
   \begin{columns}[T,onlytextwidth]
     \begin{column}{0.49\textwidth}
       \begin{block}{Information loss}
@@ -377,13 +516,13 @@
 
 \begin{frame}{Information loss in selected regimes}
   \includegraphics[height=0.65\textheight]{information_loss_selected_bars.png}
-  \claim{Light/moderate tails are close; Student $k=1,n=10$ is the clear loss case.}
+  \claim{Central spread stays close in stable regimes, while Wasserstein distance shows where MLE-only Bayes starts to differ in shape and tails.}
 \end{frame}
 
 \begin{frame}{Information loss heatmap}
   \includegraphics[height=0.63\textheight]{sd_ratio_heatmap.png}
   \claim{The broad pattern is tail- and sample-size dependent, not a universal MLE-only failure.}
-  \figsource{\texttt{final\_production\_v1\_release\_information\_audit/information\_loss\_summary.csv}}
+  \figsource{\texttt{final\_production\_v1\_release\_information\_audit\_100/information\_loss\_summary.csv}}
 \end{frame}
 
 \begin{frame}{Privacy-relevant leakage}
@@ -391,7 +530,7 @@
   \claim{The released MLE can shift beliefs about whether compatible latent datasets contain extremes.}
 \end{frame}
 
-\begin{frame}{Same release, many compatible worlds}
+\begin{frame}{Where MLE-only Bayes differs from full-data Bayes}
   \includegraphics[height=0.63\textheight]{representative_information_loss_cases.png}
   \claim{The latent-data posterior makes visible how many different datasets can share the same released MLE.}
 \end{frame}

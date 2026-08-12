@@ -26,6 +26,7 @@ def read_csv(path: str) -> pd.DataFrame:
 
 st.title("KDE Correctness")
 st.caption("Cached numerical audit of KDE backends as smoothed posterior-density diagnostics.")
+st.info("KDE is diagnostic only. Raw weighted-MC is the posterior-summary benchmark for scientific comparisons.")
 
 status = pd.DataFrame(
     [{"file": name, "path": str(path), "exists": path.exists()} for name, path in FILES.items()]
@@ -63,7 +64,7 @@ if not recommendations.empty:
         & recommendations["n"].astype(int).eq(10)
     ]
     if not cauchy.empty:
-        st.warning("Student-t k=1,n=10 should be interpreted with caution; do not draw conclusions from KDE alone.")
+        st.warning("Student-t k=1,n=10 is unresolved/caveat-only; do not draw conclusions from KDE alone.")
 
 st.subheader("Suspicious KDE Cases")
 st.dataframe(suspicious, use_container_width=True)

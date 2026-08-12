@@ -77,7 +77,7 @@ def classify(row: dict[str, str], args: argparse.Namespace) -> tuple[dict, dict 
         "error_log_path": find_error_log(args.logs_dir, row["task_index"]),
     }
     if result_row is not None:
-        for key in ["elapsed_sec", "iterations_per_sec", "pair_updates_per_sec", "mu_acceptance_rate", "pair_acceptance_rate", "z_acceptance_rate", "posterior_mu_mean", "posterior_mu_sd"]:
+        for key in ["elapsed_sec", "iterations_per_sec", "pair_updates_per_sec", "mu_acceptance_rate", "pair_acceptance_rate", "z_acceptance_rate", "block_z_acceptance_rate", "posterior_mu_mean", "posterior_mu_sd"]:
             report[key] = result_row.get(key, np.nan)
     return report, result_row, frame
 

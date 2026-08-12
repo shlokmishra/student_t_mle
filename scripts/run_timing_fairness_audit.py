@@ -29,7 +29,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--seed", type=int, required=True)
     parser.add_argument("--repeat", type=int, required=True)
     parser.add_argument("--out", type=Path, default=Path("results/timing_fairness_audit"))
-    parser.add_argument("--gibbs-backend", choices=["jax_loop", "jax_scan", "numba"], default="jax_loop")
+    parser.add_argument("--gibbs-backend", choices=["jax_loop", "jax_scan", "jax_scan_block_z", "numba"], default="jax_loop")
     return parser.parse_args()
 
 

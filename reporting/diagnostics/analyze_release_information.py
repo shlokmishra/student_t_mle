@@ -33,6 +33,7 @@ KEYS = ["model", "k_key", "n"]
 CASE_KEYS = ["model", "k_key", "n", "dataset_id"]
 SUMMARY_KEYS = CASE_KEYS + ["conditioning", "method", "seed", "initialization"]
 TAIL_THRESHOLDS = [2.0, 3.0, 5.0, 10.0]
+TAIL_PERCENTILE_GRID = np.linspace(0.50, 0.99, 25)
 
 
 def parse_args() -> argparse.Namespace:
@@ -190,6 +191,24 @@ def prior_prob_max_gt(model: str, k_key: str, n: int, threshold: float, mu_star:
     return float(1.0 - inside**int(n))
 
 
+def prior_threshold_for_max_percentile(model: str, k_key: str, n: int, percentile: float, mu_star: float = 0.0) -> float:
+    target = float(np.clip(percentile, 1e-9, 1.0 - 1e-9))
+    inside = target ** (1.0 / max(int(n), 1))
+    tail_u = 0.5 * (1.0 + inside)
+    if model == "student_t":
+        df = float(k_key)
+        threshold = stats.t.ppf(tail_u, df=df, loc=mu_star, scale=1.0) - mu_star
+    elif model == "logistic":
+        threshold = stats.logistic.ppf(tail_u, loc=mu_star, scale=1.0) - mu_star
+    elif model == "laplace":
+        threshold = stats.laplace.ppf(tail_u, loc=mu_star, scale=1.0) - mu_star
+    elif model == "normal_known_var":
+        threshold = stats.norm.ppf(tail_u, loc=mu_star, scale=1.0) - mu_star
+    else:
+        return np.nan
+    return float(abs(threshold))
+
+
 def read_case_table(case_dir: Path, names: list[str]) -> pd.DataFrame:
     for name in names:
         table = read_csv(case_dir / name)
@@ -334,7 +353,14 @@ def normalize_summary_columns(summaries: pd.DataFrame) -> pd.DataFrame:
         "q975_mu": "q975",
         "q99_mu": "q99",
     }
-    out = out.rename(columns={key: val for key, val in renames.items() if key in out.columns})
+    for source, target in renames.items():
+        if source not in out.columns:
+            continue
+        if target in out.columns:
+            out[target] = out[target].combine_first(out[source])
+            out = out.drop(columns=[source])
+        else:
+            out = out.rename(columns={source: target})
     for col in ["conditioning", "dataset_id", "method", "seed", "initialization", "mu_star"]:
         if col not in out.columns:
             out[col] = "mle_only" if col == "conditioning" else np.nan
@@ -463,8 +489,35 @@ def observed_outlier_rows(observed: pd.DataFrame) -> pd.DataFrame:
         row = {"model": model, "k": np.nan if kk == "NA" else float(kk), "k_key": kk, "n": int(n), "dataset_id": dataset_id, "actual_max_abs": float(np.max(abs_dev))}
         for threshold in TAIL_THRESHOLDS:
             row[f"actual_count_gt_{threshold:g}"] = int(np.sum(abs_dev > threshold))
+            row[f"actual_any_gt_{threshold:g}"] = bool(np.sum(abs_dev > threshold) > 0)
         rows.append(row)
     return pd.DataFrame(rows)
+
+
+def summarize_observed_outliers(observed_rows: pd.DataFrame) -> pd.DataFrame:
+    if observed_rows.empty:
+        return pd.DataFrame()
+    rows = []
+    for keys, part in observed_rows.groupby(KEYS, dropna=False):
+        model, kk, n = keys
+        base = {
+            "model": model,
+            "k_key": kk,
+            "n": int(n),
+            "num_datasets": int(len(part)),
+            "actual_max_abs_mean": float(part["actual_max_abs"].mean()),
+            "actual_max_abs_median": float(part["actual_max_abs"].median()),
+            "actual_max_abs_q95": float(part["actual_max_abs"].quantile(0.95)),
+        }
+        for threshold in TAIL_THRESHOLDS:
+            col = f"actual_any_gt_{threshold:g}"
+            count_col = f"actual_count_gt_{threshold:g}"
+            base[f"actual_prob_M_gt_{threshold:g}"] = float(part[col].mean()) if col in part else np.nan
+            base[f"actual_count_gt_{threshold:g}_mean"] = float(part[count_col].mean()) if count_col in part else np.nan
+        rows.append(base)
+    out = pd.DataFrame(rows)
+    out["model_label"] = out.apply(model_label, axis=1)
+    return out
 
 
 def privacy_leakage_table(latent: pd.DataFrame, observed: pd.DataFrame) -> pd.DataFrame:
@@ -498,25 +551,32 @@ def privacy_leakage_table(latent: pd.DataFrame, observed: pd.DataFrame) -> pd.Da
             "posterior_q50_max_abs": float(np.quantile(max_abs, 0.50)),
             "posterior_q95_max_abs": float(np.quantile(max_abs, 0.95)),
         }
-        actual_row = actual[
-            actual["model"].eq(model)
-            & actual["k_key"].eq(kk)
-            & actual["n"].eq(int(n))
-            & actual["dataset_id"].eq(dataset_id)
-        ]
-        for threshold in TAIL_THRESHOLDS:
+        if actual.empty or not {"model", "k_key", "n", "dataset_id"}.issubset(actual.columns):
+            actual_row = pd.DataFrame()
+        else:
+            actual_row = actual[
+                actual["model"].eq(model)
+                & actual["k_key"].eq(kk)
+                & actual["n"].eq(int(n))
+                & actual["dataset_id"].eq(dataset_id)
+            ]
+        for percentile in TAIL_PERCENTILE_GRID:
+            threshold = prior_threshold_for_max_percentile(str(model), str(kk), int(n), float(percentile))
             prior = prior_prob_max_gt(str(model), str(kk), int(n), threshold)
             posterior = float(np.mean(max_abs > threshold))
+            ratio = posterior / prior if np.isfinite(prior) and prior > 0 else np.nan
             row = {
                 **base,
+                "percentile": float(percentile),
                 "threshold": threshold,
                 "prior_prob_M_gt_c": prior,
                 "posterior_prob_M_gt_c_given_mle": posterior,
                 "leakage_probability_shift": posterior - prior if np.isfinite(prior) else np.nan,
+                "leakage_probability_ratio": ratio,
             }
             if not actual_row.empty:
                 row["actual_max_abs"] = actual_row.iloc[0]["actual_max_abs"]
-                row["actual_count_gt_c"] = actual_row.iloc[0].get(f"actual_count_gt_{threshold:g}", np.nan)
+                row["actual_has_M_gt_c"] = float(actual_row.iloc[0]["actual_max_abs"] > threshold)
             rows.append(row)
     return pd.DataFrame(rows)
 
@@ -525,13 +585,16 @@ def summarize_privacy(leakage: pd.DataFrame) -> pd.DataFrame:
     if leakage.empty:
         return pd.DataFrame()
     metrics = [
+        "percentile",
+        "threshold",
         "prior_prob_M_gt_c",
         "posterior_prob_M_gt_c_given_mle",
         "leakage_probability_shift",
+        "leakage_probability_ratio",
         "posterior_mean_max_abs",
         "posterior_q95_max_abs",
     ]
-    out = leakage.groupby(KEYS + ["method", "threshold"], dropna=False)[metrics].agg(["mean", "median", "max", "std"]).reset_index()
+    out = leakage.groupby(KEYS + ["method", "percentile"], dropna=False)[metrics].agg(["mean", "median", "max", "std"]).reset_index()
     out.columns = ["_".join([part for part in col if part]) if isinstance(col, tuple) else col for col in out.columns]
     out["model_label"] = out.apply(model_label, axis=1)
     return out
@@ -625,35 +688,84 @@ def write_figures(out_dir: Path, info_summary: pd.DataFrame, leakage_summary: pd
     if not leakage_summary.empty:
         fig, ax = plt.subplots(figsize=(7, 4))
         for label, part in leakage_summary.groupby("model_label", dropna=False):
-            grouped = part.groupby("threshold")["leakage_probability_shift_median"].median().reset_index()
-            ax.plot(grouped["threshold"], grouped["leakage_probability_shift_median"], marker="o", label=label)
+            grouped = part.groupby("percentile_median")["leakage_probability_shift_median"].median().reset_index()
+            grouped = grouped.sort_values("percentile_median")
+            ax.plot(100.0 * grouped["percentile_median"], grouped["leakage_probability_shift_median"], linewidth=1.8, label=label)
         ax.axhline(0.0, color="black", linewidth=1)
-        ax.set_xlabel("outlier threshold c")
-        ax.set_ylabel("posterior minus prior P(M > c)")
+        ax.set_xlabel(r"prior percentile of $M=\max_i |x_i-\mu^\star|$")
+        ax.set_ylabel(r"posterior minus prior tail risk for $P(M > c_p)$")
+        ax.set_xlim(50.0, 99.0)
+        ax.grid(alpha=0.18, linewidth=0.5)
+        ax.legend(fontsize=7)
+        save(fig, "privacy_leakage_probability_difference.png")
+
+        fig, ax = plt.subplots(figsize=(7, 4))
+        for label, part in leakage_summary.groupby("model_label", dropna=False):
+            grouped = part.groupby("percentile_median")["leakage_probability_ratio_median"].median().reset_index()
+            grouped = grouped.sort_values("percentile_median")
+            ax.plot(100.0 * grouped["percentile_median"], grouped["leakage_probability_ratio_median"], linewidth=1.8, label=label)
+        ax.axhline(1.0, color="black", linewidth=1)
+        ax.set_xlabel(r"prior percentile of $M=\max_i |x_i-\mu^\star|$")
+        ax.set_ylabel(r"posterior / prior tail risk for $P(M > c_p)$")
+        ax.set_xlim(50.0, 99.0)
+        ax.grid(alpha=0.18, linewidth=0.5)
         ax.legend(fontsize=7)
         save(fig, "privacy_leakage_probability_shift.png")
 
         fig, ax = plt.subplots(figsize=(7, 4))
         for label, part in leakage_summary.groupby("model_label", dropna=False):
-            grouped = part.groupby("threshold")["posterior_prob_M_gt_c_given_mle_median"].median().reset_index()
-            ax.plot(grouped["threshold"], grouped["posterior_prob_M_gt_c_given_mle_median"], marker="o", label=label)
-        ax.set_xlabel("outlier threshold c")
+            grouped = part.groupby("percentile_median")["posterior_prob_M_gt_c_given_mle_median"].median().reset_index()
+            grouped = grouped.sort_values("percentile_median")
+            ax.plot(100.0 * grouped["percentile_median"], grouped["posterior_prob_M_gt_c_given_mle_median"], linewidth=1.8, label=label)
+        ax.set_xlabel(r"prior percentile of $M=\max_i |x_i-\mu^\star|$")
         ax.set_ylabel("posterior P(M > c | MLE)")
+        ax.set_xlim(50.0, 99.0)
+        ax.grid(alpha=0.18, linewidth=0.5)
         ax.legend(fontsize=7)
         save(fig, "posterior_extreme_probability_by_threshold.png")
 
     if not info_rows.empty:
         examples = info_rows.sort_values("quantile_distance_score", ascending=False).head(12)
         if not examples.empty:
-            fig, ax = plt.subplots(figsize=(8, 4))
+            fig, ax = plt.subplots(figsize=(8.6, 4.8))
             labels = [f"{r.model} k={r.k_key} n={int(r.n)}" for r in examples.itertuples()]
-            ax.barh(labels, examples["quantile_distance_score"])
-            ax.set_xlabel("mean absolute q05/q50/q95 shift")
+            y = np.arange(len(examples))
+            quantile_specs = [
+                ("q05_difference", "q05", "#1f77b4"),
+                ("q50_difference", "q50", "#2ca02c"),
+                ("q95_difference", "q95", "#d62728"),
+            ]
+            for col, label, color in quantile_specs:
+                if col not in examples.columns:
+                    continue
+                ax.plot(
+                    np.abs(pd.to_numeric(examples[col], errors="coerce")),
+                    y,
+                    marker="o",
+                    linewidth=1.8,
+                    markersize=5,
+                    color=color,
+                    label=label,
+                )
+            ax.set_yticks(y)
+            ax.set_yticklabels(labels)
+            ax.invert_yaxis()
+            ax.set_xlabel("absolute posterior quantile shift")
+            ax.grid(axis="x", alpha=0.2)
+            ax.legend(frameon=False, loc="best", ncol=3)
             save(fig, "representative_information_loss_cases.png")
     return paths
 
 
-def write_report(out_dir: Path, coverage: pd.DataFrame, info_summary: pd.DataFrame, leakage_summary: pd.DataFrame, normal: pd.DataFrame, figures: list[str]) -> None:
+def write_report(
+    out_dir: Path,
+    coverage: pd.DataFrame,
+    info_summary: pd.DataFrame,
+    leakage_summary: pd.DataFrame,
+    observed_summary: pd.DataFrame,
+    normal: pd.DataFrame,
+    figures: list[str],
+) -> None:
     lines = [
         "# MLE Release Information Audit",
         "",
@@ -675,6 +787,11 @@ def write_report(out_dir: Path, coverage: pd.DataFrame, info_summary: pd.DataFra
         lines.append("Latent privacy diagnostics are not available yet or do not contain a max-|x_i-mu_star| column.")
     else:
         lines.append(frame_md(leakage_summary.head(30)))
+    lines.extend(["", "## Actual Simulated Dataset Extremes", ""])
+    if observed_summary.empty:
+        lines.append("Observed simulated dataset outlier summaries are not available.")
+    else:
+        lines.append(frame_md(observed_summary.head(30)))
     lines.extend(
         [
             "",
@@ -718,6 +835,8 @@ def main() -> None:
     info_summary = summarize_information_loss(info_rows)
     leakage_rows = privacy_leakage_table(latent, observed)
     leakage_summary = summarize_privacy(leakage_rows)
+    observed_rows = observed_outlier_rows(observed)
+    observed_summary = summarize_observed_outliers(observed_rows)
     normal = normal_sufficient_baseline(args.prior_sd, args.normal_sigma)
     coverage = diagnostic_coverage(combined, info_rows, latent, observed)
     figures = write_figures(args.out_dir, info_summary, leakage_summary, info_rows)
@@ -728,12 +847,14 @@ def main() -> None:
         "information_loss_summary.csv": info_summary,
         "privacy_leakage_by_case.csv": leakage_rows,
         "privacy_leakage_summary.csv": leakage_summary,
+        "observed_outliers_by_dataset.csv": observed_rows,
+        "observed_outlier_summary.csv": observed_summary,
         "sufficient_baseline_normal.csv": normal,
         "diagnostic_coverage.csv": coverage,
     }
     for name, frame in outputs.items():
         frame.to_csv(args.out_dir / name, index=False)
-    write_report(args.out_dir, coverage, info_summary, leakage_summary, normal, figures)
+    write_report(args.out_dir, coverage, info_summary, leakage_summary, observed_summary, normal, figures)
 
     manifest = {
         "outputs": list(outputs) + ["release_information_report.md"],

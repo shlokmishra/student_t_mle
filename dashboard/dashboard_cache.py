@@ -9,7 +9,7 @@ import pandas as pd
 import streamlit as st
 
 
-DEFAULT_CACHE_DIR = Path("results/dashboard_cache")
+DEFAULT_CACHE_DIR = Path("results/dashboard_cache/final_production_v1")
 
 
 def load_manifest(cache_dir: str) -> dict:
@@ -27,10 +27,18 @@ def read_cache_csv(cache_dir: str, filename: str) -> pd.DataFrame:
 def sidebar_cache_controls(key_prefix: str = "global") -> tuple[bool, Path, dict]:
     st.sidebar.header("Dashboard Cache")
     use_cache = st.sidebar.checkbox("Use dashboard cache", value=True, key=f"{key_prefix}_use_dashboard_cache")
+    source_mode = st.sidebar.radio(
+        "Source mode",
+        ["final_production_v1", "historical/debug"],
+        index=0,
+        key=f"{key_prefix}_source_mode",
+        help="Final production is the meeting default; historical/debug exposes older smoke/medium paths.",
+    )
+    default_cache = DEFAULT_CACHE_DIR if source_mode == "final_production_v1" else Path("results/dashboard_cache")
     cache_path = Path(
         st.sidebar.text_input(
             "Dashboard cache path",
-            value=str(DEFAULT_CACHE_DIR),
+            value=str(default_cache),
             key=f"{key_prefix}_dashboard_cache_path",
         )
     )
@@ -44,12 +52,15 @@ def show_cache_badge(use_cache: bool, cache_dir: Path, manifest: dict) -> None:
     status = "ready" if manifest.get("dashboard_ready") else "partial" if manifest else "missing"
     raw_data_level = manifest.get("data_level", "missing")
     data_level = "preview" if raw_data_level == "smoke" else raw_data_level
+    source_runset = manifest.get("source_runset", "unknown")
     created_at = manifest.get("created_at", "unavailable")
     cols = st.columns(3)
     cols[0].metric("Data level", data_level)
     cols[1].metric("Cache status", status)
     cols[2].metric("Last prepared", created_at)
-    st.caption(f"Cache path: {cache_dir}")
+    st.caption(f"Cache path: {cache_dir}; source runset: {source_runset}")
+    if source_runset and source_runset != "final_production_v1":
+        st.warning("Historical/debug source selected. Do not use this view for final meeting claims.")
     if raw_data_level == "smoke":
         st.warning("Preview cache only — do not use for final scientific conclusions.")
     if status != "ready":

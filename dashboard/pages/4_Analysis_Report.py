@@ -75,10 +75,13 @@ if use_dashboard_cache:
     if not suspicious.empty:
         high = suspicious[suspicious["severity"].astype(str).eq("high")]
         if not high.empty:
-            st.error(f"{len(high)} high-severity suspicious cases are flagged.")
+            st.warning(f"{len(high)} high-severity suspicious cases are flagged.")
 
     st.subheader("Best Method By Model/k/n")
-    st.dataframe(rankings[rankings["rank"].eq(1)] if not rankings.empty else rankings, use_container_width=True)
+    if not rankings.empty and "rank" in rankings.columns:
+        st.dataframe(rankings[rankings["rank"].eq(1)], use_container_width=True)
+    else:
+        st.dataframe(rankings, use_container_width=True)
     st.subheader("Suspicious Cases")
     st.dataframe(suspicious, use_container_width=True)
     st.subheader("RATTLE Diagnostics")
@@ -121,7 +124,7 @@ student_target_diag = read_csv(str(FILES["student_score_vs_mle_diagnostics.csv"]
 if not suspicious.empty:
     high = suspicious[suspicious["severity"].astype(str).eq("high")]
     if not high.empty:
-        st.error(f"{len(high)} high-severity suspicious cases are flagged.")
+        st.warning(f"{len(high)} high-severity suspicious cases are flagged.")
     medium = suspicious[suspicious["severity"].astype(str).eq("medium")]
     if not medium.empty:
         st.warning(f"{len(medium)} medium-severity suspicious cases are flagged.")
@@ -129,8 +132,10 @@ if not suspicious.empty:
 st.subheader("Best Method By Model/k/n")
 if rankings.empty:
     st.info("No method rankings available.")
-else:
+elif "rank" in rankings.columns:
     st.dataframe(rankings[rankings["rank"].eq(1)], use_container_width=True)
+else:
+    st.dataframe(rankings, use_container_width=True)
 
 st.subheader("Gibbs vs RATTLE")
 if cost.empty:

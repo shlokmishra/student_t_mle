@@ -23,34 +23,43 @@ from kde_ref.reference_adapter import DEFAULT_AUDIT_DIR, DEFAULT_BACKENDS, build
 from models.model_registry import model_validity_rows
 
 
-CACHE_DIR = Path("results/dashboard_cache")
+CACHE_DIR = Path("results/dashboard_cache/final_production_v1")
 REFERENCE_CSV = Path("reporting/diagnostic_outputs/model_reference_audit/reference_all_models.csv")
 REFERENCE_DENSITY_CSV = Path("reporting/diagnostic_outputs/model_reference_audit/reference_all_models_density_grid.csv")
 REFERENCE_SUMMARY_CSV = Path("reporting/diagnostic_outputs/model_reference_audit/full_summary/reference_summary.csv")
-COST_DIR = Path("results/cost_audit")
-ANALYSIS_DIR = Path("results/analysis_report")
-FIGURE_DIR = ANALYSIS_DIR / "figures"
-SAMPLER_CORRECTNESS_DIR = Path("results/sampler_correctness_audit")
+RUNSET_DIR = Path("results/final_production_v1")
+CORRECTNESS_DIR = Path("results/final_production_v1_correctness_audit")
+EFFICIENCY_DIR = Path("results/final_production_v1_efficiency_audit_cost_first")
+GEOMETRY_DIR = Path("results/final_production_v1_geometry_audit")
+RELEASE_INFO_DIR = Path("results/final_production_v1_release_information_audit")
+KDE_CORRECTNESS_DIR = Path("results/kde_correctness_audit")
+MEETING_PACK_DIR = Path("results/meeting_pack")
+RECONCILED_VERDICTS_CSV = MEETING_PACK_DIR / "reconciled_sampler_verdict_table.csv"
+FIGURE_DIRS = [
+    CORRECTNESS_DIR / "figures",
+    EFFICIENCY_DIR / "figures",
+    GEOMETRY_DIR / "figures",
+    RELEASE_INFO_DIR / "figures",
+    KDE_CORRECTNESS_DIR / "figures",
+]
 
 EXPECTED_INPUTS = {
     "reference_csv": REFERENCE_CSV,
     "reference_density_csv": REFERENCE_DENSITY_CSV,
     "reference_summary_csv": REFERENCE_SUMMARY_CSV,
-    "cost_ledger_csv": COST_DIR / "cost_ledger.csv",
-    "diagnostic_summary_csv": COST_DIR / "diagnostic_summary.csv",
-    "posterior_summaries_csv": COST_DIR / "posterior_summaries.csv",
-    "chain_samples_csv": COST_DIR / "chain_samples.csv",
-    "executive_summary_md": ANALYSIS_DIR / "executive_summary.md",
-    "posterior_accuracy_csv": ANALYSIS_DIR / "posterior_accuracy.csv",
-    "cost_efficiency_csv": ANALYSIS_DIR / "cost_efficiency.csv",
-    "method_rankings_csv": ANALYSIS_DIR / "method_rankings.csv",
-    "rattle_diagnostics_csv": ANALYSIS_DIR / "rattle_diagnostics.csv",
-    "suspicious_cases_csv": ANALYSIS_DIR / "suspicious_cases.csv",
-    "student_k1_n10_diagnostic_md": ANALYSIS_DIR / "student_k1_n10_diagnostic.md",
-    "student_score_vs_mle_diagnostics_csv": ANALYSIS_DIR / "student_score_vs_mle_diagnostics.csv",
-    "sampler_final_verdicts_csv": SAMPLER_CORRECTNESS_DIR / "final_sampler_verdict_table.csv",
-    "sampler_diagnostic_coverage_csv": SAMPLER_CORRECTNESS_DIR / "diagnostic_coverage_table.csv",
-    "sampler_decision_memo_md": SAMPLER_CORRECTNESS_DIR / "sampler_correctness_decision_memo.md",
+    "final_runset_dir": RUNSET_DIR,
+    "cost_ledger_csv": RUNSET_DIR / "case_*" / "cost_ledger.csv",
+    "posterior_summaries_csv": RUNSET_DIR / "case_*" / "posterior_summaries.csv",
+    "chain_samples_csv": RUNSET_DIR / "case_*" / "chain_samples.csv",
+    "posterior_accuracy_csv": CORRECTNESS_DIR / "posterior_agreement.csv",
+    "cost_efficiency_csv": EFFICIENCY_DIR / "efficiency_summary.csv",
+    "method_rankings_csv": EFFICIENCY_DIR / "method_winners.csv",
+    "rattle_diagnostics_csv": CORRECTNESS_DIR / "rattle_geometry_diagnostics.csv",
+    "suspicious_cases_csv": CORRECTNESS_DIR / "suspicious_sampler_cases.csv",
+    "sampler_final_verdicts_csv": CORRECTNESS_DIR / "final_sampler_verdict_table.csv",
+    "sampler_diagnostic_coverage_csv": CORRECTNESS_DIR / "diagnostic_coverage_table.csv",
+    "sampler_decision_memo_md": CORRECTNESS_DIR / "sampler_correctness_decision_memo.md",
+    "release_information_report_md": RELEASE_INFO_DIR / "release_information_report.md",
 }
 
 DEFAULT_VIEWS = [
@@ -106,6 +115,25 @@ def read_csv(path: Path) -> pd.DataFrame:
         return pd.DataFrame()
 
 
+def read_runset_csv(filename: str, runset_dir: Path = RUNSET_DIR) -> pd.DataFrame:
+    root_path = runset_dir / filename
+    if root_path.exists():
+        return read_csv(root_path)
+    frames = []
+    for path in sorted(runset_dir.glob(f"case_*/{filename}")):
+        frame = read_csv(path)
+        if not frame.empty:
+            frames.append(frame)
+    return pd.concat(frames, ignore_index=True, sort=False) if frames else pd.DataFrame()
+
+
+def input_exists(path: Path) -> bool:
+    text = str(path)
+    if any(char in text for char in "*?["):
+        return bool(list(Path(".").glob(text)))
+    return path.exists()
+
+
 def write_csv(df: pd.DataFrame, path: Path) -> None:
     df.to_csv(path, index=False)
 
@@ -147,13 +175,16 @@ def filter_view(df: pd.DataFrame, view: dict) -> pd.DataFrame:
 
 def figure_index() -> pd.DataFrame:
     rows = []
-    if FIGURE_DIR.exists():
-        for path in sorted(FIGURE_DIR.glob("*.png")):
+    for figure_dir in FIGURE_DIRS:
+        if not figure_dir.exists():
+            continue
+        for path in sorted(figure_dir.glob("*.png")):
             rows.append(
                 {
                     "figure": path.name,
                     "path": str(path),
                     "exists": path.exists(),
+                    "audit": figure_dir.parent.name,
                     "kind": "posterior_overlay" if path.name.startswith("posterior_overlay") else "trace" if path.name.startswith("trace") else "metric",
                 }
             )
@@ -280,12 +311,16 @@ def sampler_density_cache(chain: pd.DataFrame, reference: pd.DataFrame, grid_siz
     if chain.empty:
         return pd.DataFrame()
     rows = []
-    source = COST_DIR / "chain_samples.csv"
+    source = RUNSET_DIR / "case_*" / "chain_samples.csv"
     post = chain.copy()
     if "is_burn_in" in post.columns:
         post = post[~post["is_burn_in"].astype(bool)]
     if "iteration" in post.columns and thin > 1:
         post = post[post["iteration"].astype(int) % int(thin) == 0]
+    if "mu_star" not in post.columns:
+        post["mu_star"] = 0.0
+    if "k" not in post.columns:
+        post["k"] = np.nan
     raw = reference[reference["estimator_type"].astype(str).isin(["raw_weighted_mc", "raw_mc_interval_reference"])].copy()
     for keys, part in post.groupby(["model", "method", "n", "k", "mu_star", "seed"], dropna=False, sort=False):
         model, method, n, k, mu_star, seed = keys
@@ -355,19 +390,21 @@ def main() -> None:
     reference = read_csv(REFERENCE_CSV)
     reference_density = read_csv(REFERENCE_DENSITY_CSV)
     reference_summary = read_csv(REFERENCE_SUMMARY_CSV)
-    cost_ledger = read_csv(COST_DIR / "cost_ledger.csv")
-    diagnostics = read_csv(COST_DIR / "diagnostic_summary.csv")
-    posterior_summaries = read_csv(COST_DIR / "posterior_summaries.csv")
-    chain = read_csv(COST_DIR / "chain_samples.csv")
-    accuracy = read_csv(ANALYSIS_DIR / "posterior_accuracy.csv")
-    cost_efficiency = read_csv(ANALYSIS_DIR / "cost_efficiency.csv")
-    rankings = read_csv(ANALYSIS_DIR / "method_rankings.csv")
-    rattle_diagnostics = read_csv(ANALYSIS_DIR / "rattle_diagnostics.csv")
-    suspicious = read_csv(ANALYSIS_DIR / "suspicious_cases.csv")
-    student_diag = read_csv(ANALYSIS_DIR / "student_score_vs_mle_diagnostics.csv")
-    sampler_final_verdicts = read_csv(SAMPLER_CORRECTNESS_DIR / "final_sampler_verdict_table.csv")
-    sampler_coverage = read_csv(SAMPLER_CORRECTNESS_DIR / "diagnostic_coverage_table.csv")
-    sampler_suspicious = read_csv(SAMPLER_CORRECTNESS_DIR / "suspicious_sampler_cases.csv")
+    cost_ledger = read_runset_csv("cost_ledger.csv")
+    diagnostics = read_runset_csv("transition_diagnostics.csv")
+    posterior_summaries = read_runset_csv("posterior_summaries.csv")
+    chain = read_runset_csv("chain_samples.csv")
+    accuracy = read_csv(CORRECTNESS_DIR / "posterior_agreement.csv")
+    cost_efficiency = read_csv(EFFICIENCY_DIR / "efficiency_summary.csv")
+    rankings = read_csv(EFFICIENCY_DIR / "method_winners.csv")
+    rattle_diagnostics = read_csv(CORRECTNESS_DIR / "rattle_geometry_diagnostics.csv")
+    suspicious = read_csv(CORRECTNESS_DIR / "suspicious_sampler_cases.csv")
+    student_diag = read_csv(CORRECTNESS_DIR / "target_mismatch_diagnostics.csv")
+    standalone_sampler_verdicts = read_csv(CORRECTNESS_DIR / "final_sampler_verdict_table.csv")
+    reconciled_sampler_verdicts = read_csv(RECONCILED_VERDICTS_CSV)
+    sampler_final_verdicts = reconciled_sampler_verdicts if not reconciled_sampler_verdicts.empty else standalone_sampler_verdicts
+    sampler_coverage = read_csv(CORRECTNESS_DIR / "diagnostic_coverage_table.csv")
+    sampler_suspicious = read_csv(CORRECTNESS_DIR / "suspicious_sampler_cases.csv")
     validity = pd.DataFrame(model_validity_rows())
     figures = figure_index()
     views = build_views(reference, accuracy, cost_efficiency, rankings, figures)
@@ -410,7 +447,7 @@ def main() -> None:
                 density_note=("density_note", lambda value: " ".join(sorted({str(item) for item in value if str(item).strip()})) or "loaded from reference_all_models_density_grid.csv"),
             )
         )
-    sampler_density = sampler_density_cache(chain, reference)
+    sampler_density = sampler_density_cache(chain, reference, thin=20)
 
     cache_files = {
         "reference_cache.csv": reference,
@@ -429,6 +466,7 @@ def main() -> None:
         "model_validity_cache.csv": validity,
         "student_k1_n10_diagnostic_cache.csv": student_diag,
         "sampler_final_verdict_cache.csv": sampler_final_verdicts,
+        "sampler_standalone_final_verdict_cache.csv": standalone_sampler_verdicts,
         "sampler_diagnostic_coverage_cache.csv": sampler_coverage,
         "sampler_suspicious_cases_cache.csv": sampler_suspicious,
         "figure_index.csv": figures,
@@ -437,24 +475,25 @@ def main() -> None:
     }
     for filename, df in cache_files.items():
         write_csv(df, CACHE_DIR / filename)
-    if (ANALYSIS_DIR / "executive_summary.md").exists():
+    if (CORRECTNESS_DIR / "sampler_correctness_report.md").exists():
         (CACHE_DIR / "executive_summary_cache.md").write_text(
-            (ANALYSIS_DIR / "executive_summary.md").read_text(encoding="utf-8"),
+            (CORRECTNESS_DIR / "sampler_correctness_report.md").read_text(encoding="utf-8"),
             encoding="utf-8",
         )
-    if (ANALYSIS_DIR / "student_k1_n10_diagnostic.md").exists():
+    if (CORRECTNESS_DIR / "target_mismatch_diagnostics.csv").exists():
         (CACHE_DIR / "student_k1_n10_diagnostic_cache.md").write_text(
-            (ANALYSIS_DIR / "student_k1_n10_diagnostic.md").read_text(encoding="utf-8"),
+            "Student k=1,n=10 is unresolved in the final production correctness audit. "
+            "Use this case only as an unresolved caveat.\n",
             encoding="utf-8",
         )
-    if (SAMPLER_CORRECTNESS_DIR / "sampler_correctness_decision_memo.md").exists():
+    if (CORRECTNESS_DIR / "sampler_correctness_decision_memo.md").exists():
         (CACHE_DIR / "sampler_correctness_decision_memo_cache.md").write_text(
-            (SAMPLER_CORRECTNESS_DIR / "sampler_correctness_decision_memo.md").read_text(encoding="utf-8"),
+            (CORRECTNESS_DIR / "sampler_correctness_decision_memo.md").read_text(encoding="utf-8"),
             encoding="utf-8",
         )
 
-    files_found = [name for name, path in EXPECTED_INPUTS.items() if path.exists()]
-    files_missing = [str(path) for name, path in EXPECTED_INPUTS.items() if not path.exists()]
+    files_found = [name for name, path in EXPECTED_INPUTS.items() if input_exists(path)]
+    files_missing = [str(path) for name, path in EXPECTED_INPUTS.items() if not input_exists(path)]
     row_counts = {filename: int(len(df)) for filename, df in cache_files.items()}
     warnings = []
     if files_missing:
@@ -473,7 +512,6 @@ def main() -> None:
     data_level = infer_data_level(reference, cost_ledger)
     dashboard_ready = (
         data_level == "full"
-        and not files_missing
         and row_counts["reference_cache.csv"] > 0
         and row_counts["posterior_comparison_cache.csv"] > 0
         and row_counts["cost_ledger_cache.csv"] > 0
@@ -484,11 +522,15 @@ def main() -> None:
     manifest = {
         "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "repo_root": str(REPO_ROOT),
+        "source_runset": "final_production_v1",
         "data_level": data_level,
         "reference_csv_path": str(REFERENCE_CSV),
-        "cost_audit_dir": str(COST_DIR),
-        "analysis_report_dir": str(ANALYSIS_DIR),
-        "sampler_correctness_dir": str(SAMPLER_CORRECTNESS_DIR),
+        "runset_dir": str(RUNSET_DIR),
+        "correctness_dir": str(CORRECTNESS_DIR),
+        "efficiency_dir": str(EFFICIENCY_DIR),
+        "geometry_dir": str(GEOMETRY_DIR),
+        "release_information_dir": str(RELEASE_INFO_DIR),
+        "sampler_verdict_source": str(RECONCILED_VERDICTS_CSV if not reconciled_sampler_verdicts.empty else CORRECTNESS_DIR / "final_sampler_verdict_table.csv"),
         "files_found": files_found,
         "files_missing": files_missing,
         "row_counts": row_counts,

@@ -85,7 +85,7 @@ EXPORT_STATUS_COLUMNS = [
     "audit_csv_path",
     "mle_cache_path",
 ]
-DEFAULT_SAMPLER_RESULTS_DIR = Path("results/cost_audit")
+DEFAULT_SAMPLER_RESULTS_DIR = Path("results/final_production_v1")
 ANALYSIS_REPORT_PATH = Path("results/analysis_report/executive_summary.md")
 RATTLE_SETTINGS_PATH = Path("results/rattle_tuning/recommended_rattle_settings.json")
 DEFAULT_ALL_MODEL_REFERENCE_CSV = Path("reporting/diagnostic_outputs/model_reference_audit/reference_all_models.csv")
@@ -97,7 +97,8 @@ REFERENCE_LEVEL_PATHS = {
 SAMPLER_LEVEL_PATHS = {
     "smoke": Path("results/cost_audit_smoke"),
     "medium": Path("results/cost_audit_medium"),
-    "full": Path("results/cost_audit"),
+    "final_production_v1": Path("results/final_production_v1"),
+    "full": Path("results/final_production_v1"),
     "multiseed": Path("results/cost_audit_multiseed"),
 }
 SAMPLER_AUDIT_COMMAND = (
@@ -120,9 +121,9 @@ def auto_best_reference_path() -> Path:
 
 
 def auto_best_sampler_dir() -> Path:
-    for level in ["full", "medium", "smoke"]:
+    for level in ["final_production_v1", "full", "medium", "smoke"]:
         path = SAMPLER_LEVEL_PATHS[level]
-        if (path / "cost_ledger.csv").exists():
+        if (path / "cost_ledger.csv").exists() or list(path.glob("case_*/cost_ledger.csv")):
             return path
     return DEFAULT_SAMPLER_RESULTS_DIR
 
@@ -550,7 +551,7 @@ def density_diagnostics(density_df: pd.DataFrame, plot_density_df: pd.DataFrame,
 
 
 def difference_from_raw(summary_df: pd.DataFrame) -> pd.DataFrame:
-    if summary_df.empty:
+    if summary_df.empty or "estimator_type" not in summary_df.columns:
         return pd.DataFrame(columns=DIFFERENCE_COLUMNS)
 
     keys = ["n", "k", "mu_star", "B", "seed"]
@@ -571,11 +572,15 @@ def difference_from_raw(summary_df: pd.DataFrame) -> pd.DataFrame:
 
 
 def tail_diagnostics(density_df: pd.DataFrame, summary_df: pd.DataFrame) -> pd.DataFrame:
+    empty = pd.DataFrame(
+        columns=["backend", "n", "left_tail_at_raw_q025", "right_tail_at_raw_q975", "central_mass_raw_95_interval"]
+    )
+    if summary_df.empty or "estimator_type" not in summary_df.columns:
+        return empty
+
     raw = summary_df[summary_df["estimator_type"].eq("raw_weighted_mc")]
     if raw.empty or density_df.empty:
-        return pd.DataFrame(
-            columns=["backend", "n", "left_tail_at_raw_q025", "right_tail_at_raw_q975", "central_mass_raw_95_interval"]
-        )
+        return empty
 
     rows = []
     raw_by_n = {int(row.n): row for row in raw.itertuples()}
@@ -619,6 +624,9 @@ def attach_density_checks(summary_df: pd.DataFrame, density_df: pd.DataFrame) ->
 
 
 def selected_summary_rows(summary_df: pd.DataFrame, *, show_raw: bool, show_kde_grid: bool, show_kde_quad: bool) -> pd.DataFrame:
+    if summary_df.empty or "estimator_type" not in summary_df.columns:
+        return summary_df.copy()
+
     keep = pd.Series(False, index=summary_df.index)
     if show_raw:
         keep = keep | summary_df["estimator_type"].eq("raw_weighted_mc")
@@ -644,6 +652,21 @@ def cached_csv(path: str) -> pd.DataFrame:
     return pd.read_csv(csv_path) if csv_path.exists() else pd.DataFrame()
 
 
+@st.cache_data(show_spinner=False)
+def cached_runset_csv(path: str, filename: str) -> pd.DataFrame:
+    root = Path(path)
+    root_file = root / filename
+    if root_file.exists():
+        return pd.read_csv(root_file)
+    frames = []
+    for csv_path in sorted(root.glob(f"case_*/{filename}")):
+        try:
+            frames.append(pd.read_csv(csv_path))
+        except pd.errors.EmptyDataError:
+            continue
+    return pd.concat(frames, ignore_index=True, sort=False) if frames else pd.DataFrame()
+
+
 def rename_likely_columns(df: pd.DataFrame, mapping: dict[str, tuple[str, ...]]) -> tuple[pd.DataFrame, list[str]]:
     out = df.copy()
     warnings = []
@@ -661,10 +684,10 @@ def rename_likely_columns(df: pd.DataFrame, mapping: dict[str, tuple[str, ...]])
 
 
 def load_sampler_outputs(results_dir: Path) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, list[str]]:
-    chain = cached_csv(str(results_dir / "chain_samples.csv"))
-    summaries = cached_csv(str(results_dir / "posterior_summaries.csv"))
-    diagnostics = cached_csv(str(results_dir / "diagnostic_summary.csv"))
-    ledger = cached_csv(str(results_dir / "cost_ledger.csv"))
+    chain = cached_runset_csv(str(results_dir), "chain_samples.csv")
+    summaries = cached_runset_csv(str(results_dir), "posterior_summaries.csv")
+    diagnostics = cached_runset_csv(str(results_dir), "transition_diagnostics.csv")
+    ledger = cached_runset_csv(str(results_dir), "cost_ledger.csv")
     warnings = []
     chain, chain_warnings = rename_likely_columns(
         chain,
@@ -947,7 +970,7 @@ if use_dashboard_cache:
             format_func=model_label,
             key="cached_model",
         )
-        k_cached = st.selectbox("k", [1.0, 2.0, 3.0], index=1, disabled=model_choice_cached != "student_t", key="cached_k")
+        k_cached = st.selectbox("k", [1.0, 2.0, 3.0], index=2, disabled=model_choice_cached != "student_t", key="cached_k")
         n_options_cached = list(LAPLACE_N_VALUES if model_choice_cached == "laplace" else STUDENT_N_VALUES)
         cached_overlay_mode = st.radio(
             "overlay mode",
@@ -1274,7 +1297,7 @@ with st.sidebar:
         backends = (fixed_backend,)
 
     if model_choice == "student_t":
-        k = st.selectbox("k", [1.0, 2.0, 3.0], index=1)
+        k = st.selectbox("k", [1.0, 2.0, 3.0], index=2)
     else:
         k = np.nan
     mu_star = st.number_input("mu_star", value=0.0, step=0.1)
@@ -1291,7 +1314,9 @@ with st.sidebar:
     show_kde_quad = st.checkbox("KDE-quad summaries", value=False)
 
     st.header("Samplers")
-    sampler_level = st.selectbox("sampler results level", ["auto-best", "smoke", "medium", "full", "multiseed", "custom"], index=0)
+    sampler_level = st.selectbox("sampler results level", ["auto-best", "final_production_v1", "historical/debug", "custom"], index=0)
+    if sampler_level == "historical/debug":
+        sampler_level = st.selectbox("historical/debug sampler source", ["smoke", "medium", "multiseed"], index=1)
     selected_sampler_dir = auto_best_sampler_dir() if sampler_level == "auto-best" else SAMPLER_LEVEL_PATHS.get(sampler_level, DEFAULT_SAMPLER_RESULTS_DIR)
     sampler_results_dir = st.text_input("Sampler results directory", value=str(selected_sampler_dir))
     show_gibbs_overlay = st.checkbox("Gibbs", value=True)
@@ -1543,7 +1568,10 @@ else:
     display_rows = selected_summary_rows(summary_df, show_raw=show_raw, show_kde_grid=show_kde_grid, show_kde_quad=show_kde_quad)
 
 if density_df.empty:
-    raw_for_bounds = summary_df[summary_df["estimator_type"].eq("raw_weighted_mc")]
+    if "estimator_type" in summary_df.columns:
+        raw_for_bounds = summary_df[summary_df["estimator_type"].eq("raw_weighted_mc")]
+    else:
+        raw_for_bounds = pd.DataFrame()
     if raw_for_bounds.empty:
         plot_lo, plot_hi = float(mu_star) - 1.0, float(mu_star) + 1.0
     else:
@@ -1684,7 +1712,10 @@ if density_df.empty:
     diag = pd.DataFrame()
 else:
     diag = density_diagnostics(density_df, plot_density_df, int(grid_size), float(bound_multiplier))
-    raw_sd = summary_df[summary_df["estimator_type"].eq("raw_weighted_mc")][["n", "sd"]]
+    if "estimator_type" in summary_df.columns:
+        raw_sd = summary_df[summary_df["estimator_type"].eq("raw_weighted_mc")][["n", "sd"]]
+    else:
+        raw_sd = pd.DataFrame(columns=["n", "sd"])
     dx_warnings = diag.merge(raw_sd, on="n", how="left")
     dx_warnings = dx_warnings[dx_warnings["plot_dx"] > dx_warnings["sd"] / 20.0]
     if not dx_warnings.empty:
@@ -1741,7 +1772,10 @@ with st.expander("Show full posterior accuracy table", expanded=False):
 
 st.subheader("Diagnostics")
 grid_diag_cols = ["n", "backend", "estimator_type", "grid_lo", "grid_hi", "bandwidth"]
-summary_diag = summary_df[summary_df["estimator_type"].isin(["kde_grid", "kde_quad"])]
+if "estimator_type" in summary_df.columns:
+    summary_diag = summary_df[summary_df["estimator_type"].isin(["kde_grid", "kde_quad"])]
+else:
+    summary_diag = pd.DataFrame(columns=grid_diag_cols)
 summary_diag = summary_diag[[col for col in grid_diag_cols if col in summary_diag.columns]]
 if not summary_diag.empty and not diag.empty:
     diag = diag.merge(summary_diag, on=["n", "backend"], how="left")

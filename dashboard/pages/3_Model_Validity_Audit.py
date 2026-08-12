@@ -52,7 +52,7 @@ st.dataframe(validity_df[preferred_columns], use_container_width=True)
 
 laplace_warnings = validity_df[validity_df["model"].eq("laplace") & validity_df["warnings"].astype(str).ne("")]
 if not laplace_warnings.empty:
-    st.error("Laplace caveat: exact RATTLE is not applicable because the median constraint is nonsmooth/order-based.")
+    st.warning("Laplace caveat: exact RATTLE is not applicable because the median constraint is nonsmooth/order-based.")
     st.info(
         "Laplace defaults to odd n=11,21,51, where the sample median is unique and deterministic np.median KDE/raw-MC "
         "matches the Gibbs target. For even n, compare Gibbs only to the median-interval reference."

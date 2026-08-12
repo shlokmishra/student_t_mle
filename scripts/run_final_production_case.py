@@ -35,7 +35,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--burn-in", type=int, default=None)
     parser.add_argument("--seed", type=int, default=None)
     parser.add_argument("--diagnostic-thin", type=int, default=None)
-    parser.add_argument("--gibbs-backend", choices=["jax_loop", "jax_scan", "numba"], default="jax_loop")
+    parser.add_argument("--gibbs-backend", choices=["jax_loop", "jax_scan", "jax_scan_block_z", "numba"], default="jax_loop")
     parser.add_argument("--force", action="store_true")
     return parser.parse_args()
 

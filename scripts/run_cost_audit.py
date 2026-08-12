@@ -53,7 +53,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--out", type=Path, default=Path("results/cost_audit/"))
     parser.add_argument("--proposal-std-mu", type=float, default=0.3)
     parser.add_argument("--proposal-std-z", type=float, default=0.02)
-    parser.add_argument("--gibbs-backend", choices=["jax_loop", "jax_scan", "numba"], default="jax_loop")
+    parser.add_argument("--gibbs-backend", choices=["jax_loop", "jax_scan", "jax_scan_block_z", "numba", "numba_full"], default="jax_loop")
+    parser.add_argument("--gibbs-pairing-schedule", choices=["random_permutation", "random_parity"], default="random_permutation")
+    parser.add_argument("--gibbs-pair-parallel", action=argparse.BooleanOptionalAction, default=False)
+    parser.add_argument("--store-x-chain", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--prior-mean", type=float, default=0.0)
     parser.add_argument("--prior-std", type=float, default=10.0)
     parser.add_argument("--laplace-b", type=float, default=1.0)
@@ -154,6 +157,9 @@ def base_params(args: argparse.Namespace, model: str, n: int, k: float | None, r
         "proposal_std_mu": float(args.proposal_std_mu),
         "proposal_std_z": float(args.proposal_std_z),
         "gibbs_backend": str(getattr(args, "gibbs_backend", "jax_loop")),
+        "gibbs_pairing_schedule": str(getattr(args, "gibbs_pairing_schedule", "random_permutation")),
+        "gibbs_pair_parallel": bool(getattr(args, "gibbs_pair_parallel", False)),
+        "store_x_chain": bool(getattr(args, "store_x_chain", True)),
         "prior_mean": float(args.prior_mean),
         "prior_std": float(args.prior_std),
         "rattle_step_size": float(args.rattle_step_size),

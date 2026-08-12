@@ -874,14 +874,33 @@ def write_figures(
     if not transitions.empty:
         summary = transitions[transitions["from_class"].ne("__summary__")]
         if not summary.empty:
-            pivot = summary.groupby(["from_class", "to_class"])["transition_probability"].mean().unstack(fill_value=0)
-            fig, ax = plt.subplots(figsize=(6, 5))
-            im = ax.imshow(pivot.to_numpy(dtype=float), vmin=0, vmax=1)
+            class_order = ["central", "mixed_tail", "extreme_tail", "tail_dominated"]
+            counts = (
+                summary.groupby(["from_class", "to_class"], dropna=False)["transition_count"]
+                .sum()
+                .unstack(fill_value=0)
+                .reindex(index=class_order, columns=class_order, fill_value=0)
+            )
+            row_totals = counts.sum(axis=1)
+            pivot = counts.div(row_totals.replace(0, np.nan), axis=0)
+
+            fig, ax = plt.subplots(figsize=(6.8, 5.4))
+            values = pivot.to_numpy(dtype=float)
+            im = ax.imshow(values, vmin=0, vmax=1, cmap="Blues")
             ax.set_xticks(np.arange(len(pivot.columns)))
-            ax.set_xticklabels(pivot.columns, rotation=45, ha="right")
+            ax.set_xticklabels([str(col).replace("_", "\n") for col in pivot.columns], rotation=0)
             ax.set_yticks(np.arange(len(pivot.index)))
-            ax.set_yticklabels(pivot.index)
-            fig.colorbar(im, ax=ax, label="transition probability")
+            ax.set_yticklabels([f"{str(idx).replace('_', ' ')}  (n={int(row_totals.get(idx, 0))})" for idx in pivot.index])
+            ax.set_xlabel("next latent class")
+            ax.set_ylabel("current latent class")
+            ax.set_title("Row-normalized pooled latent-class transitions")
+            for i in range(values.shape[0]):
+                for j in range(values.shape[1]):
+                    val = values[i, j]
+                    text = "--" if not np.isfinite(val) else f"{val:.2f}"
+                    color = "white" if np.isfinite(val) and val >= 0.55 else "#1f1f1f"
+                    ax.text(j, i, text, ha="center", va="center", fontsize=9, color=color)
+            fig.colorbar(im, ax=ax, label="P(next class | current class)")
             save(fig, "latent_geometry_class_transition_heatmap.png")
 
     if not conditioned.empty:
@@ -1045,6 +1064,7 @@ def main() -> None:
     transitions = class_transitions(latent_geom)
 
     latent_geom.to_csv(args.out_dir / "latent_tail_geometry.csv", index=False)
+    transitions.to_csv(args.out_dir / "latent_tail_geometry_class_transitions.csv", index=False)
     geom_summary.to_csv(args.out_dir / "geometry_summary.csv", index=False)
     conditioned.to_csv(args.out_dir / "geometry_conditioned_posterior.csv", index=False)
     rattle_exp.to_csv(args.out_dir / "rattle_geometry_explanation.csv", index=False)

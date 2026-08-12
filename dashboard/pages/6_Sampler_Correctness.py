@@ -8,7 +8,8 @@ import pandas as pd
 import streamlit as st
 
 
-AUDIT_DIR = Path("results/sampler_correctness_audit")
+AUDIT_DIR = Path("results/final_production_v1_correctness_audit")
+MEETING_VERDICTS = Path("results/meeting_pack/reconciled_sampler_verdict_table.csv")
 FILES = {
     "report": AUDIT_DIR / "sampler_correctness_report.md",
     "final_verdicts": AUDIT_DIR / "final_sampler_verdict_table.csv",
@@ -26,6 +27,7 @@ FILES = {
     "target_mismatch": AUDIT_DIR / "target_mismatch_diagnostics.csv",
     "missing_outputs": AUDIT_DIR / "missing_outputs.csv",
     "failed_cases": AUDIT_DIR / "failed_cases.csv",
+    "reconciled_verdicts": MEETING_VERDICTS,
 }
 
 
@@ -41,7 +43,7 @@ def read_csv(path: str) -> pd.DataFrame:
 
 
 st.title("Sampler Correctness")
-st.caption("Cached Gibbs/RATTLE correctness audit against raw weighted-MC references.")
+st.caption("Final production Gibbs/RATTLE correctness audit against raw weighted-MC posterior-summary benchmarks.")
 
 status = pd.DataFrame(
     [{"file": name, "path": str(path), "exists": path.exists()} for name, path in FILES.items()]
@@ -57,12 +59,14 @@ else:
     st.code(
         "python reporting/diagnostics/audit_sampler_correctness.py "
         "--runset-dir results/final_production_v1 "
-        "--out-dir results/sampler_correctness_audit",
+        "--out-dir results/final_production_v1_correctness_audit",
         language="bash",
     )
     st.stop()
 
-final_verdicts = read_csv(str(FILES["final_verdicts"]))
+standalone_final_verdicts = read_csv(str(FILES["final_verdicts"]))
+reconciled_verdicts = read_csv(str(FILES["reconciled_verdicts"]))
+final_verdicts = reconciled_verdicts if not reconciled_verdicts.empty else standalone_final_verdicts
 coverage = read_csv(str(FILES["coverage"]))
 summary = read_csv(str(FILES["summary"]))
 suspicious = read_csv(str(FILES["suspicious"]))
@@ -87,13 +91,36 @@ st.subheader("Final Verdicts")
 if final_verdicts.empty:
     st.warning("Final sampler verdict table is missing.")
 else:
-    verdict_counts = final_verdicts["verdict"].astype(str).value_counts().to_dict()
-    safe_counts = final_verdicts["safe_to_present"].astype(str).value_counts().to_dict()
+    verdict_col = "meeting_verdict" if "meeting_verdict" in final_verdicts.columns else "verdict"
+    safe_col = "meeting_safe_to_present" if "meeting_safe_to_present" in final_verdicts.columns else "safe_to_present"
+    verdict_counts = final_verdicts[verdict_col].astype(str).value_counts().to_dict()
+    safe_counts = final_verdicts[safe_col].astype(str).value_counts().to_dict()
     c1, c2, c3 = st.columns(3)
     c1.metric("verdict rows", len(final_verdicts))
-    c2.metric("clean", verdict_counts.get("clean", 0))
-    c3.metric("unsafe/no", safe_counts.get("no", 0))
+    c2.metric("clean", verdict_counts.get("clean", 0) + verdict_counts.get("clean_with_targeted_support", 0))
+    c3.metric("unresolved/no", verdict_counts.get("unresolved", 0) + safe_counts.get("no", 0))
+    if not reconciled_verdicts.empty:
+        st.info(
+            "Meeting default uses reconciled verdicts: final production supplies posterior/efficiency evidence; "
+            "targeted validation supplies multi-initialization and geometry support where documented."
+        )
+        if not standalone_final_verdicts.empty:
+            with st.expander("Standalone final-production verdicts", expanded=False):
+                st.dataframe(standalone_final_verdicts, use_container_width=True)
     st.dataframe(final_verdicts, use_container_width=True)
+    laplace_rattle = final_verdicts[
+        final_verdicts["model"].astype(str).eq("laplace")
+        & final_verdicts["method"].astype(str).eq("rattle")
+    ]
+    if not laplace_rattle.empty:
+        st.info("Laplace RATTLE is not_applicable and is not a meeting-default comparison.")
+    student_k1_n10 = final_verdicts[
+        final_verdicts["model"].astype(str).eq("student_t")
+        & final_verdicts["k"].astype(float).eq(1.0)
+        & final_verdicts["n"].astype(int).eq(10)
+    ]
+    if not student_k1_n10.empty:
+        st.warning("Student k=1,n=10 is unresolved; present it only as a caveat.")
 
 st.subheader("Diagnostic Coverage")
 st.dataframe(coverage, use_container_width=True)
