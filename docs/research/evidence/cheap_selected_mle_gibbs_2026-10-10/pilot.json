@@ -1,0 +1,154 @@
+[
+  {
+    "case": "centered_n3",
+    "counts": {
+      "blocks": 400,
+      "accepted": 336,
+      "mu_accepts": 312,
+      "score_pairs": 1600,
+      "score_accepts": 1036,
+      "proposal_sampling_attempts": 2344,
+      "branch_changes_proposed": 1002,
+      "branch_changes_accepted": 845,
+      "selector_calls": 338,
+      "selector_fallbacks": 0,
+      "nonpositive_curvature": 5,
+      "cheap_metropolis": 58,
+      "global_selection": 1
+    },
+    "seconds": 0.04829644272103906,
+    "times": {
+      "proposal": 0.010650049895048141,
+      "selector": 0.020286969374865294
+    },
+    "seed": 2026103103,
+    "score_seed": 2436327388,
+    "target": "selected_global_student_location_mle",
+    "proposal": "random_scan_regular_score_pair_power",
+    "block_length": 4,
+    "max_score_residual": 1.6653345369377348e-15,
+    "max_selected_mle_residual": 4.6629367034256575e-15,
+    "max_inverse_score_error": 5.551115123125783e-17,
+    "proposal_records": [
+      {
+        "iteration": 1,
+        "accepted": true,
+        "rejection": null,
+        "selector_called": true,
+        "proposed_x": [
+          -3.934552278428732e-07,
+          -1.362472483176237,
+          1.362492850870922
+        ]
+      }
+    ],
+    "known_scale": 1.0,
+    "numerical_policy": "no artificial score/Jacobian/proposal cutoffs; unresolved computation raises; inherited parameter uniform guard retained"
+  },
+  {
+    "case": "centered_n10",
+    "counts": {
+      "blocks": 400,
+      "accepted": 363,
+      "mu_accepts": 262,
+      "score_pairs": 1600,
+      "score_accepts": 996,
+      "proposal_sampling_attempts": 2487,
+      "branch_changes_proposed": 1095,
+      "branch_changes_accepted": 973,
+      "selector_calls": 364,
+      "selector_fallbacks": 0,
+      "nonpositive_curvature": 0,
+      "cheap_metropolis": 37,
+      "global_selection": 0
+    },
+    "seconds": 0.043936333153396845,
+    "times": {
+      "proposal": 0.0038454714231193066,
+      "selector": 0.02727240649983287
+    },
+    "seed": 2026103110,
+    "score_seed": 3709454113,
+    "target": "selected_global_student_location_mle",
+    "proposal": "random_scan_regular_score_pair_power",
+    "block_length": 4,
+    "max_score_residual": 2.55351295663786e-15,
+    "max_selected_mle_residual": 2.3314683517128287e-15,
+    "max_inverse_score_error": 5.551115123125783e-17,
+    "proposal_records": [
+      {
+        "iteration": 1,
+        "accepted": false,
+        "rejection": "cheap_metropolis",
+        "selector_called": false,
+        "proposed_x": [
+          -0.1098696269321725,
+          -5.217282359123811,
+          3.6003948205010463,
+          1.2355596994037972,
+          -1.6379523528894706,
+          0.9533280496686907,
+          -2.4970003549463433,
+          -1.9397461007834607,
+          2.6173519202706057,
+          0.016637138666120696
+        ]
+      }
+    ],
+    "known_scale": 1.0,
+    "numerical_policy": "no artificial score/Jacobian/proposal cutoffs; unresolved computation raises; inherited parameter uniform guard retained"
+  },
+  {
+    "case": "shifted_n10",
+    "counts": {
+      "blocks": 400,
+      "accepted": 354,
+      "mu_accepts": 265,
+      "score_pairs": 1600,
+      "score_accepts": 804,
+      "proposal_sampling_attempts": 2588,
+      "branch_changes_proposed": 1307,
+      "branch_changes_accepted": 1148,
+      "selector_calls": 355,
+      "selector_fallbacks": 0,
+      "nonpositive_curvature": 1,
+      "cheap_metropolis": 45,
+      "global_selection": 0
+    },
+    "seconds": 0.04325420502573252,
+    "times": {
+      "proposal": 0.0036395052447915077,
+      "selector": 0.02746056905016303
+    },
+    "seed": 2026103110,
+    "score_seed": 3709454113,
+    "target": "selected_global_student_location_mle",
+    "proposal": "random_scan_regular_score_pair_power",
+    "block_length": 4,
+    "max_score_residual": 4.218847493575595e-15,
+    "max_selected_mle_residual": 8.43769498715119e-15,
+    "max_inverse_score_error": 1.1102230246251565e-16,
+    "proposal_records": [
+      {
+        "iteration": 1,
+        "accepted": false,
+        "rejection": "cheap_metropolis",
+        "selector_called": false,
+        "proposed_x": [
+          3.884911231504633,
+          -0.3435602278403722,
+          2.4574405768045526,
+          5.204124923656204,
+          0.14018665282479692,
+          1.4908701184814472,
+          -3.132130909317513,
+          1.8769149280234947,
+          -0.11613503870892272,
+          1.2648455415019426
+        ]
+      }
+    ],
+    "known_scale": 1.0,
+    "numerical_policy": "no artificial score/Jacobian/proposal cutoffs; unresolved computation raises; inherited parameter uniform guard retained"
+  }
+]

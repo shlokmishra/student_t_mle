@@ -1,0 +1,5 @@
+{
+  "error": "Student location MLE [output_precision]: a float cannot represent this root within absolute location_tol=1e-30",
+  "reason": "output_precision",
+  "expected": "output_precision"
+}

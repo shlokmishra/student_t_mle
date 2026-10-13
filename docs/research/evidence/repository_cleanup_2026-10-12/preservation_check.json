@@ -1,0 +1,16 @@
+{
+  "current_study_files_byte_identical": 153,
+  "results_raw_and_figure_files_byte_identical": 348,
+  "intentional_index_changes": [
+    {
+      "path": "results/README.md",
+      "reason": "Directory index intentionally updated; no raw data change"
+    }
+  ],
+  "numerical_modules_exact_current_migration_hashes": 20,
+  "seeded_comparison": "11 implementations: all arrays and acceptance decisions identical to saved before-migration fixtures",
+  "head_unchanged": true,
+  "staged_patch_unchanged": true,
+  "pytest": "358 passed; no collection failure or timeout",
+  "smoke_checks": "score and selected examples; reference/Gibbs/component --help all passed"
+}

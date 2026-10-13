@@ -1,0 +1,113 @@
+{
+  "counts": {
+    "blocks": 6000,
+    "accepted": 4713,
+    "mu_accepts": 4743,
+    "score_pairs": 24000,
+    "score_accepts": 14875,
+    "proposal_sampling_attempts": 34861,
+    "branch_changes_proposed": 16672,
+    "branch_changes_accepted": 12781,
+    "selector_calls": 4729,
+    "selector_fallbacks": 0,
+    "nonpositive_curvature": 176,
+    "cheap_metropolis": 1096,
+    "global_selection": 15
+  },
+  "seconds": 0.49535683915019035,
+  "times": {
+    "proposal": 0.05157831031829119,
+    "selector": 0.2716774605214596
+  },
+  "seed": 2026103602,
+  "score_seed": 4093039980,
+  "target": "selected_global_student_location_mle",
+  "proposal": "random_scan_regular_score_pair_power",
+  "block_length": 4,
+  "max_score_residual": 4.003741782554471e-15,
+  "max_selected_mle_residual": 2.4980018054066022e-14,
+  "max_inverse_score_error": 5.551115123125783e-17,
+  "proposal_records": [
+    {
+      "iteration": 1,
+      "accepted": true,
+      "rejection": null,
+      "selector_called": true,
+      "proposed_x": [
+        0.5863193451552463,
+        -1.227526638747607,
+        0.20391074150542518
+      ]
+    },
+    {
+      "iteration": 1001,
+      "accepted": true,
+      "rejection": null,
+      "selector_called": true,
+      "proposed_x": [
+        1.218270244647751,
+        -0.04095955609660932,
+        -0.9648466274062285
+      ]
+    },
+    {
+      "iteration": 2001,
+      "accepted": true,
+      "rejection": null,
+      "selector_called": true,
+      "proposed_x": [
+        -0.29148889293831187,
+        -0.08679984784415695,
+        5.068638789695646
+      ]
+    },
+    {
+      "iteration": 3001,
+      "accepted": false,
+      "rejection": "cheap_metropolis",
+      "selector_called": false,
+      "proposed_x": [
+        0.7063638141387864,
+        0.07133201347400352,
+        -2.255604740930627
+      ]
+    },
+    {
+      "iteration": 4001,
+      "accepted": false,
+      "rejection": "cheap_metropolis",
+      "selector_called": false,
+      "proposed_x": [
+        -1.6836737213378699,
+        0.7534317703532006,
+        0.1102914450592897
+      ]
+    },
+    {
+      "iteration": 5001,
+      "accepted": true,
+      "rejection": null,
+      "selector_called": true,
+      "proposed_x": [
+        -2.0478787316232836,
+        0.3818850840978425,
+        0.3210735122301391
+      ]
+    }
+  ],
+  "known_scale": 1.0,
+  "numerical_policy": "no artificial score/Jacobian/proposal cutoffs; unresolved computation raises; inherited parameter uniform guard retained",
+  "origin": {
+    "reference_index": 3610,
+    "max_quantile": 0.9
+  },
+  "initial_x": [
+    0.3436066706362072,
+    -1.3647660583885386,
+    4.817640894625784
+  ],
+  "initial_mu": -0.3176186030682593,
+  "failures": 0,
+  "raw_path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n3_m4_chain2.npz",
+  "sha256": "73812b7f89ab8b30789c4ca15483c45efea0e126649421c7d248df487387ee34"
+}

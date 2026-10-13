@@ -1,0 +1,10 @@
+{
+  "tests_passed": 4,
+  "test_seconds_including_cold_imports": 132.21,
+  "test_command": "env PYTHONPATH=/tmp/student-mle-oracle-deps-20261003 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 NUMBA_CACHE_DIR=/tmp/student-location-correctness-numba OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 .venv/bin/python -m pytest tests/test_location_chain_diagnostics.py -q",
+  "report_links_checked": 10,
+  "inputs_unchanged": 360,
+  "artifacts_verified": 60,
+  "sampler_tests_rerun": false,
+  "production_changes": false
+}

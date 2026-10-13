@@ -1,0 +1,144 @@
+{
+  "output": "tmp/selected_mle_reference_validation_20261003",
+  "question": "Can independent selected-MLE references validate the existing affine location chain?",
+  "chains": 4,
+  "iterations": 12000,
+  "burn_in": 2000,
+  "batch_length": 500,
+  "bootstrap_repetitions": 200,
+  "latent_oracle_checks": 24,
+  "random_selector_cases": 8,
+  "selector_seed": 2026100301,
+  "reference_bank_ceiling_seconds": 600,
+  "phase_ceiling_seconds": 1200,
+  "criteria": {
+    "comparison": "absolute difference <= 4 combined MCSE (screen, not a simultaneous hypothesis test)",
+    "mu_rhat_max": 1.05,
+    "latent_max_rhat_max": 1.05,
+    "mu_ess_min": 400,
+    "importance_ess_min": 500,
+    "global_objective_gap_max": 1e-09,
+    "location_error_max": 1e-08,
+    "policy": "Preserve every failure; no tuning or rerun to rescue failed criteria."
+  },
+  "banks": [
+    {
+      "id": "gaussian_n10",
+      "model": "normal",
+      "n": 10,
+      "scale": 1.3,
+      "draws": 16384,
+      "seed": 2026100310
+    },
+    {
+      "id": "student_k2_n3",
+      "model": "student",
+      "k": 2.0,
+      "n": 3,
+      "draws": 4096,
+      "seed": 2026100320
+    },
+    {
+      "id": "student_k2_n10",
+      "model": "student",
+      "k": 2.0,
+      "n": 10,
+      "draws": 4096,
+      "seed": 2026100330
+    },
+    {
+      "id": "student_k3_n10",
+      "model": "student",
+      "k": 3.0,
+      "n": 10,
+      "draws": 4096,
+      "seed": 2026100340
+    }
+  ],
+  "cases": [
+    {
+      "model": "normal",
+      "n": 10,
+      "scale": 1.3,
+      "id": "gaussian_center",
+      "bank": "gaussian_n10",
+      "release": 0.0,
+      "prior_mean": 0.0,
+      "prior_std": 2.0,
+      "tail_width": 0.75,
+      "tau_q": 0.8,
+      "proposal_std_mu": 0.45,
+      "chain_seed": 2026110000
+    },
+    {
+      "model": "normal",
+      "n": 10,
+      "scale": 1.3,
+      "id": "gaussian_shift_prior",
+      "bank": "gaussian_n10",
+      "release": 1.25,
+      "prior_mean": -0.75,
+      "prior_std": 0.6,
+      "tail_width": 0.75,
+      "tau_q": 0.8,
+      "proposal_std_mu": 0.45,
+      "chain_seed": 2026110100
+    },
+    {
+      "model": "student",
+      "k": 2.0,
+      "n": 3,
+      "id": "student_k2_n3",
+      "bank": "student_k2_n3",
+      "release": 0.0,
+      "prior_mean": 0.0,
+      "prior_std": 2.0,
+      "tail_width": 0.75,
+      "tau_q": 1.2,
+      "proposal_std_mu": 0.7,
+      "chain_seed": 2026110200
+    },
+    {
+      "model": "student",
+      "k": 2.0,
+      "n": 10,
+      "id": "student_k2_n10",
+      "bank": "student_k2_n10",
+      "release": 0.0,
+      "prior_mean": 0.0,
+      "prior_std": 2.0,
+      "tail_width": 0.75,
+      "tau_q": 0.8,
+      "proposal_std_mu": 0.45,
+      "chain_seed": 2026110300
+    },
+    {
+      "model": "student",
+      "k": 3.0,
+      "n": 10,
+      "id": "student_k3_n10",
+      "bank": "student_k3_n10",
+      "release": 0.0,
+      "prior_mean": 0.0,
+      "prior_std": 2.0,
+      "tail_width": 0.75,
+      "tau_q": 0.8,
+      "proposal_std_mu": 0.45,
+      "chain_seed": 2026110400
+    },
+    {
+      "model": "student",
+      "k": 2.0,
+      "n": 10,
+      "id": "student_shift_prior",
+      "bank": "student_k2_n10",
+      "release": 1.25,
+      "prior_mean": -0.75,
+      "prior_std": 0.6,
+      "tail_width": 0.75,
+      "tau_q": 0.8,
+      "proposal_std_mu": 0.45,
+      "chain_seed": 2026110500
+    }
+  ]
+}

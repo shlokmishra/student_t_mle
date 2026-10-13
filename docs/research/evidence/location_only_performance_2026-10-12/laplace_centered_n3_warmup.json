@@ -1,0 +1,10 @@
+[
+  {
+    "method": "gibbs",
+    "seconds": 0.054605414159595966
+  },
+  {
+    "method": "facet_hmc",
+    "seconds": 0.01656357804313302
+  }
+]

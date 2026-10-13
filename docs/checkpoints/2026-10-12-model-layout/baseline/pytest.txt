@@ -1,0 +1,22 @@
+........................................................................ [ 21%]
+........................................................................ [ 43%]
+........................................................................ [ 65%]
+........................................................................ [ 87%]
+.........................................                                [100%]
+============================= slowest 15 durations =============================
+16.42s call     tests/test_kde_reference_moments.py::test_raw_weighted_posterior_moments_manual
+10.21s call     tests/test_laplace_facet_rattle.py::test_laplace_facet_rattle_even_n_raises
+3.39s call     tests/test_laplace_facet_rattle.py::test_laplace_facet_rattle_preserves_fixed_median_facet
+2.63s call     tests/test_student_higher_n_geometry.py::test_fold_adjacency_by_independent_strict_linear_program[5]
+2.20s call     tests/test_student_global_mle_audit.py::test_global_selector_rejects_a_non_global_wide_brent_root
+2.19s call     tests/test_laplace_reference_targets.py::test_laplace_odd_n_reference_uses_scalar_median_kde_target
+1.23s call     tests/test_student_higher_n_geometry.py::test_fold_adjacency_by_independent_strict_linear_program[4]
+1.13s call     tests/test_student_mle_transitions.py::test_endpoint_global_mle_diagnostic_does_not_shadow_score_function
+0.61s call     tests/test_laplace_facet_rattle.py::test_laplace_facet_rattle_smoke_matches_gibbs_roughly
+0.58s call     tests/test_student_selected_mle_gibbs.py::test_chain_constraint_selected_mle_and_reproducibility[10-1.25-1.0]
+0.57s call     tests/test_student_selected_mle_gibbs.py::test_chain_constraint_selected_mle_and_reproducibility[10-0.0-1.0]
+0.47s call     tests/test_logistic_rattle_diagnostics.py::test_logistic_run_rattle_defaults_and_cost_ledger_metadata
+0.41s call     tests/test_student_higher_n_geometry.py::test_even_singular_points_and_odd_regularity_algebra
+0.41s call     tests/test_loc_affine.py::test_student_selected_mle_matches_dense_global_search_for_each_requested_df
+0.40s call     tests/test_student_n5_boundary.py::test_exact_boundary_certificate_and_all_real_root_counts
+329 passed in 159.66s (0:02:39)

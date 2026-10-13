@@ -1,0 +1,250 @@
+{
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/analysis_config.json": {
+    "bytes": 694,
+    "sha256": "f2ca10c82556c143024c21b0bab83fa2b036900a98f5f52e2f674e764673a12c"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/chain_inventory.csv": {
+    "bytes": 30762,
+    "sha256": "66d048a837e6b756413110f27a11358e5a8a0b3782c870842a9fcf72dd167bd9"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/completion.json": {
+    "bytes": 328,
+    "sha256": "5dd97de6ee0a18ea619d344e9642b5bc26b744d76a44ca311631297d51a3cd1c"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/diagnostics.json": {
+    "bytes": 2842107,
+    "sha256": "ec3f184ad408cc5abd216b656c33d15de136eeb126ed7b7aa1cb84e8669a125b"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/index.html": {
+    "bytes": 6429,
+    "sha256": "087fcc48f61dcf530c7712dd6f1856cee2a9858e83bc690b27859f08bd61641e"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/input_hashes.json": {
+    "bytes": 52407,
+    "sha256": "010c497ffc1442ae8f8d5d9527904c332317be674b0acb207e0ea09e5965e6de"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/laplace_centered_n3_facet_hmc_coordinates.png": {
+    "bytes": 381045,
+    "sha256": "424c8652116d7821be822d36b8e444562f299caefdd6b56ac2693068df00e9aa"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/laplace_centered_n3_gibbs_coordinates.png": {
+    "bytes": 331998,
+    "sha256": "4c1902218647fccaa8784e22e07ab904e666396539734056213bb6e06e748ff5"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/laplace_centered_n3_reference_quantiles.json": {
+    "bytes": 3669,
+    "sha256": "3ff29ae42599d7eecb45d52f159a4f5787cb11981941a4571cdd90adeb8c8ad4"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/laplace_centered_n3_stability.png": {
+    "bytes": 236829,
+    "sha256": "d296e168698a15f4a55e46494c5d2ad13746c1d3f1e2aa29531cd46e3d376a87"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/laplace_centered_n3_traces.png": {
+    "bytes": 820666,
+    "sha256": "50c067810638e50f85f11e58e419fd87ec9b25dccc11b9c91b49a2d1f0397652"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/laplace_centered_n4_facet_hmc_coordinates.png": {
+    "bytes": 561457,
+    "sha256": "8966b7ee34f91ed46c2da4008374908925aecc6a7a3d3cda1796d30790208cad"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/laplace_centered_n4_gibbs_coordinates.png": {
+    "bytes": 519203,
+    "sha256": "fcca27e5bd158db80a8a8ee6430548538bb053d06e12d4b03897aacab760a659"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/laplace_centered_n4_reference_quantiles.json": {
+    "bytes": 4485,
+    "sha256": "829da55ad792559610d0729f4fa9151e6caccf9424b50e8c63637ee02aa1228a"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/laplace_centered_n4_stability.png": {
+    "bytes": 246475,
+    "sha256": "7b987a278fb007706b55d95fd0409f2ce2d8a2469e029566cafddfc710f8ad4e"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/laplace_centered_n4_traces.png": {
+    "bytes": 944847,
+    "sha256": "b4630f8763c531c78e8557299796ff1c6c775def4fccbaced5427b0c08e3aded"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/laplace_shifted_n3_facet_hmc_coordinates.png": {
+    "bytes": 396865,
+    "sha256": "0f76767ec7e47f8b0e02f864f547055be48bff487d5f56d0d7c1f96df36807ce"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/laplace_shifted_n3_gibbs_coordinates.png": {
+    "bytes": 350692,
+    "sha256": "57489e48c5291b275e92c0c74473c05184a35543a2253f0bddb01ee9434497e5"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/laplace_shifted_n3_reference_quantiles.json": {
+    "bytes": 3845,
+    "sha256": "0a9f9bea09a5f4fde60dfbd86f2a906fd961b4e0dcdfe8020b8c0b998cee05d7"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/laplace_shifted_n3_stability.png": {
+    "bytes": 243672,
+    "sha256": "775bf2a0ef389488fd4ce785531ec1b44cfa62a8f539a936b5f63f46d48b9ede"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/laplace_shifted_n3_traces.png": {
+    "bytes": 883345,
+    "sha256": "1d54b917a99fdf4cc108155a524cef5996d13c2123a9180e8d7c93b68b12147d"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/laplace_shifted_n4_facet_hmc_coordinates.png": {
+    "bytes": 582241,
+    "sha256": "79cdd7792463c661ae989ed766c30a6241e66807eadc55b121e2ce827b8509f7"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/laplace_shifted_n4_gibbs_coordinates.png": {
+    "bytes": 545443,
+    "sha256": "c231f340c36d35a7a9663bb066002aef2e924d295278e6f89c1bdd1dc35556b7"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/laplace_shifted_n4_reference_quantiles.json": {
+    "bytes": 4455,
+    "sha256": "3359951795126c13cede933e6eee81905ec21b0abbd7eaa63b81f1ded5225a48"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/laplace_shifted_n4_stability.png": {
+    "bytes": 233915,
+    "sha256": "a7f2393452f9a6fb2df1f4e38b02689cf5c6f86f4b70c0bc18b140142e3b24ff"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/laplace_shifted_n4_traces.png": {
+    "bytes": 1016729,
+    "sha256": "fa1a8668b2e5910d32390bf276fc03f2874765a731aab9e55d7993b71bfdd453"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/logistic_centered_n10_block_coordinates.png": {
+    "bytes": 1634875,
+    "sha256": "b5fa86ed09a6d11b2701443575681c96c72102050bebe8cca8a86d03654d022b"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/logistic_centered_n10_rattle_coordinates.png": {
+    "bytes": 1662612,
+    "sha256": "177fc9c86a0b73a65be554be990ecda6200033bf697fc4555ce4c5b9c4d7033a"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/logistic_centered_n10_reference_quantiles.json": {
+    "bytes": 7717,
+    "sha256": "ca18c2f5afe8fe598a345f248971f6f5b404a3cd70aa4836cb7802c3bd66fb02"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/logistic_centered_n10_stability.png": {
+    "bytes": 247991,
+    "sha256": "39758466c50dc65d0bb0d547adc7068e0bc1c1de8ee1b2d30ecc18ed8598b11a"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/logistic_centered_n10_traces.png": {
+    "bytes": 1098069,
+    "sha256": "3ef2e73b2f7b44b6965265d5aa3ec581e587386c8c1bd2002bc33c07544f13f5"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/logistic_centered_n3_block_coordinates.png": {
+    "bytes": 515680,
+    "sha256": "9b8b0e61dbbbf89bb6095d8186b1f819241c3cc5c630d9201dfaa1e34023efeb"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/logistic_centered_n3_rattle_coordinates.png": {
+    "bytes": 527838,
+    "sha256": "40ed370c24e860a95feb4276b61dc1e0bbf588972334c6261c5d57a822e081a1"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/logistic_centered_n3_reference_quantiles.json": {
+    "bytes": 3967,
+    "sha256": "e3705d54ead526407d42a604b56583d6a86a366c448abf1e3acb400e6e2d8d3b"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/logistic_centered_n3_stability.png": {
+    "bytes": 259940,
+    "sha256": "217ec0e5f74205bc51ad79ff4b55e280abab9a58c2b7deec8b5b4774213483bd"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/logistic_centered_n3_traces.png": {
+    "bytes": 1136420,
+    "sha256": "82a55c2b0bc871d6d1a22a3930f46eb5e166ce478f02eb5936aa0fdee9a47d0c"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/logistic_shifted_n10_block_coordinates.png": {
+    "bytes": 1617568,
+    "sha256": "13c3065484bd16c84e85f7f41c4ffca988112c7c3ebcfbdcc408530318b3c5d8"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/logistic_shifted_n10_rattle_coordinates.png": {
+    "bytes": 1725176,
+    "sha256": "2353ddc8c608d5a0ee22f040f05602c6b59f077b9a395073d345973f6d9749f5"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/logistic_shifted_n10_reference_quantiles.json": {
+    "bytes": 7713,
+    "sha256": "6c3ae3ca125c806e860dc030508c438d61cf2c10fb25d2bbf638e4dacf15b892"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/logistic_shifted_n10_stability.png": {
+    "bytes": 248597,
+    "sha256": "aa56acbe6c65c364b0850a8f38e327e86f5e4af87e142d74f0e376bf86413b65"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/logistic_shifted_n10_traces.png": {
+    "bytes": 1117359,
+    "sha256": "09d208804c6e95e1abe3db43a2807a178ffbfa8a28cdccbccacf3b3059f27e97"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/scalar_diagnostics.csv": {
+    "bytes": 203648,
+    "sha256": "26f3e1fe49b2198a0583515a28f2b440fdab525bbabd6d7d6b7d84d4d7ccea33"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/student_centered_n10_block_coordinates.png": {
+    "bytes": 1634858,
+    "sha256": "43ea2f72dc2cef10349b9f4de1ef947f3f54689857284babd6feba6358571c84"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/student_centered_n10_independence_coordinates.png": {
+    "bytes": 1373836,
+    "sha256": "f7b677ef53d0171440ca495f09df0d473fca5e7797a16e9fb40d70cf05cbcce2"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/student_centered_n10_rattle_coordinates.png": {
+    "bytes": 1782366,
+    "sha256": "1d56b340aee8f54af47acb41159fbfb1faa2ec0c89e07cd717609b11221aaf51"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/student_centered_n10_reference_quantiles.json": {
+    "bytes": 7753,
+    "sha256": "1db546386a4f0acf99478ca57e221b08dc7f927496ade3d0472027825f6ce44e"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/student_centered_n10_stability.png": {
+    "bytes": 343116,
+    "sha256": "2bcce0bab6b841c999bac37ff448e86c8988ffc13f414c3cbf0dc39771ca282b"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/student_centered_n10_traces.png": {
+    "bytes": 1298381,
+    "sha256": "6a2367195bb4f9a9468e6f73c2d6ac05a377a45adf0746f70d3ca715807c7a8a"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/student_centered_n3_block_coordinates.png": {
+    "bytes": 480984,
+    "sha256": "e2987e9d6e2d37a62b8dbf46018f8e58ca1880c1115211703ddfc8be110fb44f"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/student_centered_n3_independence_coordinates.png": {
+    "bytes": 401050,
+    "sha256": "694e813e310d8258a0d8892b735b89edb3402c95f3effd57137da5f24f316e36"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/student_centered_n3_rattle_coordinates.png": {
+    "bytes": 531805,
+    "sha256": "9af04bb6123f558c6764cea2beddc72040e85dc7b99a43d805f467525b804de3"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/student_centered_n3_reference_quantiles.json": {
+    "bytes": 3988,
+    "sha256": "9d3f538ba45f0cc2d6c0e60f6c1811a4a13d760acb6842fb018a56d9b9f19f8a"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/student_centered_n3_stability.png": {
+    "bytes": 353764,
+    "sha256": "1bed52043df8347abfa21e0e1eb81ee47b8503b86ebeac38711b7fc60b9d427f"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/student_centered_n3_traces.png": {
+    "bytes": 1244931,
+    "sha256": "fba94fce1ca6a4b090564a756a28767ac8ee318e6b04fa45187f9b5e049091ea"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/student_shifted_n10_block_coordinates.png": {
+    "bytes": 1635237,
+    "sha256": "0049a16089492c83657e51cfbee64b824183da23c06ed69dc7bf84003344a175"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/student_shifted_n10_independence_coordinates.png": {
+    "bytes": 1612049,
+    "sha256": "39f156635937517b7c06fc711a7b7da82303bece0a0535dcf716ab81ac464647"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/student_shifted_n10_rattle_coordinates.png": {
+    "bytes": 1852318,
+    "sha256": "6d36766c82d9a58b8feab683977581aa7fd22c6369a7d7757d54f2cbbd2c79d9"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/student_shifted_n10_reference_quantiles.json": {
+    "bytes": 7713,
+    "sha256": "316cddf55b709b020fb3ee94c0586213978edc45bce500452a02b611b036e703"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/student_shifted_n10_stability.png": {
+    "bytes": 372310,
+    "sha256": "687a07629fc76daa25d30a690617ef24dd849e988c9710616e4e129a73026c67"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/student_shifted_n10_traces.png": {
+    "bytes": 1384308,
+    "sha256": "6597a767b3b75963ba3a1b17148d89cf9b2eab66e9338ad8df8c7f3db5b95f53"
+  },
+  "docs/research/location_chain_convergence.md": {
+    "bytes": 11928,
+    "sha256": "4b58678d92bfcfee3c885ea7956a8e76b461be2e45564c52f710cdf5c184cb57"
+  },
+  "docs/research/evidence/location_chain_diagnostics_2026-10-12/verification.json": {
+    "bytes": 522,
+    "sha256": "368adcc25a475834ee104349a9b76c0ee2f0974e62e332798a9a5791b2fb8425"
+  }
+}

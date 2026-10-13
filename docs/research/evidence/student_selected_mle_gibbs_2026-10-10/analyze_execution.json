@@ -1,0 +1,17 @@
+{
+  "config_sha256": "4b2e421c46e0f660db1c57344003be9d2eff4c37bf321875146fd9c99f555506",
+  "python": "3.13.5 (main, Apr  2 2026, 12:03:47) [GCC 14.3.0]",
+  "source_sha256": {
+    "models/loc_student_selected_mle.py": "98633354cfffe445888223253baf1bdb7c7c9416619761dd12424c8a49446c6b",
+    "models/loc_student.py": "1e0028f746669885186eadfe0de5d29763d9794f1e975f4a91eb0784063e1346",
+    "models/student_location_mle.py": "096abb4d3ad2a91b1946186af56b55f1b54e6482d367f5483bb6c72987e6550f",
+    "models/student_mu_mh.py": "0adcec47bd1188ebba8d94f00600c38acd1a56fed75d545347e19afc390b9cdb",
+    "models/loc_affine.py": "7fc25c320be528adae27d20e9c59cf15f094312b19b4bead2303426d925234c8",
+    "scripts/followup_shifted_student_reference.py": "85b227d418908fc3e12c2e997ae423fecb20cc99a962b27ec2a574cc3e25a140",
+    "scripts/validate_student_selected_mle_gibbs.py": "3ab2e4cf739ee970b5d7153803b1f7ef3b58ada4e6c3391f47a88ca9bdf41c7d"
+  },
+  "start_utc": "2026-10-10T21:34:55Z",
+  "cpu_affinity": [
+    0
+  ]
+}

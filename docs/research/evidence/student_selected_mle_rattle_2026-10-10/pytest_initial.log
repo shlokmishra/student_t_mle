@@ -1,0 +1,15 @@
+.............F............                                               [100%]
+=================================== FAILURES ===================================
+______________ test_degenerate_curvature_and_bad_inputs_explicit _______________
+
+    def test_degenerate_curvature_and_bad_inputs_explicit():
+>       with pytest.raises(selected.SelectedRATTLENumericalError,match='curvature_unresolved'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'curvature_unresolved'
+E         Actual message: 'gram_degenerate: no regular tangent fiber; Gram floor is not a target'
+
+tests/test_student_selected_mle_rattle.py:149: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_student_selected_mle_rattle.py::test_degenerate_curvature_and_bad_inputs_explicit
+1 failed, 25 passed in 143.54s (0:02:23)

@@ -1,0 +1,88 @@
+{
+  "question": "Does endpoint-corrected RATTLE preserve the selected-MLE target and explore its latent posterior in a frozen small run?",
+  "raw_directory": "tmp/student_selected_mle_rattle_20261010",
+  "evidence_directory": "docs/research/evidence/student_selected_mle_rattle_2026-10-10",
+  "validated_shifted_evidence": "docs/research/evidence/shifted_student_followup_2026-10-10",
+  "cases": [
+    {
+      "id": "centered_n3",
+      "model": "student",
+      "k": 2.0,
+      "n": 3,
+      "release": 0.0,
+      "prior_mean": 0.0,
+      "prior_std": 2.0,
+      "tail_width": 0.75,
+      "proposal_std_mu": 0.45,
+      "proposal_std_z": 0.1,
+      "tau_q": 0.8,
+      "chain_seed": 2026102200
+    },
+    {
+      "id": "centered_n10",
+      "model": "student",
+      "k": 2.0,
+      "n": 10,
+      "release": 0.0,
+      "prior_mean": 0.0,
+      "prior_std": 2.0,
+      "tail_width": 0.75,
+      "proposal_std_mu": 0.45,
+      "proposal_std_z": 0.1,
+      "tau_q": 0.8,
+      "chain_seed": 2026102300
+    },
+    {
+      "id": "shifted_n10",
+      "model": "student",
+      "k": 2.0,
+      "n": 10,
+      "release": 1.25,
+      "prior_mean": -0.75,
+      "prior_std": 0.6,
+      "tail_width": 0.75,
+      "proposal_std_mu": 0.45,
+      "proposal_std_z": 0.1,
+      "tau_q": 0.8,
+      "chain_seed": 2026102400
+    }
+  ],
+  "fresh_n3_bank": {
+    "id": "fresh_n3",
+    "seed": 2026101500,
+    "draws": 32768
+  },
+  "initial_max_quantiles": [
+    0.1,
+    0.5,
+    0.9
+  ],
+  "bootstrap_seed": 2026101600,
+  "bootstrap_repetitions": 200,
+  "reference_oracle_checks": 16,
+  "retained_oracle_checks": 8,
+  "iterations": 12000,
+  "burn_in": 2000,
+  "batch_length": 500,
+  "chain_ceiling_seconds": 180.0,
+  "score_tolerance": 1e-10,
+  "mle_tolerance": 1e-10,
+  "rhat_max": 1.01,
+  "ess_min": 400,
+  "difference_mcse_max": 4.0,
+  "benchmark_sweeps": 1000,
+  "stopping_rule": "Four fixed 12000-step chains per case, burn 2000; no tuning, run extension or changed thresholds after results. Abort and record numerical failure. Shifted mu>2 excluded from normal-uncertainty screens. Constant rare events do not imply zero uncertainty. Statistical screens are diagnostic, not proof of convergence.",
+  "gibbs_evidence": "docs/research/evidence/student_selected_mle_gibbs_2026-10-10",
+  "chains": 4,
+  "benchmark_iterations": 1000,
+  "rattle": {
+    "rattle_step_size": 0.1,
+    "rattle_num_steps": 10,
+    "rattle_proj_tol": 1e-12,
+    "rattle_proj_max_iters": 50,
+    "rattle_grad_tol": 1e-12,
+    "rattle_tangent_tol": 1e-10,
+    "rattle_reverse_position_tol": 1e-08,
+    "rattle_reverse_momentum_tol": 1e-08
+  }
+}

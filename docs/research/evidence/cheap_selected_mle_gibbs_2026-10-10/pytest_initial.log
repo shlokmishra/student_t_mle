@@ -1,0 +1,22 @@
+..F..................................................................... [ 70%]
+..............................                                           [100%]
+=================================== FAILURES ===================================
+_____ test_compiled_branch_law_matches_floor_free_machinery[3.0-0.31--0.4] _____
+
+k = 3.0, z = 0.31, loc = -0.4
+
+    @pytest.mark.parametrize('k,z,loc',[(1.,.01,0.),(2.,-.2,.7),(3.,.31,-.4),(2.,0.,0.),(2.,1e-150,.3)])
+    def test_compiled_branch_law_matches_floor_free_machinery(k,z,loc):
+>       a,b,p,q=block.branch_law(z,loc,k);ys,ps,eq=exact.branch_distribution(z,loc,0.,k)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_student_selected_mle_block.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   raise FloatingPointError('score chart boundary unresolved')
+E   FloatingPointError: score chart boundary unresolved
+
+models/loc_student_selected_mle_block.py:32: FloatingPointError
+=========================== short test summary info ============================
+FAILED tests/test_student_selected_mle_block.py::test_compiled_branch_law_matches_floor_free_machinery[3.0-0.31--0.4]
+1 failed, 101 passed in 126.82s (0:02:06)

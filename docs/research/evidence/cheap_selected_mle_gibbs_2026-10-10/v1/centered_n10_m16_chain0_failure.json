@@ -1,0 +1,17 @@
+{
+  "error": "FloatingPointError('truncated-normal sampling budget exhausted')",
+  "traceback": "Traceback (most recent call last):\n  File \"/scratch/user/shlokmishra08/code/student_t_mle/scripts/validate_cheap_selected_mle_gibbs.py\", line 47, in chains\n    try:r=selected.run_gibbs(case['chain_seed']+100*length+i,case['release'],parameters(case,cfg,x,mu,length,cfg['iterations']),True)\n          ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/scratch/user/shlokmishra08/code/student_t_mle/models/loc_student_selected_mle_block.py\", line 166, in run_gibbs\n    x,state,d=block_step(x,mu,mu_star,k,sigma,length,rng,state,mle_tolerance=mt,score_tolerance=st)\n              ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/scratch/user/shlokmishra08/code/student_t_mle/models/loc_student_selected_mle_block.py\", line 113, in block_step\n    proposed,a,d,b,e = score_block_kernel(x,mu,t,k,sigma,length)\n                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/scratch/user/shlokmishra08/code/student_t_mle/models/loc_student_selected_mle_block.py\", line 78, in score_pair_kernel\n    if not found: raise FloatingPointError('truncated-normal sampling budget exhausted')\nFloatingPointError: truncated-normal sampling budget exhausted\n",
+  "initial_x": [
+    1.3434928931218593,
+    -1.5465938958043912,
+    -1.7632135556957769,
+    0.6724862066760124,
+    -0.4293507555983691,
+    0.7136040837268449,
+    0.9980639272450891,
+    -0.9186412314363984,
+    0.9050680421377657,
+    -1.2040717539978247
+  ],
+  "initial_mu": -0.597178226511462
+}

@@ -1,0 +1,62 @@
+.........F..F.............                                               [100%]
+=================================== FAILURES ===================================
+______ test_joint_ratio_equals_full_target_and_proposal_flux_all_branches ______
+
+    def test_joint_ratio_equals_full_target_and_proposal_flux_all_branches():
+        x = inner_data([.12, -.02, -.1])
+        info = selected.target_info(x, 0., 2.)
+        zi, delta, znew, sigma, mu = .12, .1, .23, .11, .35
+        low, high = selected.feasible_interval(delta, 2.)
+        def scalar_h(a, b):
+            return stats.truncnorm.logpdf(b, (low-a)/sigma, (high-a)/sigma, loc=a, scale=sigma)
+        def branch_log_probability(z, y):
+            ys = selected.inverse_branches(z, 2.)
+            logs = np.array([independent_branch_log(v, mu, 0.) for v in ys])
+            q = np.logaddexp.reduce(logs)
+            return independent_branch_log(y, mu, 0.)-q
+        def chart_target(state, ti):
+            return sum(independent_branch_log(state[j], mu, 0.) for j in [0, 1])+ti.log_r
+        positive = invalid = 0
+        for bi, bj in itertools.product(range(2), repeat=2):
+            proposed = x.copy()
+            proposed[0] = selected.inverse_branches(znew, 2.)[bi]
+            proposed[1] = selected.inverse_branches(delta-znew, 2.)[bj]
+            pi = selected.target_info(proposed, 0., 2.)
+            ratio, parts = selected.pair_log_acceptance(x, proposed, (0, 1), mu, 0., 2., sigma, info, pi)
+            if not pi.selected:
+                assert ratio == -math.inf; invalid += 1; continue
+            positive += 1
+            forward = scalar_h(zi, znew)+branch_log_probability(znew, proposed[0])+branch_log_probability(delta-znew, proposed[1])
+            reverse = scalar_h(znew, zi)+branch_log_probability(zi, x[0])+branch_log_probability(delta-zi, x[1])
+            full_ratio = chart_target(proposed, pi)-chart_target(x, info)+reverse-forward
+            np.testing.assert_allclose(ratio, full_ratio, atol=3e-12)
+            back, _ = selected.pair_log_acceptance(proposed, x, (0, 1), mu, 0., 2., sigma, pi, info)
+            np.testing.assert_allclose(back, -ratio, atol=3e-12)
+            left = chart_target(x, info)+forward+min(0., ratio)
+            right = chart_target(proposed, pi)+reverse+min(0., -ratio)
+            np.testing.assert_allclose(left, right, atol=3e-12)
+>       assert positive and invalid
+               ^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+tests/test_student_selected_mle_gibbs.py:94: AssertionError
+____________ test_rejection_retains_both_branches_and_whole_dataset ____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f01332402b0>
+
+    def test_rejection_retains_both_branches_and_whole_dataset(monkeypatch):
+        x = inner_data([.12, -.02, -.1])
+        monkeypatch.setattr(selected, 'propose_score', lambda z, sigma, low, high, rng: (.23, selected.truncnorm_log_mass(z, sigma, low, high)))
+        class Fixed:
+            def __init__(self): self.values = iter([.999999, 0., .001])
+            def random(self): return next(self.values)
+        new, ti, diag = selected.pair_step(x, (0, 1), 0., 0., 2., .1, Fixed())
+>       assert not diag['selected_proposal'] and not diag['accepted']
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+tests/test_student_selected_mle_gibbs.py:130: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_student_selected_mle_gibbs.py::test_joint_ratio_equals_full_target_and_proposal_flux_all_branches
+FAILED tests/test_student_selected_mle_gibbs.py::test_rejection_retains_both_branches_and_whole_dataset
+2 failed, 24 passed in 134.29s (0:02:14)

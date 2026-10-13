@@ -1,0 +1,54 @@
+{
+  "source_checks": [
+    {
+      "recorded_path": "scripts/validate_student_independence_mh.py",
+      "current_path": "scripts/validate_student_independence_mh.py",
+      "status": "verified_layout_migration",
+      "current_sha256": "f87a886113e1ef3792958fb23a08ab72bd0e700786be8a127b73fb76e8512fc6"
+    },
+    {
+      "recorded_path": "models/loc_student_selected_mle_independence.py",
+      "current_path": "models/loc/student/independence.py",
+      "status": "verified_layout_migration",
+      "current_sha256": "9abefdd400f85ae219cffbb594a349279f01cd4885045a3141a5151d2f277356"
+    },
+    {
+      "recorded_path": "models/loc_student_selected_mle_block.py",
+      "current_path": "models/loc/student/selected_block.py",
+      "status": "verified_layout_migration",
+      "current_sha256": "2c4a508be802dfb3d7cc8051b62df41fd8e62c045792ccdabb34ad7feede2f9d"
+    },
+    {
+      "recorded_path": "models/student_location_mle.py",
+      "current_path": "models/loc/student/mle.py",
+      "status": "verified_layout_migration",
+      "current_sha256": "096abb4d3ad2a91b1946186af56b55f1b54e6482d367f5483bb6c72987e6550f"
+    },
+    {
+      "recorded_path": "scripts/selected_mle_reference_oracle.py",
+      "status": "exact_source_match"
+    },
+    {
+      "recorded_path": "scripts/study_student_higher_n_geometry.py",
+      "current_path": "scripts/study_student_higher_n_geometry.py",
+      "status": "verified_layout_migration",
+      "current_sha256": "6302387ccea755a2c08093d71331a0ebd8bb47be592a0a2058c88bbbc32793ff"
+    },
+    {
+      "recorded_path": "reporting/diagnostics/student_higher_n_geometry.py",
+      "status": "exact_source_match"
+    },
+    {
+      "recorded_path": "models/student_location_mle.py",
+      "current_path": "models/loc/student/mle.py",
+      "status": "verified_layout_migration",
+      "current_sha256": "096abb4d3ad2a91b1946186af56b55f1b54e6482d367f5483bb6c72987e6550f"
+    }
+  ],
+  "bank_sizes": {
+    "centered_n3": 32768,
+    "centered_n10": 131072,
+    "shifted_n10": 131072
+  },
+  "rattle_reference_preflight": "passed; all saved summaries and raw reference/Gibbs chain hashes checked"
+}

@@ -1,0 +1,20 @@
+{
+  "target": "selected_global_logistic_location_mle",
+  "estimator": "unique_logistic_score_root",
+  "kernel": "pure_rattle_score_guide_curvature_endpoint",
+  "counts": {
+    "proposals": 12000,
+    "accepted": 11704,
+    "projection_or_reverse": 0,
+    "mu_accepts": 8156,
+    "root_brackets": 11705
+  },
+  "max_score_residual": 9.947598300641403e-14,
+  "max_tangent_residual": 8.132192875482633e-16,
+  "mle_tolerance": 1e-10,
+  "seed": 2026111780,
+  "seconds": 2.2747248401865363,
+  "loop_seconds": 2.2745200097560883,
+  "raw_path": "tmp/location_only_performance_20261012/logistic_shifted_n10_rattle_chain0.npz",
+  "sha256": "d6ce1dffb669b3d2c64d118751a56c01f9f0d79ac9177a3b35b4c0657009f3d6"
+}

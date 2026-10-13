@@ -1,0 +1,189 @@
+{
+  "cases": [
+    {
+      "id": "centered_n3",
+      "model": "student",
+      "k": 2.0,
+      "n": 3,
+      "release": 0.0,
+      "prior_mean": 0.0,
+      "prior_std": 2.0,
+      "tail_width": 0.75,
+      "proposal_std_mu": 0.45,
+      "proposal_std_z": 0.1,
+      "tau_q": 0.8,
+      "chain_seed": 2026101200,
+      "family": "student"
+    },
+    {
+      "id": "centered_n10",
+      "model": "student",
+      "k": 2.0,
+      "n": 10,
+      "release": 0.0,
+      "prior_mean": 0.0,
+      "prior_std": 2.0,
+      "tail_width": 0.75,
+      "proposal_std_mu": 0.45,
+      "proposal_std_z": 0.1,
+      "tau_q": 0.8,
+      "chain_seed": 2026101300,
+      "family": "student"
+    },
+    {
+      "id": "shifted_n10",
+      "model": "student",
+      "k": 2.0,
+      "n": 10,
+      "release": 1.25,
+      "prior_mean": -0.75,
+      "prior_std": 0.6,
+      "tail_width": 0.75,
+      "proposal_std_mu": 0.45,
+      "proposal_std_z": 0.1,
+      "tau_q": 0.8,
+      "chain_seed": 2026101400,
+      "family": "student"
+    },
+    {
+      "id": "centered_n3",
+      "family": "logistic",
+      "n": 3,
+      "release": 0.0,
+      "prior_mean": 0.0,
+      "prior_std": 2.0,
+      "tail_width": 0.75,
+      "proposal_std_mu": 0.45,
+      "proposal_std_z": 0.1
+    },
+    {
+      "id": "centered_n10",
+      "family": "logistic",
+      "n": 10,
+      "release": 0.0,
+      "prior_mean": 0.0,
+      "prior_std": 2.0,
+      "tail_width": 0.75,
+      "proposal_std_mu": 0.45,
+      "proposal_std_z": 0.1
+    },
+    {
+      "id": "shifted_n10",
+      "family": "logistic",
+      "n": 10,
+      "release": 1.25,
+      "prior_mean": -0.75,
+      "prior_std": 0.6,
+      "tail_width": 0.75,
+      "proposal_std_mu": 0.45,
+      "proposal_std_z": 0.1
+    },
+    {
+      "id": "centered_n3",
+      "family": "laplace",
+      "n": 3,
+      "release": 0.0,
+      "prior_mean": 0.0,
+      "prior_std": 2.0,
+      "tail_width": 0.75,
+      "proposal_std_mu": 0.45,
+      "proposal_std_z": 0.1
+    },
+    {
+      "id": "centered_n4",
+      "family": "laplace",
+      "n": 4,
+      "release": 0.0,
+      "prior_mean": 0.0,
+      "prior_std": 2.0,
+      "tail_width": 0.75,
+      "proposal_std_mu": 0.45,
+      "proposal_std_z": 0.1
+    },
+    {
+      "id": "shifted_n3",
+      "family": "laplace",
+      "n": 3,
+      "release": 1.25,
+      "prior_mean": -0.75,
+      "prior_std": 0.6,
+      "tail_width": 0.75,
+      "proposal_std_mu": 0.45,
+      "proposal_std_z": 0.1
+    },
+    {
+      "id": "shifted_n4",
+      "family": "laplace",
+      "n": 4,
+      "release": 1.25,
+      "prior_mean": -0.75,
+      "prior_std": 0.6,
+      "tail_width": 0.75,
+      "proposal_std_mu": 0.45,
+      "proposal_std_z": 0.1
+    }
+  ],
+  "iterations": 12000,
+  "burn_in": 2000,
+  "chains": 4,
+  "initial_max_quantiles": [
+    0.05,
+    0.35,
+    0.65,
+    0.95
+  ],
+  "reference_draws": 65536,
+  "bootstrap_repetitions": 64,
+  "direct_draws": 16384,
+  "seed": 2026101280,
+  "batch_length": 500,
+  "extreme_threshold": 20,
+  "rhat_max": 1.01,
+  "ess_min": 400,
+  "difference_mcse_max": 4.0,
+  "minimum_tail_events": 20,
+  "required_metrics": [
+    "mean",
+    "sd",
+    "q05",
+    "q50",
+    "q95",
+    "max_q50",
+    "max_q90",
+    "max_q95",
+    "latent_tail6"
+  ],
+  "warmup_iterations": 64,
+  "chain_ceiling_seconds": 120,
+  "reference_ceiling_seconds": 240,
+  "total_ceiling_seconds": 1200,
+  "raw_directory": "tmp/location_only_performance_20261012",
+  "evidence_directory": "docs/research/evidence/location_only_performance_2026-10-12",
+  "settings": {
+    "proposal_std_mu": 0.45,
+    "proposal_std_z": 0.1,
+    "student_logistic_block_n3": 4,
+    "student_logistic_block_other": 16,
+    "student_rattle_step_size": 0.1,
+    "logistic_laplace_step_size": 0.05,
+    "rattle_num_steps": 10
+  },
+  "methods": {
+    "student": [
+      "block",
+      "rattle",
+      "independence"
+    ],
+    "logistic": [
+      "block",
+      "rattle"
+    ],
+    "laplace": [
+      "gibbs",
+      "facet_hmc"
+    ]
+  },
+  "timing": "One pinned CPU; warm each case/method before timing; alternate method order; external wall time includes setup and all burn-in/retained iterations, excludes compilation, I/O, diagnostics and oracle checks. Direct alternatives each charged full fresh-bank generation cost plus own processing, no free cache.",
+  "stopping_rule": "Freeze settings/seeds/budget before execution. Abort each method-case after its first numerical failure, preserve partial chains and continue other methods. No extensions, tuning, replacement seeds or threshold changes. Global wall ceiling 1200 seconds after imports. Rank only settings passing all declared diagnostic/reference screens; unknown event uncertainty never passes.",
+  "scope": "Ten established unit-scale location-only cases, no n20/n50 or hyperparameter grid. Affine and transparent pair Gibbs remain historical comparisons, no cross-environment timing ratios."
+}

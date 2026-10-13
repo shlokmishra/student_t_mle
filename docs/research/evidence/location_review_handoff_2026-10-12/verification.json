@@ -1,0 +1,137 @@
+{
+  "scope": "Collaborator documentation and two figures from existing chains; no new research experiment.",
+  "protected_before_count": 1824,
+  "unchanged_preexisting_count": 1818,
+  "authorized_document_changes": [
+    "README.md",
+    "docs/paper/paper.tex",
+    "docs/research/location_only_meeting_brief.md",
+    "kde_ref/README.md",
+    "models/README.md",
+    "scripts/README.md"
+  ],
+  "unexpected_changes": [],
+  "missing_files": [],
+  "document_snapshot_verified": true,
+  "head_unchanged": true,
+  "index_unchanged": true,
+  "sampler_selector_reference_and_existing_script_bytes_unchanged": true,
+  "previous_reports_except_meeting_brief_and_all_raw_evidence_unchanged": true,
+  "new_script": "scripts/build_location_review_figures.py",
+  "tests": {
+    "tests": 403,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "pytest_reported_seconds": 637.11,
+  "validation_stages": [
+    {
+      "name": "pytest",
+      "command": [
+        "/scratch/user/shlokmishra08/code/student_t_mle/.venv/bin/python",
+        "-m",
+        "pytest",
+        "tests",
+        "-q",
+        "--durations=15",
+        "--junitxml=/scratch/user/shlokmishra08/code/student_t_mle/docs/research/evidence/location_review_handoff_2026-10-12/validation/pytest.xml"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 665.6625657239929,
+      "ceiling_seconds": 900
+    },
+    {
+      "name": "example",
+      "command": [
+        "/scratch/user/shlokmishra08/code/student_t_mle/.venv/bin/python",
+        "examples/score_conditioned_student.py"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 2.06350643793121,
+      "ceiling_seconds": 120
+    },
+    {
+      "name": "selected-example",
+      "command": [
+        "/scratch/user/shlokmishra08/code/student_t_mle/.venv/bin/python",
+        "examples/selected_mle_student.py"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 2.825568932108581,
+      "ceiling_seconds": 120
+    },
+    {
+      "name": "reference-help",
+      "command": [
+        "/scratch/user/shlokmishra08/code/student_t_mle/.venv/bin/python",
+        "scripts/validate_selected_mle_reference.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 10.55402534082532,
+      "ceiling_seconds": 60
+    },
+    {
+      "name": "selected-gibbs-help",
+      "command": [
+        "/scratch/user/shlokmishra08/code/student_t_mle/.venv/bin/python",
+        "scripts/validate_student_selected_mle_gibbs.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 2.83687500981614,
+      "ceiling_seconds": 60
+    },
+    {
+      "name": "components-help",
+      "command": [
+        "/scratch/user/shlokmishra08/code/student_t_mle/.venv/bin/python",
+        "reporting/diagnostics/verify_student_n3_components.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 2.02497402112931,
+      "ceiling_seconds": 60
+    }
+  ],
+  "timeouts": 0,
+  "collection_failures": 0,
+  "figure_inputs_verified": 55,
+  "figure_outputs_verified": 4,
+  "rendered_pngs_visually_reviewed": true,
+  "local_document_links_checked": 52,
+  "broken_local_links": [],
+  "inventory_files": 1843,
+  "inventory_bytes": 363727758,
+  "inventory_git_states": {
+    "tracked": 66,
+    "untracked": 1079,
+    "ignored": 698
+  },
+  "inventory_reading_tiers": {
+    "source_and_setup": 135,
+    "historical_support": 505,
+    "research_support": 863,
+    "primary_review": 340
+  },
+  "excluded_inventory_self_records": [
+    "artifact_manifest.json",
+    "handoff_inventory.csv",
+    "verification.json"
+  ],
+  "environment_notes": {
+    "python": "3.13.5 (main, Apr  2 2026, 12:03:47) [GCC 14.3.0]",
+    "platform": "Linux-4.18.0-553.162.1.el8_10.x86_64-x86_64-with-glibc2.28",
+    "PYTHONPATH": "/tmp/student-mle-oracle-deps-20261003",
+    "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "NUMBA_CACHE_DIR": "/tmp/student-location-correctness-numba"
+  },
+  "limitations": [
+    "Tests/examples are bounded smoke/correctness checks, not rerun research campaigns.",
+    "No fresh environment installation or manuscript PDF build was attempted.",
+    "Sampler invariance and finite-run diagnostics are separate claims.",
+    "Historical manifests retain their original document hashes; six edited documents have verified pre-edit snapshots."
+  ]
+}

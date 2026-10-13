@@ -1,0 +1,112 @@
+ M README.md
+ M configs/numba_speedup_validation_cases.yaml
+ M docs/rattle.md
+ M hpc/grace/numba_speedup_validation_cases.tsv
+ M hpc/grace/numba_speedup_validation_smoke_cases.tsv
+ M kde_ref/moments.py
+ M kde_ref/posterior.py
+ M kde_ref/reference_adapter.py
+ M models/__init__.py
+ M models/loc_laplace.py
+ M models/loc_logistic.py
+ M models/loc_student.py
+ M models/loc_student_rattle.py
+ M models/model_registry.py
+ M reporting/diagnostics/audit_kde_reference.py
+ M reporting/diagnostics/audit_rattle_target.py
+ M reporting/diagnostics/audit_reference_all_models.py
+ M reporting/diagnostics/audit_student_rattle_algorithm.py
+ M reporting/diagnostics/diagnose_student_score_vs_mle.py
+ M reporting/diagnostics/run_release_information_full_data.py
+ M requirements.txt
+ M scripts/benchmark_student_gibbs_backends.py
+ M scripts/check_numba_speedup_outputs.py
+ M scripts/profile_rattle_cost_breakup.py
+ M scripts/profile_student_sampler_comparison.py
+ M scripts/run_cost_audit.py
+ M scripts/run_final_production_case.py
+ M scripts/run_targeted_validation.py
+ M scripts/run_timing_fairness_audit.py
+ M tests/test_kde_reference_moments.py
+ M tests/test_student_gibbs_backends.py
+ M tests/test_student_rattle_diagnostics.py
+?? configs/student_acceptance_k2_n10.json
+?? configs/student_rattle_k2_tuned_20260817.json
+?? docs/affine_plan.md
+?? docs/checkpoints/
+?? docs/evidence_ledger.csv
+?? docs/gibbs_student.md
+?? docs/loc_scale.tex
+?? docs/paper/
+?? docs/presentation/GPT6_ASTRA_PRESENTATION_POSTER_HANDOFF.md
+?? docs/presentation/Images/general_audience/
+?? docs/presentation/beyond_borders_final_deliverables_2026-09-11.zip
+?? docs/presentation/beyond_borders_general_audience.md
+?? docs/presentation/beyond_borders_general_audience.pptx
+?? docs/presentation/beyond_borders_general_audience_handoff.md
+?? docs/presentation/beyond_borders_general_audience_portable.pptx
+?? docs/presentation/beyond_borders_research_poster.md
+?? docs/presentation/beyond_borders_research_poster.pptx
+?? docs/presentation/beyond_borders_research_poster.tex
+?? docs/presentation/evidence/
+?? docs/presentation/paris_photo_edit.md
+?? docs/presentation/poster_final_audit.md
+?? docs/presentation/poster_talking_points.md
+?? docs/presentation/slide_review_2026-09-10.md
+?? docs/presentation/submission_review.md
+?? docs/presentation/talk_equations.tex
+?? docs/presentation/talk_feedback_review_2026-09-10.md
+?? docs/research/
+?? docs/roadmap.md
+?? docs/student_branch_probability_followup.md
+?? docs/student_inverse_branch_correctness_audit.md
+?? docs/student_n3_gibbs_rattle_discussion.tex
+?? docs/student_n3_score_manifold_components.md
+?? examples/
+?? hpc/grace/presentation_chain_analysis.sbatch
+?? hpc/grace/presentation_long_chains.sbatch
+?? kde_ref/numba_kernels.py
+?? models/laplace_gibbs_numba.py
+?? models/loc_affine.py
+?? models/loc_scale_student.py
+?? models/loc_scale_student_rattle.py
+?? models/loc_student_selected_mle.py
+?? models/logistic_gibbs_numba.py
+?? models/numba_math.py
+?? models/student_location_mle.py
+?? models/student_mu_mh.py
+?? pytest.ini
+?? reporting/diagnostics/audit_student_global_mle.py
+?? reporting/diagnostics/prepare_student_n3_discussion_figures.py
+?? reporting/diagnostics/study_student_mle_transitions.py
+?? reporting/diagnostics/study_student_n3_branch_components.py
+?? reporting/diagnostics/verify_student_n3_components.py
+?? reporting/presentation/
+?? scripts/followup_shifted_student_reference.py
+?? scripts/inventory_checkpoint.py
+?? scripts/plot_student_chain_traces.py
+?? scripts/plot_student_function_profile.py
+?? scripts/preserve_repository.py
+?? scripts/profile_student_sampler_functions.py
+?? scripts/run_affine_experiment.py
+?? scripts/run_checkpoint_validation.py
+?? scripts/selected_mle_reference_oracle.py
+?? scripts/study_student_latent_esjd.py
+?? scripts/tune_student_acceptance.py
+?? scripts/tune_student_rattle_latent.py
+?? scripts/validate_selected_mle_reference.py
+?? scripts/validate_student_mle_hardening.py
+?? scripts/validate_student_selected_mle_gibbs.py
+?? tests/test_loc_affine.py
+?? tests/test_loc_scale_student.py
+?? tests/test_selected_mle_reference_validation.py
+?? tests/test_shifted_student_followup.py
+?? tests/test_student_acceptance_tuning.py
+?? tests/test_student_global_mle_audit.py
+?? tests/test_student_inverse_branch_weights.py
+?? tests/test_student_latent_esjd.py
+?? tests/test_student_location_mle_hardening.py
+?? tests/test_student_mle_transitions.py
+?? tests/test_student_n3_branch_components.py
+?? tests/test_student_n3_component_graph.py
+?? tests/test_student_selected_mle_gibbs.py

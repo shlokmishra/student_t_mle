@@ -1,0 +1,883 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,mathtools,bm}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\atanh}{\operatorname{atanh}}
+\newcommand{\atanTwo}{\operatorname{atan2}}
+\newcommand{\sech}{\operatorname{sech}}
+\newcommand{\MLE}{\mathrm{MLE}}
+\newcommand{\Jac}{\mathcal{J}}
+
+\title{Constrained Gibbs Sampling for Bayesian Inference\\from a Released Location--Scale MLE}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Purpose and scope}
+
+This document develops a constrained Gibbs methodology for a one-dimensional location--scale family when the full data are latent and only the joint maximum likelihood estimator (MLE)
+\[
+    (\widehat\mu,\widehat\sigma)=(\mu^\star,\sigma^\star)
+\]
+is observed.  The main goals are:
+\begin{enumerate}[label=(\roman*)]
+    \item to identify the exact augmented target distribution;
+    \item to explain why a local continuous update naturally uses \emph{three} observations rather than two;
+    \item to reduce the three-observation update to a one-dimensional sampling problem;
+    \item to exploit additional algebraic structure for the logistic and Student-$t_k$ families;
+    \item to make explicit the distinction between conditioning on the score equations and conditioning on the actual MLE.
+\end{enumerate}
+
+The last point is essential.  A score root need not be the selected/global MLE, and even when the score-zero set and the MLE level set coincide as sets, the induced conditional measures generally differ by a Jacobian factor.  The formulas below therefore keep the MLE-conditioning correction explicit.
+
+\section{Generic location--scale model}
+
+Let
+\[
+    X_i\mid \theta \overset{\mathrm{iid}}{\sim}
+    p_\theta(x)
+    =\frac{1}{\sigma}
+    f\!\left(\frac{x-\mu}{\sigma}\right),
+    \qquad
+    \theta=(\mu,\eta),\qquad \eta=\log\sigma,
+\]
+with prior density $\pi_0(\theta)$.  Write
+\[
+    r_i(\theta)=\frac{x_i-\mu}{\sigma},
+    \qquad
+    s(r)=\frac{\dd}{\dd r}\log f(r).
+\]
+For one observation,
+\[
+    \frac{\partial}{\partial \mu}\log p_\theta(x)
+    =-\frac{1}{\sigma}s(r),
+    \qquad
+    \frac{\partial}{\partial \eta}\log p_\theta(x)
+    =-\{1+r s(r)\}.
+\]
+Thus the joint MLE is characterized by the two estimating equations
+\begin{align}
+    C_1(x;\theta)
+    &=\sum_{i=1}^n s(r_i(\theta))=0, \\
+    C_2(x;\theta)
+    &=\sum_{i=1}^n \{1+r_i(\theta)s(r_i(\theta))\}=0.
+\end{align}
+Define
+\[
+    C(x;\theta)
+    =
+    \begin{pmatrix}
+    C_1(x;\theta)\\
+    C_2(x;\theta)
+    \end{pmatrix}.
+\]
+The observed release is
+\[
+    T(x)=\widehat\theta(x)=\theta^\star
+    =(\mu^\star,\eta^\star),
+    \qquad \eta^\star=\log\sigma^\star.
+\]
+
+\section{Score conditioning versus exact MLE conditioning}
+
+\subsection{The score manifold}
+
+The score-zero manifold at the released value is
+\[
+    \mathcal M_{\mathrm{score}}(\theta^\star)
+    =\{x\in\R^n:C(x;\theta^\star)=0\}.
+\]
+It has codimension two under the usual full-rank regularity condition.
+
+If $\theta^\star$ is an interior MLE, then necessarily
+\[
+    T(x)=\theta^\star
+    \quad\Longrightarrow\quad
+    C(x;\theta^\star)=0.
+\]
+The converse requires an additional MLE-selection condition: the score root must be the selected/global maximizer.  We therefore define
+\[
+    I_{\MLE}(x;\theta^\star)
+    =\1\{\theta^\star\text{ is the selected MLE for }x\}.
+\]
+If uniqueness/globality has been established throughout the region of interest, this indicator is identically one and may be dropped.
+
+\subsection{The MLE-conditioning Jacobian}
+
+Assume locally that the estimator $T(x)$ is implicitly defined by
+\[
+    C(x;T(x))=0
+\]
+and that
+\[
+    H_C(x;\theta^\star)
+    :=D_\theta C(x;\theta)\big|_{\theta=\theta^\star}
+\]
+is nonsingular.  Implicit differentiation gives
+\[
+    D_xT(x)
+    =-H_C(x;\theta^\star)^{-1}
+      D_xC(x;\theta^\star).
+\]
+Consequently, the coarea Jacobians satisfy
+\[
+    J_T(x)
+    =\frac{J_C(x)}{|\det H_C(x;\theta^\star)|},
+\]
+where
+\[
+    J_C(x)
+    =\sqrt{\det\!\left(D_xC\,D_xC^\mathsf T\right)}.
+\]
+Therefore, with respect to Hausdorff surface measure on the level set,
+\begin{equation}
+\boxed{
+    p(x\mid \theta,\,T(x)=\theta^\star)
+    \propto
+    p_\theta(x)
+    \frac{|\det H_C(x;\theta^\star)|}{J_C(x)}
+    I_{\MLE}(x;\theta^\star).
+}
+\label{eq:exact-mle-manifold-target}
+\end{equation}
+By contrast, conditioning only on $C(x;\theta^\star)=0$ would omit the factor
+$|\det H_C|$ and the MLE-selection indicator.
+
+\paragraph{Important invariance.}
+The estimating equations may be multiplied by any nonsingular matrix depending only on $\theta$: replacing $C$ by $A(\theta)C$ changes numerator and denominator in the same way at a root.  Hence convenient rescalings or sign changes of the two score equations do not change the conditional law.
+
+\subsection{Explicit form of the $2\times2$ correction}
+
+Let $r_i=(x_i-\mu)/\sigma$.  Since
+\[
+    C_1=\sum_i s(r_i),
+    \qquad
+    C_2=\sum_i \{1+r_i s(r_i)\},
+\]
+we have
+\begin{equation}
+\boxed{
+H_C(x;\theta)
+=
+\begin{pmatrix}
+-\sigma^{-1}\sum_i s'(r_i)
+& -\sum_i r_i s'(r_i)\\[4pt]
+-\sigma^{-1}\sum_i \{s(r_i)+r_i s'(r_i)\}
+& -\sum_i r_i\{s(r_i)+r_i s'(r_i)\}
+\end{pmatrix}.
+}
+\label{eq:generic-H}
+\end{equation}
+This matrix is additive over observations, so its value can be updated in $O(1)$ work when only three coordinates change.
+
+\section{Augmented Gibbs sampler}
+
+The augmented state is
+\[
+    (\theta,x),\qquad T(x)=\theta^\star.
+\]
+The target posterior is
+\[
+    p(\theta,x\mid T(x)=\theta^\star).
+\]
+A Gibbs iteration contains two blocks.
+
+\subsection{Parameter block}
+
+Conditional on the latent data $x$, the MLE event is deterministic and contributes no $\theta$-dependent factor.  Therefore
+\begin{equation}
+\boxed{
+    p(\theta\mid x,T(x)=\theta^\star)
+    \propto
+    \pi_0(\theta)
+    \prod_{i=1}^n
+    \frac{1}{\sigma}
+    f\!\left(\frac{x_i-\mu}{\sigma}\right).
+}
+\end{equation}
+This is an ordinary two-dimensional Bayesian update and may be implemented with Metropolis--Hastings, slice sampling, HMC, or another valid kernel.
+
+\subsection{Why the latent block should update triples}
+
+At fixed $\theta^\star$, each observation contributes two numbers to the score constraint.  Define
+\[
+    y_i=\frac{x_i-\mu^\star}{\sigma^\star}
+\]
+and
+\begin{equation}
+\boxed{
+    G(y)
+    =
+    \begin{pmatrix}
+        s(y)\\
+        1+y s(y)
+    \end{pmatrix}.
+}
+\end{equation}
+The released-MLE score constraint is
+\[
+    \sum_{i=1}^n G(y_i)=0.
+\]
+
+A pair update has two unknown coordinates and two constraints, so generically it has zero continuous degrees of freedom.  A triple update has
+\[
+    3\text{ variables}-2\text{ constraints}=1
+\]
+continuous degree of freedom.  Hence three observations are the natural analogue of the pair update used in a one-parameter location family.
+
+Choose indices $i,j,\ell$.  Their current contribution is
+\begin{equation}
+\boxed{
+    \Delta
+    =G(y_i)+G(y_j)+G(y_\ell)\in\R^2.
+}
+\end{equation}
+All other coordinates are held fixed, so the new triple must satisfy
+\begin{equation}
+\boxed{
+    G(y_i')+G(y_j')+G(y_\ell')=\Delta.
+}
+\label{eq:triple-constraint}
+\end{equation}
+Preserving $\Delta$ preserves both global score equations exactly up to numerical tolerance.
+
+\section{Exact one-dimensional conditional for a generic triple}
+\label{sec:generic-sampling}
+
+This section is the central sampling calculation.
+
+\subsection{Density of one released-standardized coordinate}
+
+During the latent update, the current model parameter is
+\[
+    \theta=(\mu,\sigma),
+\]
+whereas $(\mu^\star,\sigma^\star)$ is fixed by the released statistic.  Since
+\[
+    x=\mu^\star+\sigma^\star y,
+\]
+the density of $y$ under the current model parameter is
+\begin{equation}
+\boxed{
+    \rho_\theta(y)
+    =\frac{\sigma^\star}{\sigma}
+      f\!\left(
+      \frac{\mu^\star+\sigma^\star y-\mu}{\sigma}
+      \right).
+}
+\label{eq:rho-y}
+\end{equation}
+The prefactor $\sigma^\star/\sigma$ is constant in $y$ and can be omitted in unnormalized calculations.
+
+\subsection{Optional one-to-one scalar transformation}
+
+Let
+\[
+    w=h_0(y),\qquad y=\chi(w)
+\]
+be a one-to-one transformation chosen for convenience.  Define
+\[
+    q_\theta(w)
+    =\rho_\theta(\chi(w))\,|\chi'(w)|,
+\]
+and
+\[
+    \bar G(w)=G(\chi(w)).
+\]
+We now use $w_i$ as the free coordinate.
+
+\subsection{Fix one coordinate and reconstruct the other two}
+
+Set
+\[
+    t=w_i'.
+\]
+The remaining pair must satisfy
+\begin{equation}
+    \bar G(u)+\bar G(v)
+    =\Delta-\bar G(t).
+\label{eq:pair-reconstruction-generic}
+\end{equation}
+For a given $t$, let
+\[
+    \mathcal S(t)
+    =\{(u_b(t),v_b(t)):b\in\mathcal B(t)\}
+\]
+denote all isolated labeled solutions of \eqref{eq:pair-reconstruction-generic}.
+
+For each branch $b$, define the pair Jacobian
+\begin{equation}
+\boxed{
+    J_b(t)
+    =
+    \left|
+    \det
+    \begin{pmatrix}
+        \bar G_1'(u_b) & \bar G_1'(v_b)\\
+        \bar G_2'(u_b) & \bar G_2'(v_b)
+    \end{pmatrix}
+    \right|.
+}
+\label{eq:pair-jac}
+\end{equation}
+This is the ordinary change-of-variables Jacobian for the map
+\[
+    (u,v)\mapsto \bar G(u)+\bar G(v)\in\R^2.
+\]
+
+\subsection{The scalar density that must actually be sampled}
+
+Let $x_b(t)$ denote the full latent dataset obtained by inserting the candidate triple associated with branch $b$.  Then, with respect to $\dd t$, the exact MLE-conditioned scalar target is
+\begin{equation}
+\boxed{
+\pi(t\mid x_{-(i,j,\ell)},\theta,T=\theta^\star)
+\propto
+q_\theta(t)
+\sum_{b\in\mathcal B(t)}
+\frac{
+q_\theta(u_b(t))q_\theta(v_b(t))
+\,|\det H_C(x_b(t);\theta^\star)|
+\,I_{\MLE}(x_b(t);\theta^\star)
+}{J_b(t)}.
+}
+\label{eq:master-scalar-target}
+\end{equation}
+
+This equation is the main correctness criterion for the local update.
+
+After sampling $t$, the solution branch is sampled conditionally with probability
+\begin{equation}
+\boxed{
+\Pr(B=b\mid t,\cdots)
+\propto
+\frac{
+q_\theta(u_b)q_\theta(v_b)
+\,|\det H_C(x_b;\theta^\star)|
+\,I_{\MLE}(x_b;\theta^\star)
+}{J_b}.
+}
+\label{eq:branch-weight-generic}
+\end{equation}
+Finally transform $(t,u_b,v_b)$ back to $(y_i',y_j',y_\ell')$ and then to $x$.
+
+\paragraph{Interpretation.}
+There are four conceptually distinct ingredients in \eqref{eq:master-scalar-target}:
+\begin{enumerate}[label=(\alph*)]
+    \item the model density of the three latent observations;
+    \item the Jacobian induced by any scalar reparameterization;
+    \item the inverse pair-map Jacobian $1/J_b$, which arises because two variables are being conditioned on two equations;
+    \item the MLE-conditioning correction $|\det H_C|$ and, when necessary, the global-MLE selection indicator.
+\end{enumerate}
+Omitting any nonconstant factor changes the target distribution.
+
+\paragraph{How to sample $t$.}
+Equation \eqref{eq:master-scalar-target} is one-dimensional.  One may use an exact rejection/inverse-CDF draw when practical, or a valid one-dimensional MCMC kernel such as slice sampling or Metropolis--Hastings.  In the latter case the overall method is technically Metropolis-within-Gibbs, but it still targets the correct augmented posterior if the scalar kernel leaves \eqref{eq:master-scalar-target} invariant.
+
+\section{Logistic location--scale family}
+
+\subsection{Score simplification}
+
+For the standard logistic density
+\[
+    f(y)=\frac{1}{4\cosh^2(y/2)},
+\]
+we have
+\[
+    s(y)=\frac{\dd}{\dd y}\log f(y)
+    =-\tanh(y/2).
+\]
+Define the one-to-one transformation
+\begin{equation}
+\boxed{
+    z=\tanh(y/2),
+    \qquad
+    y=2\atanh(z),
+    \qquad z\in(-1,1).
+}
+\end{equation}
+Then the two score equations are equivalently
+\begin{align}
+    \sum_i z_i &=0,\\
+    \sum_i h(z_i)&=0,
+\end{align}
+where
+\begin{equation}
+\boxed{
+    h(z)=2z\atanh(z)-1.
+}
+\end{equation}
+Thus we may use
+\[
+    \bar G(z)
+    =
+    \begin{pmatrix}
+        z\\h(z)
+    \end{pmatrix}.
+\]
+The transformed single-coordinate density is
+\begin{equation}
+\boxed{
+    q_\theta(z)
+    =\rho_\theta(2\atanh z)\frac{2}{1-z^2},
+    \qquad z\in(-1,1).
+}
+\end{equation}
+
+\subsection{Triple reconstruction reduces to one scalar root}
+
+For a selected triple, store
+\[
+    \Delta
+    =\bar G(z_i)+\bar G(z_j)+\bar G(z_\ell).
+\]
+Choose the free value
+\[
+    t=z_i'.
+\]
+Write
+\[
+    A(t)=\Delta_1-t,
+    \qquad
+    B(t)=\Delta_2-h(t).
+\]
+The remaining pair must satisfy
+\[
+    z_j'+z_\ell'=A(t),
+    \qquad
+    h(z_j')+h(z_\ell')=B(t).
+\]
+Set
+\[
+    z_\ell'=A(t)-z_j'.
+\]
+Then $z_j'$ solves the one-dimensional equation
+\begin{equation}
+\boxed{
+    F_t(z)
+    :=h(z)+h(A(t)-z)-B(t)=0,
+}
+\label{eq:logistic-root}
+\end{equation}
+with feasible interval
+\[
+    z\in
+    \bigl(\max\{-1,A(t)-1\},\,\min\{1,A(t)+1\}\bigr).
+\]
+Because
+\[
+    h''(z)=\frac{4}{(1-z^2)^2}>0,
+\]
+$F_t$ is strictly convex and symmetric about $A(t)/2$.  Hence there are at most two roots, which are the two label-swapped solutions $(z_j',z_\ell')$ and $(z_\ell',z_j')$.  In practice one root may be found on one side of $A(t)/2$ with a robust one-dimensional solver such as Brent's method; the other is obtained by swapping.
+
+\subsection{Exact scalar target for logistic}
+
+Since
+\[
+    \bar G'(z)
+    =
+    \begin{pmatrix}
+        1\\h'(z)
+    \end{pmatrix},
+\]
+the pair Jacobian is
+\begin{equation}
+\boxed{
+    J_{\mathrm{log}}(z_j,z_\ell)
+    =|h'(z_\ell)-h'(z_j)|,
+}
+\end{equation}
+where
+\[
+    h'(z)
+    =2\atanh(z)+\frac{2z}{1-z^2}.
+\]
+The two label-swapped branches have the same weight, so the scalar density simplifies, up to an irrelevant factor of two, to
+\begin{equation}
+\boxed{
+\pi_{\mathrm{log}}(t)
+\propto
+\frac{
+q_\theta(t)
+q_\theta(z_j(t))
+q_\theta(z_\ell(t))
+}{|h'(z_\ell(t))-h'(z_j(t))|}
+\,|\det H_C(x(t);\theta^\star)|
+\,I_{\MLE}(x(t);\theta^\star).
+}
+\label{eq:logistic-scalar-target}
+\end{equation}
+After drawing $t$, the two labeled solutions may be selected with probability $1/2$ each.
+
+For the MLE correction, one may evaluate \eqref{eq:generic-H} using
+\[
+    s(y)=-\tanh(y/2),
+    \qquad
+    s'(y)=-\frac12\sech^2(y/2).
+\]
+
+\paragraph{Computational summary for logistic.}
+Each candidate evaluation of the scalar target requires one one-dimensional pair reconstruction through \eqref{eq:logistic-root}, followed by evaluation of the three transformed densities, the pair Jacobian, and the $2\times2$ MLE-conditioning determinant.
+
+\section{Student-$t_k$ location--scale family}
+
+\subsection{Joint score equations}
+
+For the standard Student-$t_k$ density,
+\[
+    f_k(y)
+    \propto
+    \left(1+\frac{y^2}{k}\right)^{-(k+1)/2},
+\]
+we have
+\[
+    s(y)=-(k+1)\frac{y}{k+y^2}.
+\]
+The location and scale score equations are equivalently
+\begin{align}
+    \sum_{i=1}^n \frac{y_i}{k+y_i^2}&=0,
+    \label{eq:student-loc-score}\\
+    \sum_{i=1}^n \frac{y_i^2}{k+y_i^2}&=\frac{n}{k+1}.
+    \label{eq:student-scale-score}
+\end{align}
+
+\subsection{Angle transformation: the two constraints become a vector sum}
+
+Define
+\begin{equation}
+\boxed{
+    \phi
+    =2\arctan\!\left(\frac{y}{\sqrt{k}}\right),
+    \qquad
+    y=\sqrt{k}\tan(\phi/2),
+    \qquad
+    \phi\in(-\pi,\pi).
+}
+\end{equation}
+Then
+\[
+    \sin\phi
+    =\frac{2\sqrt{k}\,y}{k+y^2},
+    \qquad
+    \cos\phi
+    =\frac{k-y^2}{k+y^2}.
+\]
+Therefore \eqref{eq:student-loc-score}--\eqref{eq:student-scale-score} become
+\begin{equation}
+\boxed{
+    \sum_{i=1}^n \sin\phi_i=0,
+    \qquad
+    \sum_{i=1}^n \cos\phi_i
+    =n\frac{k-1}{k+1}.
+}
+\end{equation}
+Define the unit vector
+\begin{equation}
+\boxed{
+    u(\phi)
+    =
+    \begin{pmatrix}
+        \cos\phi\\
+        \sin\phi
+    \end{pmatrix}.
+}
+\end{equation}
+Then the entire released-MLE score constraint is simply
+\begin{equation}
+\boxed{
+    \sum_{i=1}^n u(\phi_i)
+    =
+    \begin{pmatrix}
+    n(k-1)/(k+1)\\0
+    \end{pmatrix}.
+}
+\label{eq:student-resultant}
+\end{equation}
+Thus the Student location--scale manifold becomes a fixed-resultant problem for unit vectors on the circle.
+
+\subsection{Triple reconstruction is closed form}
+
+For a selected triple, preserve its current resultant
+\begin{equation}
+\boxed{
+    R
+    =u(\phi_i)+u(\phi_j)+u(\phi_\ell)\in\R^2.
+}
+\end{equation}
+Choose the free angle
+\[
+    t=\phi_i'.
+\]
+The remaining two vectors must sum to
+\[
+    v(t)=R-u(t).
+\]
+Let
+\[
+    r(t)=\|v(t)\|.
+\]
+A pair of unit vectors with resultant $v(t)$ exists if and only if
+\[
+    0\le r(t)\le 2.
+\]
+For the regular case $0<r(t)<2$, define
+\begin{equation}
+\boxed{
+    \beta(t)=\atanTwo(v_2(t),v_1(t)),
+    \qquad
+    \gamma(t)=\arccos\!\left(\frac{r(t)}{2}\right).
+}
+\end{equation}
+Then the two labeled solutions are
+\begin{equation}
+\boxed{
+    \phi_j'=\beta+\gamma,
+    \qquad
+    \phi_\ell'=\beta-\gamma,
+}
+\label{eq:student-angle-pair}
+\end{equation}
+and the label-swapped version.  Angles are wrapped back to $(-\pi,\pi)$.
+
+Hence, unlike the generic or logistic construction, \emph{no root solve is required to reconstruct the remaining Student pair}.  The only continuously sampled quantity is the single free angle $t$.
+
+\subsection{Density in angle space}
+
+From
+\[
+    y=\sqrt{k}\tan(\phi/2),
+\]
+we obtain
+\[
+    \left|\frac{\dd y}{\dd\phi}\right|
+    =\frac{\sqrt{k}}{2}\sec^2(\phi/2).
+\]
+Therefore the density of one angle under the current Gibbs parameter $\theta=(\mu,\sigma)$ is
+\begin{equation}
+\boxed{
+    q_\theta(\phi)
+    =\rho_\theta\!\left(\sqrt{k}\tan(\phi/2)\right)
+      \frac{\sqrt{k}}{2}\sec^2(\phi/2).
+}
+\label{eq:student-angle-density}
+\end{equation}
+
+\subsection{Exact scalar target for Student-$t_k$}
+
+For the pair map
+\[
+    (\phi_j,\phi_\ell)
+    \mapsto
+    u(\phi_j)+u(\phi_\ell),
+\]
+the absolute Jacobian determinant is
+\begin{equation}
+\boxed{
+    J_{\mathrm{Stud}}
+    =|\sin(\phi_j-\phi_\ell)|
+    =|\sin(2\gamma)|.
+}
+\end{equation}
+The label-swapped solutions again have identical weights.  Thus, up to an irrelevant factor of two, the exact MLE-conditioned scalar density is
+\begin{equation}
+\boxed{
+\pi_{\mathrm{Stud}}(t)
+\propto
+\frac{
+q_\theta(t)
+q_\theta(\beta(t)+\gamma(t))
+q_\theta(\beta(t)-\gamma(t))
+}{|\sin(2\gamma(t))|}
+\,|\det H_C(x(t);\theta^\star)|
+\,I_{\MLE}(x(t);\theta^\star),
+}
+\label{eq:student-scalar-target}
+\end{equation}
+for feasible $t$ satisfying $0<\|R-u(t)\|<2$.
+
+After drawing $t$:
+\begin{enumerate}
+    \item compute $\beta(t)$ and $\gamma(t)$;
+    \item reconstruct the other two angles by \eqref{eq:student-angle-pair};
+    \item randomly assign the two reconstructed angles to labels $j$ and $\ell$ with probability $1/2$ each;
+    \item transform back through
+    \[
+        y_r'=\sqrt{k}\tan(\phi_r'/2),
+        \qquad
+        x_r'=\mu^\star+\sigma^\star y_r'.
+    \]
+\end{enumerate}
+The local resultant $R$ is then preserved exactly up to floating-point error, so both score constraints remain satisfied.
+
+For the MLE correction, evaluate \eqref{eq:generic-H} with
+\[
+    s(y)=-(k+1)\frac{y}{k+y^2},
+\]
+and
+\begin{equation}
+\boxed{
+    s'(y)
+    =-(k+1)\frac{k-y^2}{(k+y^2)^2}.
+}
+\end{equation}
+
+\paragraph{Singular geometric cases.}
+The cases $r(t)=0$ and $r(t)=2$ are singular for the pair reconstruction: at $r=0$ the remaining two unit vectors can be any opposite pair, and at $r=2$ they coincide.  These are lower-dimensional boundary cases and have probability zero under a regular continuous target, but numerical implementations should guard against evaluating exactly at them.
+
+\section{What is actually being sampled?}
+
+For both logistic and Student-$t_k$, the essential latent move is:
+\begin{quote}
+\emph{Choose a random triple, preserve its two-dimensional score contribution, and sample one scalar free coordinate from the exact one-dimensional conditional density induced by the model likelihood, the pair reconstruction Jacobian, and the MLE-conditioning factor.  The remaining two coordinates are then reconstructed from the two preserved constraints.}
+\end{quote}
+
+For logistic, the remaining pair is obtained from one scalar root solve.  For Student-$t_k$, the angle transformation makes the remaining pair available in closed form.
+
+The exactness test is therefore not merely whether the new triple satisfies the two score equations.  The update must also use the correct scalar density \eqref{eq:master-scalar-target}, including its Jacobian and MLE-conditioning terms.
+
+\section{Alternative affine-normalization proposal}
+
+Location--scale MLEs are affine equivariant.  For any unconstrained dataset $u$, define
+\[
+    a=\widehat\mu(u),
+    \qquad
+    b=\widehat\sigma(u),
+\]
+and standardize
+\[
+    z_i=\frac{u_i-a}{b}.
+\]
+Then
+\[
+    \widehat\mu(z)=0,
+    \qquad
+    \widehat\sigma(z)=1.
+\]
+Hence
+\begin{equation}
+\boxed{
+    x_i'
+    =\mu^\star+\sigma^\star
+      \frac{u_i-\widehat\mu(u)}{\widehat\sigma(u)}
+}
+\end{equation}
+automatically satisfies
+\[
+    (\widehat\mu(x'),\widehat\sigma(x'))
+    =(\mu^\star,\sigma^\star).
+\]
+
+This is a useful way to generate \emph{constraint-satisfying proposals}, but it is not by itself an exact Gibbs update.  The map from $u$ to its standardized shape is many-to-one: all affine datasets
+\[
+    a\mathbf 1+bz,
+    \qquad a\in\R,\quad b>0,
+\]
+produce the same standardized configuration.  Therefore the induced proposal density on the MLE manifold contains an affine-orbit Jacobian/integration factor.  Affine normalization is best viewed as a possible global Metropolis--Hastings proposal unless that induced density is derived explicitly.
+
+\section{Algorithmic template}
+
+\begin{enumerate}[label=\textbf{Step \arabic*:},leftmargin=*]
+    \item \textbf{Initialize.} Choose $(\theta^{(0)},x^{(0)})$ with
+    \[
+        T(x^{(0)})=\theta^\star.
+    \]
+
+    \item \textbf{Parameter update.} Sample/update
+    \[
+        \theta^{(t)}\sim p(\theta\mid x^{(t-1)})
+        \propto \pi_0(\theta)\prod_i p_\theta(x_i^{(t-1)}).
+    \]
+
+    \item \textbf{Randomly partition or repeatedly select triples.}
+
+    \item \textbf{For each selected triple $(i,j,\ell)$:}
+    \begin{enumerate}[label=(\alph*)]
+        \item compute its fixed two-dimensional score contribution $\Delta$;
+        \item choose the family-specific free coordinate $t$;
+        \item enumerate/reconstruct every regular pair solution for the remaining two coordinates;
+        \item evaluate the exact scalar target, including model densities, transformation Jacobians, inverse pair Jacobian, $|\det H_C|$, and the MLE-selection condition when needed;
+        \item sample/update $t$ with a valid one-dimensional kernel;
+        \item sample the reconstruction branch using its conditional weight;
+        \item write the new triple back to $x$.
+    \end{enumerate}
+
+    \item \textbf{Diagnostics.} Verify after every sweep that
+    \[
+        \|C(x;\theta^\star)\|
+    \]
+    is at numerical zero and, when exact MLE conditioning is claimed, periodically verify that $\theta^\star$ is indeed the selected MLE of sampled latent datasets.
+\end{enumerate}
+
+\section{Implementation correctness checklist}
+
+A coding implementation should not be declared correct until the following are explicitly verified:
+\begin{enumerate}[leftmargin=*]
+    \item Both location and scale score constraints are preserved after every latent update.
+    \item Three coordinates, rather than two, are used for a one-dimensional continuous local move.
+    \item The scalar free coordinate is sampled from the correct one-dimensional conditional, not uniformly on the feasible set.
+    \item Every regular reconstruction branch is included with the correct inverse-Jacobian weight.
+    \item Any change of variables includes its ordinary Jacobian.
+    \item Exact MLE conditioning includes $|\det H_C(x;\theta^\star)|$ relative to score conditioning.
+    \item If score equations can have non-MLE roots, candidates are restricted to the selected/global-MLE branch or the regime is explicitly treated as unresolved.
+    \item For logistic, the pair root solve accounts for the full feasible interval and both label-swapped solutions.
+    \item For Student-$t_k$, the angle reconstruction uses only candidates with $0<\|R-u(t)\|<2$ and handles periodic angle wrapping correctly.
+    \item All densities and Jacobian factors are evaluated in the log domain near singular or heavy-tail regions.
+\end{enumerate}
+
+\section{Summary of the simplifications}
+
+\begin{center}
+\begin{tabular}{@{}llll@{}}
+\toprule
+Family & Free coordinate & Remaining pair & Main pair Jacobian \\
+\midrule
+Generic location--scale & one scalar & solve two equations & $|\det[\bar G'(u),\bar G'(v)]|$ \\
+Logistic & $z_i\in(-1,1)$ & one scalar root & $|h'(z_\ell)-h'(z_j)|$ \\
+Student-$t_k$ & $\phi_i\in(-\pi,\pi)$ & closed-form angles & $|\sin(\phi_j-\phi_\ell)|$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The core generalization is therefore
+\[
+\boxed{
+\text{one score constraint + pair update}
+\quad\longrightarrow\quad
+\text{two score constraints + triple update}.
+}
+\]
+The logistic transformation reduces pair reconstruction to a one-dimensional root problem, while the Student-$t_k$ angle transformation converts the two score equations into a fixed vector-resultant constraint on the unit circle and removes the reconstruction root solve entirely.
+
+\section*{References}
+
+\begin{thebibliography}{9}
+
+\bibitem{graham2022}
+M. M. Graham, A. H. Thiery, and A. Beskos.
+\newblock Manifold Markov chain Monte Carlo methods for Bayesian inference in diffusion models.
+\newblock \emph{Journal of the Royal Statistical Society: Series B}, 84:1229--1256, 2022.
+
+\bibitem{byrne2013}
+S. Byrne and M. Girolami.
+\newblock Geodesic Monte Carlo on embedded manifolds.
+\newblock \emph{Scandinavian Journal of Statistics}, 40:825--845, 2013.
+
+\bibitem{lelievre2019}
+T. Leli\`evre, M. Rousset, and G. Stoltz.
+\newblock Hybrid Monte Carlo methods for sampling probability measures on submanifolds.
+\newblock \emph{Numerische Mathematik}, 143:379--421, 2019.
+
+\end{thebibliography}
+
+\end{document}

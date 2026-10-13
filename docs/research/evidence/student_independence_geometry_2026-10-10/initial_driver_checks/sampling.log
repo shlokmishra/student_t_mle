@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/scratch/user/shlokmishra08/code/student_t_mle/scripts/validate_student_independence_mh.py", line 167, in <module>
+    refs=preflight(cfg,out);chains(cfg,raw,out,refs);direct(cfg,raw,out,refs);figures(cfg,raw,out)
+  File "/scratch/user/shlokmishra08/code/student_t_mle/scripts/validate_student_independence_mh.py", line 27, in preflight
+    actual=summary(*values[:3],case)
+  File "/scratch/user/shlokmishra08/code/student_t_mle/scripts/followup_shifted_student_reference.py", line 41, in summary
+    result = summarize(mu, w, x, case)
+  File "/scratch/user/shlokmishra08/code/student_t_mle/scripts/validate_selected_mle_reference.py", line 54, in summarize
+    raise ValueError("invalid reference/chain particles; never silently discard")
+ValueError: invalid reference/chain particles; never silently discard

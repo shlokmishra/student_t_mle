@@ -1,0 +1,85 @@
+{
+  "python": "3.13.5 (main, Apr  2 2026, 12:03:47) [GCC 14.3.0]",
+  "platform": "Linux-4.18.0-553.162.1.el8_10.x86_64-x86_64-with-glibc2.28",
+  "cpu_affinity": [
+    0
+  ],
+  "environment": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "NUMBA_NUM_THREADS": "1",
+    "JAX_PLATFORMS": "cpu",
+    "MPLCONFIGDIR": "/tmp/student_t_mle-baseline-matplotlib"
+  },
+  "results": [
+    {
+      "name": "pytest",
+      "command": [
+        "/scratch/user/shlokmishra08/code/student_t_mle/.venv/bin/python",
+        "-m",
+        "pytest",
+        "tests",
+        "-q",
+        "--durations=15",
+        "--junitxml=/scratch/user/shlokmishra08/code/student_t_mle/docs/research/evidence/location_review_handoff_2026-10-12/validation/pytest.xml"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 665.6625657239929,
+      "ceiling_seconds": 900
+    },
+    {
+      "name": "example",
+      "command": [
+        "/scratch/user/shlokmishra08/code/student_t_mle/.venv/bin/python",
+        "examples/score_conditioned_student.py"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 2.06350643793121,
+      "ceiling_seconds": 120
+    },
+    {
+      "name": "selected-example",
+      "command": [
+        "/scratch/user/shlokmishra08/code/student_t_mle/.venv/bin/python",
+        "examples/selected_mle_student.py"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 2.825568932108581,
+      "ceiling_seconds": 120
+    },
+    {
+      "name": "reference-help",
+      "command": [
+        "/scratch/user/shlokmishra08/code/student_t_mle/.venv/bin/python",
+        "scripts/validate_selected_mle_reference.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 10.55402534082532,
+      "ceiling_seconds": 60
+    },
+    {
+      "name": "selected-gibbs-help",
+      "command": [
+        "/scratch/user/shlokmishra08/code/student_t_mle/.venv/bin/python",
+        "scripts/validate_student_selected_mle_gibbs.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 2.83687500981614,
+      "ceiling_seconds": 60
+    },
+    {
+      "name": "components-help",
+      "command": [
+        "/scratch/user/shlokmishra08/code/student_t_mle/.venv/bin/python",
+        "reporting/diagnostics/verify_student_n3_components.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 2.02497402112931,
+      "ceiling_seconds": 60
+    }
+  ]
+}

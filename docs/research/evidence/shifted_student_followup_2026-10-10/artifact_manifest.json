@@ -1,0 +1,350 @@
+{
+  "config": "config.json",
+  "driver": "scripts/followup_shifted_student_reference.py",
+  "raw": {
+    "tmp/shifted_student_followup_20261010/chain0.npz": {
+      "bytes": 1644523,
+      "sha256_file": "c8d50536b3bf1d6608de5e7ac1fbdfd094f90ee5902cadef0fbeba92b7e05665",
+      "arrays": {
+        "mu": {
+          "shape": [
+            40001
+          ],
+          "dtype": "float64",
+          "sha256_values": "96d64eb74b8ed793a6b17d666474fec8a1a26746ebe513bf0cb64a07bf326c42"
+        },
+        "x": {
+          "shape": [
+            40001,
+            10
+          ],
+          "dtype": "float64",
+          "sha256_values": "ef5a4c278a8a93e8776ea8e585f4da28d273ca4193a3e93e45387a1fcccdad85"
+        },
+        "latent_accept": {
+          "shape": [
+            40000
+          ],
+          "dtype": "bool",
+          "sha256_values": "ac0e7a264da4dd2a0b3eb0431db4d496fb01a105699adf28b87341c1aa4cc870"
+        },
+        "mu_accept": {
+          "shape": [
+            40000
+          ],
+          "dtype": "bool",
+          "sha256_values": "83d8f7a083a801aab9911656d5105107479976eee3cec815b218bb57968ae898"
+        }
+      }
+    },
+    "tmp/shifted_student_followup_20261010/chain1.npz": {
+      "bytes": 1622898,
+      "sha256_file": "b69f95b638e02cc52826c32b8b4434e13cfaedc83a26ca6755c11ab9f0616d2e",
+      "arrays": {
+        "mu": {
+          "shape": [
+            40001
+          ],
+          "dtype": "float64",
+          "sha256_values": "8b6dafa1a694ce63ed8f5be3826244a7ce33ee0a7fe9ddb2fe4431e4039c66a4"
+        },
+        "x": {
+          "shape": [
+            40001,
+            10
+          ],
+          "dtype": "float64",
+          "sha256_values": "133d00d685fd945844708a7c9a7ef88adcf1bde609d82ecca9f602d761c2ff65"
+        },
+        "latent_accept": {
+          "shape": [
+            40000
+          ],
+          "dtype": "bool",
+          "sha256_values": "599f02fbac40693fc9da4d30f00f490442bb9b9f58babd77e0dbe5ddda48da83"
+        },
+        "mu_accept": {
+          "shape": [
+            40000
+          ],
+          "dtype": "bool",
+          "sha256_values": "74f41768523df4ab8ec634e76ca210207d2f3cf1d9f40ee789eaaa3e1c4d1e8c"
+        }
+      }
+    },
+    "tmp/shifted_student_followup_20261010/chain2.npz": {
+      "bytes": 1614432,
+      "sha256_file": "34340be1645798bb95cb6a960f99a64a4894031c8fcb8d5cb55da68a50a73f8f",
+      "arrays": {
+        "mu": {
+          "shape": [
+            40001
+          ],
+          "dtype": "float64",
+          "sha256_values": "2a34b110b223b8f1e1ccb5875ff5ceaf36b76a3de1b50de0fa3fa6d96eb2c9b1"
+        },
+        "x": {
+          "shape": [
+            40001,
+            10
+          ],
+          "dtype": "float64",
+          "sha256_values": "7158f9b1f82df3507df924baffc562547607e60cce09ca8872f523685d696ac8"
+        },
+        "latent_accept": {
+          "shape": [
+            40000
+          ],
+          "dtype": "bool",
+          "sha256_values": "115a3897abd52d69e03ca65b8a3b4eb1560cadec8b7a818858e6ef3b106aabe0"
+        },
+        "mu_accept": {
+          "shape": [
+            40000
+          ],
+          "dtype": "bool",
+          "sha256_values": "a6aeae69aae7c048a95c1e7a13b717be2c2cf5b62b26942a90270630a2c3eda2"
+        }
+      }
+    },
+    "tmp/shifted_student_followup_20261010/chain3.npz": {
+      "bytes": 1621886,
+      "sha256_file": "6bdf85c1999f0cd9a868cc09df4722f095671d7943f37ed4510af865e9fa0f79",
+      "arrays": {
+        "mu": {
+          "shape": [
+            40001
+          ],
+          "dtype": "float64",
+          "sha256_values": "f55f452fae1d62338f882e4031dee04dfa4f98920e677fb14a05d4ac6331fb87"
+        },
+        "x": {
+          "shape": [
+            40001,
+            10
+          ],
+          "dtype": "float64",
+          "sha256_values": "751debb65e796b5de6b5ed892bbf5373781b45e6bf3a49a848667c3949e2f93a"
+        },
+        "latent_accept": {
+          "shape": [
+            40000
+          ],
+          "dtype": "bool",
+          "sha256_values": "8bf3b7348cf52b57b639328354471f9040c637f622ae59e1a9c793c414310246"
+        },
+        "mu_accept": {
+          "shape": [
+            40000
+          ],
+          "dtype": "bool",
+          "sha256_values": "054714c07efeb6d8dc48c1db78c3529e12f3266d516171e2cdf2face4d898e57"
+        }
+      }
+    },
+    "tmp/shifted_student_followup_20261010/chain4.npz": {
+      "bytes": 1633055,
+      "sha256_file": "c27be2089b5131697781d252927840e1b6e86c9a3b27aee20403f874dfe68691",
+      "arrays": {
+        "mu": {
+          "shape": [
+            40001
+          ],
+          "dtype": "float64",
+          "sha256_values": "d266a5f5f230ffcd4fad5209042dd8c8b671cc6df74fa2aa8dd22de7a69e74dc"
+        },
+        "x": {
+          "shape": [
+            40001,
+            10
+          ],
+          "dtype": "float64",
+          "sha256_values": "ccb8a9de46592e10310865cb9515a55685c8be48cffc58443541119d507312e5"
+        },
+        "latent_accept": {
+          "shape": [
+            40000
+          ],
+          "dtype": "bool",
+          "sha256_values": "dcfbc8cc33cae06c423766e8a0bb84f3458605c37e40977bfa864dd94d437774"
+        },
+        "mu_accept": {
+          "shape": [
+            40000
+          ],
+          "dtype": "bool",
+          "sha256_values": "83bd84bc21e0ffd90725949ff6716cad8ffa1bff826fb2d85d8f6809146862f1"
+        }
+      }
+    },
+    "tmp/shifted_student_followup_20261010/chain5.npz": {
+      "bytes": 1647496,
+      "sha256_file": "c7b63354ec9b48644abc658ab05b440a424cfcb6e7fadb8f9c343d0ed622d553",
+      "arrays": {
+        "mu": {
+          "shape": [
+            40001
+          ],
+          "dtype": "float64",
+          "sha256_values": "0eddac030bcbe7499d736f50ea1eec3bfdea16c829fd0dbd5df43e35168b6cdb"
+        },
+        "x": {
+          "shape": [
+            40001,
+            10
+          ],
+          "dtype": "float64",
+          "sha256_values": "474725e2c12a5006300f9ef591347899d4c53b2f7eea3e8dc213bbe43bf9e45e"
+        },
+        "latent_accept": {
+          "shape": [
+            40000
+          ],
+          "dtype": "bool",
+          "sha256_values": "242efc069ba91f674155df8d29cc77b7eea45f2c168e1b0f01253a6f0e66a1d2"
+        },
+        "mu_accept": {
+          "shape": [
+            40000
+          ],
+          "dtype": "bool",
+          "sha256_values": "337b62ff48955f0605ad76f815c7c61a24edd536d7dc5ef3aaa6ff317a567c4f"
+        }
+      }
+    },
+    "tmp/shifted_student_followup_20261010/rejection_accepted.npz": {
+      "bytes": 123054,
+      "sha256_file": "5004b332bc7357f63c4843df0aa98bbf328c84c563d82fc72908cc4499d91716",
+      "arrays": {
+        "mu": {
+          "shape": [
+            1447
+          ],
+          "dtype": "float64",
+          "sha256_values": "ecea33afa23f0f8571b0a445c65475e2270645d34872aa2ad67b3c4fdc5d0888"
+        },
+        "x": {
+          "shape": [
+            1447,
+            10
+          ],
+          "dtype": "float64",
+          "sha256_values": "2fb4316b7e3c17071497bb77bdc26fe6485a6255d464755ce8b36696769f7d8e"
+        }
+      }
+    },
+    "tmp/shifted_student_followup_20261010/rejection_base.npz": {
+      "bytes": 5571280,
+      "sha256_file": "17589d16414575c485a7fd2168ea0566e2be965163081e947188993b3a1e0b83",
+      "arrays": {
+        "base": {
+          "shape": [
+            65536,
+            10
+          ],
+          "dtype": "float64",
+          "sha256_values": "adcf4b551701c3ef1eb674cbe92391f5f2a3a8a35189d074b5d75d67f7acb82c"
+        },
+        "mle": {
+          "shape": [
+            65536
+          ],
+          "dtype": "float64",
+          "sha256_values": "f55a73f8568c88ee27746926300924153ba2d349c5aa71d3fda1f2c02f1da4fa"
+        }
+      }
+    },
+    "tmp/shifted_student_followup_20261010/weighted_a.npz": {
+      "bytes": 5570774,
+      "sha256_file": "000fc3e8ecbf31088a15d853749af2cd7768febd8b316f924f81aff101b261e6",
+      "arrays": {
+        "base": {
+          "shape": [
+            65536,
+            10
+          ],
+          "dtype": "float64",
+          "sha256_values": "b1ecfc0d3ee69854cdb9ca5991ef9ac30e1eb72233a2d50670a78df9475ede72"
+        },
+        "mle": {
+          "shape": [
+            65536
+          ],
+          "dtype": "float64",
+          "sha256_values": "4d497040fc91b788edd3949980d8d8ff0d122d2b7df89519543261b6cc1b80d1"
+        }
+      }
+    },
+    "tmp/shifted_student_followup_20261010/weighted_b.npz": {
+      "bytes": 5571133,
+      "sha256_file": "b2f5b0197a6c19fae1f2775e2de33901746b319ede6167e8e2751088ee376c35",
+      "arrays": {
+        "base": {
+          "shape": [
+            65536,
+            10
+          ],
+          "dtype": "float64",
+          "sha256_values": "6935f3c805ca32dfd88904062798f4a999e376b50273cf89cfe6d37705f754eb"
+        },
+        "mle": {
+          "shape": [
+            65536
+          ],
+          "dtype": "float64",
+          "sha256_values": "4e384e9bed73588e796b276f9f44dbbc6419ff77f9f37d76976ac2971658c657"
+        }
+      }
+    }
+  },
+  "compact": {
+    "docs/research/evidence/shifted_student_followup_2026-10-10/affine_comparison.json": "aa79ba63bee4d0156efa4e0dee5f58041055002aadfc9692b8c5c8cbeb9535f2",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/analyze.log": "8852e0d11e39c951f909f1e0d222c83781937d0b614536cc9e2a88d4cb86a53d",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/analyze_execution.json": "ace669e2c40c4405f5ca8481df5ccfa3cfc1e0e5b8c3eef1d45d35c2aacf73a8",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/chain0_provenance.json": "c28e7c276317f54322c871e752725047bc0f2be81235bda794458b1697fd2ad2",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/chain1_provenance.json": "4c18bce7364935c41a7fa5d1cd36c60af1bc80884218e96b293cbef45d600f46",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/chain2_provenance.json": "cea2b475da25bf878c49a06c80c81521b71778637abbc44bd219c3cdc3a34f0b",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/chain3_provenance.json": "4371230e4351fe51b827c937096f4645b299cf6221272b92891c0cd700a34396",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/chain4_provenance.json": "b31b595733841a3fca1272a766fa5b39f14995d33c13e4d68f17db2b8a6de2d1",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/chain5_provenance.json": "8a012a111f731d0ae15f98c2ad7d8935aa54bb0851dd60f20728b82589f5deaf",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/chains.log": "4c7f2a38b92d741ecee3e02cfdbb3ae26fd449a790e89c3fb9fe3ac4efe5c946",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/chains_execution.json": "062cef043e1cad0accfafa898ce543fa9431568673762f7bb29610b10603f6ce",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/config.json": "4a3365311d9182fe496ae07d0f0ae9b1db5b0a15fd9afc1341a5c8abce97df13",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/driver_at_generation.py": "a5e9163005eb4f533508e54ea41457ac109f01b431c43c8866df9db7b6d856e5",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/exploration.png": "7d4e9562de86a0f9a864600ec678953db2d3f6b0f7e904a991decb1db5ff7883",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/fallback_oracle.log": "e1b813d9aeddcecaffed13d2a5b361e3f770867a012a1ad6bf82b82870ab7759",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/fallback_oracle_checks.json": "e869b222418b56e528539bf2932ad7c873d4887c07ed800fc7c35de4022939a8",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/fallback_oracle_execution.json": "73c561f46b5a8cd912631f81eddd43b815af300eef68c1dfdbaa88d94ceac3c2",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/fallback_oracle_initial_aborted.log": "c754d8d25bd70af8a45df3748b848a0d3423cc5c4c59c97ba1a161c4a65f62fc",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/fallback_oracle_replay.py": "1629f47662a6f9e5c95f98c2fcc562f4cb6cf90b8c269c8ac264a6305e8cf257",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/independent_rejection_comparison.json": "04780483ab859ddd7f00d9f85583ef7cc57687455a9b2b57eb31a02e8073bf52",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/initial_analysis_affine_comparison.json": "630bcddea09313d661b6367b76f4c3f9337e9629f342506cb0a3eb15be70623c",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/initial_analysis_analyze.log": "8852e0d11e39c951f909f1e0d222c83781937d0b614536cc9e2a88d4cb86a53d",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/initial_analysis_analyze_execution.json": "098a238c5504890f46fbb9b4aca57bb6abeb35b4667537b149a91b2eaaaa15f0",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/initial_analysis_independent_rejection_comparison.json": "bee7fabbad7ab19679760c5a9b8fd8264dbb10afdeeb48dd15f45ad408df8940",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/initial_analysis_summary.csv": "96c6c3714d06e8bc4358a50881249f06af6f7594ba1ad358ed5b30978744afb4",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/initializer_oracle_checks.json": "73d1993fa2c6575cb11351d326f7e775c855c8bacd8545f20a87a5f6fa564a45",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/pilot.json": "3c5ca69b792dcdd46d8dfe0e73cd4f205867fd9d0b166c98506dc82e1a1bf2eb",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/pytest.log": "4cd80ce8fac098f52be0a20c03c27b12a13699fd1be16fd62843165b8d42bd2e",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/pytest_final.log": "0d238ab7ae172f7d410376b12c6e0fa3cdfdcc8d77429423454de4058631a86d",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/pytest_initial_collection_failure.log": "ebc4bad52cefe6738fa44f49418b7d9fb1d70a1ddaa72ace2ca02c554d3a1f7d",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/reference_oracle_checks.json": "36c4c897c2aea1a89e584fe28d5706acc99a00276c7dca3e4368cf43b0f9105e",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/references.log": "8263a641d6e809279ae7d8aa6760d14a52b65ab4577e017d326913b310d489a3",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/references_execution.json": "c41f93494e0c367658079ee49086cad7208a477911d2ee8a5bbc21e532f26dc5",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/references_initial_syntax_failure.log": "96e3bef8b8f9e595623ed50a7d9296a2f61a1fde2761e44e4060c55e127332a8",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/rejection_acceptance.json": "87dbd64fb30d9132edf653354a7b8f1b05f1d39353f95e49637795de7aac1851",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/rejection_base_normalization.json": "cd82bc0ae42f26c6f9d4de00b44067dfda116cb37420a3089eb16c94be3ed434",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/rejection_base_provenance.json": "1aaf265e04bdfdff486abfa2ed1e22c52bfdac5554b70d48786b0f8aa6499495",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/retained_chain_oracle_checks.json": "0ea2303154f2eb7413f9debca501e76ab76018235dc4d8a6b03cbed2b2115e24",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/starting_hashes.json": "63dbc2f45c084220e9e93d49eb66f7713ff26341344d455adc817f473101d20b",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/starting_status.txt": "a69ec4ea74c3ace16f1964042fc0e9947c191b01eb962020eb1aa233b41dea46",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/summary.csv": "299d46f8515b1952f47a036bd81a6124c1e12ead054c2fb8e30d5c62d4eefa56",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/weighted_a_normalization.json": "dae1c69bd1b9f286cebf00dfa23f8eecf67915f80b9c5fa0406fe2cc0de771f5",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/weighted_a_provenance.json": "0b496d48b6d9ec755ec476b30dbb9307de84e8e53a8b780d224e1343e0beb1b3",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/weighted_a_summary.json": "d6ce465b2f8444d1e0493b699d82ea4de345db0a81a49fe56c9c21e8ef0963f6",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/weighted_b_normalization.json": "1ad9c4f73acd8163669cd8e9c1de6146499ca91b13d318f31af12d2b1d3f3344",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/weighted_b_provenance.json": "37027e08fa52fd29f00bdb6c79dd5e561c050de0758087abf2f7054aca59f12b",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/weighted_b_summary.json": "0828adaff70d0c9adf9d2fc13aa6fd8f471008f4abf1ad886b1e6cc4836ec6b1",
+    "docs/research/evidence/shifted_student_followup_2026-10-10/weighted_reference.json": "8522681575f0cd36f25e4e16c2902a16b5c6b2b3caa1d02dafc427e3d36ba9eb"
+  }
+}

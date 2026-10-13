@@ -1,0 +1,10 @@
+{
+  "seconds": 3.6371548948809505,
+  "oracle_cases": 6,
+  "failures": 0,
+  "source_sha256": {
+    "scripts/study_student_higher_n_geometry.py": "321237e05370e162a77d5a1047f3813b0422193a0e8fc15c7a9cf33b89d95fbc",
+    "reporting/diagnostics/student_higher_n_geometry.py": "e2a24f422f1cf863bca9d9bb899e68244b4c4f73d06f668b3ebe0330b8b0748e",
+    "models/student_location_mle.py": "096abb4d3ad2a91b1946186af56b55f1b54e6482d367f5483bb6c72987e6550f"
+  }
+}

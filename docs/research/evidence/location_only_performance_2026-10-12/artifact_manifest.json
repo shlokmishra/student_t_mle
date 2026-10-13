@@ -1,0 +1,1026 @@
+{
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_shifted_n3_gibbs_chain2.json": {
+    "bytes": 618,
+    "sha256": "3657f741195d0e93edafced7fd26593e7baf3821f398b0df296dbbccb130d557"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_shifted_n10_block_chain1.json": {
+    "bytes": 1658,
+    "sha256": "d33cd1eda86dd5422a76e3f86f67ea099abd27c8a514e9b730dd8016e517ad4f"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_centered_n3_facet_hmc_chain3.json": {
+    "bytes": 664,
+    "sha256": "18b3e3c00ad1796b6d91d5b5046a00272da17770e34d4dc44561ff1dbef789d4"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_shifted_n10_initials.json": {
+    "bytes": 1502,
+    "sha256": "4e1f09f0b402e01dbaf8b41d6c081a7763f65d58439d65086e2f5c100a4c67d7"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_centered_n3_gibbs_chain3.json": {
+    "bytes": 622,
+    "sha256": "14d82c8bd31b83d9f603d230285353606646cbb221aa50c6e74e766f2d837506"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_shifted_n4_reference.json": {
+    "bytes": 2737,
+    "sha256": "87538ebe21cdbbb059d8b8c47207ac0fdf1da705fcc29449ede7a9efd35c0d4a"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_shifted_n10_independence_chain0.json": {
+    "bytes": 684,
+    "sha256": "8737723f3774dccd2b9a58fb3f49846c71ceee2b15d8f0218842068f7f844e57"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_shifted_n10_rattle_chain3.json": {
+    "bytes": 2371,
+    "sha256": "0b15e74844fe57b56403edb574a12cf6ae5f7ba52cf59bc19740bef5523c6a73"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_centered_n3_block_chain2.json": {
+    "bytes": 636,
+    "sha256": "b289a50ca1d043cc6b9317a78d13084d0ef8cc7ef2867288cd648204c2ba3eaa"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/comparisons.json": {
+    "bytes": 413762,
+    "sha256": "cef36c10037ad3581408166ff2fecf60c69ed507454a1f0751d45dac36deae2d"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n10_independence_chain0.json": {
+    "bytes": 686,
+    "sha256": "cdd942bc253df2c86070c7d1d2da03ef54ff7c2ca6878ff6ca9953819af5dcd7"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n3_rattle_chain2.json": {
+    "bytes": 2306,
+    "sha256": "4a6bc26c6072934d265c92aa64eb690b40453b0f7741c092319cd71b7fbafa67"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_shifted_n10_rattle_chain2.json": {
+    "bytes": 696,
+    "sha256": "89f5aa984b1f0a5dee1a6b8c4f79afb521db1b390267c0345b93a0584adcbc1c"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/direct_table.csv": {
+    "bytes": 1399,
+    "sha256": "9571f7b75fe34f6e59fbbcc9d1e03ddc3bdee50d22844c60f229a421edf3c083"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/head_before.txt": {
+    "bytes": 41,
+    "sha256": "031b276c876e84ace3e4d9e77a72772193dde67e859bf68998d872ad18bb77a6"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n3_rattle_chain3.json": {
+    "bytes": 2306,
+    "sha256": "62536205b7d46cdfdfc1b086f8c431d0774bffd022e2ba75a84fa9bf6d2fb365"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_shifted_n10_rattle_chain1.json": {
+    "bytes": 697,
+    "sha256": "c5ab2d30ef347b2fc5171726da26798a81878dd1ada35645b826fa6cbdd8091a"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_centered_n4_facet_hmc_chain3.json": {
+    "bytes": 682,
+    "sha256": "54971e7676503fef1ba8cbee7dff4480db1b0403a57623f56854bcfb0f3163aa"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_shifted_n10_block_chain3.json": {
+    "bytes": 634,
+    "sha256": "71580f5b6b835e9bbd22b4f6bc625b58aecb07f46746fc4e8328008084895bda"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_shifted_n4_gibbs_chain3.json": {
+    "bytes": 639,
+    "sha256": "c872c932b1a5230b198d8ae079507da3353f5549a12d5f808911220430a1b0a0"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/preflight_initial.txt": {
+    "bytes": 794,
+    "sha256": "60c607f38e5e8b33a370aa620972b765ed6ae36c6ba734237f8dd24cbc5f18a2"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_shifted_n10_block_chain3.json": {
+    "bytes": 1656,
+    "sha256": "29987f9dbe229574c51bb4f378cda11385b166204c19e4851748bbb8cf0aeeaa"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_shifted_n10_rattle_chain0.json": {
+    "bytes": 2361,
+    "sha256": "252666f4771ea29b1c04d71c4219f1e2cd20cc8dc7f898a2fcced11ab2b527cf"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_centered_n3_warmup.json": {
+    "bytes": 138,
+    "sha256": "5f28f693d178b80ff01fb206494135a2dd879b7035d7e8b55a6dc0e56c40cba7"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n10_initials.json": {
+    "bytes": 1524,
+    "sha256": "2d885ba3abcb2ac528c13590d03b7fe5de8de365eadb793d0d764732f454c540"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_centered_n10_block_chain3.json": {
+    "bytes": 637,
+    "sha256": "5ffa7efbc0d196c2d8af004896efda0049241519a187c021fd8f72ec10bd1e1b"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_centered_n10_rattle_chain3.json": {
+    "bytes": 699,
+    "sha256": "b3f96259b667c0fff965ea17f97fcffc26556ec6e82390e7f6b132f85eb208de"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_shifted_n10_reference.json": {
+    "bytes": 2731,
+    "sha256": "b49213cd5e57ce55ce2f01c105f1671c06746e82442c6fda1b7739bdf2f4f565"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n10_block_chain0.json": {
+    "bytes": 1641,
+    "sha256": "bd3f8d383cce1d5d6166bc0513cd5503636a40bc71e8ff75ecca6d93509fd1a6"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n10_rattle_chain0.json": {
+    "bytes": 2347,
+    "sha256": "d14ad97a37b48951229846173d0ce9d13009c13f4a9c03c640ee7dbda9247768"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_shifted_n10_independence_chain1.json": {
+    "bytes": 684,
+    "sha256": "76a110ae0d9a6b48973bf8a1ad8f4e52013231d71faf7dae0631868860c7a734"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_centered_n3_gibbs_chain0.json": {
+    "bytes": 621,
+    "sha256": "345f40d9d25be0e092a953c9339becf233c0ccacbdf8b3af21318e8336d3c6bc"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_shifted_n3_gibbs_chain1.json": {
+    "bytes": 620,
+    "sha256": "81818389db9d24781592eec8da0220864470998e9cd6b734bca48767e05b0770"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n10_warmup.json": {
+    "bytes": 215,
+    "sha256": "fe6085cc7d800dbff3a7e11ef29d6edc477f9cc605a721884e119a907767aa82"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_shifted_n4_facet_hmc_chain2.json": {
+    "bytes": 682,
+    "sha256": "f3523b844dc4a268204fb8f6ff61653d5c2704add778d2f41e81ea2559967482"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n3_independence_chain1.json": {
+    "bytes": 686,
+    "sha256": "69471f4aac5eaa1ef607c92bbb9cfb77827f1ae659ea60b0e1bb831c374dd633"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/protected_before.json": {
+    "bytes": 225576,
+    "sha256": "bb2a1e23982d8016ba2dd05f0732f7a751bba307d590dc7a19b8a3052e37a901"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_centered_n3_gibbs_chain1.json": {
+    "bytes": 622,
+    "sha256": "50a21a1bc74ab61c6e82b2539acb9033f486e25c3d85f4f6e8162d2ff0a3cabb"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_shifted_n4_initials.json": {
+    "bytes": 868,
+    "sha256": "723c97bf04bc50cf573e1e551ec0885e87d023ba5b5d950380679f716a4567b2"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_shifted_n10_rattle_chain2.json": {
+    "bytes": 2371,
+    "sha256": "1a66e272813f104816d5bb4702a0aad839a787ea186450ee429ae3dec2a0cd06"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_shifted_n3_facet_hmc_chain1.json": {
+    "bytes": 664,
+    "sha256": "1ff56d7503be45f604bbaf5a039a1f8d7a03211c73f39f8cc09da92a7b1cdfe4"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_centered_n3_rattle_chain2.json": {
+    "bytes": 700,
+    "sha256": "c5828e92b1210969769b054b595e1a80e84d4f58aea390f9b5c2781fbe2cae24"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_shifted_n10_rattle_chain3.json": {
+    "bytes": 695,
+    "sha256": "38f31cf3ff52f3a2b5e6aef83c5c473f5b1c8beadf691ae1ee5147d21f34a905"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_centered_n10_warmup.json": {
+    "bytes": 140,
+    "sha256": "e0d0f854740baf1adc31989a4510b89f9679eebd06ed566cdc0a0ff7e03a4219"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_centered_n4_gibbs_chain1.json": {
+    "bytes": 620,
+    "sha256": "d8db9bad47b0c74e828137a1c6a19f49437941bb94b3fc1ab5c5e85d81c067d7"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n10_independence_chain2.json": {
+    "bytes": 687,
+    "sha256": "10bfcd0f4ffac825688edc3522ab2a7c3632647e20a083c1d2004506b9b32ef3"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_centered_n10_rattle_chain0.json": {
+    "bytes": 699,
+    "sha256": "aa1ef6f13c3d203c77c919edd6c23e49420531ab5277ec8847cd486a80cdaed1"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n10_rattle_chain1.json": {
+    "bytes": 2359,
+    "sha256": "c4ac11b0f705b3d58bd2e7f335e6438ccda17dd79e57ae8c7fcc3a84bef7c36f"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_shifted_n4_facet_hmc_chain1.json": {
+    "bytes": 682,
+    "sha256": "64b446ae74da9e825eeb34b9adcbf8d8da5a14e69aff9d3a7f30612223b89fe7"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_shifted_n3_gibbs_chain3.json": {
+    "bytes": 620,
+    "sha256": "32bb1e276a78690cac4f27711cfdf142382318b40572c22853738d6adbb632d6"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/direct_reference_checks.json": {
+    "bytes": 4270,
+    "sha256": "f734fb7a4dc6fce8bba0edcaea418477d13dd24781f969c7522a54be0ae85a64"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_centered_n10_block_chain2.json": {
+    "bytes": 636,
+    "sha256": "511a85133aa3d7db9de7ff37a941253517ed2d4e658c59613de31450a16c3236"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_centered_n3_block_chain3.json": {
+    "bytes": 636,
+    "sha256": "79998d5fadd7b16046964a3ec4ceeded900552db0eb12f1090ca0cb318721e19"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n10_independence_chain3.json": {
+    "bytes": 686,
+    "sha256": "38415d84fd47bd162c0674bd7dce293aa1b16d97a78f6d80f4c80ff31d873349"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_shifted_n3_reference.json": {
+    "bytes": 2744,
+    "sha256": "1a54d2e6c3f0c011d9ddbb35a5330682d837fcd478c61a0b67f905b3d7fa3223"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/failures.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_centered_n3_gibbs_chain2.json": {
+    "bytes": 622,
+    "sha256": "924518a63ea9644fd48c247fcc4022dcf0de91baadabf2cfc8de8f3ada9e37f9"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_shifted_n10_initials.json": {
+    "bytes": 1499,
+    "sha256": "0a48f0a092439b5280bd9cfea9c1d767b6a1b539beaf90f75df916de26bb16a3"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_centered_n4_facet_hmc_chain2.json": {
+    "bytes": 684,
+    "sha256": "1dae25c54c6827d37ac723a4fbb0f856bdaf7dc3bf66efcce5dff2545c9af8b8"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_shifted_n10_warmup.json": {
+    "bytes": 214,
+    "sha256": "020b547b82bf8d798e26feac87dd355b00860cc4a7ea8f6e0cdcdb97957a1ba8"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n10_block_chain2.json": {
+    "bytes": 1641,
+    "sha256": "340b313a1a7bff9994c2d5f759725557387daef1f48881a7a94d163635c5424a"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_centered_n4_gibbs_chain0.json": {
+    "bytes": 640,
+    "sha256": "649a208c5edec73f57faeeb0d673a4afeb65be5c24438f6979137abee71f317f"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/comparison_table.csv": {
+    "bytes": 6169,
+    "sha256": "66d076ce917001db7038700962528d70febc1b0b4b3b112208d64422420cc00a"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/git_status_before.txt": {
+    "bytes": 8100,
+    "sha256": "60107684c7d28cb21d86cdbfe8138e9086a171d41bd201d0a35a69f3ad479c12"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_shifted_n10_block_chain1.json": {
+    "bytes": 635,
+    "sha256": "1ba7f0c4d151ab447f483c5cdec08ce11e4886015a156a3e7ef1ac69584f4a63"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/config.json": {
+    "bytes": 4882,
+    "sha256": "21194caede84c50571313362d8db67743a58e1f50d74616de54ac26386677306"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_shifted_n3_facet_hmc_chain2.json": {
+    "bytes": 663,
+    "sha256": "cd57e45b5817af23c4428d53ff424b493496b03d37c3949a39625b46485fcc28"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n3_independence_chain0.json": {
+    "bytes": 686,
+    "sha256": "1f22ed1706a9ef5efdb89563ba2b8c14a1f35382b96ee1324cebb497a9e07d24"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_shifted_n10_warmup.json": {
+    "bytes": 140,
+    "sha256": "30840865ae0abbbb2a5441096315c14311b4107f4c52169015e8a2d2051459e1"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_centered_n10_initials.json": {
+    "bytes": 1524,
+    "sha256": "3a197d0db81a92663c98cd7705d6aad4738175344ea89cdf112907832e3e6ee4"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_centered_n3_reference.json": {
+    "bytes": 2742,
+    "sha256": "8f29fca1d788f2914d4d2c3d9679f951c4685c819f4471842d054c19b10f1518"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_shifted_n10_block_chain0.json": {
+    "bytes": 633,
+    "sha256": "4515173d8378b0d1d3347097667b7a97c34e08f09d97118ff17776795f532e8a"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_centered_n10_block_chain1.json": {
+    "bytes": 636,
+    "sha256": "f0f488e372b4230cae5374ff2907c8a74b1ba324c018c8c32276ef3b377dfc48"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/run_output.txt": {
+    "bytes": 8111,
+    "sha256": "1ca8b71f6442cf27885136ffc1ad6094e14bfa89dee077998e918037ea6b1525"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_centered_n4_gibbs_chain3.json": {
+    "bytes": 640,
+    "sha256": "925c6d108fb781f28c5b945021525a1bc77517d77495ed50bf5ac28a15cdb7e0"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_shifted_n3_warmup.json": {
+    "bytes": 144,
+    "sha256": "80f17152e9f4e7b075809791e48729ac88cf1cacdd44a4a6cf04c747151bbc46"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/reference_agreement.png": {
+    "bytes": 176998,
+    "sha256": "dcf4ea3f6dd367c5212fb1e4cc012be61e3a3526919e5ea8ddb0e7d249baef2b"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_shifted_n4_warmup.json": {
+    "bytes": 144,
+    "sha256": "792c251c9f0e2e9f527a16c7148776df94a59aeb128a0d9961113997c59b65d9"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/preservation.json": {
+    "bytes": 282,
+    "sha256": "f288efae1e5dc674cacae4157bf75309e097cce06bcb47663c575686eb98fe5c"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/staged_before.patch": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_shifted_n3_gibbs_chain0.json": {
+    "bytes": 620,
+    "sha256": "ed080c4d114c77e21b78b16f1003275e6d1e4c5a67530ee23debe9d963c6c245"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_shifted_n10_block_chain0.json": {
+    "bytes": 1656,
+    "sha256": "b5b82307a5a45751aae9b787d6b1467970d79207de884cad252f2d43af91f513"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_centered_n3_facet_hmc_chain0.json": {
+    "bytes": 664,
+    "sha256": "a4313db472d68ba99cc8d0c85ee20a67fe9c0bcdd81eb38f5e5c3c95a2955f61"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_centered_n3_block_chain1.json": {
+    "bytes": 636,
+    "sha256": "dfdff14f0b4d90284a392cc14ec5d0ec91560975bfc810a2bb7554d20006b37f"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n3_reference.json": {
+    "bytes": 2616,
+    "sha256": "2a565a8208e4d3f0ec42a5b1948bf5b0567b8905cd1319be2eaf9ac7e807a826"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_shifted_n10_block_chain2.json": {
+    "bytes": 1656,
+    "sha256": "604ac44f044baae9ef0cfac7155b102721289db5e3292f2b69f0ce9a2885bad6"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n10_rattle_chain2.json": {
+    "bytes": 2334,
+    "sha256": "f9131fe192ae17512975cb8232d25668ffe4e6ffdd953c17a9eed0b0bbd7cb93"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_shifted_n10_rattle_chain0.json": {
+    "bytes": 698,
+    "sha256": "37c6bdc33ebedadaec94e1240585165b2384f70c0a2231a84c4d1c0c2db4cddb"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/preflight_final.txt": {
+    "bytes": 98,
+    "sha256": "02e1ee95044da002c5174d3355eb1fb316130ac3ec98d6eccb2023b44ab979e7"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_centered_n10_rattle_chain1.json": {
+    "bytes": 698,
+    "sha256": "8764fc738c95b9ec678a5ecf48bfc5501eb582d3fc13bfc4a780bcd619bd3a56"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_centered_n4_facet_hmc_chain1.json": {
+    "bytes": 681,
+    "sha256": "8aad44b654acb7a6d873c1155e3c575ac745af05248541d6719b131dfbdc6e0a"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n3_initials.json": {
+    "bytes": 785,
+    "sha256": "076e12096b5a095b0e4c529e0a6248a82cc9e74b5dd9fc2a1318d8c57ef234f7"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_shifted_n4_gibbs_chain1.json": {
+    "bytes": 637,
+    "sha256": "f51a4e00f3ef5dc08f5c8b7c25d6c72845d374abc9ddb28ee00bb704e69fe63d"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n3_block_chain2.json": {
+    "bytes": 1680,
+    "sha256": "7712ac4225946757f061c835b6969567f5f7013d328cf09726ed872e899fd892"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n10_rattle_chain3.json": {
+    "bytes": 2346,
+    "sha256": "1ffcacd3bbc3867060005667adb7e77475c17659e3e91436554daa7afe8267a2"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_shifted_n3_facet_hmc_chain0.json": {
+    "bytes": 664,
+    "sha256": "dfe352c21e06c447cdbf0ae2c9ddf0721b5a645799b73d1a4ad00336f0281a7c"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n3_warmup.json": {
+    "bytes": 212,
+    "sha256": "9974be592ef1c0e1d8c21c88c058e0ff71f97391ec27e3977222a6e7a6fc9d39"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_centered_n4_facet_hmc_chain0.json": {
+    "bytes": 683,
+    "sha256": "3ff96271a5d2a9df55dd571628933a97194cb111fca8555f04ebe6a0bd9c5d88"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_centered_n3_facet_hmc_chain1.json": {
+    "bytes": 664,
+    "sha256": "17facb1429ba766af2e7afbe9294306cd8c8185048a564639a1ce216c99cb2a8"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_shifted_n4_gibbs_chain2.json": {
+    "bytes": 639,
+    "sha256": "4907046483d8791f5c8e7302b6bbdb4d2072a58345124e05e1d5cda9ddb5f1e6"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n3_independence_chain2.json": {
+    "bytes": 686,
+    "sha256": "978c2a8deb7445e5804ebe42b206541c8906ae31ac687e74156dde45a5a10123"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_centered_n3_rattle_chain1.json": {
+    "bytes": 698,
+    "sha256": "71879b91f3761f9ff302391007f39c7dad97f4c501d2ea4bc70d1caa4cc226ff"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n10_block_chain1.json": {
+    "bytes": 1640,
+    "sha256": "1d1d418a096de73740a70c821513740059be165bd97ace76fbd9046a55507a0d"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_centered_n3_block_chain0.json": {
+    "bytes": 636,
+    "sha256": "4f01a9e76a85871f08b736bbc08ac1ddbf2402b5fb44e3b4a451ae937140c3e4"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_shifted_n10_independence_chain3.json": {
+    "bytes": 685,
+    "sha256": "ffac7cc39cd2e7713a20f678090004f828427d9863025431bbf4b645769a0fee"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_shifted_n10_rattle_chain1.json": {
+    "bytes": 2373,
+    "sha256": "48ddbcf41c634d0a80e8d8fb746158afa2a7df9661b2d6a8ef17ceccc9d1fcc6"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n3_independence_chain3.json": {
+    "bytes": 686,
+    "sha256": "80446468c838f0a31c42f2175c690fb251c90d261ebaf1eac01ebd989ff9fd30"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_latent_traces.png": {
+    "bytes": 942047,
+    "sha256": "539d17d6ec602ca1cde4e141d7477d8c88441c019b2eee4ee796459516ff6caa"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/run_started.json": {
+    "bytes": 11632,
+    "sha256": "e5b14606662ac5d8da9a3ff656637258ad9afc61d40981d543ab1e7485658162"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_centered_n3_warmup.json": {
+    "bytes": 142,
+    "sha256": "4ceb404b753d854caa0bc9de3327aa91c0cf40c091de39cacb8767905a4622b0"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n10_independence_chain1.json": {
+    "bytes": 687,
+    "sha256": "ba487cd7517f2849e2483de54ef0780b5e2c64d5f5056723d03b3e5a38747ecb"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n3_block_chain3.json": {
+    "bytes": 1682,
+    "sha256": "8a7bf1b9772ac6d69761eb4afdfa804bc661f3e9529fc09d6b440b063c01eb84"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_shifted_n3_initials.json": {
+    "bytes": 717,
+    "sha256": "f5c4eddc04e02b0b0ed2e50a2727a422e072641867fa43fccde8554758eb38da"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_centered_n3_initials.json": {
+    "bytes": 722,
+    "sha256": "ba756af0547daaa4c3c418acf25165e1949f045983f90f76b21bc113d2de799f"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_shifted_n3_facet_hmc_chain3.json": {
+    "bytes": 664,
+    "sha256": "d419ea051306005bc9456bdd1a7c0750ac98b356ce4693e1f1aa6a94d9957119"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_shifted_n10_independence_chain2.json": {
+    "bytes": 685,
+    "sha256": "a23e64a9c2d3fbb023a68e7dd4527a44ce4a2a7952e5501d2d1062cccd90eded"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/direct_comparisons.json": {
+    "bytes": 52601,
+    "sha256": "4511d105e5e78204bab1242b7a7dff7097cda47ff7d9666427af91c8423d6152"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_shifted_n10_reference.json": {
+    "bytes": 2613,
+    "sha256": "02569d57e00e04a55bb2dd9fbbf9191a2333bbfe9f80ccea94c8e759079206cb"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_centered_n3_rattle_chain0.json": {
+    "bytes": 696,
+    "sha256": "1161fd49c430bc814b4d6f59533af34ea95eb92bf20c5f940e12b9f5111985d8"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_shifted_n4_gibbs_chain0.json": {
+    "bytes": 638,
+    "sha256": "f5a5568b329ce465ed5383fa99d669fbafb0dfdd71337da30d8d7230b01b9fe4"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_centered_n3_facet_hmc_chain2.json": {
+    "bytes": 664,
+    "sha256": "a066f59ad6e9332b2ea4495d47f87121483f8d038d691946b30a887091497e08"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_centered_n4_reference.json": {
+    "bytes": 2749,
+    "sha256": "701200243f0c02b8d2d05e4fb6f49d93f0175dbc08360a7e9b0a78771ae0c31f"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n3_rattle_chain0.json": {
+    "bytes": 2306,
+    "sha256": "d27b314d86439572146061d8e50571f65cbeec435e1b71058c1f7e32147693b7"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_centered_n10_reference.json": {
+    "bytes": 2741,
+    "sha256": "02025859275a03cc965d1ef90d61dc668be975b419dfc07af5cf21647611377d"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n3_block_chain0.json": {
+    "bytes": 1683,
+    "sha256": "fdffb66fe876e22bdecb1139e8679220a059056db21783a2b870d933c2203312"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_centered_n4_gibbs_chain2.json": {
+    "bytes": 621,
+    "sha256": "52a1fbcfaa83044446b826cc46d4717a786498118c3f03dd3b8a444182526e9e"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/reference_execution.json": {
+    "bytes": 36,
+    "sha256": "3c0ad9d8a70b63f5bfd546b180c3ef78c789d21e7ae85742fa75e050b5a8fd6a"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n10_reference.json": {
+    "bytes": 2630,
+    "sha256": "ec1e2be253349a343b0ae0f058f0cb31c0f9bb35781ade2574a02d1924fe566b"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_centered_n3_initials.json": {
+    "bytes": 787,
+    "sha256": "4e97218908a39d85000d539f9d320ad5b8084d3ae59f227da32e1f30a49fdbf6"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n3_rattle_chain1.json": {
+    "bytes": 2315,
+    "sha256": "93b5b61bc87b650e61ef5752a567e22352664bd03e7725e4fa09c1c8fc4d9457"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/efficiency.png": {
+    "bytes": 183336,
+    "sha256": "729b577e5801f1481569fda541191bfb7e0cae4435625b97a67918d7030c37cd"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_shifted_n10_block_chain2.json": {
+    "bytes": 636,
+    "sha256": "9b20983336f5ad76ceeba47a0c90a5ed73ffc2b360899e0c9775fc6456ba73d6"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_centered_n3_reference.json": {
+    "bytes": 2735,
+    "sha256": "a84523de480a41e259dd43e2d32d965f851023ac00feb292310f3f8011c2065f"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/independent_checks.json": {
+    "bytes": 20695,
+    "sha256": "6a7568e93acfea4c230bbc6a9e923317a5ccb03c97e8c545430145238c4ff481"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/completion.json": {
+    "bytes": 155,
+    "sha256": "b7a227a1f5bc7d12397fcfcebca7f7cf766fdc5afe7bc49d276d9ce11d83c7b8"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_centered_n10_rattle_chain2.json": {
+    "bytes": 699,
+    "sha256": "9d097cfce6b65c669054b4200b3cd83eb5a1afc8bcc2751bf3bd621e9e01d6eb"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_centered_n4_initials.json": {
+    "bytes": 896,
+    "sha256": "b254588d946afd912253cd1d37ed515bd859dc87e85cbd26fa820b9916649840"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n3_block_chain1.json": {
+    "bytes": 1682,
+    "sha256": "42e8b875bd60a5c42a792adf229691298e5edea18cb922cc1a38baca78f8fb08"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_centered_n10_block_chain0.json": {
+    "bytes": 637,
+    "sha256": "c6d6e428e97c23d485886340a7ac24293d0518d5a3fcdfc2a5c465f4cdd92d80"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/logistic_centered_n3_rattle_chain3.json": {
+    "bytes": 698,
+    "sha256": "418bbbb47c7ef3c6e7a2f876fa9e6c596753b00304527730ded95b1db437279d"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_centered_n4_warmup.json": {
+    "bytes": 144,
+    "sha256": "2670dbf6889be86a7f8f81e39fdef881e4151271aee0390d2183993407b33f9a"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_shifted_n4_facet_hmc_chain0.json": {
+    "bytes": 680,
+    "sha256": "0b564717748a71ee3b475db27ddf58855bfc846252c8eaf6b377d0c7f94b5fbc"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/laplace_shifted_n4_facet_hmc_chain3.json": {
+    "bytes": 681,
+    "sha256": "8d9838e4f55c8e4c93bc26ff954c969bf0871bb20f34e298fd1e15597490e7e9"
+  },
+  "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n10_block_chain3.json": {
+    "bytes": 1639,
+    "sha256": "d0d279fa09dbd8d6e133f1e4f9b104b5ca47a5217f15501b04032b44bebe4e5f"
+  },
+  "tmp/location_only_performance_20261012/logistic_centered_n3_rattle_chain0.npz": {
+    "bytes": 348817,
+    "sha256": "53fd134ba25cc317565fb8681a1798130bb38140241ebf6400583e6b31f75d96"
+  },
+  "tmp/location_only_performance_20261012/laplace_shifted_n4_facet_hmc_chain0.npz": {
+    "bytes": 437090,
+    "sha256": "d39e5805b4bbf85abb99bd40d5ac5c13ab60d40750dcc567b6cefcc228367452"
+  },
+  "tmp/location_only_performance_20261012/reference_laplace_n3.npz": {
+    "bytes": 2021768,
+    "sha256": "46f81feabb4f41367716e1aa2a9f66816d0c62de8b3d73463d52ed132badff4a"
+  },
+  "tmp/location_only_performance_20261012/logistic_centered_n10_rattle_chain0.npz": {
+    "bytes": 977717,
+    "sha256": "a920d2fa77c6de81882fb9b08eaaada2f4667ee2ca82079febcf3a87566898e3"
+  },
+  "tmp/location_only_performance_20261012/student_centered_n10_independence_chain3.npz": {
+    "bytes": 1003888,
+    "sha256": "2a2b94998a9945719863f1ea16abf1899363dd4ebb201d087b4248e3e210639b"
+  },
+  "tmp/location_only_performance_20261012/laplace_centered_n4_facet_hmc_chain2.npz": {
+    "bytes": 388494,
+    "sha256": "5e8cc40bffad9f12665425f7ee149f2378836e017b87bfe32275109297e9005c"
+  },
+  "tmp/location_only_performance_20261012/student_centered_n10_block_chain2.npz": {
+    "bytes": 804242,
+    "sha256": "bcd860ad9467b7567df2a5bd08556d6bbfb1e1b25788bce28012d4fcadb31985"
+  },
+  "tmp/location_only_performance_20261012/logistic_centered_n10_rattle_chain3.npz": {
+    "bytes": 978462,
+    "sha256": "e1a5e7eefc6a886e48834b032451bf128109fec6782f81573de06e8cbcd1f5d0"
+  },
+  "tmp/location_only_performance_20261012/reference_logistic_n3.npz": {
+    "bytes": 2027475,
+    "sha256": "b2ef6d729a3768d95081af3840fc8a8eded78076b3c0376a5385c901a4c58ffc"
+  },
+  "tmp/location_only_performance_20261012/student_shifted_n10_independence_chain0.npz": {
+    "bytes": 212130,
+    "sha256": "5d92f8cc45b39c71588cd563e5af00355078e9c1eba4c99e375a25380126a819"
+  },
+  "tmp/location_only_performance_20261012/logistic_shifted_n10_rejection.npz": {
+    "bytes": 48154,
+    "sha256": "34ff0a2303e93b2ae9a6bc7036a4c2609771243847cbb47a8a3c6a33fed10574"
+  },
+  "tmp/location_only_performance_20261012/student_centered_n10_rattle_chain1.npz": {
+    "bytes": 865359,
+    "sha256": "209def2cdb70b75b6702962748d2c571a7e77a1ddf561d4ece1729300321bc4d"
+  },
+  "tmp/location_only_performance_20261012/laplace_shifted_n4_facet_hmc_chain2.npz": {
+    "bytes": 437144,
+    "sha256": "1bcddadedb310984ce25bfcdd7ec1fa4fcdbd1751f0beba351d77a904ef6cc92"
+  },
+  "tmp/location_only_performance_20261012/laplace_shifted_n4_gibbs_chain1.npz": {
+    "bytes": 438871,
+    "sha256": "59c904f0d4b69b7c9527555e429b553a4ed053b61eeed16221ae29694a4ef938"
+  },
+  "tmp/location_only_performance_20261012/student_centered_n3_block_chain0.npz": {
+    "bytes": 275247,
+    "sha256": "3abbecd635c940cc00cb2c80b8b9554ae58648a8dc05e80fdd75fff59f14e28c"
+  },
+  "tmp/location_only_performance_20261012/student_centered_n10_block_chain0.npz": {
+    "bytes": 801361,
+    "sha256": "f110c49d7a3d82a339141541802a4bf578d8ad50409ea8bcd8b0acdb4b36a73f"
+  },
+  "tmp/location_only_performance_20261012/logistic_centered_n3_block_chain0.npz": {
+    "bytes": 339632,
+    "sha256": "370cce1c7b42389b2fd56af47af6c1c97e4d2fc27776737a963ae6f47f384bb6"
+  },
+  "tmp/location_only_performance_20261012/laplace_shifted_n4_gibbs_chain0.npz": {
+    "bytes": 438650,
+    "sha256": "3855a01606c1c4708be2b52a72f7846d0fac1d038b18240fc6a3790fe426980e"
+  },
+  "tmp/location_only_performance_20261012/logistic_shifted_n10_block_chain0.npz": {
+    "bytes": 941984,
+    "sha256": "a2f763e28e89a62e85e07e112074999ffd0fb6e83f56668fe6aa5ad892a5dd94"
+  },
+  "tmp/location_only_performance_20261012/direct_student_n3.npz": {
+    "bytes": 506461,
+    "sha256": "87cdbdb523867e9402b4357b97e9c8dad8306af8cf897aaa80df4444f27b3887"
+  },
+  "tmp/location_only_performance_20261012/student_centered_n3_block_chain1.npz": {
+    "bytes": 273965,
+    "sha256": "7409e9957ac225626a75e795b5c14b91c8fcf12ccc8660ab762201a517aae457"
+  },
+  "tmp/location_only_performance_20261012/laplace_centered_n3_rejection.npz": {
+    "bytes": 368183,
+    "sha256": "8f55da980d2de0ee684441a691c823cbcb8035e2b6845cf5f99390611a43735f"
+  },
+  "tmp/location_only_performance_20261012/laplace_centered_n3_facet_hmc_chain0.npz": {
+    "bytes": 267646,
+    "sha256": "6999b87a55e3095da958c94834b10cd3bcd9e7e1aae9cf7309b2b5165968a111"
+  },
+  "tmp/location_only_performance_20261012/laplace_shifted_n3_rejection.npz": {
+    "bytes": 28572,
+    "sha256": "8e4988092caaa33edafe2adfb571e031d4d0eea2158da3eff6741e8c88d8f724"
+  },
+  "tmp/location_only_performance_20261012/laplace_shifted_n4_facet_hmc_chain3.npz": {
+    "bytes": 435922,
+    "sha256": "b8e7fddc450da61411f0b8bf34799c2cfc9957bd06751f3b34a1ffdc7fca3e95"
+  },
+  "tmp/location_only_performance_20261012/student_centered_n3_rattle_chain1.npz": {
+    "bytes": 312920,
+    "sha256": "e872f14266430eedbf090c8110ca02672d154371e4e845bf8f8a2a222a024844"
+  },
+  "tmp/location_only_performance_20261012/student_centered_n3_independence_chain0.npz": {
+    "bytes": 349127,
+    "sha256": "e9250ff6cf9f6d76cc5dc6f0b322e4478c36fa4cfaeadfbecb9b875f899b5d56"
+  },
+  "tmp/location_only_performance_20261012/student_centered_n3_independence_chain2.npz": {
+    "bytes": 349206,
+    "sha256": "5980e1a9813e17f31d5a3263181bd0e1a3c2dccf2040191d400d08c29ec6686e"
+  },
+  "tmp/location_only_performance_20261012/logistic_centered_n10_block_chain1.npz": {
+    "bytes": 948927,
+    "sha256": "04e3c9812d7999bbd5cecfb064995f072f1923bb6a181376db746a74a16c007d"
+  },
+  "tmp/location_only_performance_20261012/student_centered_n10_rattle_chain0.npz": {
+    "bytes": 859203,
+    "sha256": "270640be8f36a017d9f3b661c60a99a54f5e8b4c127e89b5d4cd750299795104"
+  },
+  "tmp/location_only_performance_20261012/student_shifted_n10_rattle_chain0.npz": {
+    "bytes": 838679,
+    "sha256": "5df8d0ef3052b37559b26cac906eff1a8ba007eb1fe7df326c4cb1bbfd9f1c77"
+  },
+  "tmp/location_only_performance_20261012/student_centered_n3_block_chain3.npz": {
+    "bytes": 275497,
+    "sha256": "cdc942a5d6d1aeab3dfd0bcfe6d099a1584097c9933b1376b36887d44dbd363e"
+  },
+  "tmp/location_only_performance_20261012/laplace_centered_n3_gibbs_chain0.npz": {
+    "bytes": 268965,
+    "sha256": "3f784414be635f4926bfe312bc0b32a3f733ffd69d6778e527478df7f3fd3850"
+  },
+  "tmp/location_only_performance_20261012/laplace_centered_n3_facet_hmc_chain2.npz": {
+    "bytes": 267415,
+    "sha256": "23587b1d3bad0b772d93b16b3c6b40d31c3926d86aaa1e226ad78df314f92b66"
+  },
+  "tmp/location_only_performance_20261012/laplace_shifted_n3_gibbs_chain1.npz": {
+    "bytes": 266391,
+    "sha256": "fca13917bb67624d89aa5793c3aaac9494f8a3afcb6b2566caa34bc89ff6cd77"
+  },
+  "tmp/location_only_performance_20261012/laplace_shifted_n3_gibbs_chain3.npz": {
+    "bytes": 266811,
+    "sha256": "c707fd01fe070c7168de76ebde64b7d22126c5a2a10dc3cdd1cf9d01212f2bd0"
+  },
+  "tmp/location_only_performance_20261012/laplace_centered_n4_rejection.npz": {
+    "bytes": 516496,
+    "sha256": "30f7b21f10e05b8af0a8cb823fa4a1a3c36e83e2c6afa9482b68237930776864"
+  },
+  "tmp/location_only_performance_20261012/student_shifted_n10_rattle_chain1.npz": {
+    "bytes": 846784,
+    "sha256": "e0160d692a7b9fed08047a4c653a7562cb35b9e14ba4e3f9c6f0da9abe842396"
+  },
+  "tmp/location_only_performance_20261012/direct_logistic_n10.npz": {
+    "bytes": 1395009,
+    "sha256": "361bda2f7190aa7b2aca9a6cc0dd9e86ee80db8e745bf55932047012750e2561"
+  },
+  "tmp/location_only_performance_20261012/laplace_shifted_n3_gibbs_chain0.npz": {
+    "bytes": 266406,
+    "sha256": "e38c409905ae48710f6db68c629b58973290f069661c6046c0441751cb97fd80"
+  },
+  "tmp/location_only_performance_20261012/logistic_centered_n10_block_chain3.npz": {
+    "bytes": 948430,
+    "sha256": "dc9caa32863bb51fb9337729163e661d635efd991df726a8d902f2bc851ea75c"
+  },
+  "tmp/location_only_performance_20261012/laplace_shifted_n3_facet_hmc_chain1.npz": {
+    "bytes": 265850,
+    "sha256": "6c451f2670b7cbbae611dff5710241dfe34f7546d1d73d77e32313ed70a28473"
+  },
+  "tmp/location_only_performance_20261012/direct_student_n10.npz": {
+    "bytes": 1393103,
+    "sha256": "9a3d08fbbcbbd036a0b0aed631307bbe4e12622f2e11468eee086111cac537e3"
+  },
+  "tmp/location_only_performance_20261012/laplace_centered_n4_gibbs_chain2.npz": {
+    "bytes": 370059,
+    "sha256": "d32f509edf1587239cca1a57af0d077d67f9bab6815e37eedc6c0f5961071058"
+  },
+  "tmp/location_only_performance_20261012/student_centered_n10_independence_chain1.npz": {
+    "bytes": 1005363,
+    "sha256": "ed9ac424579456f3abaa8112605901e3182c0ac9e9f5a135b2833435b42c7455"
+  },
+  "tmp/location_only_performance_20261012/student_centered_n10_rattle_chain2.npz": {
+    "bytes": 867517,
+    "sha256": "21b478ade3eb5e1132051c39a30c8408889c1943d98b3c2642f6bbeaec3f72ec"
+  },
+  "tmp/location_only_performance_20261012/laplace_centered_n3_gibbs_chain2.npz": {
+    "bytes": 268702,
+    "sha256": "821194ff9cc4cba4ecf5c13b5f84cea4a72aaca4b57c28a5a9b6d5c8504d3fa4"
+  },
+  "tmp/location_only_performance_20261012/laplace_shifted_n4_facet_hmc_chain1.npz": {
+    "bytes": 436282,
+    "sha256": "00c1f16a9e32798eef2c1cb84b243fa738aaa6dc877671dcf04ac068f9a8c276"
+  },
+  "tmp/location_only_performance_20261012/logistic_shifted_n10_block_chain2.npz": {
+    "bytes": 939240,
+    "sha256": "dd2a0ccdf2d4e82fb5b9b3cf41554f9d05b8921b09cc1e7e54b5399ebcd7a500"
+  },
+  "tmp/location_only_performance_20261012/student_centered_n3_block_chain2.npz": {
+    "bytes": 265122,
+    "sha256": "660519baf0b7fb5741d0db8f01140975b296370970c16175c85231a20fb1672f"
+  },
+  "tmp/location_only_performance_20261012/laplace_shifted_n4_rejection.npz": {
+    "bytes": 31735,
+    "sha256": "8a1f0cfdbe425bc8ad13cdf6e165ed0690b4139a26bb1bfb2dca0de461e3a0d0"
+  },
+  "tmp/location_only_performance_20261012/laplace_shifted_n4_gibbs_chain2.npz": {
+    "bytes": 438755,
+    "sha256": "6e7f50d8c5f8ec21285bedb795e1cc7a37d5793a6b625845b72619d999a432a4"
+  },
+  "tmp/location_only_performance_20261012/student_centered_n3_rattle_chain0.npz": {
+    "bytes": 312163,
+    "sha256": "3264326ca414496386f966ff48bf9df918982c54ed4aafa38e9e85087293a6eb"
+  },
+  "tmp/location_only_performance_20261012/laplace_shifted_n4_gibbs_chain3.npz": {
+    "bytes": 438029,
+    "sha256": "e5c79189d2d61cbf77e2ab473d4c23ca71a84204b91476609adef584eee9b991"
+  },
+  "tmp/location_only_performance_20261012/logistic_centered_n10_block_chain2.npz": {
+    "bytes": 949139,
+    "sha256": "b582cabdce3ca6e696da12a4698baf2d43f3ad1a933bb32bccc20fec27d45c6e"
+  },
+  "tmp/location_only_performance_20261012/student_centered_n3_independence_chain1.npz": {
+    "bytes": 350189,
+    "sha256": "15df1a42b8043dfb74458a6eb2a905c0bd71e9a02239661d210d75cc8c05d14c"
+  },
+  "tmp/location_only_performance_20261012/reference_laplace_n4.npz": {
+    "bytes": 2526720,
+    "sha256": "53e84afa59854f93002e8113276291788a42231cd10b90e40e87a72990772469"
+  },
+  "tmp/location_only_performance_20261012/logistic_centered_n10_rattle_chain1.npz": {
+    "bytes": 976876,
+    "sha256": "a7f6fa68927d44f9360a8ae2bd07486f0b883ffe54db5a7f22804c187889cd12"
+  },
+  "tmp/location_only_performance_20261012/laplace_centered_n3_gibbs_chain3.npz": {
+    "bytes": 268197,
+    "sha256": "35e13ad4bd7319d8061dcf045042829f69f80a44065d9f02b57c0ff1bec1e826"
+  },
+  "tmp/location_only_performance_20261012/logistic_centered_n10_rattle_chain2.npz": {
+    "bytes": 977747,
+    "sha256": "635ba818e9e007065faeaabfb68035dfcddf163d439cb507ba5f11cb9f8bd909"
+  },
+  "tmp/location_only_performance_20261012/direct_laplace_n4.npz": {
+    "bytes": 632005,
+    "sha256": "50e4c7f753fcfe3c9892fdd43691b776dcf6b8d6ab0ad68038a6b71eec46783b"
+  },
+  "tmp/location_only_performance_20261012/logistic_centered_n3_block_chain3.npz": {
+    "bytes": 340151,
+    "sha256": "6a771e8d6ebecaadd8484ac9952378769c01072cca39dbce172865cb6938e0c9"
+  },
+  "tmp/location_only_performance_20261012/laplace_centered_n3_gibbs_chain1.npz": {
+    "bytes": 268872,
+    "sha256": "7db9c3f8245c837d75c115c38648b8eaed477d3d580e0e23d91076f86e704067"
+  },
+  "tmp/location_only_performance_20261012/laplace_centered_n4_facet_hmc_chain1.npz": {
+    "bytes": 385180,
+    "sha256": "40c13cb0c46d35ff549366fde5a4c5bfd7f89a6e1344e37cf25cf670527a0772"
+  },
+  "tmp/location_only_performance_20261012/logistic_centered_n3_rattle_chain1.npz": {
+    "bytes": 347634,
+    "sha256": "abe3d7fb13abcb448c19b30aa06c75bd3f6189fde316c60c756f5c5d0f6ff937"
+  },
+  "tmp/location_only_performance_20261012/student_centered_n3_independence_chain3.npz": {
+    "bytes": 348815,
+    "sha256": "0a5c46b4fe11311e808a33c24d4a596f5b5e8a68600fccb4ce2c86ba0100a8fa"
+  },
+  "tmp/location_only_performance_20261012/student_shifted_n10_independence_chain1.npz": {
+    "bytes": 229023,
+    "sha256": "9d892a6231b2e81fcff3b53f48912ec7c446d0b48dae90d59441cc2dde6b85de"
+  },
+  "tmp/location_only_performance_20261012/logistic_centered_n3_rattle_chain2.npz": {
+    "bytes": 347656,
+    "sha256": "74a400d826e6d6b3efeb5c53631f6cb6d7182ce155a8c3cd775de7d41b834abb"
+  },
+  "tmp/location_only_performance_20261012/student_shifted_n10_rattle_chain2.npz": {
+    "bytes": 839934,
+    "sha256": "52d19b92d01d66a68af7ac72dcfb540dd5e5f6da154935a163bc5ce23127dd77"
+  },
+  "tmp/location_only_performance_20261012/laplace_centered_n4_gibbs_chain1.npz": {
+    "bytes": 369115,
+    "sha256": "8b00ec92cc2e2058c7ce8c51540f98aae6e11d98fba62b1946abe2549641d70f"
+  },
+  "tmp/location_only_performance_20261012/logistic_centered_n3_rejection.npz": {
+    "bytes": 448488,
+    "sha256": "3ed4f7fb089a2843a1f8c784e2e19fcf4e4c81c42ed926f4d845ef010cd1a2a3"
+  },
+  "tmp/location_only_performance_20261012/laplace_shifted_n3_facet_hmc_chain0.npz": {
+    "bytes": 265823,
+    "sha256": "c584970c97d3f1567ec165e999fdbd21f428a5463ef39af99f3f86bd13c84e52"
+  },
+  "tmp/location_only_performance_20261012/logistic_shifted_n10_rattle_chain3.npz": {
+    "bytes": 970713,
+    "sha256": "62456be6098e07b84ea14460faf85dc3d9a541d8cf3fb72dfca79cc43e245b29"
+  },
+  "tmp/location_only_performance_20261012/student_centered_n10_rejection.npz": {
+    "bytes": 1359786,
+    "sha256": "ff2b4f7c4a4829fb49461e55737427051ff5b8ba83ff1437e230abf989e34671"
+  },
+  "tmp/location_only_performance_20261012/laplace_centered_n4_gibbs_chain3.npz": {
+    "bytes": 368921,
+    "sha256": "ecb0542a4bce37e7e50a5a0a97e6ada11d27ac7aa113b1a1021175cf04e06b65"
+  },
+  "tmp/location_only_performance_20261012/laplace_shifted_n3_facet_hmc_chain3.npz": {
+    "bytes": 265596,
+    "sha256": "959aa3911c45f09a53ac1133f7e173b6ca8afb0a432efc57a4a1318961f384b2"
+  },
+  "tmp/location_only_performance_20261012/logistic_centered_n3_block_chain1.npz": {
+    "bytes": 339998,
+    "sha256": "9a50188a3d6bf421fe21dea08194304178c9ea767c39e4fe884812b39832a1d5"
+  },
+  "tmp/location_only_performance_20261012/student_centered_n10_independence_chain2.npz": {
+    "bytes": 1007011,
+    "sha256": "6f4171b8bcae1fad6ff0e18c3f2efdab1b672b22b61a0424617f38d112a79cff"
+  },
+  "tmp/location_only_performance_20261012/student_shifted_n10_block_chain2.npz": {
+    "bytes": 763796,
+    "sha256": "8cba83f401c85d05ebdaf253ddda8130f5a2c5c157505cc4dfb35ed938eabad1"
+  },
+  "tmp/location_only_performance_20261012/laplace_centered_n3_facet_hmc_chain3.npz": {
+    "bytes": 267169,
+    "sha256": "ae4c74b504b88b8ebcd0f7ac6063bb29abbc228a308759bd909af0e5de6fab55"
+  },
+  "tmp/location_only_performance_20261012/student_centered_n3_rattle_chain3.npz": {
+    "bytes": 313459,
+    "sha256": "4bb4b22b09988036da7fa3f3c993c84de633d497a8f7f645dfc417513e10a888"
+  },
+  "tmp/location_only_performance_20261012/direct_logistic_n3.npz": {
+    "bytes": 507184,
+    "sha256": "8c53b35850c70dbbcc6a92abaeee1eac11f38527db5476b651ed6e3cad8eb8ec"
+  },
+  "tmp/location_only_performance_20261012/student_shifted_n10_block_chain1.npz": {
+    "bytes": 770957,
+    "sha256": "3a5a7c1a290dc1090deae2030f2d597560f2b40d2e34f08a65c83ef6b5686ed8"
+  },
+  "tmp/location_only_performance_20261012/logistic_shifted_n10_block_chain3.npz": {
+    "bytes": 938312,
+    "sha256": "021d429284cef6961bf477c0d7b9ca188565013531ea7480d52ea08cfff7ab7f"
+  },
+  "tmp/location_only_performance_20261012/student_shifted_n10_independence_chain2.npz": {
+    "bytes": 226311,
+    "sha256": "a0217226875a16f50422c14d20cafb9c1464c9235456da70356002fa5c7c9218"
+  },
+  "tmp/location_only_performance_20261012/logistic_shifted_n10_rattle_chain0.npz": {
+    "bytes": 970463,
+    "sha256": "d6ce1dffb669b3d2c64d118751a56c01f9f0d79ac9177a3b35b4c0657009f3d6"
+  },
+  "tmp/location_only_performance_20261012/student_shifted_n10_rejection.npz": {
+    "bytes": 30632,
+    "sha256": "017e8c25432b5b4f5ca77ea03c9569d6c7d1cd3989a5156dddddf3463ff4b3f9"
+  },
+  "tmp/location_only_performance_20261012/logistic_centered_n10_rejection.npz": {
+    "bytes": 1341813,
+    "sha256": "dfa642d06429c34a0b8dd44a8fb00bd3e07e5d3a050d0535f3c01f1c0732b913"
+  },
+  "tmp/location_only_performance_20261012/student_centered_n10_rattle_chain3.npz": {
+    "bytes": 865613,
+    "sha256": "a25cbe6256dcf4e7c03e53dbbba6be05f284140075a63cb479e4d79712512025"
+  },
+  "tmp/location_only_performance_20261012/laplace_centered_n3_facet_hmc_chain1.npz": {
+    "bytes": 266846,
+    "sha256": "a1da8d30d7683ae0cbe56e128a8df297513c3e00aa1f0694c4ba40eabae3b0c3"
+  },
+  "tmp/location_only_performance_20261012/student_centered_n3_rattle_chain2.npz": {
+    "bytes": 314517,
+    "sha256": "2a7b6a72bfe604fb3c53250322422299d676088c2c27d644a178063205fc18de"
+  },
+  "tmp/location_only_performance_20261012/logistic_centered_n3_rattle_chain3.npz": {
+    "bytes": 347561,
+    "sha256": "a42acd8e80a6c43a8c6187a698696a3343e034001980a555e5e59c2523b473f7"
+  },
+  "tmp/location_only_performance_20261012/laplace_shifted_n3_facet_hmc_chain2.npz": {
+    "bytes": 265839,
+    "sha256": "72d826f4b253efd8014d14425330a3f9d097ce5113c9f9fca65928d57169430e"
+  },
+  "tmp/location_only_performance_20261012/student_shifted_n10_block_chain3.npz": {
+    "bytes": 768486,
+    "sha256": "cad1291d633012ae6fc6b3a1e9a517c046aad5bf926a0a5177882eb4673fe785"
+  },
+  "tmp/location_only_performance_20261012/laplace_centered_n4_gibbs_chain0.npz": {
+    "bytes": 369760,
+    "sha256": "aa550c5ea39e98bd3a819eb47dc877993167e9ed63d668b3860c72ee01b5c352"
+  },
+  "tmp/location_only_performance_20261012/laplace_shifted_n3_gibbs_chain2.npz": {
+    "bytes": 266556,
+    "sha256": "bcf1f46b984b4cb86c3a5343e3ed98070362f3eaa5acaed2273a062ff36c04de"
+  },
+  "tmp/location_only_performance_20261012/laplace_centered_n4_facet_hmc_chain0.npz": {
+    "bytes": 384812,
+    "sha256": "4e27b29535bc8b99b877d6620d4982432fecbe84e2f354bcb8c372d1a89d92ae"
+  },
+  "tmp/location_only_performance_20261012/logistic_shifted_n10_rattle_chain2.npz": {
+    "bytes": 969751,
+    "sha256": "dc9d8cb0286189633221b645690e0ccbce648096ff50ea7f6370f23d7b2190cb"
+  },
+  "tmp/location_only_performance_20261012/logistic_shifted_n10_rattle_chain1.npz": {
+    "bytes": 973111,
+    "sha256": "ced2147af0a99e84a071b04ae5df71254bb1cb9e9469fa53af6643c6b8f8b702"
+  },
+  "tmp/location_only_performance_20261012/student_shifted_n10_block_chain0.npz": {
+    "bytes": 760073,
+    "sha256": "4d4ebe057979903c61dc9c7d9f71b71267b56957a96e0463ce4ca4a978d4cf28"
+  },
+  "tmp/location_only_performance_20261012/laplace_centered_n4_facet_hmc_chain3.npz": {
+    "bytes": 385584,
+    "sha256": "35b8f7ecf5bae20707541da5588d1fcba3dac983528f9914d871c2c8b4e05250"
+  },
+  "tmp/location_only_performance_20261012/student_centered_n10_block_chain1.npz": {
+    "bytes": 801837,
+    "sha256": "66de28ce473fe170fb87a2187c67010821dbba6720d4b459765f762d7b4c176d"
+  },
+  "tmp/location_only_performance_20261012/student_centered_n3_rejection.npz": {
+    "bytes": 461580,
+    "sha256": "f04054fd51df5a63aefd8706417a784a79cdd8ef60c1e7ec4a645bd55e7a4c6d"
+  },
+  "tmp/location_only_performance_20261012/logistic_centered_n3_block_chain2.npz": {
+    "bytes": 340355,
+    "sha256": "412f186986b6a1de8f3c5bb73f2234955d15680ae83fe7b0199b7bc8a3d6eb13"
+  },
+  "tmp/location_only_performance_20261012/student_centered_n10_independence_chain0.npz": {
+    "bytes": 1007255,
+    "sha256": "3842fbbf33fa440931612b006512df383d401451426c587bc4baea41c442e3ab"
+  },
+  "tmp/location_only_performance_20261012/reference_logistic_n10.npz": {
+    "bytes": 5578912,
+    "sha256": "606390fe3a7daedffe285ea8b939a815b99f2eff98af53336678eb3fdd5da250"
+  },
+  "tmp/location_only_performance_20261012/logistic_centered_n10_block_chain0.npz": {
+    "bytes": 949665,
+    "sha256": "3124a95c2e971f89b1cd0e93457562d40f1ba052207ef46628fda40434ffcab1"
+  },
+  "tmp/location_only_performance_20261012/logistic_shifted_n10_block_chain1.npz": {
+    "bytes": 939575,
+    "sha256": "7735673b462e33e4b4d164cdcc59b8a789d1191d18010859298416f9a38fefc6"
+  },
+  "tmp/location_only_performance_20261012/student_shifted_n10_rattle_chain3.npz": {
+    "bytes": 844417,
+    "sha256": "14f913d21c0f9cc749a2acc3fab22d485d1e5b25a8eadaa360f277fd9e12cf27"
+  },
+  "tmp/location_only_performance_20261012/student_centered_n10_block_chain3.npz": {
+    "bytes": 801454,
+    "sha256": "92659f620e6b0176bce96c9c5cb43227af92f6adb137caff2ee83e96bfa9656e"
+  },
+  "tmp/location_only_performance_20261012/student_shifted_n10_independence_chain3.npz": {
+    "bytes": 237004,
+    "sha256": "c94debce63e97da8bae2046da989bd0cfbd2dceb0ecc1128f7267c01faecf014"
+  },
+  "tmp/location_only_performance_20261012/direct_laplace_n3.npz": {
+    "bytes": 505708,
+    "sha256": "234be5e39646a4cd05ae7091db85f36cb9912bf9ccfd3966d26353b398930442"
+  }
+}

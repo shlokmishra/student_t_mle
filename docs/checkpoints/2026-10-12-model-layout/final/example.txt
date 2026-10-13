@@ -1,0 +1,27 @@
+{
+  "target": "student_location_score",
+  "release": 0.0,
+  "seed_key": [
+    0,
+    20260920
+  ],
+  "parameters": {
+    "n": 3,
+    "k": 2.0,
+    "num_iterations_T": 40,
+    "proposal_std_mu": 0.5,
+    "proposal_std_z": 0.1,
+    "prior_mean": 0.0,
+    "prior_std": 10.0,
+    "gibbs_backend": "numba_full"
+  },
+  "mu_shape": [
+    41
+  ],
+  "x_shape": [
+    41,
+    3
+  ],
+  "max_score_residual": 1.3183898417423734e-16,
+  "validation": "shape/finiteness/constraint smoke only"
+}

@@ -1,0 +1,497 @@
+{
+  "artifacts": [
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/centered_n10_block16_chain0_provenance.json",
+      "bytes": 3395,
+      "sha256": "01c2e602b19214e5fd313a7c9fbc6f5e2768574e50f37a806d19de5cee81a22a",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/centered_n10_block16_chain1_provenance.json",
+      "bytes": 3399,
+      "sha256": "3f699efd85d920fa29a7136c626a77bb02557c6d72c0c06e04fcdb0f00309546",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/centered_n10_block16_chain2_provenance.json",
+      "bytes": 3415,
+      "sha256": "5fa672615d614cc603ed8959943e362919e52f880b735db122907b9ffc246acf",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/centered_n10_block16_chain3_provenance.json",
+      "bytes": 3417,
+      "sha256": "cdbc3d06cfa7f980f4f667a6ffa710958552c6a3fec797b1e231a600159556e7",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/centered_n10_independence_chain0_provenance.json",
+      "bytes": 3625,
+      "sha256": "d6f2775ce31a3845b7a208601f0cc94662fcc58ff20ca1815b11d87afb20d66e",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/centered_n10_independence_chain1_provenance.json",
+      "bytes": 3629,
+      "sha256": "e4254eb19fd4f9f1e6468bc6a1e26a0600f2147012c4deede9b00cb161de94a2",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/centered_n10_independence_chain2_provenance.json",
+      "bytes": 3629,
+      "sha256": "ab022472d06e2b6458725a3696ecaa87aa48054db3d3865ab1cebcb0bf18aa57",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/centered_n10_independence_chain3_provenance.json",
+      "bytes": 3630,
+      "sha256": "b977774f7b819fede63093d6d5a79c8189421ffc4e147cce922c556ba5c26b1c",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/centered_n10_reference.json",
+      "bytes": 2322,
+      "sha256": "88a18d223e888cf97492f24e3bd903d0c68fc4dcbdd058a8da200c4863777d16",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/chains_execution.json",
+      "bytes": 136,
+      "sha256": "6dfce40c7c98bfa6bea8acd0d36f4ba48fa8bde1a9f24b143a4f633886fa6efd",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/comparisons.json",
+      "bytes": 42165,
+      "sha256": "bf1932000414f9735f7ee8a09e4d274c5ad442b274d3ed676a279f2f5ffaa3db",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/config.json",
+      "bytes": 1688,
+      "sha256": "155785c2a6202582d75ab802d6d97a79d65ba8567ea07fc072276f2ea07805f4",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/direct_comparison.json",
+      "bytes": 4722,
+      "sha256": "020e6a3b03990d5b8e3cf9fa2714e87d85b330fb70477ff707de7b43a141aa4d",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/direct_oracle_checks.json",
+      "bytes": 4007,
+      "sha256": "395c193e4668651c6d2afb62db139d70e29818179f7524d6ebb2ea615db5f40d",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/direct_provenance.json",
+      "bytes": 223,
+      "sha256": "3bcb0af9edcec6f2b9fe1217eedc93ee590d52baf3e3a9f2c524a6068d490e32",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/environment.json",
+      "bytes": 443,
+      "sha256": "6f404acf648e0f2237421621f8ce4ee86cb43c0e10fb0b5bf2eff8a31db2ca3a",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/geometry.log",
+      "bytes": 570,
+      "sha256": "c282fb553e9e388fa2baa43727ef961167c13705145b3ab34bdb72942545e972",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/geometry_retry.log",
+      "bytes": 570,
+      "sha256": "c282fb553e9e388fa2baa43727ef961167c13705145b3ab34bdb72942545e972",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/higher_n_examples.json",
+      "bytes": 7716,
+      "sha256": "f99708a4dd0baaf59adbf84a0838c52a1f1ca50ba6f9a432e07bd6a1fcfdcf9b",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/higher_n_execution.json",
+      "bytes": 449,
+      "sha256": "fa80d3242bb2654314fd4a6732f936f827fd3fe46d073d64fd9a23332f46e591",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/higher_n_fold_witness.json",
+      "bytes": 408,
+      "sha256": "8642f1674b7debc1efe508e9ffd478998ebf5704526299f18c3ffd17f2a9923c",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/higher_n_graphs.json",
+      "bytes": 29533,
+      "sha256": "36c286742f0933dc55f9d6aee79b0e1f06163a7cdf2cd7a9249fcc6c93588f70",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/initial_driver_checks/geometry.log",
+      "bytes": 570,
+      "sha256": "c282fb553e9e388fa2baa43727ef961167c13705145b3ab34bdb72942545e972",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/initial_driver_checks/geometry_helper_before_exact_fix.py",
+      "bytes": 2649,
+      "sha256": "d8b2bd21385693ff996200d4e85aae4a2df6cf857d7a773161de854b60c56704",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/initial_driver_checks/higher_n_examples.json",
+      "bytes": 7819,
+      "sha256": "844983581e267256b4b99a12b9125e8649ba7ba8ea681ade5c02af29daf4a437",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/initial_driver_checks/higher_n_execution.json",
+      "bytes": 449,
+      "sha256": "f2b717f8d54113025be2592ea559744d93e9b35b3c9a2648ee0f3c7c934d871d",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/initial_driver_checks/higher_n_fold_witness.json",
+      "bytes": 408,
+      "sha256": "8642f1674b7debc1efe508e9ffd478998ebf5704526299f18c3ffd17f2a9923c",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/initial_driver_checks/higher_n_graphs.json",
+      "bytes": 29533,
+      "sha256": "36c286742f0933dc55f9d6aee79b0e1f06163a7cdf2cd7a9249fcc6c93588f70",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/initial_driver_checks/sampling.log",
+      "bytes": 853,
+      "sha256": "edbb59751fb0f4a7195d6fd7b461c1e5d4489f7bb8ba79d21668ff311c6a63d8",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/integrity.log",
+      "bytes": 60,
+      "sha256": "f9dbc54b175a50ff727092bfb79a1502ca34cc948835ce726e53a4514724dc38",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/integrity_check.json",
+      "bytes": 149,
+      "sha256": "39d83386560e5c223c771b95a6d88853ed0a40237d24721e955b3ae74ffd64a3",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/latent_traces.png",
+      "bytes": 523580,
+      "sha256": "c431a9c597487b6f26059940baca2813757fc7d34321ade2433ba534a8543ea5",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/metadata_initial_failure.json",
+      "bytes": 282,
+      "sha256": "9c5e2628387b6277a948fe4b94585569e0a40db3b331856eff9f4edd2709d4e2",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/oracle_checks.json",
+      "bytes": 12316,
+      "sha256": "fb15210068164d33ac9b6fea5c77fdad4cbace9cb9d773c32d3be3e51fac4b97",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/preflight.json",
+      "bytes": 867,
+      "sha256": "f2a7f20289490982beaf726a9c95bd49c2e99b469c6a2222d35453763c65fcdd",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/preservation_check.json",
+      "bytes": 87,
+      "sha256": "72d4d201518a163e8ab3a1c9bfd1bd396b42e1da4912ce9a23fd9d382fb514b3",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/pytest_focused.log",
+      "bytes": 99,
+      "sha256": "0b23cc4cca79c1324b163ca749f6519e9c321d350c32320c3d066998284c2dff",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/pytest_geometry.log",
+      "bytes": 894,
+      "sha256": "519290555133b59427856a059a37b0bd5a13e7ca0729ba5556cb38f2da76ca15",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/pytest_initial.log",
+      "bytes": 111,
+      "sha256": "5dd5fec677a4af355d3b1914ae95786d3c419a28b70d24df5ed5ae10bf4fa1b4",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/sampling.log",
+      "bytes": 853,
+      "sha256": "edbb59751fb0f4a7195d6fd7b461c1e5d4489f7bb8ba79d21668ff311c6a63d8",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/sampling_retry.log",
+      "bytes": 2547,
+      "sha256": "652be5a385b2b2f7015c53020d4616c5855504d5044609bcaaa732c41fd5536a",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/shifted_n10_block16_chain0_provenance.json",
+      "bytes": 3394,
+      "sha256": "c2b191ac0bca6ecb12f4fbb54709de629286c73f667fdf4a14ef34a593e82372",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/shifted_n10_block16_chain1_provenance.json",
+      "bytes": 3382,
+      "sha256": "93c5dccaeefc92c7f487cb622baba85375bea32b8ca0a25895a6a98d27e99d3c",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/shifted_n10_block16_chain2_provenance.json",
+      "bytes": 3387,
+      "sha256": "667c5d62165b06130721c90231105c6b3cd7e0d4b1b53709e1c5aa0554c95c05",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/shifted_n10_block16_chain3_provenance.json",
+      "bytes": 3356,
+      "sha256": "a85ecd1481dee16c36dc7a986445dd1f249730ce679314841f5216d171a5131f",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/shifted_n10_independence_chain0_provenance.json",
+      "bytes": 3602,
+      "sha256": "01b24db60da66d85387ed1e649e52ecfae3189a6df74189728d6c0886f22c2af",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/shifted_n10_independence_chain1_provenance.json",
+      "bytes": 3609,
+      "sha256": "0b613f58996a0a7dd93b221e6fdf60829e101be727cee7a6a2bff2c465446fbe",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/shifted_n10_independence_chain2_provenance.json",
+      "bytes": 3610,
+      "sha256": "22a42fbc72193926aeb8b23f0d978006e24dabe4105e8eecf034fc4df761b4fe",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/shifted_n10_independence_chain3_provenance.json",
+      "bytes": 3578,
+      "sha256": "79e8d0c53a9e1c9f252e3d8a1cdd14eca567354e9a8395b59752d43f7e7c9ba6",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/shifted_n10_reference.json",
+      "bytes": 2306,
+      "sha256": "e52c5c55a245e690c4d6c2d05e6a1c53cfe84b24802bdf7851459c13e418079e",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/starting_hashes.json",
+      "bytes": 122135,
+      "sha256": "28d7f11c2c150c1aea35662487a3c523cdaebdad55d265241e3c4f910b9e238a",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/starting_status.txt",
+      "bytes": 5129,
+      "sha256": "3c76e4c849d8c9df31a9efd6cb224f2a8e1ebd2ca41345b5c75e39eed2ad85e6",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/weight_residence.py",
+      "bytes": 985,
+      "sha256": "438e51c79e048260a5c3946a3d41ac8f391b5a88ebe43a3a031dea83c895f823",
+      "portable": true
+    },
+    {
+      "path": "docs/research/evidence/student_independence_geometry_2026-10-10/weight_residence_diagnostics.json",
+      "bytes": 583,
+      "sha256": "8e9cf0a9d650f134afa3464784f641e42c69bb53e712dab46b609415523cfbf3",
+      "portable": true
+    },
+    {
+      "path": "docs/research/student_higher_n_geometry_preliminary.md",
+      "bytes": 14333,
+      "sha256": "a7cad1183426e843313a5cbdc809dfa16f54c5471605a8ba6a0e1164b6433e72",
+      "portable": true
+    },
+    {
+      "path": "docs/research/student_independence_mh_validation.md",
+      "bytes": 18503,
+      "sha256": "31bf81f183c4c852c53c15d5854f4a5668b6c6fc09001a1a2c1db2457659a245",
+      "portable": true
+    },
+    {
+      "path": "models/loc_student_selected_mle_independence.py",
+      "bytes": 7568,
+      "sha256": "7e5b3ea88b4782f96538617ba26d5d62a466ca1b69f7adc093ae2fa5af3014e6",
+      "portable": true
+    },
+    {
+      "path": "reporting/diagnostics/student_higher_n_geometry.py",
+      "bytes": 2683,
+      "sha256": "e2a24f422f1cf863bca9d9bb899e68244b4c4f73d06f668b3ebe0330b8b0748e",
+      "portable": true
+    },
+    {
+      "path": "scripts/study_student_higher_n_geometry.py",
+      "bytes": 2673,
+      "sha256": "321237e05370e162a77d5a1047f3813b0422193a0e8fc15c7a9cf33b89d95fbc",
+      "portable": true
+    },
+    {
+      "path": "scripts/validate_student_independence_mh.py",
+      "bytes": 13934,
+      "sha256": "a1313515f272e1e38947c59f567f63fff322afdf41eb4d4dc7063ad0581efffe",
+      "portable": true
+    },
+    {
+      "path": "scripts/verify_student_independence_evidence.py",
+      "bytes": 2340,
+      "sha256": "c3c6b1a243b9f062c027d7ae6ffae52c1688f16ddc9535d4688e5dfe6dfcdbf9",
+      "portable": true
+    },
+    {
+      "path": "tests/test_student_higher_n_geometry.py",
+      "bytes": 3751,
+      "sha256": "d2199d3f3c13312fda24557671be5300188ba38198fd71a9395751ff0425c251",
+      "portable": true
+    },
+    {
+      "path": "tests/test_student_independence_mh.py",
+      "bytes": 4760,
+      "sha256": "2a7e22a271d90faa2517c6c0e5949b819c41050635e48b6326e45f6f09532b64",
+      "portable": true
+    },
+    {
+      "path": "tmp/student_independence_geometry_20261010/centered_n10_block16_chain0.npz",
+      "bytes": 532298,
+      "sha256": "014ce1d762dc30e0119ecfc89ed328c2d1f430836f86c1ba737c5e15c73210ff",
+      "portable": false
+    },
+    {
+      "path": "tmp/student_independence_geometry_20261010/centered_n10_block16_chain1.npz",
+      "bytes": 537294,
+      "sha256": "2ea8252a42a17077fd21838cea0340accd780d0fca09d4ac4a3ddf7d17306b95",
+      "portable": false
+    },
+    {
+      "path": "tmp/student_independence_geometry_20261010/centered_n10_block16_chain2.npz",
+      "bytes": 533667,
+      "sha256": "0d45c85d86d8378b9bf6e6c9b9d4155d2905c1ef197a14ccb21546b3a33ef2c3",
+      "portable": false
+    },
+    {
+      "path": "tmp/student_independence_geometry_20261010/centered_n10_block16_chain3.npz",
+      "bytes": 534028,
+      "sha256": "3a97f46b5bdffa9547121ed0d7b1e6803ed424001abb94c6e7bb87de664b4a0b",
+      "portable": false
+    },
+    {
+      "path": "tmp/student_independence_geometry_20261010/centered_n10_direct_rejection.npz",
+      "bytes": 341567,
+      "sha256": "b2b3db0d50877e47c9aa2c531c7441c216b4bacf9843274f909bb01d900bb16c",
+      "portable": false
+    },
+    {
+      "path": "tmp/student_independence_geometry_20261010/centered_n10_independence_chain0.npz",
+      "bytes": 730762,
+      "sha256": "d586fbcd9a601754e60d2b19ab43cc68472770e943aa6c858898794f783693df",
+      "portable": false
+    },
+    {
+      "path": "tmp/student_independence_geometry_20261010/centered_n10_independence_chain1.npz",
+      "bytes": 730993,
+      "sha256": "34ec08434343689a870958fb33341cc4edccf81807ba0ad7839fe66b66814f1b",
+      "portable": false
+    },
+    {
+      "path": "tmp/student_independence_geometry_20261010/centered_n10_independence_chain2.npz",
+      "bytes": 730838,
+      "sha256": "b9bcf285016034a51d1dd87530521ecdb8510a6c7fba753db61faa177a07817d",
+      "portable": false
+    },
+    {
+      "path": "tmp/student_independence_geometry_20261010/centered_n10_independence_chain3.npz",
+      "bytes": 733375,
+      "sha256": "b31bcc8f3eb254c9160270d9a1d9833b52b3450b5cf6f6fa7f4f666c1c09fe59",
+      "portable": false
+    },
+    {
+      "path": "tmp/student_independence_geometry_20261010/direct_n10.npz",
+      "bytes": 348673,
+      "sha256": "ffb5ca9a0cbf9b8bcaaa609b23073aea78150380b5ffdfcffb21a90f22201713",
+      "portable": false
+    },
+    {
+      "path": "tmp/student_independence_geometry_20261010/shifted_n10_block16_chain0.npz",
+      "bytes": 507200,
+      "sha256": "8dfbe51a0f1b51044a9263aef98dc88c648059e68f86a944308750b45d009569",
+      "portable": false
+    },
+    {
+      "path": "tmp/student_independence_geometry_20261010/shifted_n10_block16_chain1.npz",
+      "bytes": 511052,
+      "sha256": "45c0dd5be7f31f7793343d4d333440abe8c8d1390f2efb99e8f03ade3becc41b",
+      "portable": false
+    },
+    {
+      "path": "tmp/student_independence_geometry_20261010/shifted_n10_block16_chain2.npz",
+      "bytes": 513767,
+      "sha256": "3ef74c943987de78706bb498fafab0de450564d4c97b33c14ceb7861ab246c7b",
+      "portable": false
+    },
+    {
+      "path": "tmp/student_independence_geometry_20261010/shifted_n10_block16_chain3.npz",
+      "bytes": 508392,
+      "sha256": "34ef1d947fc06e12c75d5ddedddbec56e55b66fba5a21372c04177d7df40b8a7",
+      "portable": false
+    },
+    {
+      "path": "tmp/student_independence_geometry_20261010/shifted_n10_direct_rejection.npz",
+      "bytes": 7747,
+      "sha256": "0c213b8134cbedf1bcbd5d5a2e45d88e0ef73ae270ad87ff597b6689acceac0f",
+      "portable": false
+    },
+    {
+      "path": "tmp/student_independence_geometry_20261010/shifted_n10_independence_chain0.npz",
+      "bytes": 156788,
+      "sha256": "79fa572775b674ec75bb4e52266a2a8a03180e9422305223854354f868703f91",
+      "portable": false
+    },
+    {
+      "path": "tmp/student_independence_geometry_20261010/shifted_n10_independence_chain1.npz",
+      "bytes": 161259,
+      "sha256": "bceeffd262927dedb0dbb9844fcae181e9e1a4fedb5cdca1927cbe84dab1e8ae",
+      "portable": false
+    },
+    {
+      "path": "tmp/student_independence_geometry_20261010/shifted_n10_independence_chain2.npz",
+      "bytes": 151687,
+      "sha256": "752288745a314c9bcc51e46e12c094e4f173a67bcc77ab5772cde162c042ae54",
+      "portable": false
+    },
+    {
+      "path": "tmp/student_independence_geometry_20261010/shifted_n10_independence_chain3.npz",
+      "bytes": 168709,
+      "sha256": "a9129ce88fe5d07d33f6fbb3ebff7de01a425ec39a2b757a0d2998689399b1e7",
+      "portable": false
+    }
+  ],
+  "raw_arrays": 19
+}

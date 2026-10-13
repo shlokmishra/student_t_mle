@@ -1,0 +1,4 @@
+  File "/scratch/user/shlokmishra08/code/student_t_mle/scripts/followup_shifted_student_reference.py", line 313
+    influence = {key: float(np.sqrt(np.sum(w*w*(h-float(np.average(h, weights=w)))**2))/w.sum()))
+                                                                                                ^
+SyntaxError: closing parenthesis ')' does not match opening parenthesis '{'

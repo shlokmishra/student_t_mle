@@ -1,0 +1,129 @@
+reference bank ('logistic', 3) 2.589871004689485
+reference bank ('logistic', 10) 2.9145802427083254
+reference bank ('laplace', 3) 0.010021430905908346
+reference bank ('laplace', 4) 0.014748640824109316
+chain student_centered_n3_block_chain0 0.514
+chain student_centered_n3_rattle_chain0 1.619
+chain student_centered_n3_independence_chain0 1.144
+chain student_centered_n3_rattle_chain1 1.517
+chain student_centered_n3_independence_chain1 1.083
+chain student_centered_n3_block_chain1 0.519
+chain student_centered_n3_independence_chain2 1.093
+chain student_centered_n3_block_chain2 0.514
+chain student_centered_n3_rattle_chain2 1.542
+chain student_centered_n3_block_chain3 0.515
+chain student_centered_n3_rattle_chain3 1.509
+chain student_centered_n3_independence_chain3 1.084
+summary student_centered_n3 block {'reference_agreement': True, 'mixing': True, 'tail_event_evidence': True, 'all_pass': True}
+summary student_centered_n3 rattle {'reference_agreement': False, 'mixing': False, 'tail_event_evidence': True, 'all_pass': False}
+summary student_centered_n3 independence {'reference_agreement': True, 'mixing': True, 'tail_event_evidence': True, 'all_pass': True}
+chain student_centered_n10_block_chain0 1.652
+chain student_centered_n10_rattle_chain0 2.504
+chain student_centered_n10_independence_chain0 1.3
+chain student_centered_n10_rattle_chain1 2.652
+chain student_centered_n10_independence_chain1 1.39
+chain student_centered_n10_block_chain1 1.675
+chain student_centered_n10_independence_chain2 1.278
+chain student_centered_n10_block_chain2 1.732
+chain student_centered_n10_rattle_chain2 2.611
+chain student_centered_n10_block_chain3 1.683
+chain student_centered_n10_rattle_chain3 2.763
+chain student_centered_n10_independence_chain3 1.294
+summary student_centered_n10 block {'reference_agreement': True, 'mixing': True, 'tail_event_evidence': True, 'all_pass': True}
+summary student_centered_n10 rattle {'reference_agreement': True, 'mixing': False, 'tail_event_evidence': True, 'all_pass': False}
+summary student_centered_n10 independence {'reference_agreement': True, 'mixing': True, 'tail_event_evidence': True, 'all_pass': True}
+chain student_shifted_n10_block_chain0 1.635
+chain student_shifted_n10_rattle_chain0 2.571
+chain student_shifted_n10_independence_chain0 1.272
+chain student_shifted_n10_rattle_chain1 2.529
+chain student_shifted_n10_independence_chain1 1.401
+chain student_shifted_n10_block_chain1 1.627
+chain student_shifted_n10_independence_chain2 1.319
+chain student_shifted_n10_block_chain2 1.73
+chain student_shifted_n10_rattle_chain2 2.688
+chain student_shifted_n10_block_chain3 1.622
+chain student_shifted_n10_rattle_chain3 2.518
+chain student_shifted_n10_independence_chain3 1.283
+summary student_shifted_n10 block {'reference_agreement': True, 'mixing': True, 'tail_event_evidence': True, 'all_pass': True}
+summary student_shifted_n10 rattle {'reference_agreement': True, 'mixing': False, 'tail_event_evidence': True, 'all_pass': False}
+summary student_shifted_n10 independence {'reference_agreement': True, 'mixing': True, 'tail_event_evidence': True, 'all_pass': True}
+chain logistic_centered_n3_block_chain0 0.507
+chain logistic_centered_n3_rattle_chain0 1.527
+chain logistic_centered_n3_rattle_chain1 1.568
+chain logistic_centered_n3_block_chain1 0.515
+chain logistic_centered_n3_block_chain2 0.562
+chain logistic_centered_n3_rattle_chain2 1.613
+chain logistic_centered_n3_rattle_chain3 1.597
+chain logistic_centered_n3_block_chain3 0.507
+summary logistic_centered_n3 block {'reference_agreement': True, 'mixing': True, 'tail_event_evidence': True, 'all_pass': True}
+summary logistic_centered_n3 rattle {'reference_agreement': True, 'mixing': True, 'tail_event_evidence': True, 'all_pass': True}
+chain logistic_centered_n10_block_chain0 0.721
+chain logistic_centered_n10_rattle_chain0 2.21
+chain logistic_centered_n10_rattle_chain1 2.123
+chain logistic_centered_n10_block_chain1 0.666
+chain logistic_centered_n10_block_chain2 0.732
+chain logistic_centered_n10_rattle_chain2 2.222
+chain logistic_centered_n10_rattle_chain3 2.142
+chain logistic_centered_n10_block_chain3 0.666
+summary logistic_centered_n10 block {'reference_agreement': True, 'mixing': True, 'tail_event_evidence': True, 'all_pass': True}
+summary logistic_centered_n10 rattle {'reference_agreement': True, 'mixing': True, 'tail_event_evidence': True, 'all_pass': True}
+chain logistic_shifted_n10_block_chain0 0.691
+chain logistic_shifted_n10_rattle_chain0 2.275
+chain logistic_shifted_n10_rattle_chain1 2.317
+chain logistic_shifted_n10_block_chain1 0.66
+chain logistic_shifted_n10_block_chain2 0.691
+chain logistic_shifted_n10_rattle_chain2 2.221
+chain logistic_shifted_n10_rattle_chain3 2.124
+chain logistic_shifted_n10_block_chain3 0.666
+summary logistic_shifted_n10 block {'reference_agreement': True, 'mixing': True, 'tail_event_evidence': True, 'all_pass': True}
+summary logistic_shifted_n10 rattle {'reference_agreement': True, 'mixing': True, 'tail_event_evidence': True, 'all_pass': True}
+chain laplace_centered_n3_gibbs_chain0 0.3
+chain laplace_centered_n3_facet_hmc_chain0 0.937
+chain laplace_centered_n3_facet_hmc_chain1 0.863
+chain laplace_centered_n3_gibbs_chain1 0.306
+chain laplace_centered_n3_gibbs_chain2 0.318
+chain laplace_centered_n3_facet_hmc_chain2 0.899
+chain laplace_centered_n3_facet_hmc_chain3 0.938
+chain laplace_centered_n3_gibbs_chain3 0.318
+summary laplace_centered_n3 gibbs {'reference_agreement': True, 'mixing': True, 'tail_event_evidence': True, 'all_pass': True}
+summary laplace_centered_n3 facet_hmc {'reference_agreement': True, 'mixing': True, 'tail_event_evidence': True, 'all_pass': True}
+chain laplace_centered_n4_gibbs_chain0 0.322
+chain laplace_centered_n4_facet_hmc_chain0 0.95
+chain laplace_centered_n4_facet_hmc_chain1 0.935
+chain laplace_centered_n4_gibbs_chain1 0.324
+chain laplace_centered_n4_gibbs_chain2 0.323
+chain laplace_centered_n4_facet_hmc_chain2 0.942
+chain laplace_centered_n4_facet_hmc_chain3 0.941
+chain laplace_centered_n4_gibbs_chain3 0.328
+summary laplace_centered_n4 gibbs {'reference_agreement': True, 'mixing': True, 'tail_event_evidence': True, 'all_pass': True}
+summary laplace_centered_n4 facet_hmc {'reference_agreement': True, 'mixing': True, 'tail_event_evidence': True, 'all_pass': True}
+chain laplace_shifted_n3_gibbs_chain0 0.296
+chain laplace_shifted_n3_facet_hmc_chain0 0.901
+chain laplace_shifted_n3_facet_hmc_chain1 0.979
+chain laplace_shifted_n3_gibbs_chain1 0.313
+chain laplace_shifted_n3_gibbs_chain2 0.301
+chain laplace_shifted_n3_facet_hmc_chain2 0.871
+chain laplace_shifted_n3_facet_hmc_chain3 0.884
+chain laplace_shifted_n3_gibbs_chain3 0.299
+summary laplace_shifted_n3 gibbs {'reference_agreement': True, 'mixing': True, 'tail_event_evidence': True, 'all_pass': True}
+summary laplace_shifted_n3 facet_hmc {'reference_agreement': True, 'mixing': True, 'tail_event_evidence': True, 'all_pass': True}
+chain laplace_shifted_n4_gibbs_chain0 0.321
+chain laplace_shifted_n4_facet_hmc_chain0 0.93
+chain laplace_shifted_n4_facet_hmc_chain1 0.95
+chain laplace_shifted_n4_gibbs_chain1 0.329
+chain laplace_shifted_n4_gibbs_chain2 0.342
+chain laplace_shifted_n4_facet_hmc_chain2 0.964
+chain laplace_shifted_n4_facet_hmc_chain3 0.931
+chain laplace_shifted_n4_gibbs_chain3 0.319
+summary laplace_shifted_n4 gibbs {'reference_agreement': True, 'mixing': True, 'tail_event_evidence': True, 'all_pass': True}
+summary laplace_shifted_n4 facet_hmc {'reference_agreement': True, 'mixing': True, 'tail_event_evidence': True, 'all_pass': True}
+direct student_centered_n3 accepted 14966 weighted ESS 15998
+direct student_centered_n10 accepted 16003 weighted ESS 16361
+direct student_shifted_n10 accepted 356 weighted ESS 1771
+direct logistic_centered_n3 accepted 14531 weighted ESS 15985
+direct logistic_centered_n10 accepted 15775 weighted ESS 16341
+direct logistic_shifted_n10 accepted 562 weighted ESS 2098
+direct laplace_centered_n3 accepted 15278 weighted ESS 16160
+direct laplace_centered_n4 accepted 15583 weighted ESS 16284
+direct laplace_shifted_n3 accepted 1167 weighted ESS 2192
+direct laplace_shifted_n4 accepted 814 weighted ESS 1874

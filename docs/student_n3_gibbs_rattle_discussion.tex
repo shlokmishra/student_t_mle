@@ -1,0 +1,178 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,booktabs,graphicx}
+% The first path works when compiling from docs/; the second from the repo root.
+\graphicspath{{../results/student_n3_discussion_note/figures/}{results/student_n3_discussion_note/figures/}}
+
+\title{What the $n=3$ Student experiment taught us about Gibbs and RATTLE}
+\author{}
+\date{August 2026}
+
+\begin{document}
+\maketitle
+
+\paragraph{Purpose.}
+This is a discussion note rather than a theorem document.  It records the
+sequence of diagnostics that led from acceptance-rate comparisons to a simple
+topological explanation of the observed $n=3$ behavior.
+
+\section{The original question}
+
+We initially asked whether constrained Gibbs and RATTLE could be related by
+tuning their latent acceptance rates, and whether acceptance or jump size could
+explain how often a chain left the region in which the released score root
+$\mu^\star$ is the global MLE.  The short answer is no: acceptance and movement
+are useful within-method diagnostics, but neither identifies global
+communication on this manifold.
+
+\section{Acceptance and ESJD}
+
+The two latent acceptance rates refer to different events.  Gibbs reports the
+Metropolis acceptance of a proposed pair move in score coordinates.  Even when
+that proposal is rejected, the subsequent exact inverse-branch refresh can
+change the latent $x$ values.  RATTLE acceptance instead applies to an entire
+projected trajectory.  A near-unit RATTLE acceptance rate therefore says that
+the numerical trajectory is stable and usually accepted; it does not say that
+the trajectory can reach every part of the target.
+
+Raw $x$-space ESJD was also a poor common scale.  Rare Gibbs resampling events
+can replace a central inverse by a far-tail inverse, causing the empirical
+second moment to be dominated by a handful of enormous jumps.  Score-space
+ESJD, computed after
+\[
+z_i=\frac{x_i-\mu^\star}{k+(x_i-\mu^\star)^2},
+\]
+is bounded and much more stable.  At $n=3$, RATTLE's mean score-space SJD was
+about $4.1$, $2.6$, and $1.2$ times the Gibbs value for $k=1,2,3$, respectively,
+yet a centrally initialized RATTLE chain never left the MLE-valid region.  In
+the larger grid cells where RATTLE exits did occur, their score-space jumps
+were typically smaller than the overall mean.  Thus score displacement alone
+does not explain an exit.
+
+\section{The branch mechanism}
+
+The useful representation is
+\[
+x\longleftrightarrow (z,b),
+\]
+where $z$ records the score contributions and $b$ records which inner or outer
+inverse of the Student score map is used.  The same $z$ can reconstruct very
+different datasets, so global-MLE status depends on both $z$ and the branch
+configuration.  In the refined $n=3$ Gibbs runs, 96.0\%, 98.9\%, and 100\% of
+MLE exits involved at least one branch change for $k=1,2,3$.  Among the
+coordinate-level switches occurring on exits, roughly 90--91\% were
+inner-to-outer switches.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{hexagon_branch_sheet_mle_map.pdf}
+\caption{The score vector does not determine MLE status: it must be combined
+with the inverse-branch sheet.}
+\end{figure}
+
+\section{Why three observations are special}
+
+After normalizing $u_i=2\sqrt{k}z_i$, the constraint $u_1+u_2+u_3=0$ inside
+$[-1,1]^3$ is a two-dimensional hexagon.  Accounting for inner/outer labels and
+the signs of outer coordinates gives 25 finite chambers.  Finite branch merges
+join these chambers into exactly seven connected components: a 13-chamber
+central component in which $\mu^\star$ is the global MLE, and six two-chamber
+tail components in which it is not.  A branch code such as 111 does not name a
+component by itself, because different outer-sign chambers with that same code
+belong to different components.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{chamber_component_connectivity.pdf}
+\caption{Exact finite-fold adjacency of the 25 chambers.}
+\end{figure}
+
+\section{Why RATTLE is trapped and Gibbs is not}
+
+RATTLE follows a continuous path at finite $x$.  It can change an inverse
+branch by passing through a finite turning point,
+\[
+|z_i|=\frac{1}{2\sqrt{k}}
+\quad\Longleftrightarrow\quad
+|x_i-\mu^\star|=\sqrt{k}.
+\]
+It cannot change the sign of an outer coordinate without approaching
+\[
+z_i\to0,\qquad |x_i|\to\infty.
+\]
+Those infinite ends separate the seven finite components.  Continuous
+finite-position trajectories therefore cannot move from the central component
+to a tail component, even though ordinary inner/outer switches remain possible.
+
+The exact-state restart experiment made this visible without relying on a
+particular initialization.  Across $k=1,2,3$, 36 RATTLE chains initialized at
+exact non-MLE Gibbs states all remained non-MLE, and 12 initialized at exact
+MLE-valid Gibbs states all remained MLE-valid.  Each chain retained 7,001
+states.  Latent acceptance ranged from 0.9986 to 1.0000, with no projection or
+reverse-check failures.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.84\textwidth]{rattle_exact_restart_trapping.pdf}
+\caption{Exact-state restarts retain their initial connected component.}
+\end{figure}
+
+The branch-switch geometry is consistent with the same explanation.  Across
+31,402 recorded RATTLE branch-switch events, the median normalized endpoint
+distance to a finite merge was 0.00136 and the 95th percentile was 0.0154.
+For 65,905 Gibbs events, the corresponding values were 0.129 and 0.734.  Gibbs
+does not need to trace a continuous path in $x$: conditional inverse-branch
+resampling can jump between finite inverse configurations at fixed score
+coordinates.  That nonlocal step supplies the component communication that
+continuous RATTLE lacks.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.72\textwidth]{branch_switch_merge_gap.pdf}
+\caption{RATTLE switches branches at finite merges; Gibbs branch refreshes can
+occur far from them.}
+\end{figure}
+
+\section{Main empirical numbers}
+
+The following refined comparison used 40,000 retained transitions per method
+and $k$.  RATTLE was initialized in the central component.
+
+\begin{center}
+\begin{tabular}{ccrrrr}
+\toprule
+$k$ & method & non-MLE occupancy & exits & exit probability & mean score SJD\\
+\midrule
+1 & Gibbs  & 75.38\% & 2971 & 30.16\% & 0.00445\\
+1 & RATTLE & 0       & 0    & 0       & 0.01837\\
+2 & Gibbs  & 43.39\% & 1133 & 5.00\%  & 0.00338\\
+2 & RATTLE & 0       & 0    & 0       & 0.00874\\
+3 & Gibbs  & 8.81\%  & 150  & 0.41\%  & 0.00457\\
+3 & RATTLE & 0       & 0    & 0       & 0.00545\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These RATTLE zeros are component-conditional results, not estimates of zero
+global score-target mass outside the MLE-valid region.
+
+\section{Caveat and conclusion}
+
+Both current algorithms target the score-conditioned distribution.  Neither is
+yet an exact sampler for conditioning on the selected/global MLE.  In
+particular, RATTLE remaining in the MLE-valid $n=3$ component is a consequence
+of reducibility, not evidence that it enforces the global-MLE event.  Detailed
+balance can hold within each component while a single continuous chain is not
+globally irreducible or ergodic.
+
+The practical conclusion is therefore structural: acceptance tuning and ESJD
+cannot repair missing component communication.  Gibbs communicates because its
+branch refresh is nonlocal in $x$; continuous RATTLE requires an additional
+target-preserving branch-jump kernel before it can explore the complete
+score-conditioned manifold.
+
+% Additional ready figures, if useful in a longer version:
+% \includegraphics{gibbs_exit_likelihood.pdf}
+% \includegraphics{exit_occupancy_grid.pdf}
+
+\end{document}

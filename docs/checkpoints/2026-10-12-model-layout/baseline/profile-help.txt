@@ -1,0 +1,49 @@
+usage: profile_student_sampler_comparison.py [-h] [--k-values K_VALUES]
+                                             [--n-values N_VALUES]
+                                             [--seeds SEEDS]
+                                             [--iterations ITERATIONS]
+                                             [--burn-in BURN_IN]
+                                             [--mu-star MU_STAR] [--out OUT]
+                                             [--proposal-std-mu PROPOSAL_STD_MU]
+                                             [--proposal-std-z PROPOSAL_STD_Z]
+                                             [--prior-mean PRIOR_MEAN]
+                                             [--prior-std PRIOR_STD]
+                                             [--rattle-step-size RATTLE_STEP_SIZE]
+                                             [--rattle-num-steps RATTLE_NUM_STEPS]
+                                             [--rattle-proj-tol RATTLE_PROJ_TOL]
+                                             [--rattle-proj-max-iters RATTLE_PROJ_MAX_ITERS]
+                                             [--rattle-reverse-position-tol RATTLE_REVERSE_POSITION_TOL]
+                                             [--rattle-reverse-momentum-tol RATTLE_REVERSE_MOMENTUM_TOL]
+                                             [--rattle-include-gram-correction | --no-rattle-include-gram-correction]
+                                             [--reverse-check | --no-reverse-check]
+                                             [--initialization {central,tail_heavy,random}]
+                                             [--warmup | --no-warmup]
+
+Profile Student-t Gibbs and RATTLE cost, ESS/sec, and ESJD locally. The
+primary Gibbs timing path is the production `numba_full` backend. The script
+also includes a granular NumPy pair-sweep profiler so each conceptual Gibbs
+substep can be timed for optimization analysis.
+
+options:
+  -h, --help            show this help message and exit
+  --k-values K_VALUES
+  --n-values N_VALUES
+  --seeds SEEDS
+  --iterations ITERATIONS
+  --burn-in BURN_IN
+  --mu-star MU_STAR
+  --out OUT
+  --proposal-std-mu PROPOSAL_STD_MU
+  --proposal-std-z PROPOSAL_STD_Z
+  --prior-mean PRIOR_MEAN
+  --prior-std PRIOR_STD
+  --rattle-step-size RATTLE_STEP_SIZE
+  --rattle-num-steps RATTLE_NUM_STEPS
+  --rattle-proj-tol RATTLE_PROJ_TOL
+  --rattle-proj-max-iters RATTLE_PROJ_MAX_ITERS
+  --rattle-reverse-position-tol RATTLE_REVERSE_POSITION_TOL
+  --rattle-reverse-momentum-tol RATTLE_REVERSE_MOMENTUM_TOL
+  --rattle-include-gram-correction, --no-rattle-include-gram-correction
+  --reverse-check, --no-reverse-check
+  --initialization {central,tail_heavy,random}
+  --warmup, --no-warmup

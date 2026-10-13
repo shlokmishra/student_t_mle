@@ -1,0 +1,106 @@
+--- before/models/loc_student_selected_mle_block.py
++++ after/models/loc_student_selected_mle_block.py
+@@ -16,6 +16,7 @@
+ from .loc_student_selected_mle import _branch_log_weight
+ from .loc_student_selected_mle_rattle import geometry, selected_state
+ from .student_mu_mh import seed_from_key, unnormalized_mu_logpdf, update_mu_mh_from_variates
++from .student_n3_endpoint import certify_endpoint, CertifiedN3State
+ 
+ 
+ @njit(cache=True)
+@@ -117,7 +118,8 @@
+     return proposed,accept,draws,changed,error
+ 
+ 
+-def block_step(x, mu, t, k, sigma, length, rng, state, *, mle_tolerance=1e-10, score_tolerance=1e-10):
++def block_step(x, mu, t, k, sigma, length, rng, state, *, mle_tolerance=1e-10, score_tolerance=1e-10,
++               n3_endpoint_fast_path=False):
+     x = np.asarray(x,dtype=float)
+     if state.geometry.state_key != (x.tobytes(),float(t),float(k),1.):
+         raise ValueError('cached selected state does not match block input')
+@@ -129,12 +131,30 @@
+     diag = dict(accepted=False,selector_called=False,selector_fallback=False,
+         rejection=None,score_accepts=a,proposal_sampling_attempts=d,branch_changes=b,
+         max_inverse_error=e,proposal_seconds=seconds,selector_seconds=0.,
+-        log_correction=ratio,proposed_x=proposed)
++        log_correction=ratio,proposed_x=proposed,n3_fast_attempt=False,
++        n3_fast_accept=False,n3_fast_reject=False,n3_fast_fallback=False,
++        n3_fast_reason=None,n3_fast_seconds=0.)
+     if g.curvature < 0:
+         diag['rejection']='nonpositive_curvature';return x.copy(),state,diag
+     u = float(rng.random()); logu = math.log(u) if u > 0 else -math.inf
+     if logu >= min(0.,ratio):
+         diag['rejection']='cheap_metropolis';return x.copy(),state,diag
++    if n3_endpoint_fast_path and len(proposed)==3:
++        start=time.perf_counter()
++        cert=certify_endpoint(proposed,t,k,mle_tolerance,g.curvature,g.score)
++        diag['n3_fast_seconds']=time.perf_counter()-start
++        diag['n3_fast_attempt']=True;diag['n3_fast_reason']=cert.reason
++        if cert.status==1:
++            # t is a bracket-midpoint approximation with an explicit enclosure,
++            # rather than a claim that the rounded dataset has exactly T(x)=t.
++            error=float(np.nextafter(max(t-cert.lower,cert.upper-t),np.inf))
++            candidate=CertifiedN3State(g,float(t),False,cert,error)
++            diag['n3_fast_accept']=True;diag['accepted']=True
++            return proposed,candidate,diag
++        if cert.status==-1:
++            diag['n3_fast_reject']=True;diag['rejection']='global_selection'
++            return x.copy(),state,diag
++        diag['n3_fast_fallback']=True
+     diag['selector_called']=True;sd={};start=time.perf_counter()
+     candidate = selected_state(proposed,t,k,mle_tolerance=mle_tolerance,
+         score_tolerance=score_tolerance,endpoint_geometry=g,selection_diagnostics=sd)
+@@ -158,6 +178,8 @@
+     if not all(math.isfinite(v) for v in [k,sigma,mu,pm,ps,sm]) or min(k,sigma,ps)<=0 or sm<0:raise ValueError('finite positive shape/proposal/prior parameters required')
+     if params.get('known_scale',1.)!=1.:raise ValueError('prototype validates unit scale only')
+     mt=float(params.get('mle_tolerance',1e-10));st=float(params.get('score_tolerance',1e-10))
++    fast=params.get('n3_endpoint_fast_path',False)
++    if not isinstance(fast,(bool,np.bool_)):raise ValueError('n3_endpoint_fast_path must be boolean')
+     state=selected_state(x,mu_star,k,mle_tolerance=mt,score_tolerance=st)
+     if state is None:raise ValueError('initializer must have the released selected global MLE')
+     seed=int(key) if isinstance(key,(int,np.integer)) else seed_from_key(key)
+@@ -165,8 +187,9 @@
+     mus=np.empty(count+1);xs=np.empty((count+1,n));mus[0]=mu;xs[0]=x
+     counts=dict(blocks=0,accepted=0,mu_accepts=0,score_pairs=0,score_accepts=0,
+         proposal_sampling_attempts=0,branch_changes_proposed=0,branch_changes_accepted=0,selector_calls=1,
+-        selector_fallbacks=int(state.selector_fallback),nonpositive_curvature=0,cheap_metropolis=0,global_selection=0)
+-    times=dict(proposal=0.,selector=0.)
++        selector_fallbacks=int(state.selector_fallback),nonpositive_curvature=0,cheap_metropolis=0,global_selection=0,
++        n3_fast_attempts=0,n3_fast_accepts=0,n3_fast_rejects=0,n3_fast_fallbacks=0)
++    times=dict(proposal=0.,selector=0.,n3_fast=0.);fast_reasons={}
+     max_score=abs(state.geometry.score);max_mle=abs(state.selected_mle-mu_star);max_inverse=0.
+     records=[];stride=int(params.get('proposal_record_stride',0));limit=int(params.get('proposal_record_limit',8))
+     ceiling=float(params.get('wall_ceiling_seconds',180.));start=time.monotonic()
+@@ -176,7 +199,8 @@
+         mu,accepted_mu=update_mu_mh_from_variates(mu,x,sm,pm,ps,k,noise,float(rng.uniform(legacy.EPS_U,1.)))
+         counts['mu_accepts']+=int(accepted_mu)
+         try:
+-            x,state,d=block_step(x,mu,mu_star,k,sigma,length,rng,state,mle_tolerance=mt,score_tolerance=st)
++            x,state,d=block_step(x,mu,mu_star,k,sigma,length,rng,state,mle_tolerance=mt,score_tolerance=st,
++                               n3_endpoint_fast_path=fast)
+         except Exception as exc:
+             exc.partial = {'mu_chain':mus[:it+1].copy(),'x_chain':xs[:it+1].copy()}
+             exc.block_iteration = it+1
+@@ -184,10 +208,12 @@
+             raise
+         counts['blocks']+=1;counts['accepted']+=int(d['accepted']);counts['score_pairs']+=length
+         for target,source in [('score_accepts','score_accepts'),('proposal_sampling_attempts','proposal_sampling_attempts'),('branch_changes_proposed','branch_changes'),('selector_calls','selector_called'),('selector_fallbacks','selector_fallback')]:counts[target]+=int(d[source])
++        for suffix in ('attempt','accept','reject','fallback'):counts['n3_fast_'+suffix+'s']+=int(d['n3_fast_'+suffix])
++        if d['n3_fast_reason']:fast_reasons[d['n3_fast_reason']]=fast_reasons.get(d['n3_fast_reason'],0)+1
+         if d['accepted']:counts['branch_changes_accepted']+=d['branch_changes']
+         if d['rejection']:counts[d['rejection']]+=1
+-        times['proposal']+=d['proposal_seconds'];times['selector']+=d['selector_seconds']
+-        max_score=max(max_score,abs(state.geometry.score));max_mle=max(max_mle,abs(state.selected_mle-mu_star));max_inverse=max(max_inverse,d['max_inverse_error'])
++        times['proposal']+=d['proposal_seconds'];times['selector']+=d['selector_seconds'];times['n3_fast']+=d['n3_fast_seconds']
++        max_score=max(max_score,abs(state.geometry.score));max_mle=max(max_mle,abs(state.selected_mle-mu_star)+getattr(state,'selected_mle_error_bound',0.));max_inverse=max(max_inverse,d['max_inverse_error'])
+         if stride>0 and it%stride==0 and len(records)<limit:
+             records.append(dict(iteration=it+1,accepted=d['accepted'],rejection=d['rejection'],selector_called=d['selector_called'],proposed_x=d['proposed_x'].tolist()))
+         mus[it+1]=mu;xs[it+1]=x
+@@ -196,4 +222,6 @@
+     return dict(mu_chain=mus,x_chain=xs,counts=counts,seconds=time.monotonic()-start,times=times,
+         seed=seed,score_seed=score_seed,target='selected_global_student_location_mle',proposal='random_scan_regular_score_pair_power',
+         block_length=length,max_score_residual=max_score,max_selected_mle_residual=max_mle,max_inverse_score_error=max_inverse,
+-        proposal_records=records,known_scale=1.,numerical_policy='no artificial score/Jacobian/proposal cutoffs; unresolved computation raises; inherited parameter uniform guard retained')
++        proposal_records=records,known_scale=1.,n3_endpoint_fast_path=bool(fast),n3_fast_reasons=fast_reasons,
++        selected_mle_residual_kind='certified upper bound on fast states; computed estimate otherwise' if fast and n==3 else 'computed estimate',
++        numerical_policy='no artificial score/Jacobian/proposal cutoffs; unresolved computation raises; inherited parameter uniform guard retained')

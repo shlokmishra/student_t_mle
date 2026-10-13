@@ -1,0 +1,28 @@
+student_centered_n3 block mean -0.0198 tail6 0.0443 Rhat 1.039392131047529
+student_centered_n3 rattle mean 0.0596 tail6 0.0885 Rhat 1.0622823905077294
+student_centered_n10 block mean -0.0689 tail6 0.2695 Rhat 1.0073624091815354
+student_centered_n10 rattle mean -0.0143 tail6 0.1797 Rhat 1.0182695429751099
+student_shifted_n10 block mean 0.5151 tail6 0.2552 Rhat 1.069126213110486
+student_shifted_n10 rattle mean 0.4804 tail6 0.237 Rhat 1.030814683371517
+logistic_centered_n3 block mean -0.0608 tail6 0.0078 Rhat 1.137707146355455
+logistic_centered_n3 rattle mean 0.1011 tail6 0.0 Rhat 1.018581892563623
+logistic_centered_n10 block mean 0.0184 tail6 0.0534 Rhat 1.0198633567754545
+logistic_centered_n10 rattle mean -0.0729 tail6 0.0573 Rhat 1.0296131426356665
+logistic_shifted_n10 block mean 0.3759 tail6 0.0234 Rhat 1.0051739902811616
+logistic_shifted_n10 rattle mean 0.3349 tail6 0.0195 Rhat 1.0247293535047557
+laplace_centered_n3 gibbs mean -0.2274 tail6 0.0078 Rhat 1.0297779226770907
+Traceback (most recent call last):
+  File "/scratch/user/shlokmishra08/code/student_t_mle/scripts/validate_location_only_correctness.py", line 184, in <module>
+    run(args.output)
+    ~~~^^^^^^^^^^^^^
+  File "/scratch/user/shlokmishra08/code/student_t_mle/scripts/validate_location_only_correctness.py", line 125, in run
+    result = runner(seed, case['release'], params, False)
+  File "/scratch/user/shlokmishra08/code/student_t_mle/models/loc/laplace/selected_facet_hmc.py", line 30, in run_hmc
+    p=tangent(rng.normal(size=n));new,pp,ok,events,error=phase_proposal(q,p,mu,b,h,steps,rt)
+                                                         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/user/shlokmishra08/code/student_t_mle/models/loc/laplace/selected_facet_hmc.py", line 13, in phase_proposal
+    new,pp,events=trajectory(q,p,mu,b,h,steps)
+                  ~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/scratch/user/shlokmishra08/code/student_t_mle/models/loc/laplace/selected.py", line 100, in reflected_drift
+    if gap<0:raise FloatingPointError('ordered boundary roundoff unresolved')
+FloatingPointError: ordered boundary roundoff unresolved

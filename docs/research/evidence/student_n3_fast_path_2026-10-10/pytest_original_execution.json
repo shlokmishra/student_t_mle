@@ -1,0 +1,6 @@
+{
+  "command": "PYTHONPATH=/tmp/student-mle-oracle-deps-20261003 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 OPENBLAS_NUM_THREADS=1 .venv/bin/python -m pytest tests/test_student_selected_mle_block.py -q --assert=plain",
+  "passed": 18,
+  "seconds": 117.83,
+  "status": "exit 0; tool output preserved in session"
+}

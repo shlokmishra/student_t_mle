@@ -1,0 +1,18 @@
+{
+  "seed": 2026111283,
+  "counts": {
+    "proposals": 12000,
+    "accepted": 11223,
+    "selector_calls": 12001,
+    "selector_fallbacks": 0
+  },
+  "seconds": 1.0837434409186244,
+  "proposal_records": [],
+  "known_scale": 1.0,
+  "target": "selected_global_student_location_mle",
+  "proposal": "independent_standardized_dataset",
+  "numerical_policy": "hardened global selector once per proposal; unresolved failures propagate; no uniform floor or curvature weight",
+  "loop_seconds": 1.0833532391116023,
+  "raw_path": "tmp/location_only_performance_20261012/student_centered_n3_independence_chain3.npz",
+  "sha256": "0a5c46b4fe11311e808a33c24d4a596f5b5e8a68600fccb4ce2c86ba0100a8fa"
+}

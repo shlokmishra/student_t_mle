@@ -1,0 +1,842 @@
+{
+  "created_utc": "2026-10-10T22:54:02Z",
+  "scope": "New reversible-block prototype, failed first batch, repaired bounded validation, and direct cost pilot; prior artifacts preserved.",
+  "files": [
+    {
+      "path": "models/loc_student_selected_mle_block.py",
+      "bytes": 11778,
+      "sha256": "d01d1789dd883dff9e24df5706c4ee0e52bfd4fb38d6f27b8f54aeccf04e577a"
+    },
+    {
+      "path": "tests/test_student_selected_mle_block.py",
+      "bytes": 7473,
+      "sha256": "71d0c9a95d80032e9d7fbdb49308d1d6ab9fbaf2169969c3ed83bad48470f9f4"
+    },
+    {
+      "path": "scripts/validate_cheap_selected_mle_gibbs.py",
+      "bytes": 15490,
+      "sha256": "16ab72a752b2a3d926e030f6ff6c3ce1e824587f47b3046dfafaf6dd65966e30"
+    },
+    {
+      "path": "docs/research/cheap_selected_mle_gibbs.md",
+      "bytes": 28482,
+      "sha256": "d16e759bd34144c981551d0b130c65a313368ad044a5874e5044649d2791daa9"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/analyze.log",
+      "bytes": 6900,
+      "sha256": "67d57bc1c9abb860508f0390848d478d25254d32b00536d0b7c10465ad020f97"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/analyze_execution.json",
+      "bytes": 1381,
+      "sha256": "9be94aab1a37e4d31621c7f5fa20a25dec0223f24dbbfdb7a74adbe35fa27f6f"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/centered_n10_m16_chain0_provenance.json",
+      "bytes": 4237,
+      "sha256": "2824c4dc4a1d427a0c3cf5f88092907ce6a7fe93caa126527e1dbe270960de84"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/centered_n10_m16_chain1_provenance.json",
+      "bytes": 4209,
+      "sha256": "ef8a34e98ab10b058a49d4a01f38e6c5625892fa949a431aa51884770713f17e"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/centered_n10_m16_chain2_provenance.json",
+      "bytes": 4223,
+      "sha256": "d6a2b29383107a641d702b8a9791824a2462dc29742f2dda60adfe5b3eb8d1fc"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/centered_n10_m16_chain3_provenance.json",
+      "bytes": 4196,
+      "sha256": "5ea7c20cdf8aeda1cfcc036eb48c2bc7dce29fdccdea4ee066ae1683881ecebe"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/centered_n10_m1_chain0_provenance.json",
+      "bytes": 4220,
+      "sha256": "072b1f1d6bd39697ba3bb077e272aa80ae789a798480c419fca062a2fc0b9bdd"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/centered_n10_m1_chain1_provenance.json",
+      "bytes": 4192,
+      "sha256": "1c32968793c5e25cdcf8147176138ee0db29c69fcaba44d4bcdd658bd536e347"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/centered_n10_m1_chain2_provenance.json",
+      "bytes": 4213,
+      "sha256": "d3330962410363545458d4c4b5ce7397bde0dd6709eeb8ccaeae7bc1d7e09b8b"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/centered_n10_m1_chain3_provenance.json",
+      "bytes": 4183,
+      "sha256": "d6c315b1fdc9db7c09f13f7b40ef4e091a65db7195cb275c0363aae8eb3d1ff0"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/centered_n10_m4_chain0_provenance.json",
+      "bytes": 4221,
+      "sha256": "4f0bc91745dd77915e82ebb8305c2ea0771edadcd5b82a6bfd84564ec4476c51"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/centered_n10_m4_chain1_provenance.json",
+      "bytes": 4218,
+      "sha256": "97f4d32085a578da5ee0913edfcb6213cf0752f9796c6c79a09a55830f93e404"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/centered_n10_m4_chain2_provenance.json",
+      "bytes": 4223,
+      "sha256": "d9762c61678cd14307ac5064925389298db2e6e8ab87ad8bd1dc188f0fa0f630"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/centered_n10_m4_chain3_provenance.json",
+      "bytes": 4218,
+      "sha256": "ddadfc5771b612164455d39f14a9c4e102c25ff099f61cd8fe38d84a54c725d9"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/centered_n10_reference.json",
+      "bytes": 2322,
+      "sha256": "88a18d223e888cf97492f24e3bd903d0c68fc4dcbdd058a8da200c4863777d16"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/centered_n3_m16_chain0_provenance.json",
+      "bytes": 2870,
+      "sha256": "53d940c1c88eedd055a837359d1cc56cf5fc9aa84c14df3bf4c2c79a5ddd308d"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/centered_n3_m16_chain1_provenance.json",
+      "bytes": 2853,
+      "sha256": "65311a21ba722dd34fbc179fa3e68d5177541698ae3133fca769224111bd1641"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/centered_n3_m16_chain2_provenance.json",
+      "bytes": 2855,
+      "sha256": "251bfd9648df6fbe6712771b9265b5fa5e7e5d3c18970efd40fc48dddb76229e"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/centered_n3_m16_chain3_provenance.json",
+      "bytes": 2821,
+      "sha256": "30fbe3626d21399a12cbb789cbb19f91311c2d20c97205a3fe8ff87197052a35"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/centered_n3_m1_chain0_provenance.json",
+      "bytes": 2857,
+      "sha256": "dbb62e3c1872ddaa96b6123d606d75b6ecff66c76a3cc383a8424cbf1e6a3af8"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/centered_n3_m1_chain1_provenance.json",
+      "bytes": 2833,
+      "sha256": "21e1a019ce6ce38bb072f05392f7875c21ce003113a06045fba0f5098652f661"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/centered_n3_m1_chain2_provenance.json",
+      "bytes": 2860,
+      "sha256": "c05b02574b1e0f7367bf2aa595fcbbcd6a4cb68d66ad029e3b30bd8090882bd2"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/centered_n3_m1_chain3_provenance.json",
+      "bytes": 2825,
+      "sha256": "d5b6f2e1c851abf59d936f221e8a76ff71297b59d5cb14d63104614c4b99c519"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/centered_n3_m4_chain0_provenance.json",
+      "bytes": 2857,
+      "sha256": "0d79bf0f2b6fb56c4a6a7ca2d6ca48476674b7601d6dd2193f1789b2d29da868"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/centered_n3_m4_chain1_provenance.json",
+      "bytes": 2874,
+      "sha256": "e37c5ca35af3e1e60164ab03e732736de4174e25a1aea27690ea97760728f21f"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/centered_n3_m4_chain2_provenance.json",
+      "bytes": 2865,
+      "sha256": "5516117bb56e5ea6cd6b04d8d979e25b00728eb191788f4cd48215cc8a9ca988"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/centered_n3_m4_chain3_provenance.json",
+      "bytes": 2830,
+      "sha256": "0a10c3fddba8187965001ad081db5f344c5700a5a58d641cefa28d6a1ccc1366"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/centered_n3_reference.json",
+      "bytes": 2309,
+      "sha256": "92ded8e90b80efedec66d7e44830df3364e2d7380f99414d0d4ac85178abb28c"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/chains.log",
+      "bytes": 16992,
+      "sha256": "de841e781cba149da72d3d4ed0d40585d9cb3e263b31300855d17bb32f3ae6fa"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/chains_execution.json",
+      "bytes": 1381,
+      "sha256": "721e8a9ff7b7d02a2b442729fdc97176621a1a8648aefe2a59ea0f8981f8d55a"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/collection_check.log",
+      "bytes": 11306,
+      "sha256": "599214df13071a6cd3ee94ab2d187fa6cf968f812d45910ca3f120f6062e0097"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/comparisons.json",
+      "bytes": 115690,
+      "sha256": "97eb6d4258d2d7033bc657eb1dfe2563bb184c937a11dd443792013b6cdc083e"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/config.json",
+      "bytes": 2332,
+      "sha256": "1fc9cc28a63a677b6dae0ed1e58ffc6e0c85728ced1a96dd0f508e016814c8cb"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/direct.log",
+      "bytes": 225,
+      "sha256": "60db0741317ece7bdd61ddb646e7229702d2054c8132bb00fe2cac7b2c50b20d"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/direct_comparison.json",
+      "bytes": 6270,
+      "sha256": "9a2adf20bbdad5e8ad8c4d3fe6d3b4a5b0095217d2e4ac205860c8622be2d76b"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/direct_execution.json",
+      "bytes": 1381,
+      "sha256": "aee37dbb5db66ce25a6865042e69f74ca9169475ab22568e36b2b9906839ac7d"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/direct_n10_provenance.json",
+      "bytes": 296,
+      "sha256": "7746483ea10ad4c924e6db05601cfd34824d4cec740d8281a2ae0cde49a057b0"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/direct_n3_provenance.json",
+      "bytes": 295,
+      "sha256": "85032dfe4c87fce665a8579306e0dd3afe1493015efc0c1da8aa72648acc21d5"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/direct_oracle_checks.json",
+      "bytes": 15289,
+      "sha256": "edc886857b8184eb83edbe110bb097e1b7b0e05dbec5b591ec667a62a736c56c"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/final_checks.json",
+      "bytes": 468,
+      "sha256": "c29eab35ec76910a6b1df46a194aa676022d035a179462e807c869a8cac53205"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/initializer_oracle_checks.json",
+      "bytes": 33339,
+      "sha256": "4d2c30a98e97070903ace8e52ae05e7f3f7c2072007b880d577636991267b1bc"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/latent_traces.png",
+      "bytes": 956606,
+      "sha256": "14ef24031cd34ce4ae11e69e53fc1184fa5aee5a3f49af4d0fddc4bf17d0c3a6"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/oracle_checks.json",
+      "bytes": 390253,
+      "sha256": "882760f3b5fea4294bc70a91cb2ed07615e718376deefa6f2466bc97bc2d5ab7"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/pilot.json",
+      "bytes": 4642,
+      "sha256": "882ff4028a9b478298d00d678d6d67b6d9e280e78593a3434aaf74b7c40b121e"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/pilot.log",
+      "bytes": 1075,
+      "sha256": "77d431652bb442e32025680956615bfb9fbdcd4ad8e2d44caeda97039f94a09c"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/pilot_execution.json",
+      "bytes": 1381,
+      "sha256": "732e3f29f76659bde74ec900c02b1402569c6795a18976363da8c37d2cc3728a"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/preservation_check.json",
+      "bytes": 73,
+      "sha256": "913e7dd6f80791b99b672cfec069092d1f108b480a64649cb957bac88629b901"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/pytest_failure_context.log",
+      "bytes": 98,
+      "sha256": "36fe08e2829cde9a1e036d8b94e882148177428e1c2d7105c6fc0e2c1070c110"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/pytest_final.log",
+      "bytes": 180,
+      "sha256": "b285a594c9d80433d22119fcf74ed9a3780d27965ddb4febba335f9e56fa4ef8"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/pytest_initial.log",
+      "bytes": 1217,
+      "sha256": "a5ed2d458802dfbe61a90689626b063e7674c636371b0b184be6347dd8bd2b8d"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/pytest_repaired.log",
+      "bytes": 181,
+      "sha256": "c8288d5f19799bfaa6fba9fee2b7d99f48409f7d9c0c9d1d3a34977dc50ea804"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/reference_provenance.json",
+      "bytes": 1103,
+      "sha256": "9857afb49d0fdba9c2a75a94c4052f7f855178c9fd6e103d6e05332f882f3c19"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/shifted_n10_m16_chain0_provenance.json",
+      "bytes": 4200,
+      "sha256": "959ebb0f6fb61123335f810b1eda0e3716da0148135630a27c9f5cd8314c7e79"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/shifted_n10_m16_chain1_provenance.json",
+      "bytes": 4208,
+      "sha256": "7c6f5f433e546660e03cae2cfdbc88e8ed3a4d2fbefc692fb9cdfa829f0e3d06"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/shifted_n10_m16_chain2_provenance.json",
+      "bytes": 4174,
+      "sha256": "c451ab305c169658cdc0b659b44ca877953eb86c757ee9f42af275bac55c0d90"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/shifted_n10_m16_chain3_provenance.json",
+      "bytes": 4162,
+      "sha256": "51848a6a9611092a23f021070a13470359be2ad57142a12e909ec8ca42a5f6b5"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/shifted_n10_m1_chain0_provenance.json",
+      "bytes": 4163,
+      "sha256": "cc648f27644c9f72f1b62af3ea0005cf51d19ab620ca724e77e1f3afde84d314"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/shifted_n10_m1_chain1_provenance.json",
+      "bytes": 4175,
+      "sha256": "e71ad6dd17609fe28f215c7ecc25dd9df678a3be3d39fc9c47e3260373fc12c8"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/shifted_n10_m1_chain2_provenance.json",
+      "bytes": 4188,
+      "sha256": "dd10f4d254873b8efb8b5def83fa24889076cacdac05954c3874c066d835bcb3"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/shifted_n10_m1_chain3_provenance.json",
+      "bytes": 4129,
+      "sha256": "dfe13391465b30319e8f381b52db7da786fb4b8e7d789fd5271331646c639182"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/shifted_n10_m4_chain0_provenance.json",
+      "bytes": 4158,
+      "sha256": "669a7de7e6f14f130f237cbb88b442fbf0c4d150b67f8b4f8abf212ff3cd6814"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/shifted_n10_m4_chain1_provenance.json",
+      "bytes": 4185,
+      "sha256": "e3e7dd7a1ae48bb95f3baf7a9770caedad2a53c2459b3fe5cf5ac7e3d0450247"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/shifted_n10_m4_chain2_provenance.json",
+      "bytes": 4180,
+      "sha256": "c3ec59bf275f7060d1c4ddb37ded66a262992fbd9c2bb127227346025936f52b"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/shifted_n10_m4_chain3_provenance.json",
+      "bytes": 4145,
+      "sha256": "2678dab7c631f9328d0ecde441212fa95671c37dda3abd242dacaf4584fe0d96"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/shifted_n10_reference.json",
+      "bytes": 2306,
+      "sha256": "e52c5c55a245e690c4d6c2d05e6a1c53cfe84b24802bdf7851459c13e418079e"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/starting_hashes.json",
+      "bytes": 90265,
+      "sha256": "385e25d447e15581ff0bea1d9f3605907288ce0dccb573925dd9939a92711572"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/starting_status.txt",
+      "bytes": 4686,
+      "sha256": "4cd843d37894bdc3333763be2b7d6154d3d3b13a50e3eaedbf611267dc4aa76f"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/summary.csv",
+      "bytes": 13281,
+      "sha256": "416956607bc88770ae00a0c6b5a03ee7eb6283f1c107ad003b392141fe9911ad"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/centered_n10_m16_chain0_failure.json",
+      "bytes": 1701,
+      "sha256": "0c2afd46c64d2a92b5a97eed880030c6d484757a2471d81d65e15a1eeb4536ce"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/centered_n10_m1_chain0_provenance.json",
+      "bytes": 4191,
+      "sha256": "b0ca53d7dc52ebc1be2821a0e49162314b6f23fbc25d6e814b33f0ce278c85a9"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/centered_n10_m1_chain1_provenance.json",
+      "bytes": 4205,
+      "sha256": "3089a5bc71aafc0219022b0443d7fb894eb8de4f3dade0003b034bfe818a347d"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/centered_n10_m1_chain2_provenance.json",
+      "bytes": 4190,
+      "sha256": "3df6e676880f2850abe45c7a035be6787c8585542490632e9d8541c138d1e1c0"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/centered_n10_m1_chain3_provenance.json",
+      "bytes": 4188,
+      "sha256": "76fde5c80b0c27549a178611db70e401050aef4a783f0dcdf4978d443bf93d27"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/centered_n10_m4_chain0_provenance.json",
+      "bytes": 4189,
+      "sha256": "674fc9ea86399a23fe539610e49239517eb1fe775d38feb8bd357a29d312b4d9"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/centered_n10_m4_chain1_provenance.json",
+      "bytes": 4209,
+      "sha256": "2eea0047cbb18ea9858de36cb06865e231f98064d2ff237eb71e0d382aa08283"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/centered_n10_m4_chain2_provenance.json",
+      "bytes": 4208,
+      "sha256": "e53cb5800fea1ffce66ec2360ab7543c351b3aa28a926db72d465ce55568681e"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/centered_n10_m4_chain3_provenance.json",
+      "bytes": 4210,
+      "sha256": "e7f40463bf9436a69dca10d7e36536bbdf6d780faeef729012be3b2eee4ad0ae"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/centered_n3_m16_chain0_provenance.json",
+      "bytes": 2852,
+      "sha256": "ff33dba7f5b9428140a1395dde6dc9899885591cf9b58b807968210651d1df7c"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/centered_n3_m16_chain1_provenance.json",
+      "bytes": 2836,
+      "sha256": "881fff8f8f362c778fb9e816cedaf476dcb74d219bb2389e58043fde4ace1dba"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/centered_n3_m16_chain2_provenance.json",
+      "bytes": 2838,
+      "sha256": "f34428752d102454c5f62f781daf5a5a433509b9ffdc55c86f5489183c0046f4"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/centered_n3_m16_chain3_provenance.json",
+      "bytes": 2804,
+      "sha256": "b26a62ad09ff4542b035f7684b006408ad7534683364c3c100b9566bdeba5cb6"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/centered_n3_m1_chain0_provenance.json",
+      "bytes": 2837,
+      "sha256": "dd7f1ffd8c6053a0920a0e71b4edcb0e6f7c6a6a92bc35306543c7f638bc9edc"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/centered_n3_m1_chain1_provenance.json",
+      "bytes": 2814,
+      "sha256": "f98a4b9f6c95303838ab4514d9c4f69d60e98c87000330104febe0059218971b"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/centered_n3_m1_chain2_provenance.json",
+      "bytes": 2843,
+      "sha256": "060728b6ad2a840d7dae43d02afcd6d9c2290e47c1df029fb1582878502d684c"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/centered_n3_m1_chain3_provenance.json",
+      "bytes": 2808,
+      "sha256": "4d0699b55e5d9f6fa6d11d7250df4bd93d3e0d86fbecbebfde606026748351a5"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/centered_n3_m4_chain0_provenance.json",
+      "bytes": 2839,
+      "sha256": "e33a8254ef0d2cafd85264dba3b8344070351b75b85281b64021ec33d3d960df"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/centered_n3_m4_chain1_provenance.json",
+      "bytes": 2855,
+      "sha256": "454945f7c94bfa9b902f25c0176ab258e8107ef26f7110988d460f7736ecb57d"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/centered_n3_m4_chain2_provenance.json",
+      "bytes": 2848,
+      "sha256": "15f81385049efc38081a5c671aab9c70153b97cc8502522b252cb8799b03e46f"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/centered_n3_m4_chain3_provenance.json",
+      "bytes": 2811,
+      "sha256": "8a428d6aa3fe715b160c971f3fde7e0edd704463d0bae6acc6145815a2df09e0"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/chains.log",
+      "bytes": 10870,
+      "sha256": "77247a157f899c77f118ea3b1f1b8cb6b6acedb1a65ee89e410a9d4a888e503c"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/chains_execution.json",
+      "bytes": 1381,
+      "sha256": "2b3b7110d4d2ff34fc69be6cd8d367f7c16db6fd601930b5b83a5f2bc36e2c80"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/config.json",
+      "bytes": 2198,
+      "sha256": "fec944dbf1910918e1502055c613eae1a55b523836043d6449a377ad174e2a04"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/initializer_oracle_checks.json",
+      "bytes": 19109,
+      "sha256": "b78ef08e4511cc158959538917075b79ffb74ec23803e3e20e64f23bb9f4ad5d"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/interval_diagnosis.log",
+      "bytes": 631,
+      "sha256": "80d0709be8473ab6acad1757cd438abe2b9d7a2291a3764bd7666fd9b17be8e8"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/interval_failure_diagnosis.json",
+      "bytes": 699,
+      "sha256": "b38eb656a45ad1ebb58eebdf5db76ba1772d3d521820a3e4dee97c140070a9d6"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/loc_student_selected_mle_block.py",
+      "bytes": 10950,
+      "sha256": "1987c9896762052646e72eaff7bb9009e54e00c391d5230791ecfaebcde1418a"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/pilot.json",
+      "bytes": 4602,
+      "sha256": "52ab2953109380fadf70299fe70febe2fb10bb4f9d027ed2bbdadc1d9ecb8f24"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/pilot.log",
+      "bytes": 1036,
+      "sha256": "67549116d27a4d72df4d4a6a5ebdfc725f1631490e53b0d38a2d5832f1a3d0b4"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/pilot_execution.json",
+      "bytes": 1381,
+      "sha256": "28a402dfeb20d73a4b317771e49f2458353021c8e482bfec225254a085f88d2f"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/test_student_selected_mle_block.py",
+      "bytes": 6212,
+      "sha256": "8496ebade04c396ea9eef8b138a2d03b09886fd9723e6d24ea92f5d6980a705b"
+    },
+    {
+      "path": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10/v1/validate_cheap_selected_mle_gibbs.py",
+      "bytes": 14944,
+      "sha256": "6f32d6209df759c283c9d72b6621a0a67a8d3da57205abaa35821077a304e6a7"
+    }
+  ],
+  "ignored_raw_arrays": [
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010/centered_n10_m1_chain0.npz",
+      "bytes": 113671,
+      "sha256": "a3684ae3e44a35a50c06a9a1fdbb2ce9432252ed52309d947406b636622bf954"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010/centered_n10_m1_chain1.npz",
+      "bytes": 113483,
+      "sha256": "f3376d888de9032f26e7e36827f15cd4e4970b2f843bddf8b39605180c077854"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010/centered_n10_m1_chain2.npz",
+      "bytes": 113281,
+      "sha256": "8c259bf9842809907db1c9cbe75a9f54bc6695685990dede4a1e2b7e9889f958"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010/centered_n10_m1_chain3.npz",
+      "bytes": 110905,
+      "sha256": "c5907fc5ab2772b8ec3b00c568a8fb6f0941c8aa3e8887796e6f0f67488ffa7b"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010/centered_n10_m4_chain0.npz",
+      "bytes": 252447,
+      "sha256": "e93b6e55eef3a7326a4571c26277a748e474093d206592a2b49ff209f2978c1d"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010/centered_n10_m4_chain1.npz",
+      "bytes": 252448,
+      "sha256": "ba3b0942a856e13317c95fe207797f35f43ab3dbfe00b5e2a3bb3c083cb30785"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010/centered_n10_m4_chain2.npz",
+      "bytes": 249809,
+      "sha256": "aeb1d713ed5df1f706f936683814348242d72cfc6ea1afadfe903899a96b3b3e"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010/centered_n10_m4_chain3.npz",
+      "bytes": 252975,
+      "sha256": "f334d660ae4d1706a193dc5109d2e524a5d252f7d8f005308883ab59dea6030d"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010/centered_n3_m16_chain0.npz",
+      "bytes": 144923,
+      "sha256": "b34737119cf02c8fedbe1ce052a854b2835605ffacbe49eda0974d83d6b6bd7b"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010/centered_n3_m16_chain1.npz",
+      "bytes": 143366,
+      "sha256": "bded8a9525c957bfcd7fd2345c9f0f941c039cdac8944adfbfdcc5e7189611df"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010/centered_n3_m16_chain2.npz",
+      "bytes": 145462,
+      "sha256": "a2788d10e3192ad03ac287e913d437f1c061ae974492b48f7c8b01aaff2be5ad"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010/centered_n3_m16_chain3.npz",
+      "bytes": 143952,
+      "sha256": "302d8bab26df41d4bd20b70b03c9cfab1f2cbfa1c7a8f8d32d6d5058d1129b9b"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010/centered_n3_m1_chain0.npz",
+      "bytes": 100183,
+      "sha256": "88d655a4b74c0482a977924bc4a77e40903429c69c9379e52c1ec2e1d1d846c4"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010/centered_n3_m1_chain1.npz",
+      "bytes": 101233,
+      "sha256": "c67259b1ec0287e4f9eea19a672a126d5c70890552c91d0be905303c114579f8"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010/centered_n3_m1_chain2.npz",
+      "bytes": 98187,
+      "sha256": "293e0da99e19c5bd17ed41bce32a4c87a8eb90ae2918a7ade725fdc8d387ec61"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010/centered_n3_m1_chain3.npz",
+      "bytes": 97588,
+      "sha256": "843464599e78ede6ac864fc8684dd57b6fbe55f61f7c5315a38c1785fd627864"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010/centered_n3_m4_chain0.npz",
+      "bytes": 135416,
+      "sha256": "99285cbd1b3c9274905c9fd0c503b5e82a929d4d95ae3ad70db9d1d4705c97ca"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010/centered_n3_m4_chain1.npz",
+      "bytes": 138063,
+      "sha256": "9276b43f1436a9129813cc6c7554d15beb0c30e9abdc51ceef4d25e8501cfcb2"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010/centered_n3_m4_chain2.npz",
+      "bytes": 135333,
+      "sha256": "73812b7f89ab8b30789c4ca15483c45efea0e126649421c7d248df487387ee34"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010/centered_n3_m4_chain3.npz",
+      "bytes": 136911,
+      "sha256": "894f5791e072edfbfa0add8e603f99df38d385b8cdafc0040ef1ff06d5d894d2"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n10_direct_rejection.npz",
+      "bytes": 340264,
+      "sha256": "5b80edfccda4f852047f3980a456dd804e6dd9fc630eee00e4ebfe5a7cea4e09"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n10_m16_chain0.npz",
+      "bytes": 403084,
+      "sha256": "52dfff5839399287aec6e198bb8b6e10c559d6d33c68164f08a30f4190e8ba35"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n10_m16_chain1.npz",
+      "bytes": 401571,
+      "sha256": "72627195260e723360a18e8a46cb96a477ac6b2b911a48626fc635ccbefc2748"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n10_m16_chain2.npz",
+      "bytes": 400099,
+      "sha256": "6e4df16b4f6486e5ba4449a59a8560ca7f5709788c023198fafefd1e7bd5382f"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n10_m16_chain3.npz",
+      "bytes": 399726,
+      "sha256": "66c94c7ff0769a8814293f2e975fa47fc18a57799abab4ea7e9a4690032fdefa"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n10_m1_chain0.npz",
+      "bytes": 113085,
+      "sha256": "3fe80b4c189e42d106f4a288b0c00d1979b50d7a0953d65d9db6433efc6365d9"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n10_m1_chain1.npz",
+      "bytes": 112785,
+      "sha256": "eade3c568ea0cd7dcc2a14c5e44af4786105137b32a634402cbd1bf79035af97"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n10_m1_chain2.npz",
+      "bytes": 115407,
+      "sha256": "5ac99b264b54317ea8c0cb84f9865e2063912ec811aff989ca6e41b34b05829f"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n10_m1_chain3.npz",
+      "bytes": 113556,
+      "sha256": "211de1d7f08babb4117fcec63b034ab6a7a03d0646f70e945cab3a4dc189e2c8"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n10_m4_chain0.npz",
+      "bytes": 247986,
+      "sha256": "8bdbb799a47dde5a7e6a30f0abcbab8ad49ad8cf3364f62ccdafe3445318a897"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n10_m4_chain1.npz",
+      "bytes": 251569,
+      "sha256": "3deef999020ade3ea5df13bd067305dfa072a6748ec70f336388a8e16923f08c"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n10_m4_chain2.npz",
+      "bytes": 250102,
+      "sha256": "6ae0a4721797e794187e1fa94102610ab024680bd99a2f8977a41f26209d3101"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n10_m4_chain3.npz",
+      "bytes": 249887,
+      "sha256": "b04521d3692f20f8b374de9d9021c14f6b89eb8d01710e21db8b69bade389ffd"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n3_direct_rejection.npz",
+      "bytes": 115907,
+      "sha256": "5377543e054b1e441bb464b03e61ef0202051b921e615df349c5f03195038d6a"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n3_m16_chain0.npz",
+      "bytes": 144923,
+      "sha256": "b34737119cf02c8fedbe1ce052a854b2835605ffacbe49eda0974d83d6b6bd7b"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n3_m16_chain1.npz",
+      "bytes": 143366,
+      "sha256": "bded8a9525c957bfcd7fd2345c9f0f941c039cdac8944adfbfdcc5e7189611df"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n3_m16_chain2.npz",
+      "bytes": 145462,
+      "sha256": "a2788d10e3192ad03ac287e913d437f1c061ae974492b48f7c8b01aaff2be5ad"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n3_m16_chain3.npz",
+      "bytes": 143952,
+      "sha256": "302d8bab26df41d4bd20b70b03c9cfab1f2cbfa1c7a8f8d32d6d5058d1129b9b"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n3_m1_chain0.npz",
+      "bytes": 100183,
+      "sha256": "88d655a4b74c0482a977924bc4a77e40903429c69c9379e52c1ec2e1d1d846c4"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n3_m1_chain1.npz",
+      "bytes": 101233,
+      "sha256": "c67259b1ec0287e4f9eea19a672a126d5c70890552c91d0be905303c114579f8"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n3_m1_chain2.npz",
+      "bytes": 98187,
+      "sha256": "293e0da99e19c5bd17ed41bce32a4c87a8eb90ae2918a7ade725fdc8d387ec61"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n3_m1_chain3.npz",
+      "bytes": 97588,
+      "sha256": "843464599e78ede6ac864fc8684dd57b6fbe55f61f7c5315a38c1785fd627864"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n3_m4_chain0.npz",
+      "bytes": 135416,
+      "sha256": "99285cbd1b3c9274905c9fd0c503b5e82a929d4d95ae3ad70db9d1d4705c97ca"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n3_m4_chain1.npz",
+      "bytes": 138063,
+      "sha256": "9276b43f1436a9129813cc6c7554d15beb0c30e9abdc51ceef4d25e8501cfcb2"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n3_m4_chain2.npz",
+      "bytes": 135333,
+      "sha256": "73812b7f89ab8b30789c4ca15483c45efea0e126649421c7d248df487387ee34"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n3_m4_chain3.npz",
+      "bytes": 136911,
+      "sha256": "894f5791e072edfbfa0add8e603f99df38d385b8cdafc0040ef1ff06d5d894d2"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/direct_n10.npz",
+      "bytes": 348621,
+      "sha256": "fedd07574aabe27dfb96c365384e038e3d0b105897892106471d5e44d0cd85c7"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/direct_n3.npz",
+      "bytes": 126966,
+      "sha256": "3f8f4a4a54d21308dc5693fdfe924b8fa42c24984cd1567a967b9801c6f89245"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/shifted_n10_direct_rejection.npz",
+      "bytes": 8863,
+      "sha256": "2f247228bed4699c47614523c2dfd7630ffa72bbd7404d1774cf2ebc9805766c"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/shifted_n10_m16_chain0.npz",
+      "bytes": 380472,
+      "sha256": "aab09ada7e455123574f778d4729d7b1a1a9af2a681f9d5e540cb1e7a8d6db02"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/shifted_n10_m16_chain1.npz",
+      "bytes": 389502,
+      "sha256": "966500bf4db1e98ee9e85eef7acb30ea609f9413a0027fcd950812c8fef32716"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/shifted_n10_m16_chain2.npz",
+      "bytes": 382926,
+      "sha256": "6b18372f0b8d7a82b665ae5f11b121069fcdd0df55543829c12bee260c5b7615"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/shifted_n10_m16_chain3.npz",
+      "bytes": 380861,
+      "sha256": "304ce98f373f8017c16c2a989d97e59129b5369984dbe9adbfaca506b5b66bd0"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/shifted_n10_m1_chain0.npz",
+      "bytes": 108088,
+      "sha256": "9ce06203c1f73108920067ff32021131f237f4252544ec05d539e253f684a91a"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/shifted_n10_m1_chain1.npz",
+      "bytes": 110688,
+      "sha256": "c420484c0f83ba7b042ed2f22c7d305cf780a43b701853f90df28847802ecef4"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/shifted_n10_m1_chain2.npz",
+      "bytes": 106487,
+      "sha256": "753973f1db54a62fc1f6636cfc547063c7d72192e275353990b8c4ae25547a42"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/shifted_n10_m1_chain3.npz",
+      "bytes": 110569,
+      "sha256": "5ff406c2454b1d8a0d79f3376a4b7bca9fc177037a3c109730ec24d459be7779"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/shifted_n10_m4_chain0.npz",
+      "bytes": 240872,
+      "sha256": "5d1e2c7b978b3372b61c0d495d1d40246f0dc6c1a423a01150d1d0c0a3253f60"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/shifted_n10_m4_chain1.npz",
+      "bytes": 242629,
+      "sha256": "4ab1e946f96243058bcb3d340e06bcb2cd668f00e3237f70add6d5127c7faa71"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/shifted_n10_m4_chain2.npz",
+      "bytes": 241120,
+      "sha256": "c0dad2b056dfcd25227c31c301a6e467fed371f91bf7fe67a921a0bad0f63ba9"
+    },
+    {
+      "path": "tmp/cheap_selected_mle_gibbs_20261010_v2/shifted_n10_m4_chain3.npz",
+      "bytes": 238102,
+      "sha256": "040aa88d08be028fd4fc15f6ef8b98619b00998170e73bb6a2328648739b02e9"
+    }
+  ],
+  "canonical_references": "reference_provenance.json and original Gibbs/shifted-study evidence; referenced older arrays are not copied here.",
+  "portability": "Copy ignored arrays at listed paths with this manifest and the linked original reference banks. Raw files are local workspace artifacts.",
+  "failure_preservation": "v1 contains 20 completed chains and diagnostic replay state, but no full partial array for its failed chain. Repaired driver saves partial arrays on future block failure.",
+  "manifest_self_hash_excluded": true
+}

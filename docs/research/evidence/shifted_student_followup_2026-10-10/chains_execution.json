@@ -1,0 +1,23 @@
+{
+  "config_sha256": "4a3365311d9182fe496ae07d0f0ae9b1db5b0a15fd9afc1341a5c8abce97df13",
+  "source_sha256": {
+    "models/student_location_mle.py": "096abb4d3ad2a91b1946186af56b55f1b54e6482d367f5483bb6c72987e6550f",
+    "models/loc_affine.py": "7fc25c320be528adae27d20e9c59cf15f094312b19b4bead2303426d925234c8",
+    "scripts/selected_mle_reference_oracle.py": "ee89947b06e91cd3bec11cd8f2f69a4ee6f40803d82d8f90bdddb0f39c4718c1",
+    "scripts/validate_selected_mle_reference.py": "be3d095635d24a7ef8f7ba94a5a5d03c9af196197543c7e51d1cc5442ce66b79",
+    "scripts/followup_shifted_student_reference.py": "a5e9163005eb4f533508e54ea41457ac109f01b431c43c8866df9db7b6d856e5"
+  },
+  "python": "3.13.5 (main, Apr  2 2026, 12:03:47) [GCC 14.3.0]",
+  "phase": "chains",
+  "versions": {
+    "numpy": "2.5.2",
+    "scipy": "1.18.0",
+    "sympy": "1.14.0",
+    "numba": "0.67.0",
+    "matplotlib": "3.11.1"
+  },
+  "cpu_affinity": [
+    0
+  ],
+  "start_utc": "2026-10-10T20:45:27Z"
+}

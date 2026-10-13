@@ -1,0 +1,27 @@
+{
+  "question": "Can rigorous n3 endpoint root certificates preserve matched decisions while eliminating most hardened-selector calls?",
+  "k_values": [
+    1,
+    2,
+    3
+  ],
+  "block_lengths": [
+    4,
+    16
+  ],
+  "chains": 4,
+  "iterations": 4000,
+  "burn_in": 1000,
+  "batch_length": 200,
+  "seed": 2026105100,
+  "chain_ceiling_seconds": 60,
+  "total_ceiling_seconds": 240,
+  "root_tolerance": 1e-10,
+  "score_tolerance": 1e-10,
+  "prior_mean": 0,
+  "prior_std": 2,
+  "release": 0,
+  "proposal_std_mu": 0.45,
+  "proposal_std_z": 0.1,
+  "stopping_rule": "One fixed paired 3-shape/2-length experiment, four existing dispersed starts; stop on mismatch/failure/ceiling; no extensions or tuning. Reuse verified reference banks and their uncertainty. Original frozen source and guarded path timed fresh, alternating order after 32-step warmups."
+}

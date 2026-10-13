@@ -1,0 +1,15 @@
+{
+  "source_sha256": {
+    "models/loc_student.py": "1e0028f746669885186eadfe0de5d29763d9794f1e975f4a91eb0784063e1346",
+    "models/loc_student_selected_mle.py": "98633354cfffe445888223253baf1bdb7c7c9416619761dd12424c8a49446c6b",
+    "models/loc_student_selected_mle_block.py": "d01d1789dd883dff9e24df5706c4ee0e52bfd4fb38d6f27b8f54aeccf04e577a",
+    "models/loc_student_selected_mle_rattle.py": "b051673d3f1343b13f05889f44b9b96e2b038a97c77d562653a0daed13145428",
+    "models/student_location_mle.py": "096abb4d3ad2a91b1946186af56b55f1b54e6482d367f5483bb6c72987e6550f",
+    "reporting/diagnostics/student_n3_selected_geometry.py": "889adc7072beab757890c72fe6eb1f2ee335c3e6e1a9f2a205cb46af48d254c1",
+    "scripts/study_student_n3_selected_geometry.py": "73bab62a3c46aa5d9d60bbcd7e61842f56dd68a41568a39a6f584e78b5542708"
+  },
+  "config_sha256": "63d164ed9a81370387e3a9d2b085a65cd00b0d96ddeee087fb21fe1cb7a0c61a",
+  "python": "3.13.5 (main, Apr  2 2026, 12:03:47) [GCC 14.3.0]",
+  "phase": "algebra",
+  "start_utc": "2026-10-10T23:26:14Z"
+}

@@ -1,0 +1,115 @@
+{
+  "question": "Can fresh selected-MLE references resolve shifted-case uncertainty, and do dispersed affine chains explore latent tails?",
+  "case": {
+    "model": "student",
+    "k": 2.0,
+    "n": 10,
+    "release": 1.25,
+    "prior_mean": -0.75,
+    "prior_std": 0.6,
+    "tail_width": 0.75,
+    "tau_q": 0.8,
+    "proposal_std_mu": 0.45,
+    "mle_tolerance": 1e-08
+  },
+  "weighted_banks": [
+    {
+      "id": "weighted_a",
+      "seed": 2026101011,
+      "draws": 65536
+    },
+    {
+      "id": "weighted_b",
+      "seed": 2026101022,
+      "draws": 65536
+    }
+  ],
+  "rejection_bank": {
+    "id": "rejection_base",
+    "seed": 2026101033,
+    "draws": 65536
+  },
+  "rejection_accept_seed": 2026101044,
+  "bootstrap_seed": 2026101055,
+  "bootstrap_repetitions": 200,
+  "bootstrap_bank_repetitions": 100,
+  "oracle_base_checks_per_bank": 32,
+  "oracle_reference_latent_checks": 8,
+  "oracle_chain_checks": 8,
+  "chain_seed": 2026101066,
+  "iterations": 40000,
+  "burn_in": 8000,
+  "batch_length": 1000,
+  "initial_reference_max_quantiles": [
+    0.1,
+    0.5,
+    0.9
+  ],
+  "initial_deterministic": [
+    [
+      "negative_outlier12",
+      [
+        -12,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      -0.75
+    ],
+    [
+      "positive_outlier25",
+      [
+        25,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      1.25
+    ],
+    [
+      "two_opposing_outliers",
+      [
+        -12,
+        12,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      0.25
+    ]
+  ],
+  "bank_ceiling_seconds": 300,
+  "chain_ceiling_seconds": 180,
+  "raw_directory": "tmp/shifted_student_followup_20261010",
+  "evidence_directory": "docs/research/evidence/shifted_student_followup_2026-10-10",
+  "stopping_rule": "Fixed draws and iterations; abort on unresolved MLE or wall ceiling; never replace failed datasets, tune parameters, or extend a failing comparison.",
+  "precision_screens": {
+    "weight_ess_min": 10000,
+    "reference_mean_se_max": 0.01,
+    "reference_tail6_se_max": 0.01,
+    "reference_q05_se_max": 0.04
+  },
+  "exploration_screens": {
+    "rank_split_rhat_max": 1.01,
+    "bulk_tail_ess_min": 400,
+    "central_difference_combined_mcse_max": 4
+  },
+  "rare_event_rule": "Record counts and uncertainty; zero correlated-chain events have unknown MCSE, never a zero standard error or normal-z pass/fail."
+}

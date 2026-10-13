@@ -1,0 +1,26 @@
+{
+  "target": "selected_global_student_location_mle",
+  "seed": 20261012,
+  "max_score_residual": 4.718447854656915e-16,
+  "max_selected_mle_residual": 1e-10,
+  "counts": {
+    "blocks": 40,
+    "accepted": 28,
+    "mu_accepts": 33,
+    "score_pairs": 160,
+    "score_accepts": 111,
+    "proposal_sampling_attempts": 217,
+    "branch_changes_proposed": 93,
+    "branch_changes_accepted": 65,
+    "selector_calls": 1,
+    "selector_fallbacks": 0,
+    "nonpositive_curvature": 1,
+    "cheap_metropolis": 11,
+    "global_selection": 0,
+    "n3_fast_attempts": 28,
+    "n3_fast_accepts": 28,
+    "n3_fast_rejects": 0,
+    "n3_fast_fallbacks": 0
+  },
+  "validation": "shape/finiteness/support smoke only"
+}

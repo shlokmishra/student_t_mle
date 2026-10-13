@@ -1,0 +1,206 @@
+{
+  "input_sha256": {
+    "scripts/build_location_review_figures.py": "9ce7436f4cbfae283abedd2782986ea32ff4215f9b2d1f8a9e1c2c3f273c600d",
+    "docs/research/evidence/location_only_performance_2026-10-12/artifact_manifest.json": "9c9751835eac7d470d94ff2bd037c842970634cbd925ebb4e56e5bd448957f54",
+    "docs/research/evidence/location_chain_diagnostics_2026-10-12/artifact_manifest.json": "facec3a1f91cc6c0a9dd09afc68746209593c50aab659d5ff5016d39cba5bfc6",
+    "docs/research/evidence/location_only_performance_2026-10-12/config.json": "21194caede84c50571313362d8db67743a58e1f50d74616de54ac26386677306",
+    "docs/research/evidence/location_chain_diagnostics_2026-10-12/diagnostics.json": "ec3f184ad408cc5abd216b656c33d15de136eeb126ed7b7aa1cb84e8669a125b",
+    "docs/research/evidence/location_chain_diagnostics_2026-10-12/student_centered_n10_reference_quantiles.json": "1db546386a4f0acf99478ca57e221b08dc7f927496ade3d0472027825f6ce44e",
+    "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n10_block_chain0.json": "bd3f8d383cce1d5d6166bc0513cd5503636a40bc71e8ff75ecca6d93509fd1a6",
+    "tmp/location_only_performance_20261012/student_centered_n10_block_chain0.npz": "f110c49d7a3d82a339141541802a4bf578d8ad50409ea8bcd8b0acdb4b36a73f",
+    "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n10_block_chain1.json": "1d1d418a096de73740a70c821513740059be165bd97ace76fbd9046a55507a0d",
+    "tmp/location_only_performance_20261012/student_centered_n10_block_chain1.npz": "66de28ce473fe170fb87a2187c67010821dbba6720d4b459765f762d7b4c176d",
+    "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n10_block_chain2.json": "340b313a1a7bff9994c2d5f759725557387daef1f48881a7a94d163635c5424a",
+    "tmp/location_only_performance_20261012/student_centered_n10_block_chain2.npz": "bcd860ad9467b7567df2a5bd08556d6bbfb1e1b25788bce28012d4fcadb31985",
+    "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n10_block_chain3.json": "d0d279fa09dbd8d6e133f1e4f9b104b5ca47a5217f15501b04032b44bebe4e5f",
+    "tmp/location_only_performance_20261012/student_centered_n10_block_chain3.npz": "92659f620e6b0176bce96c9c5cb43227af92f6adb137caff2ee83e96bfa9656e",
+    "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n10_rattle_chain0.json": "d14ad97a37b48951229846173d0ce9d13009c13f4a9c03c640ee7dbda9247768",
+    "tmp/location_only_performance_20261012/student_centered_n10_rattle_chain0.npz": "270640be8f36a017d9f3b661c60a99a54f5e8b4c127e89b5d4cd750299795104",
+    "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n10_rattle_chain1.json": "c4ac11b0f705b3d58bd2e7f335e6438ccda17dd79e57ae8c7fcc3a84bef7c36f",
+    "tmp/location_only_performance_20261012/student_centered_n10_rattle_chain1.npz": "209def2cdb70b75b6702962748d2c571a7e77a1ddf561d4ece1729300321bc4d",
+    "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n10_rattle_chain2.json": "f9131fe192ae17512975cb8232d25668ffe4e6ffdd953c17a9eed0b0bbd7cb93",
+    "tmp/location_only_performance_20261012/student_centered_n10_rattle_chain2.npz": "21b478ade3eb5e1132051c39a30c8408889c1943d98b3c2642f6bbeaec3f72ec",
+    "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n10_rattle_chain3.json": "1ffcacd3bbc3867060005667adb7e77475c17659e3e91436554daa7afe8267a2",
+    "tmp/location_only_performance_20261012/student_centered_n10_rattle_chain3.npz": "a25cbe6256dcf4e7c03e53dbbba6be05f284140075a63cb479e4d79712512025",
+    "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n10_independence_chain0.json": "cdd942bc253df2c86070c7d1d2da03ef54ff7c2ca6878ff6ca9953819af5dcd7",
+    "tmp/location_only_performance_20261012/student_centered_n10_independence_chain0.npz": "3842fbbf33fa440931612b006512df383d401451426c587bc4baea41c442e3ab",
+    "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n10_independence_chain1.json": "ba487cd7517f2849e2483de54ef0780b5e2c64d5f5056723d03b3e5a38747ecb",
+    "tmp/location_only_performance_20261012/student_centered_n10_independence_chain1.npz": "ed9ac424579456f3abaa8112605901e3182c0ac9e9f5a135b2833435b42c7455",
+    "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n10_independence_chain2.json": "10bfcd0f4ffac825688edc3522ab2a7c3632647e20a083c1d2004506b9b32ef3",
+    "tmp/location_only_performance_20261012/student_centered_n10_independence_chain2.npz": "6f4171b8bcae1fad6ff0e18c3f2efdab1b672b22b61a0424617f38d112a79cff",
+    "docs/research/evidence/location_only_performance_2026-10-12/student_centered_n10_independence_chain3.json": "38415d84fd47bd162c0674bd7dce293aa1b16d97a78f6d80f4c80ff31d873349",
+    "tmp/location_only_performance_20261012/student_centered_n10_independence_chain3.npz": "2a2b94998a9945719863f1ea16abf1899363dd4ebb201d087b4248e3e210639b",
+    "docs/research/evidence/location_chain_diagnostics_2026-10-12/student_shifted_n10_reference_quantiles.json": "316cddf55b709b020fb3ee94c0586213978edc45bce500452a02b611b036e703",
+    "docs/research/evidence/location_only_performance_2026-10-12/student_shifted_n10_block_chain0.json": "b5b82307a5a45751aae9b787d6b1467970d79207de884cad252f2d43af91f513",
+    "tmp/location_only_performance_20261012/student_shifted_n10_block_chain0.npz": "4d4ebe057979903c61dc9c7d9f71b71267b56957a96e0463ce4ca4a978d4cf28",
+    "docs/research/evidence/location_only_performance_2026-10-12/student_shifted_n10_block_chain1.json": "d33cd1eda86dd5422a76e3f86f67ea099abd27c8a514e9b730dd8016e517ad4f",
+    "tmp/location_only_performance_20261012/student_shifted_n10_block_chain1.npz": "3a5a7c1a290dc1090deae2030f2d597560f2b40d2e34f08a65c83ef6b5686ed8",
+    "docs/research/evidence/location_only_performance_2026-10-12/student_shifted_n10_block_chain2.json": "604ac44f044baae9ef0cfac7155b102721289db5e3292f2b69f0ce9a2885bad6",
+    "tmp/location_only_performance_20261012/student_shifted_n10_block_chain2.npz": "8cba83f401c85d05ebdaf253ddda8130f5a2c5c157505cc4dfb35ed938eabad1",
+    "docs/research/evidence/location_only_performance_2026-10-12/student_shifted_n10_block_chain3.json": "29987f9dbe229574c51bb4f378cda11385b166204c19e4851748bbb8cf0aeeaa",
+    "tmp/location_only_performance_20261012/student_shifted_n10_block_chain3.npz": "cad1291d633012ae6fc6b3a1e9a517c046aad5bf926a0a5177882eb4673fe785",
+    "docs/research/evidence/location_only_performance_2026-10-12/student_shifted_n10_rattle_chain0.json": "252666f4771ea29b1c04d71c4219f1e2cd20cc8dc7f898a2fcced11ab2b527cf",
+    "tmp/location_only_performance_20261012/student_shifted_n10_rattle_chain0.npz": "5df8d0ef3052b37559b26cac906eff1a8ba007eb1fe7df326c4cb1bbfd9f1c77",
+    "docs/research/evidence/location_only_performance_2026-10-12/student_shifted_n10_rattle_chain1.json": "48ddbcf41c634d0a80e8d8fb746158afa2a7df9661b2d6a8ef17ceccc9d1fcc6",
+    "tmp/location_only_performance_20261012/student_shifted_n10_rattle_chain1.npz": "e0160d692a7b9fed08047a4c653a7562cb35b9e14ba4e3f9c6f0da9abe842396",
+    "docs/research/evidence/location_only_performance_2026-10-12/student_shifted_n10_rattle_chain2.json": "1a66e272813f104816d5bb4702a0aad839a787ea186450ee429ae3dec2a0cd06",
+    "tmp/location_only_performance_20261012/student_shifted_n10_rattle_chain2.npz": "52d19b92d01d66a68af7ac72dcfb540dd5e5f6da154935a163bc5ce23127dd77",
+    "docs/research/evidence/location_only_performance_2026-10-12/student_shifted_n10_rattle_chain3.json": "0b15e74844fe57b56403edb574a12cf6ae5f7ba52cf59bc19740bef5523c6a73",
+    "tmp/location_only_performance_20261012/student_shifted_n10_rattle_chain3.npz": "14f913d21c0f9cc749a2acc3fab22d485d1e5b25a8eadaa360f277fd9e12cf27",
+    "docs/research/evidence/location_only_performance_2026-10-12/student_shifted_n10_independence_chain0.json": "8737723f3774dccd2b9a58fb3f49846c71ceee2b15d8f0218842068f7f844e57",
+    "tmp/location_only_performance_20261012/student_shifted_n10_independence_chain0.npz": "5d92f8cc45b39c71588cd563e5af00355078e9c1eba4c99e375a25380126a819",
+    "docs/research/evidence/location_only_performance_2026-10-12/student_shifted_n10_independence_chain1.json": "76a110ae0d9a6b48973bf8a1ad8f4e52013231d71faf7dae0631868860c7a734",
+    "tmp/location_only_performance_20261012/student_shifted_n10_independence_chain1.npz": "9d892a6231b2e81fcff3b53f48912ec7c446d0b48dae90d59441cc2dde6b85de",
+    "docs/research/evidence/location_only_performance_2026-10-12/student_shifted_n10_independence_chain2.json": "a23e64a9c2d3fbb023a68e7dd4527a44ce4a2a7952e5501d2d1062cccd90eded",
+    "tmp/location_only_performance_20261012/student_shifted_n10_independence_chain2.npz": "a0217226875a16f50422c14d20cafb9c1464c9235456da70356002fa5c7c9218",
+    "docs/research/evidence/location_only_performance_2026-10-12/student_shifted_n10_independence_chain3.json": "ffac7cc39cd2e7713a20f678090004f828427d9863025431bbf4b645769a0fee",
+    "tmp/location_only_performance_20261012/student_shifted_n10_independence_chain3.npz": "c94debce63e97da8bae2046da989bd0cfbd2dceb0ecc1128f7267c01faecf014"
+  },
+  "annotations": [
+    {
+      "case": "student_centered_n10",
+      "method": "block",
+      "variable": "mu",
+      "rhat": 1.0007765749947701,
+      "ess_bulk": 4832.970198584973,
+      "ess_tail": 6582.927522739586,
+      "pooled_mean": -0.0007268009872761237,
+      "screen": true
+    },
+    {
+      "case": "student_centered_n10",
+      "method": "block",
+      "variable": "latent_q95",
+      "rhat": 0.9999711319578564,
+      "ess_bulk": 26152.953380907962,
+      "ess_tail": 16137.755278679775,
+      "pooled_mean": 2.703935207723537,
+      "screen": true
+    },
+    {
+      "case": "student_centered_n10",
+      "method": "rattle",
+      "variable": "mu",
+      "rhat": 1.0004516707264337,
+      "ess_bulk": 5320.640874178953,
+      "ess_tail": 5994.484596408616,
+      "pooled_mean": -0.0023227505095901138,
+      "screen": true
+    },
+    {
+      "case": "student_centered_n10",
+      "method": "rattle",
+      "variable": "latent_q95",
+      "rhat": 1.0210162147769273,
+      "ess_bulk": 341.76838786048995,
+      "ess_tail": 119.99222362498837,
+      "pooled_mean": 2.6576328146830797,
+      "screen": false
+    },
+    {
+      "case": "student_centered_n10",
+      "method": "independence",
+      "variable": "mu",
+      "rhat": 1.0000649092427438,
+      "ess_bulk": 39424.58533364676,
+      "ess_tail": 38676.896843879105,
+      "pooled_mean": -0.0020641976247378025,
+      "screen": true
+    },
+    {
+      "case": "student_centered_n10",
+      "method": "independence",
+      "variable": "latent_q95",
+      "rhat": 0.9999640517051573,
+      "ess_bulk": 38967.053150975145,
+      "ess_tail": 38683.169824382916,
+      "pooled_mean": 2.6975573491631555,
+      "screen": true
+    },
+    {
+      "case": "student_shifted_n10",
+      "method": "block",
+      "variable": "mu",
+      "rhat": 1.0007051730364862,
+      "ess_bulk": 4145.334418764447,
+      "ess_tail": 4706.578306155945,
+      "pooled_mean": 0.49586632994800095,
+      "screen": true
+    },
+    {
+      "case": "student_shifted_n10",
+      "method": "block",
+      "variable": "latent_q05",
+      "rhat": 1.0000806995078484,
+      "ess_bulk": 17377.73807780907,
+      "ess_tail": 14225.404467185737,
+      "pooled_mean": -3.075011512499884,
+      "screen": true
+    },
+    {
+      "case": "student_shifted_n10",
+      "method": "rattle",
+      "variable": "mu",
+      "rhat": 1.0006512538932224,
+      "ess_bulk": 3835.526930601633,
+      "ess_tail": 4912.826767829347,
+      "pooled_mean": 0.48684452631002384,
+      "screen": true
+    },
+    {
+      "case": "student_shifted_n10",
+      "method": "rattle",
+      "variable": "latent_q05",
+      "rhat": 1.0093740784275544,
+      "ess_bulk": 442.31357204056616,
+      "ess_tail": 226.61490255478822,
+      "pooled_mean": -3.063930864135984,
+      "screen": false
+    },
+    {
+      "case": "student_shifted_n10",
+      "method": "independence",
+      "variable": "mu",
+      "rhat": 1.0063550707063031,
+      "ess_bulk": 1037.5045157311486,
+      "ess_tail": 652.0075406138191,
+      "pooled_mean": 0.5188533545425192,
+      "screen": true
+    },
+    {
+      "case": "student_shifted_n10",
+      "method": "independence",
+      "variable": "latent_q05",
+      "rhat": 1.0007100934447943,
+      "ess_bulk": 2506.047860131069,
+      "ess_tail": 2342.8012352303904,
+      "pooled_mean": -3.0661968868752747,
+      "screen": true
+    }
+  ],
+  "iterations": 12000,
+  "burn_in": 2000,
+  "retained_start": 2001,
+  "quantile_method": "linear",
+  "thinning": 1,
+  "new_sampling_iterations": 0,
+  "command": ".venv/bin/python scripts/build_location_review_figures.py --out docs/research/evidence/location_review_handoff_2026-10-12/figures",
+  "outputs": {
+    "centered_n10.pdf": {
+      "bytes": 420265,
+      "sha256": "74519d0636b3165f2532daeaa24818da1165b4e1c22cf55dd150773df597ab35"
+    },
+    "centered_n10.png": {
+      "bytes": 518597,
+      "sha256": "5442ff80aff5167992af4149d67960d07234ad7c2098dcd8549ad940a22048b4"
+    },
+    "shifted_n10.pdf": {
+      "bytes": 475884,
+      "sha256": "2806b6d86463c7ac8ad8ff364b00e8a4a02e3fbaf20f41e1a98ef1b40441f1c4"
+    },
+    "shifted_n10.png": {
+      "bytes": 568037,
+      "sha256": "6327ce144d6c368ecf3a3aa7c6f8580ba6945c5d3c3d1db25a68ba033f13bf3b"
+    }
+  }
+}

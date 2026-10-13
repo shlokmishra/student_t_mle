@@ -1,0 +1,20 @@
+[
+  {
+    "case": "centered_n3",
+    "reference_path": "docs/research/evidence/student_selected_mle_gibbs_2026-10-10/centered_n3_reference.json",
+    "sha256": "92ded8e90b80efedec66d7e44830df3364e2d7380f99414d0d4ac85178abb28c",
+    "status": "raw hashes, hardened selector hash and every summary checked; original bootstrap uncertainty carried forward unchanged"
+  },
+  {
+    "case": "centered_n10",
+    "reference_path": "docs/research/evidence/student_selected_mle_gibbs_2026-10-10/centered_n10_reference.json",
+    "sha256": "88a18d223e888cf97492f24e3bd903d0c68fc4dcbdd058a8da200c4863777d16",
+    "status": "raw hashes, hardened selector hash and every summary checked; original bootstrap uncertainty carried forward unchanged"
+  },
+  {
+    "case": "shifted_n10",
+    "reference_path": "docs/research/evidence/student_selected_mle_gibbs_2026-10-10/shifted_n10_reference.json",
+    "sha256": "e52c5c55a245e690c4d6c2d05e6a1c53cfe84b24802bdf7851459c13e418079e",
+    "status": "raw hashes, hardened selector hash and every summary checked; original bootstrap uncertainty carried forward unchanged"
+  }
+]

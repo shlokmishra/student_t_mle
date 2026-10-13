@@ -1,0 +1,9 @@
+usage: verify_student_n3_components.py [-h] [--resolution RESOLUTION]
+                                       --out OUT
+
+Exact chamber graph and low-dimensional MLE check for the n=3 score manifold.
+
+options:
+  -h, --help            show this help message and exit
+  --resolution RESOLUTION
+  --out OUT

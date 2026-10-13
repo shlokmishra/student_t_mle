@@ -1,0 +1,83 @@
+[
+  {
+    "case": "centered_n3",
+    "sweeps": 1000,
+    "seconds": {
+      "legacy": [
+        0.001696689985692501,
+        0.0018365238793194294,
+        0.0018010451458394527
+      ],
+      "affine": [
+        0.2463959651067853,
+        0.2419741046614945,
+        0.24691230803728104
+      ],
+      "selected": [
+        0.25870171608403325,
+        0.26349625596776605,
+        0.262587474193424
+      ]
+    },
+    "median_microseconds_per_sweep": {
+      "legacy": 1.8010451458394527,
+      "affine": 246.3959651067853,
+      "selected": 262.587474193424
+    },
+    "note": "different targets for legacy; pair sweep has floor(n/2) proposals versus one affine dataset proposal; warmed preliminary throughput only"
+  },
+  {
+    "case": "centered_n10",
+    "sweeps": 1000,
+    "seconds": {
+      "legacy": [
+        0.0072284420020878315,
+        0.007406860124319792,
+        0.00732450233772397
+      ],
+      "affine": [
+        0.2983873197808862,
+        0.34087454434484243,
+        0.30959498789161444
+      ],
+      "selected": [
+        1.323775198776275,
+        1.4175884360447526,
+        1.3303196127526462
+      ]
+    },
+    "median_microseconds_per_sweep": {
+      "legacy": 7.32450233772397,
+      "affine": 309.59498789161444,
+      "selected": 1330.3196127526462
+    },
+    "note": "different targets for legacy; pair sweep has floor(n/2) proposals versus one affine dataset proposal; warmed preliminary throughput only"
+  },
+  {
+    "case": "shifted_n10",
+    "sweeps": 1000,
+    "seconds": {
+      "legacy": [
+        0.007052318193018436,
+        0.006996029056608677,
+        0.0070055280812084675
+      ],
+      "affine": [
+        0.30233088321983814,
+        0.36251328187063336,
+        0.30174489691853523
+      ],
+      "selected": [
+        1.3093703822232783,
+        1.470173167064786,
+        1.3158886930905282
+      ]
+    },
+    "median_microseconds_per_sweep": {
+      "legacy": 7.0055280812084675,
+      "affine": 302.33088321983814,
+      "selected": 1315.8886930905282
+    },
+    "note": "different targets for legacy; pair sweep has floor(n/2) proposals versus one affine dataset proposal; warmed preliminary throughput only"
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "repo_allocated_bytes": 2945201664,
+  "measurement": "du -s -B1 . after cleanup, includes .git and .venv",
+  "deleted_logical_bytes": 16943595465,
+  "deleted_files": 19962,
+  "relocated_historical_bytes": 141058990,
+  "note": "Logical deleted bytes differ from filesystem quota usage. Relocation on same filesystem does not reclaim total storage; final documentation/evidence adds a few KiB after measurement."
+}

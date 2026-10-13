@@ -1,0 +1,13 @@
+{
+  "id": "rejection_base",
+  "seed": 2026101033,
+  "draws": 65536,
+  "seconds": 5.594241143902764,
+  "failures": [],
+  "methods": {
+    "fast_float": 65536
+  },
+  "fallback_reasons": {},
+  "raw_path": "tmp/shifted_student_followup_20261010/rejection_base.npz",
+  "sha256": "17589d16414575c485a7fd2168ea0566e2be965163081e947188993b3a1e0b83"
+}

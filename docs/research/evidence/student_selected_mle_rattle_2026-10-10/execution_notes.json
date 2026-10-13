@@ -1,0 +1,19 @@
+{
+  "pilot": {
+    "steps_per_case": 500,
+    "excluded_from_main_results": true,
+    "executed_script": "docs/research/evidence/student_selected_mle_rattle_2026-10-10/pilot_script.py",
+    "note": "copy of executed temporary script; uses this checkout absolute path"
+  },
+  "benchmark_aborted": {
+    "status": "SIGTERM before main execution record/timings",
+    "reason": "prevent benchmark overlapping the end of chain execution",
+    "log": "benchmark_aborted.log"
+  },
+  "test_commands": {
+    "initial": "new RATTLE + legacy diagnostics; 25 passed, 1 incorrect fixture expectation failed",
+    "collection_attempt": "named nonexistent tests/test_student_location_mle.py; no tests ran",
+    "final": "101 passed; see pytest_final.log"
+  },
+  "main": "fixed 12 chains completed without extending, tuning, overwriting or numerical failures"
+}

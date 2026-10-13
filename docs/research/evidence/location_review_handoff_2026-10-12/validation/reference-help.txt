@@ -1,0 +1,11 @@
+usage: validate_selected_mle_reference.py [-h] --config CONFIG
+                                          --phase {selector,reference,chains,analyze,kde,resolve_latent}
+
+Bounded, isolated validation of existing location-only selected-MLE code. Use
+--config and --phase; source samplers are never modified. Oracle dependency:
+SymPy 1.14.0 (see the report for an isolated installation command).
+
+options:
+  -h, --help            show this help message and exit
+  --config CONFIG
+  --phase {selector,reference,chains,analyze,kde,resolve_latent}

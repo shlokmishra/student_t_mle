@@ -1,0 +1,7 @@
+usage: validate_student_selected_mle_gibbs.py [-h] --config CONFIG
+                                              --phase {references,chains,analyze,benchmark}
+
+options:
+  -h, --help            show this help message and exit
+  --config CONFIG
+  --phase {references,chains,analyze,benchmark}

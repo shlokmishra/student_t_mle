@@ -1,0 +1,12 @@
+...F                                                                     [100%]
+=================================== FAILURES ===================================
+______________ test_small_independent_banks_and_frozen_parameters ______________
+tests/test_location_performance_driver.py:40: in test_small_independent_banks_and_frozen_parameters
+    x,t,meta = bank(family,3,8,723,10)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+scripts/compare_location_only_performance.py:116: in bank
+    raise TimeoutError("independent bank ceiling")
+E   TimeoutError: independent bank ceiling
+=========================== short test summary info ============================
+FAILED tests/test_location_performance_driver.py::test_small_independent_banks_and_frozen_parameters
+1 failed, 3 passed in 186.05s (0:03:06)

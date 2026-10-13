@@ -1,0 +1,14 @@
+[
+  {
+    "n": 3,
+    "oracle_seconds": 0.030054287984967232,
+    "affine_100_seconds": 25.749022940173745,
+    "acceptance": 0.76
+  },
+  {
+    "n": 10,
+    "oracle_seconds": 0.01771288411691785,
+    "affine_100_seconds": 0.028992061968892813,
+    "acceptance": 0.22
+  }
+]

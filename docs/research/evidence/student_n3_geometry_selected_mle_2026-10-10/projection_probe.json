@@ -1,0 +1,108 @@
+{
+  "initial_x": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "initial_p": [
+    -4.0,
+    -2.0,
+    6.0
+  ],
+  "mu": 0.0,
+  "k": 1.0,
+  "options": {
+    "step_size": 1.0,
+    "num_steps": 1,
+    "proj_tol": 1e-12,
+    "max_iters": 50,
+    "grad_tol": 1e-12,
+    "damping": 1.0,
+    "line_search": true,
+    "tangent_tol": 1e-10,
+    "transverse_tol": 1e-10,
+    "reverse_position_tol": 1e-08,
+    "reverse_momentum_tol": 1e-08
+  },
+  "endpoint": [
+    -7.235668317577911,
+    -5.235668317577911,
+    2.7643316824220894
+  ],
+  "phase_admissible": true,
+  "endpoint_component": "T3-",
+  "diagnostics": {
+    "forward": {
+      "status": 0,
+      "projection_iterations": 5,
+      "position_failures": 0,
+      "momentum_failures": 0,
+      "max_score_residual": 5.551115123125783e-17,
+      "completed_steps": 1,
+      "max_tangent_residual": 2.0424727161707244e-17,
+      "min_transverse": 0.8360753475679935,
+      "min_gram": 0.009305892561518495
+    },
+    "reverse": {
+      "status": 0,
+      "projection_iterations": 4,
+      "position_failures": 0,
+      "momentum_failures": 0,
+      "max_score_residual": 1.0158540675320182e-14,
+      "completed_steps": 1,
+      "max_tangent_residual": 0.0,
+      "min_transverse": 0.8360753475679935,
+      "min_gram": 0.009305892561518495
+    },
+    "reverse_position_error": 7.054285808999743e-15,
+    "reverse_momentum_error": 4.351167857633658e-15,
+    "rejection": null
+  },
+  "qualification": "Numerical counterexample to universal finite-RATTLE component preservation; one predetermined one-step phase proposal and its replay, not a mixing/tuning campaign. Selected sampler correctly rejects the endpoint.",
+  "endpoint_p": [
+    6.988730370092667,
+    4.860813194856464,
+    -3.205772736351388
+  ],
+  "h_score_initial": 28.549306144334054,
+  "h_score_final": 48.51522901916324,
+  "score_target_acceptance_probability": 2.132602280849505e-09,
+  "endpoint_curvature": -0.13969635114134316,
+  "selected_step_rejection": "nonpositive_curvature",
+  "selected_retained_equals_initial": true,
+  "endpoint_oracle": {
+    "source": "constructed_rattle_projection",
+    "index": 0,
+    "data": [
+      -7.235668317577911,
+      -5.235668317577911,
+      2.7643316824220894
+    ],
+    "oracle": {
+      "selected": -5.610401216838078,
+      "loglik": -5.68839024263291,
+      "roots": [
+        -5.610401216838078,
+        -3.996802888650562e-16,
+        2.522827847132967
+      ],
+      "multiplicities": [
+        1,
+        1,
+        1
+      ],
+      "winner_index": 0,
+      "selection_status": "unique_global_bound",
+      "root_digits": 16,
+      "selected_interval": [
+        "-483574894/86192569",
+        "-763857489/136150243"
+      ]
+    },
+    "production_selected": -5.610401216838078,
+    "selected_location_error": 0.0,
+    "loglik_gap": 0.0,
+    "score_residual": 5.551115123125783e-17,
+    "seconds": 0.22459334880113602
+  }
+}

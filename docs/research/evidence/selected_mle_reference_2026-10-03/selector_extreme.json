@@ -1,0 +1,36 @@
+[
+  {
+    "data": [
+      0.0,
+      1.0,
+      1e+200
+    ],
+    "error": "RuntimeError: Student global-MLE certification exceeded its interval budget"
+  },
+  {
+    "data": [
+      -1e+200,
+      1e+200
+    ],
+    "selected": null,
+    "score": null
+  },
+  {
+    "data": [
+      0.0,
+      1.0,
+      2.0
+    ],
+    "selected": 1.0,
+    "score": 0.0
+  },
+  {
+    "data": [
+      1099511627776.0,
+      1099511627776.25,
+      1099511627777.5
+    ],
+    "selected": 1099511627776.489,
+    "score": -5.0339071387461853e-05
+  }
+]

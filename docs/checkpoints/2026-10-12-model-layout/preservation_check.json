@@ -1,0 +1,13 @@
+{
+  "unchanged_unrelated_recovery_files": 209,
+  "unexpected_changes": [],
+  "head_unchanged": true,
+  "staged_patch_unchanged": true,
+  "external_recovery": "/scratch/user/shlokmishra08/codex/backups/student_t_mle/20261012-093023-model-layout",
+  "numerical_modules_moved": 20,
+  "seeded_implementations": 11,
+  "unchanged_files_from_full_precleanup_inventory": 659,
+  "unexpected_full_inventory_changes": [],
+  "gitignore_change": "Track compact pre-migration source archive required for provenance checks",
+  "moved_module_modes_preserved": 20
+}

@@ -1,0 +1,72 @@
+{
+  "cases": [
+    {
+      "id": "centered_n3",
+      "model": "student",
+      "k": 2.0,
+      "n": 3,
+      "release": 0.0,
+      "prior_mean": 0.0,
+      "prior_std": 2.0,
+      "tail_width": 0.75,
+      "proposal_std_mu": 0.45,
+      "proposal_std_z": 0.1,
+      "tau_q": 0.8,
+      "chain_seed": 2026103200
+    },
+    {
+      "id": "centered_n10",
+      "model": "student",
+      "k": 2.0,
+      "n": 10,
+      "release": 0.0,
+      "prior_mean": 0.0,
+      "prior_std": 2.0,
+      "tail_width": 0.75,
+      "proposal_std_mu": 0.45,
+      "proposal_std_z": 0.1,
+      "tau_q": 0.8,
+      "chain_seed": 2026113200
+    },
+    {
+      "id": "shifted_n10",
+      "model": "student",
+      "k": 2.0,
+      "n": 10,
+      "release": 1.25,
+      "prior_mean": -0.75,
+      "prior_std": 0.6,
+      "tail_width": 0.75,
+      "proposal_std_mu": 0.45,
+      "proposal_std_z": 0.1,
+      "tau_q": 0.8,
+      "chain_seed": 2026123200
+    }
+  ],
+  "retained_oracle_checks": 4,
+  "iterations": 6000,
+  "burn_in": 1000,
+  "batch_length": 250,
+  "chain_ceiling_seconds": 180.0,
+  "score_tolerance": 1e-10,
+  "mle_tolerance": 1e-10,
+  "rhat_max": 1.01,
+  "ess_min": 400,
+  "difference_mcse_max": 4.0,
+  "question": "Can reversible compiled random-scan score blocks retain selected-MLE Gibbs latent mixing at lower endpoint-selection cost?",
+  "gibbs_evidence": "docs/research/evidence/student_selected_mle_gibbs_2026-10-10",
+  "rattle_evidence": "docs/research/evidence/student_selected_mle_rattle_2026-10-10",
+  "raw_directory": "tmp/cheap_selected_mle_gibbs_20261010_v2",
+  "evidence_directory": "docs/research/evidence/cheap_selected_mle_gibbs_2026-10-10",
+  "chains": 4,
+  "block_lengths": [
+    1,
+    4,
+    16
+  ],
+  "direct_draws": 4096,
+  "direct_seed": 2026103500,
+  "direct_ceiling_seconds": 60.0,
+  "stopping_rule": "Exactly three declared lengths, three cases, four 6000-block chains each; burn1000. Abort and retain numerical failure. No tuning/extensions after results. Direct simulation: one 4096-particle bank per n for throughput only; validated references remain ground truth. Shifted mu>2 excluded from normal-uncertainty screens. No sampler promotion solely from acceptance/mean agreement.",
+  "sampling_revision": "hybrid exact truncated-normal rejection; same proposal law, fixed lengths/seeds/budgets/screens retained"
+}

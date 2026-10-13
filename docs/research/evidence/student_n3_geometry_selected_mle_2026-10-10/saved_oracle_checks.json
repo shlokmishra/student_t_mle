@@ -1,0 +1,106 @@
+[
+  {
+    "source": "saved_reference",
+    "index": 0,
+    "data": [
+      0.7551817372422517,
+      -1.32482949918425,
+      0.11881348786180682
+    ],
+    "oracle": {
+      "selected": 2.7755575615628914e-17,
+      "loglik": -1.3318439847939594,
+      "roots": [
+        2.7755575615628914e-17
+      ],
+      "multiplicities": [
+        1
+      ],
+      "winner_index": 0,
+      "selection_status": "unique_global_bound",
+      "root_digits": 16,
+      "selected_interval": [
+        "0",
+        "1/18014398509481985"
+      ]
+    },
+    "production_selected": 0.0,
+    "selected_location_error": 2.7755575615628914e-17,
+    "loglik_gap": 0.0,
+    "score_residual": 2.0816681711721685e-17,
+    "released_mle_residual": 2.7755575615628914e-17,
+    "seconds": 0.2452624710276723
+  },
+  {
+    "source": "saved_reference",
+    "index": 1772,
+    "data": [
+      2.1953828453131856,
+      -0.8863406654632087,
+      -268.0260784200998
+    ],
+    "oracle": {
+      "selected": -8.388351741612287e-16,
+      "loglik": -18.070551619397957,
+      "roots": [
+        -268.0111883019383,
+        -178.48146404616938,
+        -8.388351741612287e-16,
+        0.7520718351902649,
+        1.2121867791677001
+      ],
+      "multiplicities": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "winner_index": 2,
+      "selection_status": "unique_global_bound",
+      "root_digits": 16,
+      "selected_interval": [
+        "-1/1125899906842625",
+        "-1/1266637395197953"
+      ]
+    },
+    "production_selected": -1.1102230246251565e-16,
+    "selected_location_error": 7.27812871698713e-16,
+    "loglik_gap": 0.0,
+    "score_residual": 3.0357660829594124e-17,
+    "released_mle_residual": 8.388351741612287e-16,
+    "seconds": 0.01293695392087102
+  },
+  {
+    "source": "saved_reference",
+    "index": 16384,
+    "data": [
+      0.15569941783625296,
+      -0.7036825796665053,
+      0.4521277720631545
+    ],
+    "oracle": {
+      "selected": 2.7755575615628914e-17,
+      "loglik": -0.4958620065660862,
+      "roots": [
+        2.7755575615628914e-17
+      ],
+      "multiplicities": [
+        1
+      ],
+      "winner_index": 0,
+      "selection_status": "unique_global_bound",
+      "root_digits": 16,
+      "selected_interval": [
+        "0",
+        "1/18014398509481985"
+      ]
+    },
+    "production_selected": 2.7755575615628914e-17,
+    "selected_location_error": 0.0,
+    "loglik_gap": 0.0,
+    "score_residual": 0.0,
+    "released_mle_residual": 2.7755575615628914e-17,
+    "seconds": 0.004013757221400738
+  }
+]

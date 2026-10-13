@@ -1,0 +1,108 @@
+selected score block 1 2026103300 3000 0.255
+selected score block 1 2026103300 6000 0.506
+complete centered_n3_m1_chain0 0.5056319837458432 {'blocks': 6000, 'accepted': 5132, 'mu_accepts': 4829, 'score_pairs': 6000, 'score_accepts': 3749, 'proposal_sampling_attempts': 8721, 'branch_changes_proposed': 3893, 'branch_changes_accepted': 2897, 'selector_calls': 5147, 'selector_fallbacks': 0, 'nonpositive_curvature': 85, 'cheap_metropolis': 769, 'global_selection': 14}
+selected score block 1 2026103301 3000 0.247
+selected score block 1 2026103301 6000 0.488
+complete centered_n3_m1_chain1 0.48816332360729575 {'blocks': 6000, 'accepted': 5066, 'mu_accepts': 4796, 'score_pairs': 6000, 'score_accepts': 3910, 'proposal_sampling_attempts': 8699, 'branch_changes_proposed': 3823, 'branch_changes_accepted': 2779, 'selector_calls': 5074, 'selector_fallbacks': 0, 'nonpositive_curvature': 102, 'cheap_metropolis': 825, 'global_selection': 7}
+selected score block 1 2026103302 3000 0.239
+selected score block 1 2026103302 6000 0.483
+complete centered_n3_m1_chain2 0.48274556966498494 {'blocks': 6000, 'accepted': 5044, 'mu_accepts': 4793, 'score_pairs': 6000, 'score_accepts': 3712, 'proposal_sampling_attempts': 8804, 'branch_changes_proposed': 3907, 'branch_changes_accepted': 2793, 'selector_calls': 5070, 'selector_fallbacks': 0, 'nonpositive_curvature': 101, 'cheap_metropolis': 830, 'global_selection': 25}
+selected score block 1 2026103303 3000 0.244
+selected score block 1 2026103303 6000 0.485
+complete centered_n3_m1_chain3 0.4851316912099719 {'blocks': 6000, 'accepted': 5191, 'mu_accepts': 4747, 'score_pairs': 6000, 'score_accepts': 3551, 'proposal_sampling_attempts': 8946, 'branch_changes_proposed': 3882, 'branch_changes_accepted': 2944, 'selector_calls': 5205, 'selector_fallbacks': 0, 'nonpositive_curvature': 67, 'cheap_metropolis': 729, 'global_selection': 13}
+selected score block 4 2026103600 3000 0.247
+selected score block 4 2026103600 6000 0.501
+complete centered_n3_m4_chain0 0.5008459580130875 {'blocks': 6000, 'accepted': 4741, 'mu_accepts': 4740, 'score_pairs': 24000, 'score_accepts': 14720, 'proposal_sampling_attempts': 34959, 'branch_changes_proposed': 16754, 'branch_changes_accepted': 12897, 'selector_calls': 4766, 'selector_fallbacks': 0, 'nonpositive_curvature': 136, 'cheap_metropolis': 1099, 'global_selection': 24}
+selected score block 4 2026103601 3000 0.253
+selected score block 4 2026103601 6000 0.5
+complete centered_n3_m4_chain1 0.5004023229703307 {'blocks': 6000, 'accepted': 4792, 'mu_accepts': 4733, 'score_pairs': 24000, 'score_accepts': 15065, 'proposal_sampling_attempts': 34831, 'branch_changes_proposed': 16634, 'branch_changes_accepted': 12931, 'selector_calls': 4802, 'selector_fallbacks': 0, 'nonpositive_curvature': 158, 'cheap_metropolis': 1041, 'global_selection': 9}
+selected score block 4 2026103602 3000 0.245
+selected score block 4 2026103602 6000 0.495
+complete centered_n3_m4_chain2 0.49535683915019035 {'blocks': 6000, 'accepted': 4713, 'mu_accepts': 4743, 'score_pairs': 24000, 'score_accepts': 14875, 'proposal_sampling_attempts': 34861, 'branch_changes_proposed': 16672, 'branch_changes_accepted': 12781, 'selector_calls': 4729, 'selector_fallbacks': 0, 'nonpositive_curvature': 176, 'cheap_metropolis': 1096, 'global_selection': 15}
+selected score block 4 2026103603 3000 0.249
+selected score block 4 2026103603 6000 0.498
+complete centered_n3_m4_chain3 0.4978234409354627 {'blocks': 6000, 'accepted': 4800, 'mu_accepts': 4760, 'score_pairs': 24000, 'score_accepts': 14901, 'proposal_sampling_attempts': 35132, 'branch_changes_proposed': 16433, 'branch_changes_accepted': 12773, 'selector_calls': 4819, 'selector_fallbacks': 0, 'nonpositive_curvature': 119, 'cheap_metropolis': 1063, 'global_selection': 18}
+selected score block 16 2026104800 3000 0.31
+selected score block 16 2026104800 6000 0.609
+complete centered_n3_m16_chain0 0.6086632269434631 {'blocks': 6000, 'accepted': 4626, 'mu_accepts': 4753, 'score_pairs': 96000, 'score_accepts': 58832, 'proposal_sampling_attempts': 140865, 'branch_changes_proposed': 68075, 'branch_changes_accepted': 52019, 'selector_calls': 4639, 'selector_fallbacks': 0, 'nonpositive_curvature': 130, 'cheap_metropolis': 1232, 'global_selection': 12}
+selected score block 16 2026104801 3000 0.302
+selected score block 16 2026104801 6000 0.605
+complete centered_n3_m16_chain1 0.6046153949573636 {'blocks': 6000, 'accepted': 4552, 'mu_accepts': 4717, 'score_pairs': 96000, 'score_accepts': 59335, 'proposal_sampling_attempts': 140552, 'branch_changes_proposed': 68347, 'branch_changes_accepted': 51474, 'selector_calls': 4570, 'selector_fallbacks': 0, 'nonpositive_curvature': 197, 'cheap_metropolis': 1234, 'global_selection': 17}
+selected score block 16 2026104802 3000 0.309
+selected score block 16 2026104802 6000 0.609
+complete centered_n3_m16_chain2 0.6088141365908086 {'blocks': 6000, 'accepted': 4615, 'mu_accepts': 4813, 'score_pairs': 96000, 'score_accepts': 59614, 'proposal_sampling_attempts': 140473, 'branch_changes_proposed': 67583, 'branch_changes_accepted': 51811, 'selector_calls': 4629, 'selector_fallbacks': 0, 'nonpositive_curvature': 127, 'cheap_metropolis': 1245, 'global_selection': 13}
+selected score block 16 2026104803 3000 0.297
+selected score block 16 2026104803 6000 0.605
+complete centered_n3_m16_chain3 0.6050900407135487 {'blocks': 6000, 'accepted': 4592, 'mu_accepts': 4797, 'score_pairs': 96000, 'score_accepts': 57825, 'proposal_sampling_attempts': 141679, 'branch_changes_proposed': 68209, 'branch_changes_accepted': 51843, 'selector_calls': 4608, 'selector_fallbacks': 0, 'nonpositive_curvature': 150, 'cheap_metropolis': 1243, 'global_selection': 15}
+selected score block 1 2026113300 3000 0.298
+selected score block 1 2026113300 6000 0.591
+complete centered_n10_m1_chain0 0.5907515399158001 {'blocks': 6000, 'accepted': 5689, 'mu_accepts': 4001, 'score_pairs': 6000, 'score_accepts': 3793, 'proposal_sampling_attempts': 8941, 'branch_changes_proposed': 4299, 'branch_changes_accepted': 3934, 'selector_calls': 5690, 'selector_fallbacks': 0, 'nonpositive_curvature': 0, 'cheap_metropolis': 311, 'global_selection': 0}
+selected score block 1 2026113301 3000 0.305
+selected score block 1 2026113301 6000 0.603
+complete centered_n10_m1_chain1 0.6030601998791099 {'blocks': 6000, 'accepted': 5675, 'mu_accepts': 4027, 'score_pairs': 6000, 'score_accepts': 3760, 'proposal_sampling_attempts': 9089, 'branch_changes_proposed': 4408, 'branch_changes_accepted': 4015, 'selector_calls': 5676, 'selector_fallbacks': 0, 'nonpositive_curvature': 1, 'cheap_metropolis': 324, 'global_selection': 0}
+selected score block 1 2026113302 3000 0.297
+selected score block 1 2026113302 6000 0.602
+complete centered_n10_m1_chain2 0.6022873958572745 {'blocks': 6000, 'accepted': 5699, 'mu_accepts': 4019, 'score_pairs': 6000, 'score_accepts': 3942, 'proposal_sampling_attempts': 9023, 'branch_changes_proposed': 4382, 'branch_changes_accepted': 4032, 'selector_calls': 5700, 'selector_fallbacks': 0, 'nonpositive_curvature': 0, 'cheap_metropolis': 301, 'global_selection': 0}
+selected score block 1 2026113303 3000 0.302
+selected score block 1 2026113303 6000 0.607
+complete centered_n10_m1_chain3 0.607081619091332 {'blocks': 6000, 'accepted': 5670, 'mu_accepts': 4054, 'score_pairs': 6000, 'score_accepts': 3795, 'proposal_sampling_attempts': 9017, 'branch_changes_proposed': 4423, 'branch_changes_accepted': 4033, 'selector_calls': 5671, 'selector_fallbacks': 0, 'nonpositive_curvature': 3, 'cheap_metropolis': 327, 'global_selection': 0}
+selected score block 4 2026113600 3000 0.321
+selected score block 4 2026113600 6000 0.627
+complete centered_n10_m4_chain0 0.6267577288672328 {'blocks': 6000, 'accepted': 5376, 'mu_accepts': 4070, 'score_pairs': 24000, 'score_accepts': 14773, 'proposal_sampling_attempts': 36565, 'branch_changes_proposed': 18131, 'branch_changes_accepted': 15978, 'selector_calls': 5377, 'selector_fallbacks': 0, 'nonpositive_curvature': 4, 'cheap_metropolis': 620, 'global_selection': 0}
+selected score block 4 2026113601 3000 0.318
+selected score block 4 2026113601 6000 0.637
+complete centered_n10_m4_chain1 0.6366383256390691 {'blocks': 6000, 'accepted': 5399, 'mu_accepts': 4014, 'score_pairs': 24000, 'score_accepts': 15052, 'proposal_sampling_attempts': 36014, 'branch_changes_proposed': 18018, 'branch_changes_accepted': 15987, 'selector_calls': 5401, 'selector_fallbacks': 0, 'nonpositive_curvature': 1, 'cheap_metropolis': 599, 'global_selection': 1}
+selected score block 4 2026113602 3000 0.335
+selected score block 4 2026113602 6000 0.684
+complete centered_n10_m4_chain2 0.6843628552742302 {'blocks': 6000, 'accepted': 5366, 'mu_accepts': 4063, 'score_pairs': 24000, 'score_accepts': 14926, 'proposal_sampling_attempts': 36537, 'branch_changes_proposed': 17995, 'branch_changes_accepted': 15914, 'selector_calls': 5367, 'selector_fallbacks': 0, 'nonpositive_curvature': 2, 'cheap_metropolis': 632, 'global_selection': 0}
+selected score block 4 2026113603 3000 0.33
+selected score block 4 2026113603 6000 0.668
+complete centered_n10_m4_chain3 0.6679037068970501 {'blocks': 6000, 'accepted': 5373, 'mu_accepts': 4054, 'score_pairs': 24000, 'score_accepts': 14954, 'proposal_sampling_attempts': 36568, 'branch_changes_proposed': 17977, 'branch_changes_accepted': 15810, 'selector_calls': 5375, 'selector_fallbacks': 0, 'nonpositive_curvature': 4, 'cheap_metropolis': 622, 'global_selection': 1}
+selected score block 16 2026114800 3000 0.393
+selected score block 16 2026114800 6000 0.78
+complete centered_n10_m16_chain0 0.7797216232866049 {'blocks': 6000, 'accepted': 5201, 'mu_accepts': 4094, 'score_pairs': 96000, 'score_accepts': 59730, 'proposal_sampling_attempts': 145485, 'branch_changes_proposed': 73018, 'branch_changes_accepted': 62890, 'selector_calls': 5203, 'selector_fallbacks': 0, 'nonpositive_curvature': 3, 'cheap_metropolis': 795, 'global_selection': 1}
+selected score block 16 2026114801 3000 0.393
+selected score block 16 2026114801 6000 0.794
+complete centered_n10_m16_chain1 0.7936972039751709 {'blocks': 6000, 'accepted': 5188, 'mu_accepts': 4039, 'score_pairs': 96000, 'score_accepts': 60081, 'proposal_sampling_attempts': 144803, 'branch_changes_proposed': 72698, 'branch_changes_accepted': 62682, 'selector_calls': 5189, 'selector_fallbacks': 0, 'nonpositive_curvature': 1, 'cheap_metropolis': 811, 'global_selection': 0}
+selected score block 16 2026114802 3000 0.387
+selected score block 16 2026114802 6000 0.752
+complete centered_n10_m16_chain2 0.7524488628841937 {'blocks': 6000, 'accepted': 5147, 'mu_accepts': 4019, 'score_pairs': 96000, 'score_accepts': 60179, 'proposal_sampling_attempts': 144963, 'branch_changes_proposed': 72882, 'branch_changes_accepted': 62157, 'selector_calls': 5148, 'selector_fallbacks': 0, 'nonpositive_curvature': 8, 'cheap_metropolis': 845, 'global_selection': 0}
+selected score block 16 2026114803 3000 0.37
+selected score block 16 2026114803 6000 0.743
+complete centered_n10_m16_chain3 0.7429078142158687 {'blocks': 6000, 'accepted': 5137, 'mu_accepts': 4017, 'score_pairs': 96000, 'score_accepts': 60571, 'proposal_sampling_attempts': 145166, 'branch_changes_proposed': 72922, 'branch_changes_accepted': 61819, 'selector_calls': 5138, 'selector_fallbacks': 0, 'nonpositive_curvature': 7, 'cheap_metropolis': 856, 'global_selection': 0}
+selected score block 1 2026123300 3000 0.339
+selected score block 1 2026123300 6000 0.668
+complete shifted_n10_m1_chain0 0.6683180420659482 {'blocks': 6000, 'accepted': 5609, 'mu_accepts': 3915, 'score_pairs': 6000, 'score_accepts': 3619, 'proposal_sampling_attempts': 9157, 'branch_changes_proposed': 4720, 'branch_changes_accepted': 4250, 'selector_calls': 5613, 'selector_fallbacks': 0, 'nonpositive_curvature': 2, 'cheap_metropolis': 386, 'global_selection': 3}
+selected score block 1 2026123301 3000 0.302
+selected score block 1 2026123301 6000 0.604
+complete shifted_n10_m1_chain1 0.6042273449711502 {'blocks': 6000, 'accepted': 5644, 'mu_accepts': 3954, 'score_pairs': 6000, 'score_accepts': 3790, 'proposal_sampling_attempts': 8961, 'branch_changes_proposed': 4564, 'branch_changes_accepted': 4128, 'selector_calls': 5647, 'selector_fallbacks': 0, 'nonpositive_curvature': 1, 'cheap_metropolis': 353, 'global_selection': 2}
+selected score block 1 2026123302 3000 0.305
+selected score block 1 2026123302 6000 0.617
+complete shifted_n10_m1_chain2 0.617217221762985 {'blocks': 6000, 'accepted': 5584, 'mu_accepts': 3974, 'score_pairs': 6000, 'score_accepts': 3403, 'proposal_sampling_attempts': 9259, 'branch_changes_proposed': 4946, 'branch_changes_accepted': 4405, 'selector_calls': 5587, 'selector_fallbacks': 0, 'nonpositive_curvature': 4, 'cheap_metropolis': 410, 'global_selection': 2}
+selected score block 1 2026123303 3000 0.313
+selected score block 1 2026123303 6000 0.62
+complete shifted_n10_m1_chain3 0.6198142417706549 {'blocks': 6000, 'accepted': 5647, 'mu_accepts': 3946, 'score_pairs': 6000, 'score_accepts': 3719, 'proposal_sampling_attempts': 9136, 'branch_changes_proposed': 4794, 'branch_changes_accepted': 4352, 'selector_calls': 5648, 'selector_fallbacks': 0, 'nonpositive_curvature': 4, 'cheap_metropolis': 349, 'global_selection': 0}
+selected score block 4 2026123600 3000 0.359
+selected score block 4 2026123600 6000 0.691
+complete shifted_n10_m4_chain0 0.6907825460657477 {'blocks': 6000, 'accepted': 5281, 'mu_accepts': 3950, 'score_pairs': 24000, 'score_accepts': 14512, 'proposal_sampling_attempts': 36613, 'branch_changes_proposed': 19156, 'branch_changes_accepted': 16517, 'selector_calls': 5287, 'selector_fallbacks': 0, 'nonpositive_curvature': 7, 'cheap_metropolis': 707, 'global_selection': 5}
+selected score block 4 2026123601 3000 0.366
+selected score block 4 2026123601 6000 0.728
+complete shifted_n10_m4_chain1 0.7277336176484823 {'blocks': 6000, 'accepted': 5290, 'mu_accepts': 3880, 'score_pairs': 24000, 'score_accepts': 14595, 'proposal_sampling_attempts': 36899, 'branch_changes_proposed': 19385, 'branch_changes_accepted': 16883, 'selector_calls': 5295, 'selector_fallbacks': 0, 'nonpositive_curvature': 7, 'cheap_metropolis': 699, 'global_selection': 4}
+selected score block 4 2026123602 3000 0.367
+selected score block 4 2026123602 6000 0.713
+complete shifted_n10_m4_chain2 0.7128105289302766 {'blocks': 6000, 'accepted': 5284, 'mu_accepts': 3886, 'score_pairs': 24000, 'score_accepts': 14401, 'proposal_sampling_attempts': 36657, 'branch_changes_proposed': 19232, 'branch_changes_accepted': 16741, 'selector_calls': 5287, 'selector_fallbacks': 0, 'nonpositive_curvature': 7, 'cheap_metropolis': 707, 'global_selection': 2}
+selected score block 4 2026123603 3000 0.33
+selected score block 4 2026123603 6000 0.7
+complete shifted_n10_m4_chain3 0.6999377231113613 {'blocks': 6000, 'accepted': 5269, 'mu_accepts': 3941, 'score_pairs': 24000, 'score_accepts': 13997, 'proposal_sampling_attempts': 37229, 'branch_changes_proposed': 19711, 'branch_changes_accepted': 17037, 'selector_calls': 5271, 'selector_fallbacks': 0, 'nonpositive_curvature': 23, 'cheap_metropolis': 707, 'global_selection': 1}
+selected score block 16 2026124800 3000 0.427
+selected score block 16 2026124800 6000 0.858
+complete shifted_n10_m16_chain0 0.8581391740590334 {'blocks': 6000, 'accepted': 4947, 'mu_accepts': 3922, 'score_pairs': 96000, 'score_accepts': 56955, 'proposal_sampling_attempts': 148099, 'branch_changes_proposed': 78576, 'branch_changes_accepted': 64142, 'selector_calls': 4954, 'selector_fallbacks': 0, 'nonpositive_curvature': 26, 'cheap_metropolis': 1021, 'global_selection': 6}
+selected score block 16 2026124801 3000 0.427
+selected score block 16 2026124801 6000 0.827
+complete shifted_n10_m16_chain1 0.8269924321211874 {'blocks': 6000, 'accepted': 5065, 'mu_accepts': 3942, 'score_pairs': 96000, 'score_accepts': 57397, 'proposal_sampling_attempts': 147436, 'branch_changes_proposed': 78073, 'branch_changes_accepted': 65404, 'selector_calls': 5074, 'selector_fallbacks': 0, 'nonpositive_curvature': 18, 'cheap_metropolis': 909, 'global_selection': 8}
+selected score block 16 2026124802 3000 0.419
+selected score block 16 2026124802 6000 0.823
+complete shifted_n10_m16_chain2 0.8230722122825682 {'blocks': 6000, 'accepted': 4984, 'mu_accepts': 3896, 'score_pairs': 96000, 'score_accepts': 57246, 'proposal_sampling_attempts': 147598, 'branch_changes_proposed': 79069, 'branch_changes_accepted': 65370, 'selector_calls': 4991, 'selector_fallbacks': 0, 'nonpositive_curvature': 31, 'cheap_metropolis': 979, 'global_selection': 6}
+selected score block 16 2026124803 3000 0.41
+selected score block 16 2026124803 6000 0.779
+complete shifted_n10_m16_chain3 0.779546975158155 {'blocks': 6000, 'accepted': 4954, 'mu_accepts': 3880, 'score_pairs': 96000, 'score_accepts': 57117, 'proposal_sampling_attempts': 147319, 'branch_changes_proposed': 79127, 'branch_changes_accepted': 64796, 'selector_calls': 4959, 'selector_fallbacks': 0, 'nonpositive_curvature': 17, 'cheap_metropolis': 1025, 'global_selection': 4}

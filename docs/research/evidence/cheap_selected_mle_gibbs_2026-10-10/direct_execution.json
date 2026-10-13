@@ -1,0 +1,20 @@
+{
+  "config_sha256": "1fc9cc28a63a677b6dae0ed1e58ffc6e0c85728ced1a96dd0f508e016814c8cb",
+  "source_sha256": {
+    "models/loc_student_selected_mle_block.py": "d01d1789dd883dff9e24df5706c4ee0e52bfd4fb38d6f27b8f54aeccf04e577a",
+    "models/loc_student.py": "1e0028f746669885186eadfe0de5d29763d9794f1e975f4a91eb0784063e1346",
+    "models/loc_student_selected_mle.py": "98633354cfffe445888223253baf1bdb7c7c9416619761dd12424c8a49446c6b",
+    "models/loc_student_selected_mle_rattle.py": "b051673d3f1343b13f05889f44b9b96e2b038a97c77d562653a0daed13145428",
+    "models/student_location_mle.py": "096abb4d3ad2a91b1946186af56b55f1b54e6482d367f5483bb6c72987e6550f",
+    "models/student_mu_mh.py": "0adcec47bd1188ebba8d94f00600c38acd1a56fed75d545347e19afc390b9cdb",
+    "scripts/validate_cheap_selected_mle_gibbs.py": "16ab72a752b2a3d926e030f6ff6c3ce1e824587f47b3046dfafaf6dd65966e30",
+    "scripts/validate_student_selected_mle_gibbs.py": "3ab2e4cf739ee970b5d7153803b1f7ef3b58ada4e6c3391f47a88ca9bdf41c7d",
+    "scripts/validate_student_selected_mle_rattle.py": "4f21d0446e7b4f372b71e7a2e61d85dcbdc52b6fd11feab95f7c3d4b465af365",
+    "scripts/followup_shifted_student_reference.py": "85b227d418908fc3e12c2e997ae423fecb20cc99a962b27ec2a574cc3e25a140"
+  },
+  "python": "3.13.5 (main, Apr  2 2026, 12:03:47) [GCC 14.3.0]",
+  "cpu_affinity": [
+    0
+  ],
+  "start_utc": "2026-10-10T22:44:24Z"
+}

@@ -1,0 +1,25 @@
+benchmark {'k': 2.0, 'n': 3, 'draws': 128, 'seed': 2026101000} {'group': {'k': 2.0, 'n': 3, 'draws': 128, 'seed': 2026101000}, 'batch_seconds': {'original': [0.007213048171252012, 0.00722809205763042, 0.007176567101851106], 'corrected': [0.005804197862744331, 0.006395692937076092, 0.007074472960084677]}, 'median_seconds': {'original': 0.007213048171252012, 'corrected': 0.006395692937076092}, 'fallback_count': 0, 'failure_count': {'original': 0, 'corrected': 0}, 'failures': []}
+benchmark {'k': 2.0, 'n': 10, 'draws': 128, 'seed': 2026101001} {'group': {'k': 2.0, 'n': 10, 'draws': 128, 'seed': 2026101001}, 'batch_seconds': {'original': [0.009187046904116869, 0.00921056792140007, 0.009123808005824685], 'corrected': [0.008981130085885525, 0.008886234136298299, 0.009004022926092148]}, 'median_seconds': {'original': 0.009187046904116869, 'corrected': 0.008981130085885525}, 'fallback_count': 0, 'failure_count': {'original': 0, 'corrected': 0}, 'failures': []}
+benchmark {'k': 3.0, 'n': 10, 'draws': 128, 'seed': 2026101002} {'group': {'k': 3.0, 'n': 10, 'draws': 128, 'seed': 2026101002}, 'batch_seconds': {'original': [0.009004964027553797, 0.00895618787035346, 0.008881465997546911], 'corrected': [0.008677178993821144, 0.007693764055147767, 0.008680881932377815]}, 'median_seconds': {'original': 0.00895618787035346, 'corrected': 0.008677178993821144}, 'fallback_count': 0, 'failure_count': {'original': 0, 'corrected': 0}, 'failures': []}
+benchmark {'k': 1.0, 'n': 50, 'draws': 128, 'seed': 2026101003} {'group': {'k': 1.0, 'n': 50, 'draws': 128, 'seed': 2026101003}, 'batch_seconds': {'original': [0.0352996289730072, 0.03443659585900605, 0.029975518817082047], 'corrected': [0.03413632791489363, 0.025417095981538296, 0.024432932026684284]}, 'median_seconds': {'original': 0.03443659585900605, 'corrected': 0.025417095981538296}, 'fallback_count': 0, 'failure_count': {'original': 0, 'corrected': 0}, 'failures': []}
+Traceback (most recent call last):
+  File "/scratch/user/shlokmishra08/code/student_t_mle/scripts/validate_student_mle_hardening.py", line 120, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/scratch/user/shlokmishra08/code/student_t_mle/scripts/validate_student_mle_hardening.py", line 109, in main
+    audit.append(row);save(out/'adversarial_comparison.json',audit)
+                      ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/user/shlokmishra08/code/student_t_mle/scripts/validate_student_mle_hardening.py", line 27, in save
+    path.write_text(json.dumps(value,indent=2,allow_nan=False)+'\n')
+                    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/sw/eb/sw/Python/3.13.5-GCCcore-14.3.0/lib/python3.13/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ~~~~~~^^^^^
+  File "/sw/eb/sw/Python/3.13.5-GCCcore-14.3.0/lib/python3.13/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/sw/eb/sw/Python/3.13.5-GCCcore-14.3.0/lib/python3.13/json/encoder.py", line 261, in iterencode
+    return _iterencode(o, 0)
+  File "/sw/eb/sw/Python/3.13.5-GCCcore-14.3.0/lib/python3.13/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+                    f'is not JSON serializable')
+TypeError: Object of type int64 is not JSON serializable

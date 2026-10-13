@@ -1,0 +1,14 @@
+{
+  "source_sha256": {
+    "scripts/validate_student_independence_mh.py": "a1313515f272e1e38947c59f567f63fff322afdf41eb4d4dc7063ad0581efffe",
+    "models/loc_student_selected_mle_independence.py": "7e5b3ea88b4782f96538617ba26d5d62a466ca1b69f7adc093ae2fa5af3014e6",
+    "models/loc_student_selected_mle_block.py": "19d36b6ec29ebe36a2214376f2ab4135a9e7b91e227d130114c5dce89f77c491",
+    "models/student_location_mle.py": "096abb4d3ad2a91b1946186af56b55f1b54e6482d367f5483bb6c72987e6550f",
+    "scripts/selected_mle_reference_oracle.py": "ee89947b06e91cd3bec11cd8f2f69a4ee6f40803d82d8f90bdddb0f39c4718c1"
+  },
+  "python": "3.13.5 (main, Apr  2 2026, 12:03:47) [GCC 14.3.0]",
+  "cpu_affinity": [
+    0
+  ],
+  "reference_policy": "particles() verifies both raw bank hashes and hardened-selector hash; summaries rechecked; original bootstrap uncertainty carried forward"
+}

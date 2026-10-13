@@ -1,0 +1,94 @@
+{
+  "counts": {
+    "blocks": 4000,
+    "accepted": 1885,
+    "mu_accepts": 3217,
+    "score_pairs": 64000,
+    "score_accepts": 45466,
+    "proposal_sampling_attempts": 85900,
+    "branch_changes_proposed": 60615,
+    "branch_changes_accepted": 29328,
+    "selector_calls": 2039,
+    "selector_fallbacks": 0,
+    "nonpositive_curvature": 937,
+    "cheap_metropolis": 1025,
+    "global_selection": 153
+  },
+  "seconds": 0.35037687979638577,
+  "times": {
+    "proposal": 0.10374369937926531,
+    "selector": 0.13322158390656114
+  },
+  "seed": 2026105361,
+  "score_seed": 1020443345,
+  "target": "selected_global_student_location_mle",
+  "proposal": "random_scan_regular_score_pair_power",
+  "block_length": 16,
+  "max_score_residual": 7.743805596760467e-15,
+  "max_selected_mle_residual": 6.272760089132134e-14,
+  "max_inverse_score_error": 1.1102230246251565e-16,
+  "proposal_records": [
+    {
+      "iteration": 1,
+      "accepted": false,
+      "rejection": "nonpositive_curvature",
+      "selector_called": false,
+      "proposed_x": [
+        -6.506444088980312,
+        -9.112310870259646,
+        3.588571220572745
+      ]
+    },
+    {
+      "iteration": 1001,
+      "accepted": true,
+      "rejection": null,
+      "selector_called": true,
+      "proposed_x": [
+        4.025647362082424,
+        -2.3138378125462102,
+        0.13247847583607006
+      ]
+    },
+    {
+      "iteration": 2001,
+      "accepted": false,
+      "rejection": "nonpositive_curvature",
+      "selector_called": false,
+      "proposed_x": [
+        -8.922471248692668,
+        13.202015064992272,
+        28.23527350948736
+      ]
+    },
+    {
+      "iteration": 3001,
+      "accepted": true,
+      "rejection": null,
+      "selector_called": true,
+      "proposed_x": [
+        -0.40957856858433606,
+        -0.1379259839823425,
+        0.7876878281552903
+      ]
+    }
+  ],
+  "known_scale": 1.0,
+  "numerical_policy": "no artificial score/Jacobian/proposal cutoffs; unresolved computation raises; inherited parameter uniform guard retained",
+  "initial_x": [
+    -0.03404038619361893,
+    -2.432789232356666,
+    2.1218078694980598
+  ],
+  "initial_mu": -3.565873458572309,
+  "raw_path": "tmp/student_n3_fast_path_20261010/k1_m16_chain1_original.npz",
+  "sha256": "ac99346548e2eefd0beab350e2d78d1ec83557b1fae33a735234a040b956b26c",
+  "source_sha256": {
+    "scripts/validate_student_n3_fast_path.py": "0c66a6ab967e51e7f97ca760feba1798e6e4db2e6b21dc179b9d65592ef56f7f",
+    "models/loc_student_selected_mle_block.py": "19d36b6ec29ebe36a2214376f2ab4135a9e7b91e227d130114c5dce89f77c491",
+    "models/student_n3_endpoint.py": "f5ef5429de5753b7edba6243410186c42fa08685dbd6848395db5102ee9e3b21",
+    "models/student_location_mle.py": "096abb4d3ad2a91b1946186af56b55f1b54e6482d367f5483bb6c72987e6550f",
+    "docs/research/evidence/student_n3_fast_path_2026-10-10/original_block.py": "d01d1789dd883dff9e24df5706c4ee0e52bfd4fb38d6f27b8f54aeccf04e577a",
+    "scripts/selected_mle_reference_oracle.py": "ee89947b06e91cd3bec11cd8f2f69a4ee6f40803d82d8f90bdddb0f39c4718c1"
+  }
+}

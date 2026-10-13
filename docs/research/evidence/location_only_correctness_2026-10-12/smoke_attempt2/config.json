@@ -1,0 +1,139 @@
+{
+  "cases": [
+    {
+      "id": "centered_n3",
+      "model": "student",
+      "k": 2.0,
+      "n": 3,
+      "release": 0.0,
+      "prior_mean": 0.0,
+      "prior_std": 2.0,
+      "tail_width": 0.75,
+      "proposal_std_mu": 0.45,
+      "proposal_std_z": 0.1,
+      "tau_q": 0.8,
+      "chain_seed": 2026101200,
+      "family": "student"
+    },
+    {
+      "id": "centered_n10",
+      "model": "student",
+      "k": 2.0,
+      "n": 10,
+      "release": 0.0,
+      "prior_mean": 0.0,
+      "prior_std": 2.0,
+      "tail_width": 0.75,
+      "proposal_std_mu": 0.45,
+      "proposal_std_z": 0.1,
+      "tau_q": 0.8,
+      "chain_seed": 2026101300,
+      "family": "student"
+    },
+    {
+      "id": "shifted_n10",
+      "model": "student",
+      "k": 2.0,
+      "n": 10,
+      "release": 1.25,
+      "prior_mean": -0.75,
+      "prior_std": 0.6,
+      "tail_width": 0.75,
+      "proposal_std_mu": 0.45,
+      "proposal_std_z": 0.1,
+      "tau_q": 0.8,
+      "chain_seed": 2026101400,
+      "family": "student"
+    },
+    {
+      "id": "centered_n3",
+      "family": "logistic",
+      "n": 3,
+      "release": 0.0,
+      "prior_mean": 0.0,
+      "prior_std": 2.0,
+      "tail_width": 0.75,
+      "proposal_std_mu": 0.45,
+      "proposal_std_z": 0.1
+    },
+    {
+      "id": "centered_n10",
+      "family": "logistic",
+      "n": 10,
+      "release": 0.0,
+      "prior_mean": 0.0,
+      "prior_std": 2.0,
+      "tail_width": 0.75,
+      "proposal_std_mu": 0.45,
+      "proposal_std_z": 0.1
+    },
+    {
+      "id": "shifted_n10",
+      "family": "logistic",
+      "n": 10,
+      "release": 1.25,
+      "prior_mean": -0.75,
+      "prior_std": 0.6,
+      "tail_width": 0.75,
+      "proposal_std_mu": 0.45,
+      "proposal_std_z": 0.1
+    },
+    {
+      "id": "centered_n3",
+      "family": "laplace",
+      "n": 3,
+      "release": 0.0,
+      "prior_mean": 0.0,
+      "prior_std": 2.0,
+      "tail_width": 0.75,
+      "proposal_std_mu": 0.45,
+      "proposal_std_z": 0.1
+    },
+    {
+      "id": "centered_n4",
+      "family": "laplace",
+      "n": 4,
+      "release": 0.0,
+      "prior_mean": 0.0,
+      "prior_std": 2.0,
+      "tail_width": 0.75,
+      "proposal_std_mu": 0.45,
+      "proposal_std_z": 0.1
+    },
+    {
+      "id": "shifted_n3",
+      "family": "laplace",
+      "n": 3,
+      "release": 1.25,
+      "prior_mean": -0.75,
+      "prior_std": 0.6,
+      "tail_width": 0.75,
+      "proposal_std_mu": 0.45,
+      "proposal_std_z": 0.1
+    },
+    {
+      "id": "shifted_n4",
+      "family": "laplace",
+      "n": 4,
+      "release": 1.25,
+      "prior_mean": -0.75,
+      "prior_std": 0.6,
+      "tail_width": 0.75,
+      "proposal_std_mu": 0.45,
+      "proposal_std_z": 0.1
+    }
+  ],
+  "iterations": 512,
+  "burn_in": 128,
+  "chains": 2,
+  "initial_max_quantiles": [
+    0.1,
+    0.9
+  ],
+  "bank_rows": 4096,
+  "bootstrap_repetitions": 64,
+  "seed": 2026101217,
+  "chain_ceiling_seconds": 120,
+  "total_ceiling_seconds": 600,
+  "stopping_rule": "No extensions or tuning. Abort on numerical failure. Short-chain discrepancies are retained, not convergence passes."
+}

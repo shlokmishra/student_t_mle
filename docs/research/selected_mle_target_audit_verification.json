@@ -1,0 +1,200 @@
+{
+  "date": "2026-10-02",
+  "scope": "Target audit only; no sampler or selector changes",
+  "git_head": "b4f66744158d6517e1cb5bfb628f770eb1ead743",
+  "working_tree_dirty": true,
+  "python": "3.13.5 (main, Apr  2 2026, 12:03:47) [GCC 14.3.0]",
+  "cpu_count": 1,
+  "initial_pytest_attempt": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "tests/test_loc_affine.py",
+      "tests/test_student_inverse_branch_weights.py",
+      "tests/test_student_rattle_diagnostics.py::test_production_potential_uses_the_gram_correction",
+      "tests/test_student_rattle_diagnostics.py::test_constraint_gram_matches_rattle_helpers",
+      "-k",
+      "not empirical and not dense_global",
+      "-q",
+      "-p",
+      "no:cacheprovider"
+    ],
+    "status": "timeout",
+    "timeout_seconds": 120,
+    "partial_output": "Not retained by initial wrapper; no passing tests claimed"
+  },
+  "narrow_pytest_attempt": {
+    "status": "timeout",
+    "exit_code": null,
+    "output": "============================= test session starts ==============================\nplatform linux -- Python 3.13.5, pytest-9.1.1, pluggy-1.6.0 -- /scratch/user/shlokmishra08/code/student_t_mle/.venv/bin/python\nrootdir: /scratch/user/shlokmishra08/code/student_t_mle\nconfigfile: pytest.ini\ncollecting ... ",
+    "command": [
+      "/scratch/user/shlokmishra08/code/student_t_mle/.venv/bin/python",
+      "-m",
+      "pytest",
+      "tests/test_student_inverse_branch_weights.py::test_density_only_and_corrected_outer_probabilities_are_distinct",
+      "tests/test_student_rattle_diagnostics.py::test_constraint_gram_matches_rattle_helpers",
+      "tests/test_student_rattle_diagnostics.py::test_production_potential_uses_the_gram_correction",
+      "tests/test_loc_affine.py::test_student_global_mle_is_translation_equivariant",
+      "tests/test_loc_affine.py::test_local_gaussian_orbit_factor_is_symmetric",
+      "tests/test_loc_affine.py::test_normal_affine_proposal_is_centered_at_current_state",
+      "-vv",
+      "-p",
+      "no:cacheprovider"
+    ],
+    "timeout_seconds": 60,
+    "elapsed_seconds": 60.101255683926865,
+    "cpu_count": 1,
+    "pytest_plugin_autoload": false
+  },
+  "deterministic_diagnostic": {
+    "status": "completed",
+    "exit_code": 0,
+    "stderr": "",
+    "results": {
+      "strict_local_but_not_global": {
+        "x": [
+          4.0,
+          4.0,
+          -0.7034648345913732
+        ],
+        "score_at_zero": -5.551115123125783e-17,
+        "reduced_curvature_at_zero": 0.12224492213001127,
+        "loglik_at_four_minus_zero": 2.927651408452222,
+        "selected_mle": 3.8950347032836947
+      },
+      "two_point_global_tie": {
+        "x": [
+          -2.0,
+          2.0
+        ],
+        "selected": -1.7320508075688772,
+        "analytic_lower_maximum": -1.7320508075688772
+      },
+      "cauchy_branch": {
+        "z": 0.01,
+        "branches": [
+          0.010001000200050014,
+          99.98999899979994
+        ],
+        "correct_outer_probability": 0.49999999999999994,
+        "density_only_outer_probability": 0.00010001000200050017
+      },
+      "logistic_same_support_different_curvature": [
+        {
+          "a": 0.0,
+          "curvature": 1.0,
+          "estimator_jacobian": 0.7071067811865476
+        },
+        {
+          "a": 2.0,
+          "curvature": 0.4199743416140261,
+          "estimator_jacobian": 0.7071067811865476
+        }
+      ],
+      "affine_proposal_mle_residual": 0.0,
+      "existing_assertion_functions_passed_without_pytest": [
+        "test_student_rattle_diagnostics.py::test_constraint_gram_matches_rattle_helpers",
+        "test_student_rattle_diagnostics.py::test_production_potential_uses_the_gram_correction",
+        "test_loc_affine.py::test_student_global_mle_is_translation_equivariant",
+        "test_loc_affine.py::test_local_gaussian_orbit_factor_is_symmetric",
+        "test_loc_affine.py::test_normal_affine_proposal_is_centered_at_current_state"
+      ],
+      "current_misleading_registry_rows": [
+        {
+          "model": "student_t",
+          "k": "1,2,3",
+          "method": "gibbs",
+          "implementation_exists": true,
+          "target_description": "Condition on Student-t location score equation at observed mu_star.",
+          "mle_convention": "global Student-t location likelihood maximizer; lower-mu rule for numerical ties; k required",
+          "target_defined": true,
+          "target_matches_reference": true,
+          "smooth_constraint": true,
+          "rattle_applicable": "",
+          "tests_passed": "not_run",
+          "warnings": "",
+          "warning": ""
+        },
+        {
+          "model": "student_t",
+          "k": "1,2,3",
+          "method": "rattle",
+          "implementation_exists": true,
+          "target_description": "Condition on Student-t location score equation at observed mu_star.",
+          "mle_convention": "global Student-t location likelihood maximizer; lower-mu rule for numerical ties; k required",
+          "target_defined": true,
+          "target_matches_reference": true,
+          "smooth_constraint": true,
+          "rattle_applicable": true,
+          "tests_passed": "not_run",
+          "warnings": "",
+          "warning": ""
+        },
+        {
+          "model": "logistic",
+          "k": "",
+          "method": "gibbs",
+          "implementation_exists": true,
+          "target_description": "Condition on logistic location score equation at observed mu_star.",
+          "mle_convention": "root of sum_i tanh((x_i - mu_hat)/2) = 0",
+          "target_defined": true,
+          "target_matches_reference": true,
+          "smooth_constraint": true,
+          "rattle_applicable": "",
+          "tests_passed": "not_run",
+          "warnings": "",
+          "warning": ""
+        },
+        {
+          "model": "logistic",
+          "k": "",
+          "method": "rattle",
+          "implementation_exists": true,
+          "target_description": "Condition on logistic location score equation at observed mu_star.",
+          "mle_convention": "root of sum_i tanh((x_i - mu_hat)/2) = 0",
+          "target_defined": true,
+          "target_matches_reference": true,
+          "smooth_constraint": true,
+          "rattle_applicable": true,
+          "tests_passed": "not_run",
+          "warnings": "",
+          "warning": ""
+        }
+      ],
+      "assertions_passed": true
+    },
+    "command": [
+      ".venv/bin/python",
+      "docs/research/selected_mle_target_audit_checks.py"
+    ],
+    "timeout_seconds": 45,
+    "elapsed_seconds": 16.325047756079584
+  },
+  "preexisting_file_check": {
+    "files_compared": 426,
+    "changed_or_missing": []
+  },
+  "source_sha256": {
+    "models/loc_student.py": "1e0028f746669885186eadfe0de5d29763d9794f1e975f4a91eb0784063e1346",
+    "models/loc_student_rattle.py": "69ed64948759d0b564f62a0fa254c8760aabf2537a446104237cf2093cc65b9b",
+    "models/loc_affine.py": "7fc25c320be528adae27d20e9c59cf15f094312b19b4bead2303426d925234c8",
+    "models/student_location_mle.py": "577cac596f05aa30a39e503db65f36b0efffb652ff29b5185c6004617c436b20",
+    "models/logistic_gibbs_numba.py": "25943f5228e15c8a43b4d922ee3c28f469a55e7e4a0f084eb50f571d319f78fa",
+    "models/loc_logistic_rattle.py": "e18d85e247f873e60446d3a2896ed2a14474b5674a69aa68ed0b351f52a072c9",
+    "models/laplace_gibbs_numba.py": "3c5d0ab559a8566de186d6a5f558186bb020253fbcb37d03a3535a3123aaad57",
+    "models/model_registry.py": "176dc49034335cc2a85731f5182d791437d99ed812ee1b04e7940171f7b33473",
+    "kde_ref/moments.py": "13eaed832f46c6465fb28f6a592afe65b8b0a912d3fd0cd877d434b0764bae78",
+    "kde_ref/reference_adapter.py": "9a8bc82a9a11b3512826e4c5cf72986f5462755c23777f5e9d36e79abbc5f92d",
+    "reporting/presentation/prepare_feedback_evidence.py": "877b39bfcb3e0385e08d2dabbb1e64f177753d76b8f5e1ad10ab3be24c0ab590",
+    "docs/research/selected_mle_target_audit_checks.py": "35bb03872450507ea042b79c75ad9d166c0c5b92c2867732213ccfaa66ad1046"
+  },
+  "limits": "Direct checks and mathematical derivations do not certify selector globality, posterior agreement, or mixing.",
+  "static_review": {
+    "local_links_checked": 33,
+    "missing_links": [],
+    "diagnostic_ast_parsed": true,
+    "whitespace_check_passed": true,
+    "source_hashes_still_match": true
+  }
+}

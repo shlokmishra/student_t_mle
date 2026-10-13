@@ -1,0 +1,19 @@
+{
+  "target": "selected_global_logistic_location_mle",
+  "estimator": "unique_logistic_score_root",
+  "kernel": "pure_rattle_score_guide_curvature_endpoint",
+  "counts": {
+    "proposals": 512,
+    "accepted": 495,
+    "projection_or_reverse": 0,
+    "mu_accepts": 377,
+    "root_brackets": 496
+  },
+  "max_score_residual": 3.5083047578154947e-14,
+  "max_tangent_residual": 4.648055718011585e-16,
+  "mle_tolerance": 1e-10,
+  "seed": 2026102258,
+  "seconds": 0.0990794668905437,
+  "reference_index": 2782,
+  "raw_sha256": "0b60166dc134df50129e7cbfd423b44cddcab5a52a71c60cf39a3739a0cccd94"
+}

@@ -1,0 +1,619 @@
+............................................................FFFFFFFFFFFF [ 20%]
+FFFFFFFFFF.............................................................. [ 40%]
+........................................................................ [ 60%]
+........................................................................ [ 81%]
+...................................................................      [100%]
+=================================== FAILURES ===================================
+_ test_old_import_is_same_module_with_canonical_identity[loc_student-loc.student.score_gibbs] _
+
+old = 'loc_student', new = 'loc.student.score_gibbs'
+
+    @pytest.mark.parametrize("old,new", LEGACY_MODULES.items())
+    def test_old_import_is_same_module_with_canonical_identity(old, new):
+        canonical = importlib.import_module("models." + new)
+        historical = importlib.import_module("models." + old)
+        assert historical is canonical
+        assert historical.__name__ == "models." + new
+>       assert historical.__spec__.name == "models." + new
+E       AssertionError: assert 'models.loc_student' == 'models.loc.s...t.score_gibbs'
+E         
+E         - models.loc.student.score_gibbs
+E         + models.loc_student
+
+tests/test_model_layout.py:26: AssertionError
+_ test_old_import_is_same_module_with_canonical_identity[loc_student_rattle-loc.student.score_rattle] _
+
+old = 'loc_student_rattle', new = 'loc.student.score_rattle'
+
+    @pytest.mark.parametrize("old,new", LEGACY_MODULES.items())
+    def test_old_import_is_same_module_with_canonical_identity(old, new):
+        canonical = importlib.import_module("models." + new)
+        historical = importlib.import_module("models." + old)
+        assert historical is canonical
+        assert historical.__name__ == "models." + new
+>       assert historical.__spec__.name == "models." + new
+E       AssertionError: assert 'models.loc_student_rattle' == 'models.loc.s....score_rattle'
+E         
+E         - models.loc.student.score_rattle
+E         ?           ^       ------
+E         + models.loc_student_rattle
+E         ?           ^
+
+tests/test_model_layout.py:26: AssertionError
+_ test_old_import_is_same_module_with_canonical_identity[loc_student_selected_mle-loc.student.selected_gibbs] _
+
+old = 'loc_student_selected_mle', new = 'loc.student.selected_gibbs'
+
+    @pytest.mark.parametrize("old,new", LEGACY_MODULES.items())
+    def test_old_import_is_same_module_with_canonical_identity(old, new):
+        canonical = importlib.import_module("models." + new)
+        historical = importlib.import_module("models." + old)
+        assert historical is canonical
+        assert historical.__name__ == "models." + new
+>       assert historical.__spec__.name == "models." + new
+E       AssertionError: assert 'models.loc_s..._selected_mle' == 'models.loc.s...elected_gibbs'
+E         
+E         - models.loc.student.selected_gibbs
+E         ?           ^       ^         ^^^^^
+E         + models.loc_student_selected_mle
+E         ?           ^       ^         ^^^
+
+tests/test_model_layout.py:26: AssertionError
+_ test_old_import_is_same_module_with_canonical_identity[loc_student_selected_mle_block-loc.student.selected_block] _
+
+old = 'loc_student_selected_mle_block', new = 'loc.student.selected_block'
+
+    @pytest.mark.parametrize("old,new", LEGACY_MODULES.items())
+    def test_old_import_is_same_module_with_canonical_identity(old, new):
+        canonical = importlib.import_module("models." + new)
+        historical = importlib.import_module("models." + old)
+        assert historical is canonical
+        assert historical.__name__ == "models." + new
+>       assert historical.__spec__.name == "models." + new
+E       AssertionError: assert 'models.loc_s...ted_mle_block' == 'models.loc.s...elected_block'
+E         
+E         - models.loc.student.selected_block
+E         ?           ^       ^
+E         + models.loc_student_selected_mle_block
+E         ?           ^       ^         ++++
+
+tests/test_model_layout.py:26: AssertionError
+_ test_old_import_is_same_module_with_canonical_identity[loc_student_selected_mle_rattle-loc.student.selected_rattle] _
+
+old = 'loc_student_selected_mle_rattle', new = 'loc.student.selected_rattle'
+
+    @pytest.mark.parametrize("old,new", LEGACY_MODULES.items())
+    def test_old_import_is_same_module_with_canonical_identity(old, new):
+        canonical = importlib.import_module("models." + new)
+        historical = importlib.import_module("models." + old)
+        assert historical is canonical
+        assert historical.__name__ == "models." + new
+>       assert historical.__spec__.name == "models." + new
+E       AssertionError: assert 'models.loc_s...ed_mle_rattle' == 'models.loc.s...lected_rattle'
+E         
+E         - models.loc.student.selected_rattle
+E         ?           ^       ^
+E         + models.loc_student_selected_mle_rattle
+E         ?           ^       ^         ++++
+
+tests/test_model_layout.py:26: AssertionError
+_ test_old_import_is_same_module_with_canonical_identity[loc_student_selected_mle_independence-loc.student.independence] _
+
+old = 'loc_student_selected_mle_independence', new = 'loc.student.independence'
+
+    @pytest.mark.parametrize("old,new", LEGACY_MODULES.items())
+    def test_old_import_is_same_module_with_canonical_identity(old, new):
+        canonical = importlib.import_module("models." + new)
+        historical = importlib.import_module("models." + old)
+        assert historical is canonical
+        assert historical.__name__ == "models." + new
+>       assert historical.__spec__.name == "models." + new
+E       AssertionError: assert 'models.loc_s..._independence' == 'models.loc.s....independence'
+E         
+E         - models.loc.student.independence
+E         ?           ^       ^
+E         + models.loc_student_selected_mle_independence
+E         ?           ^       ^^^^^^^^^^^^^^
+
+tests/test_model_layout.py:26: AssertionError
+_ test_old_import_is_same_module_with_canonical_identity[student_location_mle-loc.student.mle] _
+
+old = 'student_location_mle', new = 'loc.student.mle'
+
+    @pytest.mark.parametrize("old,new", LEGACY_MODULES.items())
+    def test_old_import_is_same_module_with_canonical_identity(old, new):
+        canonical = importlib.import_module("models." + new)
+        historical = importlib.import_module("models." + old)
+        assert historical is canonical
+        assert historical.__name__ == "models." + new
+>       assert historical.__spec__.name == "models." + new
+E       AssertionError: assert 'models.student_location_mle' == 'models.loc.student.mle'
+E         
+E         - models.loc.student.mle
+E         + models.student_location_mle
+
+tests/test_model_layout.py:26: AssertionError
+_ test_old_import_is_same_module_with_canonical_identity[student_n3_endpoint-loc.student.n3_endpoint] _
+
+old = 'student_n3_endpoint', new = 'loc.student.n3_endpoint'
+
+    @pytest.mark.parametrize("old,new", LEGACY_MODULES.items())
+    def test_old_import_is_same_module_with_canonical_identity(old, new):
+        canonical = importlib.import_module("models." + new)
+        historical = importlib.import_module("models." + old)
+        assert historical is canonical
+        assert historical.__name__ == "models." + new
+>       assert historical.__spec__.name == "models." + new
+E       AssertionError: assert 'models.student_n3_endpoint' == 'models.loc.s...t.n3_endpoint'
+E         
+E         - models.loc.student.n3_endpoint
+E         ?       ----        ^
+E         + models.student_n3_endpoint
+E         ?               ^
+
+tests/test_model_layout.py:26: AssertionError
+_ test_old_import_is_same_module_with_canonical_identity[student_mu_mh-loc.student.mu_mh] _
+
+old = 'student_mu_mh', new = 'loc.student.mu_mh'
+
+    @pytest.mark.parametrize("old,new", LEGACY_MODULES.items())
+    def test_old_import_is_same_module_with_canonical_identity(old, new):
+        canonical = importlib.import_module("models." + new)
+        historical = importlib.import_module("models." + old)
+        assert historical is canonical
+        assert historical.__name__ == "models." + new
+>       assert historical.__spec__.name == "models." + new
+E       AssertionError: assert 'models.student_mu_mh' == 'models.loc.student.mu_mh'
+E         
+E         - models.loc.student.mu_mh
+E         ?       ----        ^
+E         + models.student_mu_mh
+E         ?               ^
+
+tests/test_model_layout.py:26: AssertionError
+_ test_old_import_is_same_module_with_canonical_identity[loc_affine-loc.affine] _
+
+old = 'loc_affine', new = 'loc.affine'
+
+    @pytest.mark.parametrize("old,new", LEGACY_MODULES.items())
+    def test_old_import_is_same_module_with_canonical_identity(old, new):
+        canonical = importlib.import_module("models." + new)
+        historical = importlib.import_module("models." + old)
+        assert historical is canonical
+        assert historical.__name__ == "models." + new
+>       assert historical.__spec__.name == "models." + new
+E       AssertionError: assert 'models.loc_affine' == 'models.loc.affine'
+E         
+E         - models.loc.affine
+E         ?           ^
+E         + models.loc_affine
+E         ?           ^
+
+tests/test_model_layout.py:26: AssertionError
+_ test_old_import_is_same_module_with_canonical_identity[loc_logistic-loc.logistic.score_gibbs] _
+
+old = 'loc_logistic', new = 'loc.logistic.score_gibbs'
+
+    @pytest.mark.parametrize("old,new", LEGACY_MODULES.items())
+    def test_old_import_is_same_module_with_canonical_identity(old, new):
+        canonical = importlib.import_module("models." + new)
+        historical = importlib.import_module("models." + old)
+        assert historical is canonical
+        assert historical.__name__ == "models." + new
+>       assert historical.__spec__.name == "models." + new
+E       AssertionError: assert 'models.loc_logistic' == 'models.loc.l...c.score_gibbs'
+E         
+E         - models.loc.logistic.score_gibbs
+E         + models.loc_logistic
+
+tests/test_model_layout.py:26: AssertionError
+_ test_old_import_is_same_module_with_canonical_identity[loc_logistic_rattle-loc.logistic.score_rattle] _
+
+old = 'loc_logistic_rattle', new = 'loc.logistic.score_rattle'
+
+    @pytest.mark.parametrize("old,new", LEGACY_MODULES.items())
+    def test_old_import_is_same_module_with_canonical_identity(old, new):
+        canonical = importlib.import_module("models." + new)
+        historical = importlib.import_module("models." + old)
+        assert historical is canonical
+        assert historical.__name__ == "models." + new
+>       assert historical.__spec__.name == "models." + new
+E       AssertionError: assert 'models.loc_logistic_rattle' == 'models.loc.l....score_rattle'
+E         
+E         - models.loc.logistic.score_rattle
+E         ?           ^        ------
+E         + models.loc_logistic_rattle
+E         ?           ^
+
+tests/test_model_layout.py:26: AssertionError
+_ test_old_import_is_same_module_with_canonical_identity[logistic_gibbs_numba-loc.logistic._numba] _
+
+old = 'logistic_gibbs_numba', new = 'loc.logistic._numba'
+
+    @pytest.mark.parametrize("old,new", LEGACY_MODULES.items())
+    def test_old_import_is_same_module_with_canonical_identity(old, new):
+        canonical = importlib.import_module("models." + new)
+        historical = importlib.import_module("models." + old)
+        assert historical is canonical
+        assert historical.__name__ == "models." + new
+>       assert historical.__spec__.name == "models." + new
+E       AssertionError: assert 'models.logistic_gibbs_numba' == 'models.loc.logistic._numba'
+E         
+E         - models.loc.logistic._numba
+E         ?          ----      ^
+E         + models.logistic_gibbs_numba
+E         ?                ^^^^^^
+
+tests/test_model_layout.py:26: AssertionError
+_ test_old_import_is_same_module_with_canonical_identity[loc_laplace-loc.laplace.median_gibbs] _
+
+old = 'loc_laplace', new = 'loc.laplace.median_gibbs'
+
+    @pytest.mark.parametrize("old,new", LEGACY_MODULES.items())
+    def test_old_import_is_same_module_with_canonical_identity(old, new):
+        canonical = importlib.import_module("models." + new)
+        historical = importlib.import_module("models." + old)
+        assert historical is canonical
+        assert historical.__name__ == "models." + new
+>       assert historical.__spec__.name == "models." + new
+E       AssertionError: assert 'models.loc_laplace' == 'models.loc.l....median_gibbs'
+E         
+E         - models.loc.laplace.median_gibbs
+E         + models.loc_laplace
+
+tests/test_model_layout.py:26: AssertionError
+_ test_old_import_is_same_module_with_canonical_identity[loc_laplace_rattle-loc.laplace.facet_rattle] _
+
+old = 'loc_laplace_rattle', new = 'loc.laplace.facet_rattle'
+
+    @pytest.mark.parametrize("old,new", LEGACY_MODULES.items())
+    def test_old_import_is_same_module_with_canonical_identity(old, new):
+        canonical = importlib.import_module("models." + new)
+        historical = importlib.import_module("models." + old)
+        assert historical is canonical
+        assert historical.__name__ == "models." + new
+>       assert historical.__spec__.name == "models." + new
+E       AssertionError: assert 'models.loc_laplace_rattle' == 'models.loc.l....facet_rattle'
+E         
+E         - models.loc.laplace.facet_rattle
+E         ?           ^       ------
+E         + models.loc_laplace_rattle
+E         ?           ^
+
+tests/test_model_layout.py:26: AssertionError
+_ test_old_import_is_same_module_with_canonical_identity[laplace_gibbs_numba-loc.laplace._numba] _
+
+old = 'laplace_gibbs_numba', new = 'loc.laplace._numba'
+
+    @pytest.mark.parametrize("old,new", LEGACY_MODULES.items())
+    def test_old_import_is_same_module_with_canonical_identity(old, new):
+        canonical = importlib.import_module("models." + new)
+        historical = importlib.import_module("models." + old)
+        assert historical is canonical
+        assert historical.__name__ == "models." + new
+>       assert historical.__spec__.name == "models." + new
+E       AssertionError: assert 'models.laplace_gibbs_numba' == 'models.loc.laplace._numba'
+E         
+E         - models.loc.laplace._numba
+E         ?         ----      ^
+E         + models.laplace_gibbs_numba
+E         ?               ^^^^^^
+
+tests/test_model_layout.py:26: AssertionError
+_ test_old_import_is_same_module_with_canonical_identity[loc_scale_student-loc_scale.student_gibbs] _
+
+old = 'loc_scale_student', new = 'loc_scale.student_gibbs'
+
+    @pytest.mark.parametrize("old,new", LEGACY_MODULES.items())
+    def test_old_import_is_same_module_with_canonical_identity(old, new):
+        canonical = importlib.import_module("models." + new)
+        historical = importlib.import_module("models." + old)
+        assert historical is canonical
+        assert historical.__name__ == "models." + new
+>       assert historical.__spec__.name == "models." + new
+E       AssertionError: assert 'models.loc_scale_student' == 'models.loc_s...student_gibbs'
+E         
+E         - models.loc_scale.student_gibbs
+E         ?                 ^       ------
+E         + models.loc_scale_student
+E         ?                 ^
+
+tests/test_model_layout.py:26: AssertionError
+_ test_old_import_is_same_module_with_canonical_identity[loc_scale_student_rattle-loc_scale.student_rattle] _
+
+old = 'loc_scale_student_rattle', new = 'loc_scale.student_rattle'
+
+    @pytest.mark.parametrize("old,new", LEGACY_MODULES.items())
+    def test_old_import_is_same_module_with_canonical_identity(old, new):
+        canonical = importlib.import_module("models." + new)
+        historical = importlib.import_module("models." + old)
+        assert historical is canonical
+        assert historical.__name__ == "models." + new
+>       assert historical.__spec__.name == "models." + new
+E       AssertionError: assert 'models.loc_s...tudent_rattle' == 'models.loc_s...tudent_rattle'
+E         
+E         - models.loc_scale.student_rattle
+E         ?                 ^
+E         + models.loc_scale_student_rattle
+E         ?                 ^
+
+tests/test_model_layout.py:26: AssertionError
+_ test_old_import_is_same_module_with_canonical_identity[loc_scale_laplace-loc_scale.laplace_gibbs] _
+
+old = 'loc_scale_laplace', new = 'loc_scale.laplace_gibbs'
+
+    @pytest.mark.parametrize("old,new", LEGACY_MODULES.items())
+    def test_old_import_is_same_module_with_canonical_identity(old, new):
+        canonical = importlib.import_module("models." + new)
+        historical = importlib.import_module("models." + old)
+        assert historical is canonical
+        assert historical.__name__ == "models." + new
+>       assert historical.__spec__.name == "models." + new
+E       AssertionError: assert 'models.loc_scale_laplace' == 'models.loc_s...laplace_gibbs'
+E         
+E         - models.loc_scale.laplace_gibbs
+E         ?                 ^       ------
+E         + models.loc_scale_laplace
+E         ?                 ^
+
+tests/test_model_layout.py:26: AssertionError
+_ test_old_import_is_same_module_with_canonical_identity[numba_math-shared.numba_math] _
+
+old = 'numba_math', new = 'shared.numba_math'
+
+    @pytest.mark.parametrize("old,new", LEGACY_MODULES.items())
+    def test_old_import_is_same_module_with_canonical_identity(old, new):
+        canonical = importlib.import_module("models." + new)
+        historical = importlib.import_module("models." + old)
+        assert historical is canonical
+        assert historical.__name__ == "models." + new
+>       assert historical.__spec__.name == "models." + new
+E       AssertionError: assert 'models.numba_math' == 'models.shared.numba_math'
+E         
+E         - models.shared.numba_math
+E         ?       -------
+E         + models.numba_math
+
+tests/test_model_layout.py:26: AssertionError
+____________ test_import_order_and_private_compiled_helpers[False] _____________
+
+old_first = False
+
+    @pytest.mark.parametrize("old_first", [False, True])
+    def test_import_order_and_private_compiled_helpers(old_first):
+        names = ["models.loc_student", "models.loc.student.score_gibbs"]
+        if not old_first:
+            names.reverse()
+        script = (
+            "import importlib; "
+            f"a=importlib.import_module({names[0]!r}); b=importlib.import_module({names[1]!r}); "
+            "assert a is b; assert a.__spec__.name=='models.loc.student.score_gibbs'; "
+            "assert a._initial_x is b._initial_x; "
+            "assert a.psi(.2,2.)==b.psi(.2,2.)"
+        )
+>       subprocess.run([sys.executable, "-c", script], cwd=ROOT, check=True, timeout=60)
+
+tests/test_model_layout.py:42: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = False, timeout = 60, check = True
+popenargs = (['/scratch/user/shlokmishra08/code/student_t_mle/.venv/bin/python', '-c', "import importlib; a=importlib.import_modul...ec__.name=='models.loc.student.score_gibbs'; assert a._initial_x is b._initial_x; assert a.psi(.2,2.)==b.psi(.2,2.)"],)
+kwargs = {'cwd': PosixPath('/scratch/user/shlokmishra08/code/student_t_mle')}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout (seconds) is given and the process takes too long,
+         a TimeoutExpired exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['/scratch/user/shlokmishra08/code/student_t_mle/.venv/bin/python', '-c', "import importlib; a=importlib.import_module('models.loc.student.score_gibbs'); b=importlib.import_module('models.loc_student'); assert a is b; assert a.__spec__.name=='models.loc.student.score_gibbs'; assert a._initial_x is b._initial_x; assert a.psi(.2,2.)==b.psi(.2,2.)"]' returned non-zero exit status 1.
+
+/sw/eb/sw/Python/3.13.5-GCCcore-14.3.0/lib/python3.13/subprocess.py:577: CalledProcessError
+----------------------------- Captured stderr call -----------------------------
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    import importlib; a=importlib.import_module('models.loc.student.score_gibbs'); b=importlib.import_module('models.loc_student'); assert a is b; assert a.__spec__.name=='models.loc.student.score_gibbs'; assert a._initial_x is b._initial_x; assert a.psi(.2,2.)==b.psi(.2,2.)
+                                                                                                                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+_____________ test_import_order_and_private_compiled_helpers[True] _____________
+
+old_first = True
+
+    @pytest.mark.parametrize("old_first", [False, True])
+    def test_import_order_and_private_compiled_helpers(old_first):
+        names = ["models.loc_student", "models.loc.student.score_gibbs"]
+        if not old_first:
+            names.reverse()
+        script = (
+            "import importlib; "
+            f"a=importlib.import_module({names[0]!r}); b=importlib.import_module({names[1]!r}); "
+            "assert a is b; assert a.__spec__.name=='models.loc.student.score_gibbs'; "
+            "assert a._initial_x is b._initial_x; "
+            "assert a.psi(.2,2.)==b.psi(.2,2.)"
+        )
+>       subprocess.run([sys.executable, "-c", script], cwd=ROOT, check=True, timeout=60)
+
+tests/test_model_layout.py:42: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = False, timeout = 60, check = True
+popenargs = (['/scratch/user/shlokmishra08/code/student_t_mle/.venv/bin/python', '-c', "import importlib; a=importlib.import_modul...ec__.name=='models.loc.student.score_gibbs'; assert a._initial_x is b._initial_x; assert a.psi(.2,2.)==b.psi(.2,2.)"],)
+kwargs = {'cwd': PosixPath('/scratch/user/shlokmishra08/code/student_t_mle')}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout (seconds) is given and the process takes too long,
+         a TimeoutExpired exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['/scratch/user/shlokmishra08/code/student_t_mle/.venv/bin/python', '-c', "import importlib; a=importlib.import_module('models.loc_student'); b=importlib.import_module('models.loc.student.score_gibbs'); assert a is b; assert a.__spec__.name=='models.loc.student.score_gibbs'; assert a._initial_x is b._initial_x; assert a.psi(.2,2.)==b.psi(.2,2.)"]' returned non-zero exit status 1.
+
+/sw/eb/sw/Python/3.13.5-GCCcore-14.3.0/lib/python3.13/subprocess.py:577: CalledProcessError
+----------------------------- Captured stderr call -----------------------------
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    import importlib; a=importlib.import_module('models.loc_student'); b=importlib.import_module('models.loc.student.score_gibbs'); assert a is b; assert a.__spec__.name=='models.loc.student.score_gibbs'; assert a._initial_x is b._initial_x; assert a.psi(.2,2.)==b.psi(.2,2.)
+                                                                                                                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+============================= slowest 15 durations =============================
+3.96s call     tests/test_loc_affine.py::test_student_global_mle_is_translation_equivariant
+3.60s call     tests/test_laplace_facet_rattle.py::test_laplace_facet_rattle_smoke_matches_gibbs_roughly
+2.66s call     tests/test_student_higher_n_geometry.py::test_fold_adjacency_by_independent_strict_linear_program[5]
+2.11s call     tests/test_loc_scale_student.py::test_codimension_two_rattle_trajectory_is_tangent_and_reversible
+2.03s call     tests/test_student_global_mle_audit.py::test_global_selector_rejects_a_non_global_wide_brent_root
+2.00s call     tests/test_student_n3_branch_components.py::test_rattle_accepts_exact_explicit_initial_state
+1.70s call     tests/test_student_n3_selected_geometry.py::test_discrete_rattle_projection_can_cross_components_and_selected_step_rejects
+1.67s call     tests/test_student_gibbs_backends.py::test_student_gibbs_smoke_and_preserves_constraint
+1.59s call     tests/test_model_layout.py::test_import_order_and_private_compiled_helpers[False]
+1.44s call     tests/test_model_layout.py::test_import_order_and_private_compiled_helpers[True]
+1.43s call     tests/test_student_n3_endpoint.py::test_old_and_guarded_chain_identical_rng_and_retained_states[3-0.0-1.0-4]
+1.32s call     tests/test_kde_reference_moments.py::test_numba_student_kernels_match_logsumexp_reference
+1.32s call     tests/test_loc_scale_student.py::test_gibbs_slice_updates_t_and_preserves_both_scores
+1.00s call     tests/test_student_location_mle_hardening.py::test_stationary_enumerator_retains_inferior_roots[x0-1.0]
+0.89s call     tests/test_student_higher_n_geometry.py::test_fold_adjacency_by_independent_strict_linear_program[4]
+=========================== short test summary info ============================
+FAILED tests/test_model_layout.py::test_old_import_is_same_module_with_canonical_identity[loc_student-loc.student.score_gibbs]
+FAILED tests/test_model_layout.py::test_old_import_is_same_module_with_canonical_identity[loc_student_rattle-loc.student.score_rattle]
+FAILED tests/test_model_layout.py::test_old_import_is_same_module_with_canonical_identity[loc_student_selected_mle-loc.student.selected_gibbs]
+FAILED tests/test_model_layout.py::test_old_import_is_same_module_with_canonical_identity[loc_student_selected_mle_block-loc.student.selected_block]
+FAILED tests/test_model_layout.py::test_old_import_is_same_module_with_canonical_identity[loc_student_selected_mle_rattle-loc.student.selected_rattle]
+FAILED tests/test_model_layout.py::test_old_import_is_same_module_with_canonical_identity[loc_student_selected_mle_independence-loc.student.independence]
+FAILED tests/test_model_layout.py::test_old_import_is_same_module_with_canonical_identity[student_location_mle-loc.student.mle]
+FAILED tests/test_model_layout.py::test_old_import_is_same_module_with_canonical_identity[student_n3_endpoint-loc.student.n3_endpoint]
+FAILED tests/test_model_layout.py::test_old_import_is_same_module_with_canonical_identity[student_mu_mh-loc.student.mu_mh]
+FAILED tests/test_model_layout.py::test_old_import_is_same_module_with_canonical_identity[loc_affine-loc.affine]
+FAILED tests/test_model_layout.py::test_old_import_is_same_module_with_canonical_identity[loc_logistic-loc.logistic.score_gibbs]
+FAILED tests/test_model_layout.py::test_old_import_is_same_module_with_canonical_identity[loc_logistic_rattle-loc.logistic.score_rattle]
+FAILED tests/test_model_layout.py::test_old_import_is_same_module_with_canonical_identity[logistic_gibbs_numba-loc.logistic._numba]
+FAILED tests/test_model_layout.py::test_old_import_is_same_module_with_canonical_identity[loc_laplace-loc.laplace.median_gibbs]
+FAILED tests/test_model_layout.py::test_old_import_is_same_module_with_canonical_identity[loc_laplace_rattle-loc.laplace.facet_rattle]
+FAILED tests/test_model_layout.py::test_old_import_is_same_module_with_canonical_identity[laplace_gibbs_numba-loc.laplace._numba]
+FAILED tests/test_model_layout.py::test_old_import_is_same_module_with_canonical_identity[loc_scale_student-loc_scale.student_gibbs]
+FAILED tests/test_model_layout.py::test_old_import_is_same_module_with_canonical_identity[loc_scale_student_rattle-loc_scale.student_rattle]
+FAILED tests/test_model_layout.py::test_old_import_is_same_module_with_canonical_identity[loc_scale_laplace-loc_scale.laplace_gibbs]
+FAILED tests/test_model_layout.py::test_old_import_is_same_module_with_canonical_identity[numba_math-shared.numba_math]
+FAILED tests/test_model_layout.py::test_import_order_and_private_compiled_helpers[False]
+FAILED tests/test_model_layout.py::test_import_order_and_private_compiled_helpers[True]
+22 failed, 333 passed in 48.21s

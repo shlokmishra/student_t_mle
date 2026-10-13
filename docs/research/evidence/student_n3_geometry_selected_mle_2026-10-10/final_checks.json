@@ -1,0 +1,29 @@
+{
+  "preexisting_preservation": {
+    "preexisting_files_checked": 441,
+    "changed": [],
+    "missing": []
+  },
+  "new_sources_parse": true,
+  "whitespace": true,
+  "oracle_counts": {
+    "stress_oracle.json": 114,
+    "new_block_oracle_checks.json": 40,
+    "saved_oracle_checks.json": 3,
+    "excursion_oracle_checks.json": 20
+  },
+  "oracle_total_with_projection": 178,
+  "new_block_screens_all_pass": true,
+  "phase_source_versions_resolve": {
+    "excursions_execution.json": true,
+    "saved_execution.json": true,
+    "stress_execution.json": true,
+    "blocks_execution.json": true,
+    "figures_execution.json": true,
+    "algebra_execution.json": true
+  },
+  "reported_pytest_checks": 39,
+  "tests_qualification": "37-test retry plus two separately run added regressions; initial 120-second timeout preserved",
+  "supplemental_initial_timeout_seconds": 60,
+  "supplemental_retry_complete": true
+}
