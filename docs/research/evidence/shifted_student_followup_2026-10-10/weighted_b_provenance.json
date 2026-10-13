@@ -1,0 +1,16 @@
+{
+  "id": "weighted_b",
+  "seed": 2026101022,
+  "draws": 65536,
+  "seconds": 4.731418400071561,
+  "failures": [],
+  "methods": {
+    "fast_float": 65533,
+    "exact_rational_bounds": 3
+  },
+  "fallback_reasons": {
+    "ambiguous likelihood comparison": 3
+  },
+  "raw_path": "tmp/shifted_student_followup_20261010/weighted_b.npz",
+  "sha256": "b2f5b0197a6c19fae1f2775e2de33901746b319ede6167e8e2751088ee376c35"
+}

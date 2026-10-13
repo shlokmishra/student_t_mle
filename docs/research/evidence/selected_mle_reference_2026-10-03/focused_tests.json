@@ -1,0 +1,22 @@
+{
+  "method": "direct function invocation; pytest collection previously timed out after 120s",
+  "tests": [
+    {
+      "test": "test_exact_oracle_enumerates_two_point_roots_and_selects_lower_tie",
+      "result": "passed"
+    },
+    {
+      "test": "test_exact_oracle_includes_degenerate_stationary_root",
+      "result": "passed"
+    },
+    {
+      "test": "test_oracle_translation_and_permutation",
+      "result": "passed"
+    },
+    {
+      "test": "test_reference_uses_release_minus_mle_and_prior_at_reconstructed_mu",
+      "result": "passed"
+    }
+  ],
+  "seconds": 162.79703907715157
+}

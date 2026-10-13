@@ -1,0 +1,27 @@
+{
+  "study": "docs/research/evidence/location_only_performance_2026-10-12",
+  "burn_in": 2000,
+  "retained_start_index": 2001,
+  "within_dataset_quantiles": [
+    0.05,
+    0.25,
+    0.5,
+    0.75,
+    0.95
+  ],
+  "posterior_quantiles": [
+    0.01,
+    0.05,
+    0.25,
+    0.5,
+    0.75,
+    0.95,
+    0.99
+  ],
+  "quantile_interpolation": "linear",
+  "rhat_max": 1.01,
+  "ess_min": 400,
+  "policy": "Exploratory extension of frozen study; no reruns, thinning, tuned burn-in or changed original screens.",
+  "source_sha256": "f80ec175d2bfbe554129bc389fc8bfbda4ec15cdd72f7971d2b8bcf6f1e97156",
+  "reference_bands": "Finite-bank weighted posterior 5/95 percentiles, not uncertainty intervals."
+}

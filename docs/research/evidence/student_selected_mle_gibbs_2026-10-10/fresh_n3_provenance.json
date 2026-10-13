@@ -1,0 +1,13 @@
+{
+  "id": "fresh_n3",
+  "seed": 2026101500,
+  "draws": 32768,
+  "seconds": 2.3015182549133897,
+  "failures": [],
+  "methods": {
+    "fast_float": 32768
+  },
+  "fallback_reasons": {},
+  "raw_path": "tmp/student_selected_mle_gibbs_20261010/fresh_n3.npz",
+  "sha256": "e6d99316712f1a11ec7ea4237b73ccc49db691fc3d679d96f900a98998a17f02"
+}

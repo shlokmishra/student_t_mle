@@ -1,0 +1,112 @@
+{
+  "counts": {
+    "blocks": 6000,
+    "accepted": 5191,
+    "mu_accepts": 4747,
+    "score_pairs": 6000,
+    "score_accepts": 3551,
+    "proposal_sampling_attempts": 8946,
+    "branch_changes_proposed": 3882,
+    "branch_changes_accepted": 2944,
+    "selector_calls": 5205,
+    "selector_fallbacks": 0,
+    "nonpositive_curvature": 67,
+    "cheap_metropolis": 729,
+    "global_selection": 13
+  },
+  "seconds": 0.4851316912099719,
+  "times": {
+    "proposal": 0.02438340662047267,
+    "selector": 0.2910556513816118
+  },
+  "seed": 2026103303,
+  "score_seed": 182866169,
+  "target": "selected_global_student_location_mle",
+  "proposal": "random_scan_regular_score_pair_power",
+  "block_length": 1,
+  "max_score_residual": 2.220446049250313e-15,
+  "max_selected_mle_residual": 9.103828801926284e-15,
+  "max_inverse_score_error": 5.551115123125783e-17,
+  "proposal_records": [
+    {
+      "iteration": 1,
+      "accepted": true,
+      "rejection": null,
+      "selector_called": true,
+      "proposed_x": [
+        -0.035827688279196766,
+        0.08303387764595242,
+        -0.04699574907746094
+      ]
+    },
+    {
+      "iteration": 1001,
+      "accepted": true,
+      "rejection": null,
+      "selector_called": true,
+      "proposed_x": [
+        0.020502385027125036,
+        3.2850977123006913,
+        -3.0991272962643044
+      ]
+    },
+    {
+      "iteration": 2001,
+      "accepted": true,
+      "rejection": null,
+      "selector_called": true,
+      "proposed_x": [
+        -0.05659669396852231,
+        -0.760399870268207,
+        0.9197984690074111
+      ]
+    },
+    {
+      "iteration": 3001,
+      "accepted": true,
+      "rejection": null,
+      "selector_called": true,
+      "proposed_x": [
+        0.08634970597438232,
+        -0.34190063761991474,
+        0.24404936187932627
+      ]
+    },
+    {
+      "iteration": 4001,
+      "accepted": false,
+      "rejection": "cheap_metropolis",
+      "selector_called": false,
+      "proposed_x": [
+        0.7797018411772489,
+        -6.23489975753923,
+        -6.52241342321825
+      ]
+    },
+    {
+      "iteration": 5001,
+      "accepted": false,
+      "rejection": "cheap_metropolis",
+      "selector_called": false,
+      "proposed_x": [
+        -1.233610967933862,
+        7.866841185138122,
+        0.5143850856957846
+      ]
+    }
+  ],
+  "known_scale": 1.0,
+  "numerical_policy": "no artificial score/Jacobian/proposal cutoffs; unresolved computation raises; inherited parameter uniform guard retained",
+  "origin": {
+    "type": "negative_outlier12"
+  },
+  "initial_x": [
+    -11.916966122354047,
+    0.08303387764595242,
+    0.08303387764595242
+  ],
+  "initial_mu": 0.0,
+  "failures": 0,
+  "raw_path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n3_m1_chain3.npz",
+  "sha256": "843464599e78ede6ac864fc8684dd57b6fbe55f61f7c5315a38c1785fd627864"
+}

@@ -1,0 +1,162 @@
+{
+  "counts": {
+    "blocks": 6000,
+    "accepted": 5201,
+    "mu_accepts": 4094,
+    "score_pairs": 96000,
+    "score_accepts": 59730,
+    "proposal_sampling_attempts": 145485,
+    "branch_changes_proposed": 73018,
+    "branch_changes_accepted": 62890,
+    "selector_calls": 5203,
+    "selector_fallbacks": 0,
+    "nonpositive_curvature": 3,
+    "cheap_metropolis": 795,
+    "global_selection": 1
+  },
+  "seconds": 0.7797216232866049,
+  "times": {
+    "proposal": 0.17145757656544447,
+    "selector": 0.4091891888529062
+  },
+  "seed": 2026114800,
+  "score_seed": 1972408356,
+  "target": "selected_global_student_location_mle",
+  "proposal": "random_scan_regular_score_pair_power",
+  "block_length": 16,
+  "max_score_residual": 1.0547118733938987e-14,
+  "max_selected_mle_residual": 2.5757174171303632e-14,
+  "max_inverse_score_error": 5.551115123125783e-17,
+  "proposal_records": [
+    {
+      "iteration": 1,
+      "accepted": false,
+      "rejection": "cheap_metropolis",
+      "selector_called": false,
+      "proposed_x": [
+        0.7825180773208685,
+        -1.5626389669362293,
+        -1.665451817527581,
+        0.7572788332321755,
+        -7.349544943953032,
+        2.193787864954483,
+        0.6354849526460071,
+        -0.8943225765909929,
+        2.1538458362836375,
+        -1.3619306037904053
+      ]
+    },
+    {
+      "iteration": 1001,
+      "accepted": true,
+      "rejection": null,
+      "selector_called": true,
+      "proposed_x": [
+        1.1363827436858565,
+        0.4969063364019726,
+        1.0049582968170483,
+        -0.3160899773977325,
+        -0.37173314219173065,
+        -0.9242931809022646,
+        0.22596748760063004,
+        -0.6391036372565074,
+        5.9819297641097995,
+        -0.6033577400774628
+      ]
+    },
+    {
+      "iteration": 2001,
+      "accepted": true,
+      "rejection": null,
+      "selector_called": true,
+      "proposed_x": [
+        -0.23206530641234868,
+        -0.2471058676556696,
+        -1.3733320818405412,
+        0.7851403291161322,
+        -0.5134757425063551,
+        0.8754877173408557,
+        1.0755247926989049,
+        0.2370092119752177,
+        -0.1416352735424542,
+        -0.410452568537268
+      ]
+    },
+    {
+      "iteration": 3001,
+      "accepted": true,
+      "rejection": null,
+      "selector_called": true,
+      "proposed_x": [
+        0.11184846183799335,
+        1.561150965259357,
+        -1.0276549481764299,
+        -2.21791026547582,
+        -0.4250653696483339,
+        -0.5880554886838422,
+        0.14612719508887084,
+        0.7157017614137224,
+        2.0177066029549287,
+        0.010977095988125438
+      ]
+    },
+    {
+      "iteration": 4001,
+      "accepted": true,
+      "rejection": null,
+      "selector_called": true,
+      "proposed_x": [
+        -0.1679284745638998,
+        -1.1324254161905931,
+        0.9872149174753534,
+        0.4255010732563944,
+        0.9466399835945751,
+        -0.16929734951280143,
+        -0.5966572455350153,
+        0.35550672715458825,
+        -0.12546936631251493,
+        -4.723833490533196
+      ]
+    },
+    {
+      "iteration": 5001,
+      "accepted": false,
+      "rejection": "cheap_metropolis",
+      "selector_called": false,
+      "proposed_x": [
+        0.6291623300346315,
+        2.393458923600089,
+        -3.976137782614491,
+        -1.1148442357111292,
+        0.5020150014648704,
+        -0.8934327518420178,
+        2.0450157876962187,
+        -1.3218995070314616,
+        -0.0405195853720221,
+        0.2768392306294484
+      ]
+    }
+  ],
+  "known_scale": 1.0,
+  "numerical_policy": "no artificial score/Jacobian/proposal cutoffs; unresolved computation raises; inherited parameter uniform guard retained",
+  "origin": {
+    "reference_index": 121335,
+    "max_quantile": 0.1
+  },
+  "initial_x": [
+    1.3434928931218593,
+    -1.5465938958043912,
+    -1.7632135556957769,
+    0.6724862066760124,
+    -0.4293507555983691,
+    0.7136040837268449,
+    0.9980639272450891,
+    -0.9186412314363984,
+    0.9050680421377657,
+    -1.2040717539978247
+  ],
+  "initial_mu": -0.597178226511462,
+  "failures": 0,
+  "raw_path": "tmp/cheap_selected_mle_gibbs_20261010_v2/centered_n10_m16_chain0.npz",
+  "sha256": "52dfff5839399287aec6e198bb8b6e10c559d6d33c68164f08a30f4190e8ba35"
+}

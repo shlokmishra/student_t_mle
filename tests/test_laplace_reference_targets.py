@@ -4,8 +4,12 @@ import jax.random as random
 import pytest
 from types import SimpleNamespace
 
-from models import loc_laplace
-from models.model_registry import LAPLACE_MEDIAN_INTERVAL_TARGET, LAPLACE_NP_MEDIAN_TARGET, model_validity_rows
+from models.loc.laplace import median_gibbs as loc_laplace
+from models.model_registry import (
+    LAPLACE_MEDIAN_INTERVAL_TARGET,
+    LAPLACE_NP_MEDIAN_TARGET,
+    model_validity_rows,
+)
 from reporting.diagnostics import audit_reference_all_models as audit
 from reporting.diagnostics.audit_reference_all_models import laplace_interval_reference, laplace_odd_median_reference
 

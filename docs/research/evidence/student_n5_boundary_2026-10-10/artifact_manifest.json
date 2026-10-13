@@ -1,0 +1,151 @@
+{
+  "artifacts": [
+    {
+      "path": "docs/research/evidence/student_n5_boundary_2026-10-10/algebra.json",
+      "bytes": 3804,
+      "sha256": "a6f49f358bc5d2aaae868ce18ef2035d11368adcaf945d8488cfa7c52b22de57"
+    },
+    {
+      "path": "docs/research/evidence/student_n5_boundary_2026-10-10/config.json",
+      "bytes": 10763,
+      "sha256": "f6188a53e8c6af17251734ce6c4e00f7abcc4600fd338de5d2de91e040daf2c8"
+    },
+    {
+      "path": "docs/research/evidence/student_n5_boundary_2026-10-10/environment.json",
+      "bytes": 233,
+      "sha256": "836e2dad55efa4eb9e2d9483729a1857a1e34503550b6bc4de31790f3bf466c9"
+    },
+    {
+      "path": "docs/research/evidence/student_n5_boundary_2026-10-10/execution.json",
+      "bytes": 601,
+      "sha256": "c41f6e78a2292a21582173aef8b98e467f248c03105c5f16ba9961d7aa51af7a"
+    },
+    {
+      "path": "docs/research/evidence/student_n5_boundary_2026-10-10/explicit_failure.json",
+      "bytes": 194,
+      "sha256": "f7feb9bae8be3e4bcb35250d543ed8af9cbb63d4b4daa4b96a504441537a917e"
+    },
+    {
+      "path": "docs/research/evidence/student_n5_boundary_2026-10-10/initial_attempt/README.md",
+      "bytes": 271,
+      "sha256": "950a1e33bd16475145293881efb4ac4b6bb346b57bad6d5db6714d52e53220ab"
+    },
+    {
+      "path": "docs/research/evidence/student_n5_boundary_2026-10-10/initial_attempt/pytest.log",
+      "bytes": 932,
+      "sha256": "9c2952884279b0b8d03f52db6b0fc114e767f8c0900aef981aae423882e4b090"
+    },
+    {
+      "path": "docs/research/evidence/student_n5_boundary_2026-10-10/initial_attempt/run.log",
+      "bytes": 1294,
+      "sha256": "13125f32d161e8ec9976ffae95e222658b6efc8d0f07267068d1157a9ad2bf80"
+    },
+    {
+      "path": "docs/research/evidence/student_n5_boundary_2026-10-10/initial_attempt/student_n5_boundary.py",
+      "bytes": 6227,
+      "sha256": "fff74b5bf2ed979852c9c8425605a6c8530a2417238bd7edfcb73c9e7118141f"
+    },
+    {
+      "path": "docs/research/evidence/student_n5_boundary_2026-10-10/initial_attempt/study_student_n5_boundary.py",
+      "bytes": 10390,
+      "sha256": "7f9878520d48a9eada6ec368ab6455cd718064689fa4690ec825873abd1012aa"
+    },
+    {
+      "path": "docs/research/evidence/student_n5_boundary_2026-10-10/initial_attempt/test_student_n5_boundary.py",
+      "bytes": 4696,
+      "sha256": "b34f4e2e619f75b437b3914ed2d8c1a5c8f1f6cfacb6a249d15555035eacd8ff"
+    },
+    {
+      "path": "docs/research/evidence/student_n5_boundary_2026-10-10/integrity_check.json",
+      "bytes": 118,
+      "sha256": "b9ba1ae55c3b829853b594ab6270b6376751b72a013d27d12a58bb0eac39770a"
+    },
+    {
+      "path": "docs/research/evidence/student_n5_boundary_2026-10-10/irreducibility_mod7.json",
+      "bytes": 827,
+      "sha256": "66316387dd8ae5624c356bea13fc493684ee3f1d1393f7f8239ea7d740fbcd2a"
+    },
+    {
+      "path": "docs/research/evidence/student_n5_boundary_2026-10-10/plot_provenance.json",
+      "bytes": 213,
+      "sha256": "f2e3cf586b791b119cdf59832c2c7ebc91da46c45a8ddda46de5908f56bd2179"
+    },
+    {
+      "path": "docs/research/evidence/student_n5_boundary_2026-10-10/preservation_check.json",
+      "bytes": 88,
+      "sha256": "84ff382ec9e23b7e88aac8f2126666230ecf77473cbab6d23fe2115887a88ff0"
+    },
+    {
+      "path": "docs/research/evidence/student_n5_boundary_2026-10-10/pytest.log",
+      "bytes": 932,
+      "sha256": "9c2952884279b0b8d03f52db6b0fc114e767f8c0900aef981aae423882e4b090"
+    },
+    {
+      "path": "docs/research/evidence/student_n5_boundary_2026-10-10/pytest_final.log",
+      "bytes": 99,
+      "sha256": "81a22b8493f79ba104871caee25195962086695ed13b483172aa96ab5729474e"
+    },
+    {
+      "path": "docs/research/evidence/student_n5_boundary_2026-10-10/run.log",
+      "bytes": 1294,
+      "sha256": "13125f32d161e8ec9976ffae95e222658b6efc8d0f07267068d1157a9ad2bf80"
+    },
+    {
+      "path": "docs/research/evidence/student_n5_boundary_2026-10-10/run_retry.log",
+      "bytes": 1327,
+      "sha256": "3d8cd96da984ead66e989ac0ef4843857039f151288263fceb1675fc2fb53fc7"
+    },
+    {
+      "path": "docs/research/evidence/student_n5_boundary_2026-10-10/selection_boundary.png",
+      "bytes": 142612,
+      "sha256": "64e97f3a49656fcf334b9d312adf2b18b6a7be59b4f8e35be1050e2495c76112"
+    },
+    {
+      "path": "docs/research/evidence/student_n5_boundary_2026-10-10/selector_audit.json",
+      "bytes": 52425,
+      "sha256": "6a3e26df17e99d51243414aa89920c7eafb3f622b98603bd16582ff1d6fe23b1"
+    },
+    {
+      "path": "docs/research/evidence/student_n5_boundary_2026-10-10/source_provenance.json",
+      "bytes": 259,
+      "sha256": "7b615a430dfdb3edf75ed906c5ae6e8a27fcef2872ab243b38ae0c7db1592f2c"
+    },
+    {
+      "path": "docs/research/evidence/student_n5_boundary_2026-10-10/starting_hashes.json",
+      "bytes": 122116,
+      "sha256": "654627698ef443087b4708ad98edd2c90ec120f512fa6789db98266b912c7f64"
+    },
+    {
+      "path": "docs/research/evidence/student_n5_boundary_2026-10-10/starting_status.txt",
+      "bytes": 55364,
+      "sha256": "4eed6461ec4f43265bb2d6af5a7247687662b2307d20bcaf49e712ce804886b0"
+    },
+    {
+      "path": "docs/research/student_n5_selection_boundary.md",
+      "bytes": 20435,
+      "sha256": "cbfb27f02904f6fc368bb0c1f646ec8e945f7cf9806a6c783f00f71db27fd48e"
+    },
+    {
+      "path": "reporting/diagnostics/student_n5_boundary.py",
+      "bytes": 6227,
+      "sha256": "fff74b5bf2ed979852c9c8425605a6c8530a2417238bd7edfcb73c9e7118141f"
+    },
+    {
+      "path": "scripts/study_student_n5_boundary.py",
+      "bytes": 10390,
+      "sha256": "7f9878520d48a9eada6ec368ab6455cd718064689fa4690ec825873abd1012aa"
+    },
+    {
+      "path": "scripts/verify_student_n5_irreducibility.py",
+      "bytes": 1572,
+      "sha256": "44b9fe83da4aaad8c01a86ed459be54cb762da242a09bc7c9f228583636f34df"
+    },
+    {
+      "path": "tests/test_student_n5_boundary.py",
+      "bytes": 4696,
+      "sha256": "b34f4e2e619f75b437b3914ed2d8c1a5c8f1f6cfacb6a249d15555035eacd8ff"
+    }
+  ],
+  "count": 29,
+  "raw_MCMC_runs": 0
+}

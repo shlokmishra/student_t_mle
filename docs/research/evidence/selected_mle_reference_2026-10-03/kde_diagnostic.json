@@ -1,0 +1,20 @@
+{
+  "helper": {
+    "posterior_mean": 0.5910368065883153,
+    "posterior_var": 1.074562671412011,
+    "posterior_sd": 1.0366111476402378,
+    "posterior_q025": 0.014661806676328385,
+    "posterior_q50": 0.10464863206841879,
+    "posterior_q975": 1.02080927664976,
+    "normalization_constant": 0.914653178423934,
+    "weighted_ess": 1.9827365803599468
+  },
+  "correct_mixture_quantiles": [
+    -1.4377271595984706,
+    0.5970862522000308,
+    2.59304072954101
+  ],
+  "correct_normalizer": 0.18880460194529125,
+  "bandwidth": 1.2311444133449163,
+  "note": "Diagnostic only; no KDE enters validation summary or distance."
+}

@@ -1,0 +1,13 @@
+{
+  "id": "weighted_a",
+  "seed": 2026101011,
+  "draws": 65536,
+  "seconds": 5.959606626071036,
+  "failures": [],
+  "methods": {
+    "fast_float": 65536
+  },
+  "fallback_reasons": {},
+  "raw_path": "tmp/shifted_student_followup_20261010/weighted_a.npz",
+  "sha256": "000fc3e8ecbf31088a15d853749af2cd7768febd8b316f924f81aff101b261e6"
+}

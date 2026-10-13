@@ -1,13 +1,11 @@
 import numpy as np
-import jax.random as random
 
-from models import loc_student_rattle
+from models.loc.student import score_rattle as loc_student_rattle
 from reporting.diagnostics.student_t_geometry import (
     constraint_value,
     grad_constraint,
     gram,
     potential_with_gram,
-    potential_without_gram,
     psi,
     psi_prime,
 )
@@ -29,21 +27,15 @@ def test_constraint_gram_matches_rattle_helpers():
     np.testing.assert_allclose(gram(x, mu_star, k), loc_student_rattle._constraint_gram(x, mu_star, k))
 
 
-def test_gram_corrected_potential_is_finite_and_flagged():
+def test_production_potential_uses_the_gram_correction():
     x = np.array([1.8, 2.2, 1.5, 2.5])
     mu_star = 2.0
     mu = 2.1
     k = 2.0
-    u0 = potential_without_gram(x, mu, k)
     u1 = potential_with_gram(x, mu, mu_star, k)
-    assert np.isfinite(u0)
     assert np.isfinite(u1)
     np.testing.assert_allclose(
-        loc_student_rattle._potential_energy(x, mu, k, mu_star=mu_star, include_gram_correction=False),
-        u0,
-    )
-    np.testing.assert_allclose(
-        loc_student_rattle._potential_energy(x, mu, k, mu_star=mu_star, include_gram_correction=True),
+        loc_student_rattle._potential_energy(x, mu, k, mu_star),
         u1,
     )
 
@@ -73,9 +65,6 @@ def test_paper_fixed_direction_step_preserves_constraint_and_tangent_momentum():
         grad_tol=1e-12,
         proj_damping=1.0,
         proj_line_search=True,
-        proj_init_strategy="trial",
-        include_gram_correction=True,
-        projection_mode="paper_fixed_direction",
         tangent_tol=1e-9,
     )
     assert ok
@@ -101,9 +90,6 @@ def test_paper_fixed_direction_reverse_position_check_passes_for_small_step():
         grad_tol=1e-12,
         proj_damping=1.0,
         proj_line_search=True,
-        proj_init_strategy="trial",
-        include_gram_correction=True,
-        projection_mode="paper_fixed_direction",
         tangent_tol=1e-9,
     )
     x1, p1, ok, _ = loc_student_rattle._rattle_trajectory(x0, p0, **kwargs)
@@ -124,13 +110,13 @@ def test_default_rattle_target_uses_gram_correction_and_paper_projection():
         "rattle_step_size": 0.005,
         "rattle_num_steps": 1,
     }
-    out = loc_student_rattle.run_rattle(random.PRNGKey(0), 0.0, params, verbose=False)
+    out = loc_student_rattle.run_rattle(np.array([0, 0], dtype=np.uint32), 0.0, params, verbose=False)
     diag = out["projection_diagnostics"]
     assert diag["include_gram_correction"] is True
     assert diag["projection_mode"] == "paper_fixed_direction"
 
 
-def test_legacy_projection_mode_still_runs():
+def test_legacy_projection_mode_is_rejected():
     params = {
         "k": 2.0,
         "n": 4,
@@ -140,9 +126,7 @@ def test_legacy_projection_mode_still_runs():
         "prior_std": 10.0,
         "rattle_step_size": 0.005,
         "rattle_num_steps": 1,
-        "rattle_include_gram_correction": False,
         "rattle_projection_mode": "normal_newton_legacy",
     }
-    out = loc_student_rattle.run_rattle(random.PRNGKey(1), 0.0, params, verbose=False)
-    assert np.asarray(out["mu_chain"]).shape[0] == 3
-    assert out["projection_diagnostics"]["projection_mode"] == "normal_newton_legacy"
+    with np.testing.assert_raises_regex(ValueError, "paper_fixed_direction"):
+        loc_student_rattle.run_rattle(np.array([0, 1], dtype=np.uint32), 0.0, params, verbose=False)

@@ -1,0 +1,34 @@
+{
+  "models/model_registry.py": {
+    "before_sha256": "e9d86a76c93ed1638b72f35a251390c87fee944131c1428b1135100c826f7528",
+    "after_sha256": "e9d071213fe77919bb50b0b175f5f0a41f95b1c3d7607a4e9f313744704bab7d"
+  },
+  "models/loc/student/selected_rattle.py": {
+    "before_sha256": "5e89d65cf5f7debb5e3c8c5f9ead8c4bc0dce9a5d30f1a2836dac0df802831f2",
+    "after_sha256": "2324cb080f1b04b0d6a3d3e50a40a884c2827c2ff6414759327584e07da352f8"
+  },
+  "models/loc/student/selected_block.py": {
+    "before_sha256": "2c4a508be802dfb3d7cc8051b62df41fd8e62c045792ccdabb34ad7feede2f9d",
+    "after_sha256": "3e6abd91bc8bb0b4c00f5b75f31b64af0ac154e2f3d0da53d02e5e8670135b2f"
+  },
+  "models/loc/student/selected_gibbs.py": {
+    "before_sha256": "2118e7f2ac0db6fa17f1d3e2b7fc880f99dabf63c3481ac2539522f7e018a784",
+    "after_sha256": "57fadd682196dcd8977e10c63fd02dc2b5316b02e70f2695cb7614864a6c776e"
+  },
+  "kde_ref/moments.py": {
+    "before_sha256": "13eaed832f46c6465fb28f6a592afe65b8b0a912d3fd0cd877d434b0764bae78",
+    "after_sha256": "9751c3c207ebc91178825404737190ad828eeafc3a407fff7687ee4205bd4c22"
+  },
+  "diagnostics/source_provenance.py": {
+    "before_sha256": "86811548f8e48472780dbe370c226e8753cade3356ef804322d7e2cfa69d6794",
+    "after_sha256": "3835f09cba9dc6d2772a3c6afc256a820330131f7f4d7c5ca79652656d40f18b"
+  },
+  "tests/test_model_layout.py": {
+    "before_sha256": "23d64b28bef4dffb74df3e7474e8947e8bb2fb91c20ef189a34f179a969bff56",
+    "after_sha256": "18f1b4e0ca262ffa638429379e78feda56e8e4245044343c8a674b1b252cb39f"
+  },
+  "tests/test_student_n3_endpoint.py": {
+    "before_sha256": "4d0f58bcdbc7244284500d1ee8f27e2afd441e0d1c1e5a6a44537f47f8b11e66",
+    "after_sha256": "882d96ea71b955c165b3a164d9305d446bb1bf66e34653314a309066632cd0a7"
+  }
+}

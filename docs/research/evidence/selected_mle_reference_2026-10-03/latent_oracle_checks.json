@@ -1,0 +1,3007 @@
+[
+  {
+    "case": "gaussian_center",
+    "source": "reference",
+    "index": 0,
+    "selected_mle": -2.2204460492503132e-17,
+    "residual": 2.2204460492503132e-17,
+    "seconds": 0.000118686119094491
+  },
+  {
+    "case": "gaussian_center",
+    "source": "reference",
+    "index": 712,
+    "selected_mle": 5.551115123125783e-17,
+    "residual": 5.551115123125783e-17,
+    "seconds": 3.816792741417885e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "reference",
+    "index": 1424,
+    "selected_mle": 4.4408920985006264e-17,
+    "residual": 4.4408920985006264e-17,
+    "seconds": 7.40468967705965e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "reference",
+    "index": 2136,
+    "selected_mle": 3.3306690738754695e-17,
+    "residual": 3.3306690738754695e-17,
+    "seconds": 3.0463095754384995e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "reference",
+    "index": 2849,
+    "selected_mle": 0.0,
+    "residual": 0.0,
+    "seconds": 6.93050678819418e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "reference",
+    "index": 3561,
+    "selected_mle": 0.0,
+    "residual": 0.0,
+    "seconds": 3.598397597670555e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "reference",
+    "index": 4273,
+    "selected_mle": 1.7763568394002506e-16,
+    "residual": 1.7763568394002506e-16,
+    "seconds": 7.031112909317017e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "reference",
+    "index": 4986,
+    "selected_mle": 0.0,
+    "residual": 0.0,
+    "seconds": 2.9044924303889275e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "reference",
+    "index": 5698,
+    "selected_mle": 5.551115123125783e-18,
+    "residual": 5.551115123125783e-18,
+    "seconds": 3.5732053220272064e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "reference",
+    "index": 6410,
+    "selected_mle": 0.0,
+    "residual": 0.0,
+    "seconds": 7.100286893546581e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "reference",
+    "index": 7123,
+    "selected_mle": 7.771561172376095e-17,
+    "residual": 7.771561172376095e-17,
+    "seconds": 6.952299736440182e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "reference",
+    "index": 7835,
+    "selected_mle": 5.551115123125783e-17,
+    "residual": 5.551115123125783e-17,
+    "seconds": 2.883397974073887e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "reference",
+    "index": 8547,
+    "selected_mle": 4.4408920985006264e-17,
+    "residual": 4.4408920985006264e-17,
+    "seconds": 2.8308015316724777e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "reference",
+    "index": 9259,
+    "selected_mle": 2.2204460492503132e-17,
+    "residual": 2.2204460492503132e-17,
+    "seconds": 6.935209967195988e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "reference",
+    "index": 9972,
+    "selected_mle": -4.4408920985006264e-17,
+    "residual": 4.4408920985006264e-17,
+    "seconds": 7.033813744783401e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "reference",
+    "index": 10684,
+    "selected_mle": -6.661338147750939e-17,
+    "residual": 6.661338147750939e-17,
+    "seconds": 6.961007602512836e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "reference",
+    "index": 11396,
+    "selected_mle": -1.1102230246251566e-17,
+    "residual": 1.1102230246251566e-17,
+    "seconds": 7.052905857563019e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "reference",
+    "index": 12109,
+    "selected_mle": 0.0,
+    "residual": 0.0,
+    "seconds": 7.110694423317909e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "reference",
+    "index": 12285,
+    "selected_mle": 1.2212453270876723e-16,
+    "residual": 1.2212453270876723e-16,
+    "seconds": 6.972299888730049e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "reference",
+    "index": 12821,
+    "selected_mle": 4.4408920985006264e-17,
+    "residual": 4.4408920985006264e-17,
+    "seconds": 2.932501956820488e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "reference",
+    "index": 13533,
+    "selected_mle": 1.3322676295501878e-16,
+    "residual": 1.3322676295501878e-16,
+    "seconds": 7.094396278262138e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "reference",
+    "index": 14246,
+    "selected_mle": 1.1102230246251566e-17,
+    "residual": 1.1102230246251566e-17,
+    "seconds": 8.565513417124748e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "reference",
+    "index": 14958,
+    "selected_mle": -4.4408920985006264e-17,
+    "residual": 4.4408920985006264e-17,
+    "seconds": 7.070903666317463e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "reference",
+    "index": 15670,
+    "selected_mle": -4.4408920985006264e-17,
+    "residual": 4.4408920985006264e-17,
+    "seconds": 7.044500671327114e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "reference",
+    "index": 16383,
+    "selected_mle": 4.4408920985006264e-17,
+    "residual": 4.4408920985006264e-17,
+    "seconds": 7.032393477857113e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "affine",
+    "index": 0,
+    "selected_mle": 3.469446951953614e-17,
+    "residual": 3.469446951953614e-17,
+    "seconds": 3.0171126127243042e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "affine",
+    "index": 1739,
+    "selected_mle": 4.4408920985006264e-17,
+    "residual": 4.4408920985006264e-17,
+    "seconds": 7.34149944037199e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "affine",
+    "index": 3478,
+    "selected_mle": -4.4408920985006264e-17,
+    "residual": 4.4408920985006264e-17,
+    "seconds": 7.278705015778542e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "affine",
+    "index": 5217,
+    "selected_mle": 1.1102230246251565e-16,
+    "residual": 1.1102230246251565e-16,
+    "seconds": 7.216585800051689e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "affine",
+    "index": 6956,
+    "selected_mle": -1.1102230246251566e-17,
+    "residual": 1.1102230246251566e-17,
+    "seconds": 7.070903666317463e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "affine",
+    "index": 8695,
+    "selected_mle": 0.0,
+    "residual": 0.0,
+    "seconds": 7.073907181620598e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "affine",
+    "index": 8908,
+    "selected_mle": 4.4408920985006264e-17,
+    "residual": 4.4408920985006264e-17,
+    "seconds": 2.9552960768342018e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "affine",
+    "index": 10434,
+    "selected_mle": 2.2204460492503132e-17,
+    "residual": 2.2204460492503132e-17,
+    "seconds": 7.03791156411171e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "affine",
+    "index": 12173,
+    "selected_mle": 0.0,
+    "residual": 0.0,
+    "seconds": 7.123011164367199e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "affine",
+    "index": 13912,
+    "selected_mle": -3.053113317719181e-17,
+    "residual": 3.053113317719181e-17,
+    "seconds": 7.090996950864792e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "affine",
+    "index": 15651,
+    "selected_mle": 4.4408920985006264e-17,
+    "residual": 4.4408920985006264e-17,
+    "seconds": 7.935310713946819e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "affine",
+    "index": 17390,
+    "selected_mle": 2.2204460492503132e-17,
+    "residual": 2.2204460492503132e-17,
+    "seconds": 7.030786946415901e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "affine",
+    "index": 19129,
+    "selected_mle": 0.0,
+    "residual": 0.0,
+    "seconds": 7.20189418643713e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "affine",
+    "index": 20869,
+    "selected_mle": 6.661338147750939e-17,
+    "residual": 6.661338147750939e-17,
+    "seconds": 7.31348991394043e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "affine",
+    "index": 22608,
+    "selected_mle": 3.3306690738754695e-17,
+    "residual": 3.3306690738754695e-17,
+    "seconds": 7.128692232072353e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "affine",
+    "index": 24347,
+    "selected_mle": -5.551115123125783e-17,
+    "residual": 5.551115123125783e-17,
+    "seconds": 7.06890132278204e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "affine",
+    "index": 26086,
+    "selected_mle": -2.2204460492503132e-17,
+    "residual": 2.2204460492503132e-17,
+    "seconds": 7.969513535499573e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "affine",
+    "index": 27825,
+    "selected_mle": -1.1102230246251566e-17,
+    "residual": 1.1102230246251566e-17,
+    "seconds": 7.114699110388756e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "affine",
+    "index": 29564,
+    "selected_mle": 8.881784197001253e-17,
+    "residual": 8.881784197001253e-17,
+    "seconds": 7.086899131536484e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "affine",
+    "index": 31303,
+    "selected_mle": 0.0,
+    "residual": 0.0,
+    "seconds": 5.0048111006617546e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "affine",
+    "index": 33042,
+    "selected_mle": -1.0547118733938987e-16,
+    "residual": 1.0547118733938987e-16,
+    "seconds": 7.064198143780231e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "affine",
+    "index": 34781,
+    "selected_mle": 4.163336342344337e-17,
+    "residual": 4.163336342344337e-17,
+    "seconds": 7.135397754609585e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "affine",
+    "index": 36520,
+    "selected_mle": -1.9428902930940238e-17,
+    "residual": 1.9428902930940238e-17,
+    "seconds": 6.986293010413647e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "affine",
+    "index": 38259,
+    "selected_mle": -1.1102230246251566e-17,
+    "residual": 1.1102230246251566e-17,
+    "seconds": 7.151812314987183e-05
+  },
+  {
+    "case": "gaussian_center",
+    "source": "affine",
+    "index": 39999,
+    "selected_mle": -2.2204460492503132e-17,
+    "residual": 2.2204460492503132e-17,
+    "seconds": 7.011694833636284e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "reference",
+    "index": 0,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 3.649108111858368e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "reference",
+    "index": 712,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 7.580895908176899e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "reference",
+    "index": 1424,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 7.34629575163126e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "reference",
+    "index": 2136,
+    "selected_mle": 1.2500000000000002,
+    "residual": 2.220446049250313e-16,
+    "seconds": 7.263408042490482e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "reference",
+    "index": 2849,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 8.202297613024712e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "reference",
+    "index": 3561,
+    "selected_mle": 1.2500000000000002,
+    "residual": 2.220446049250313e-16,
+    "seconds": 4.568509757518768e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "reference",
+    "index": 4273,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 7.273396477103233e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "reference",
+    "index": 4986,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 7.15071801096201e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "reference",
+    "index": 5698,
+    "selected_mle": 1.2500000000000002,
+    "residual": 2.220446049250313e-16,
+    "seconds": 2.9786955565214157e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "reference",
+    "index": 6410,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 7.172790355980396e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "reference",
+    "index": 7123,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 7.223198190331459e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "reference",
+    "index": 7835,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 7.13239423930645e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "reference",
+    "index": 8547,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 7.824995554983616e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "reference",
+    "index": 9259,
+    "selected_mle": 1.2499999999999998,
+    "residual": 2.220446049250313e-16,
+    "seconds": 2.9386021196842194e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "reference",
+    "index": 9972,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 7.2079012170434e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "reference",
+    "index": 10684,
+    "selected_mle": 1.2499999999999998,
+    "residual": 2.220446049250313e-16,
+    "seconds": 7.131812162697315e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "reference",
+    "index": 11396,
+    "selected_mle": 1.2500000000000002,
+    "residual": 2.220446049250313e-16,
+    "seconds": 2.99669336527586e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "reference",
+    "index": 12109,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 2.949777990579605e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "reference",
+    "index": 12285,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 7.230904884636402e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "reference",
+    "index": 12821,
+    "selected_mle": 1.2500000000000002,
+    "residual": 2.220446049250313e-16,
+    "seconds": 7.198494859039783e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "reference",
+    "index": 13533,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 7.245992310345173e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "reference",
+    "index": 14246,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 7.192511111497879e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "reference",
+    "index": 14958,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 7.245410233736038e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "reference",
+    "index": 15670,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 7.216609083116055e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "reference",
+    "index": 16383,
+    "selected_mle": 1.2499999999999998,
+    "residual": 2.220446049250313e-16,
+    "seconds": 7.197889499366283e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "affine",
+    "index": 0,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 3.0155060812830925e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "affine",
+    "index": 1739,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 7.518287748098373e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "affine",
+    "index": 3478,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 3.551412373781204e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "affine",
+    "index": 5217,
+    "selected_mle": 1.2499999999999998,
+    "residual": 2.220446049250313e-16,
+    "seconds": 7.265410386025906e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "affine",
+    "index": 6956,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 3.0142022296786308e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "affine",
+    "index": 8695,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 7.254094816744328e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "affine",
+    "index": 10434,
+    "selected_mle": 1.2499999999999996,
+    "residual": 4.440892098500626e-16,
+    "seconds": 7.219216786324978e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "affine",
+    "index": 12173,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 7.285503670573235e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "affine",
+    "index": 13912,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 7.24100973457098e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "affine",
+    "index": 15651,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 6.009591743350029e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "affine",
+    "index": 17390,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 7.222895510494709e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "affine",
+    "index": 18098,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 7.249601185321808e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "affine",
+    "index": 19129,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 7.322197780013084e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "affine",
+    "index": 20869,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 2.9718969017267227e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "affine",
+    "index": 22608,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 7.172208279371262e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "affine",
+    "index": 24347,
+    "selected_mle": 1.2500000000000004,
+    "residual": 4.440892098500626e-16,
+    "seconds": 7.239007391035557e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "affine",
+    "index": 26086,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 2.942304126918316e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "affine",
+    "index": 27825,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 7.20219686627388e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "affine",
+    "index": 29564,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 7.165595889091492e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "affine",
+    "index": 31303,
+    "selected_mle": 1.2499999999999998,
+    "residual": 2.220446049250313e-16,
+    "seconds": 7.285689935088158e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "affine",
+    "index": 33042,
+    "selected_mle": 1.2499999999999998,
+    "residual": 2.220446049250313e-16,
+    "seconds": 7.204595021903515e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "affine",
+    "index": 34781,
+    "selected_mle": 1.2500000000000004,
+    "residual": 4.440892098500626e-16,
+    "seconds": 7.15409405529499e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "affine",
+    "index": 36520,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 7.29940365999937e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "affine",
+    "index": 38259,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 7.206294685602188e-05
+  },
+  {
+    "case": "gaussian_shift_prior",
+    "source": "affine",
+    "index": 39999,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 7.135304622352123e-05
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "reference",
+    "index": 0,
+    "selected_mle": 1.3877787807814457e-17,
+    "residual": 1.3877787807814457e-17,
+    "seconds": 0.005208492977544665
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "reference",
+    "index": 178,
+    "selected_mle": 4.4408920985006246e-17,
+    "residual": 4.4408920985006246e-17,
+    "seconds": 0.004256175132468343
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "reference",
+    "index": 356,
+    "selected_mle": -1.1006285522069074e-16,
+    "residual": 1.1006285522069074e-16,
+    "seconds": 0.05185765400528908
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "reference",
+    "index": 534,
+    "selected_mle": -4.9862648123515723e-17,
+    "residual": 4.9862648123515723e-17,
+    "seconds": 0.0040271219331771135
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "reference",
+    "index": 712,
+    "selected_mle": 3.7007434154171876e-17,
+    "residual": 3.7007434154171876e-17,
+    "seconds": 0.003721514018252492
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "reference",
+    "index": 890,
+    "selected_mle": -3.469446951953614e-18,
+    "residual": 3.469446951953614e-18,
+    "seconds": 0.0037374519743025303
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "reference",
+    "index": 1068,
+    "selected_mle": 3.7007434154171876e-17,
+    "residual": 3.7007434154171876e-17,
+    "seconds": 0.0035404202062636614
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "reference",
+    "index": 1246,
+    "selected_mle": 1.734723475976807e-18,
+    "residual": 1.734723475976807e-18,
+    "seconds": 0.0037611350417137146
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "reference",
+    "index": 1424,
+    "selected_mle": 2.775557561562891e-17,
+    "residual": 2.775557561562891e-17,
+    "seconds": 0.0033903128933161497
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "reference",
+    "index": 1602,
+    "selected_mle": -4.99942118388809e-17,
+    "residual": 4.99942118388809e-17,
+    "seconds": 0.005383484996855259
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "reference",
+    "index": 1780,
+    "selected_mle": -3.469446951953614e-18,
+    "residual": 3.469446951953614e-18,
+    "seconds": 0.003848025808110833
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "reference",
+    "index": 1958,
+    "selected_mle": 1.0874323505028323e-16,
+    "residual": 1.0874323505028323e-16,
+    "seconds": 0.05331620597280562
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "reference",
+    "index": 2136,
+    "selected_mle": -2.775557561562891e-17,
+    "residual": 2.775557561562891e-17,
+    "seconds": 0.0038310580421239138
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "reference",
+    "index": 2204,
+    "selected_mle": 1.734723475976807e-18,
+    "residual": 1.734723475976807e-18,
+    "seconds": 0.008440276142209768
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "reference",
+    "index": 2314,
+    "selected_mle": -4.9343245538895825e-17,
+    "residual": 4.9343245538895825e-17,
+    "seconds": 0.003592706983909011
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "reference",
+    "index": 2492,
+    "selected_mle": 3.7007434154171876e-17,
+    "residual": 3.7007434154171876e-17,
+    "seconds": 0.007762587862089276
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "reference",
+    "index": 2670,
+    "selected_mle": 2.775557561562891e-17,
+    "residual": 2.775557561562891e-17,
+    "seconds": 0.0037341900169849396
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "reference",
+    "index": 2848,
+    "selected_mle": -2.775557561562891e-17,
+    "residual": 2.775557561562891e-17,
+    "seconds": 0.0038932848256081343
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "reference",
+    "index": 3026,
+    "selected_mle": -6.938893903907228e-18,
+    "residual": 6.938893903907228e-18,
+    "seconds": 0.0034237541258335114
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "reference",
+    "index": 3204,
+    "selected_mle": -4.4408920985006246e-17,
+    "residual": 4.4408920985006246e-17,
+    "seconds": 0.003887892933562398
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "reference",
+    "index": 3382,
+    "selected_mle": 1.3877787807814457e-17,
+    "residual": 1.3877787807814457e-17,
+    "seconds": 0.0044061720836907625
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "reference",
+    "index": 3560,
+    "selected_mle": 4.440892098500624e-17,
+    "residual": 4.440892098500624e-17,
+    "seconds": 0.003729933872818947
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "reference",
+    "index": 3738,
+    "selected_mle": 2.775557561562891e-17,
+    "residual": 2.775557561562891e-17,
+    "seconds": 0.0035074411425739527
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "reference",
+    "index": 3916,
+    "selected_mle": -4.4408920985006246e-17,
+    "residual": 4.4408920985006246e-17,
+    "seconds": 0.00392870488576591
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "reference",
+    "index": 4095,
+    "selected_mle": 1.3877787807814457e-17,
+    "residual": 1.3877787807814457e-17,
+    "seconds": 0.0040494760032743216
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "affine",
+    "index": 0,
+    "selected_mle": 4.064268885757966e-15,
+    "residual": 4.064268885757966e-15,
+    "seconds": 0.049167684046551585
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "affine",
+    "index": 1739,
+    "selected_mle": 1.8236467115022135e-13,
+    "residual": 1.8236467115022135e-13,
+    "seconds": 0.03914553695358336
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "affine",
+    "index": 3478,
+    "selected_mle": 3.3438982457932826e-15,
+    "residual": 3.3438982457932826e-15,
+    "seconds": 0.048273484921082854
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "affine",
+    "index": 5217,
+    "selected_mle": -4.934324553889581e-17,
+    "residual": 4.934324553889581e-17,
+    "seconds": 0.004226254066452384
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "affine",
+    "index": 6956,
+    "selected_mle": -4.4408920985006246e-17,
+    "residual": 4.4408920985006246e-17,
+    "seconds": 0.003851046087220311
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "affine",
+    "index": 8695,
+    "selected_mle": -2.775557561562891e-17,
+    "residual": 2.775557561562891e-17,
+    "seconds": 0.0037949129473417997
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "affine",
+    "index": 10434,
+    "selected_mle": -2.775557561562891e-17,
+    "residual": 2.775557561562891e-17,
+    "seconds": 0.004036241909489036
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "affine",
+    "index": 12173,
+    "selected_mle": 1.3496173242270974e-13,
+    "residual": 1.3496173242270974e-13,
+    "seconds": 0.03336839401163161
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "affine",
+    "index": 13912,
+    "selected_mle": 7.733763648079261e-14,
+    "residual": 7.733763648079261e-14,
+    "seconds": 0.03593583311885595
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "affine",
+    "index": 15651,
+    "selected_mle": 9.024709513319209e-14,
+    "residual": 9.024709513319209e-14,
+    "seconds": 0.04191933386027813
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "affine",
+    "index": 17390,
+    "selected_mle": 7.62237123665766e-15,
+    "residual": 7.62237123665766e-15,
+    "seconds": 0.040215634973719716
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "affine",
+    "index": 19129,
+    "selected_mle": 3.7007434154171876e-17,
+    "residual": 3.7007434154171876e-17,
+    "seconds": 0.003555145114660263
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "affine",
+    "index": 20869,
+    "selected_mle": 2.0954063346940004e-16,
+    "residual": 2.0954063346940004e-16,
+    "seconds": 0.06666452717036009
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "affine",
+    "index": 22608,
+    "selected_mle": 1.7119987540658616e-16,
+    "residual": 1.7119987540658616e-16,
+    "seconds": 0.06454676017165184
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "affine",
+    "index": 24347,
+    "selected_mle": 1.1035064821341878e-13,
+    "residual": 1.1035064821341878e-13,
+    "seconds": 0.03712554415687919
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "affine",
+    "index": 26086,
+    "selected_mle": 1.3400564182679025e-16,
+    "residual": 1.3400564182679025e-16,
+    "seconds": 0.05537437298335135
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "affine",
+    "index": 27825,
+    "selected_mle": 2.775557561562891e-17,
+    "residual": 2.775557561562891e-17,
+    "seconds": 0.003374784952029586
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "affine",
+    "index": 29564,
+    "selected_mle": 3.6475916863109235e-14,
+    "residual": 3.6475916863109235e-14,
+    "seconds": 0.04357328382320702
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "affine",
+    "index": 31303,
+    "selected_mle": 3.7007434154171876e-17,
+    "residual": 3.7007434154171876e-17,
+    "seconds": 0.003458242164924741
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "affine",
+    "index": 31698,
+    "selected_mle": 9.09607052271969e-14,
+    "residual": 9.09607052271969e-14,
+    "seconds": 0.05615805508568883
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "affine",
+    "index": 33042,
+    "selected_mle": 1.2685312819929057e-14,
+    "residual": 1.2685312819929057e-14,
+    "seconds": 0.05441687302663922
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "affine",
+    "index": 34781,
+    "selected_mle": 2.775557561562891e-17,
+    "residual": 2.775557561562891e-17,
+    "seconds": 0.0037144310772418976
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "affine",
+    "index": 36520,
+    "selected_mle": 1.265538678913642e-14,
+    "residual": 1.265538678913642e-14,
+    "seconds": 0.04517293022945523
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "affine",
+    "index": 38259,
+    "selected_mle": -2.775557561562891e-17,
+    "residual": 2.775557561562891e-17,
+    "seconds": 0.0035725741181522608
+  },
+  {
+    "case": "student_k2_n3",
+    "source": "affine",
+    "index": 39999,
+    "selected_mle": -3.7007434154171876e-17,
+    "residual": 3.7007434154171876e-17,
+    "seconds": 0.003966571064665914
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "reference",
+    "index": 0,
+    "selected_mle": -1.850371707708594e-17,
+    "residual": 1.850371707708594e-17,
+    "seconds": 0.013092867797240615
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "reference",
+    "index": 178,
+    "selected_mle": 1.3877787807814457e-17,
+    "residual": 1.3877787807814457e-17,
+    "seconds": 0.012731507886201143
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "reference",
+    "index": 356,
+    "selected_mle": -4.934324553889582e-17,
+    "residual": 4.934324553889582e-17,
+    "seconds": 0.013509663054719567
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "reference",
+    "index": 534,
+    "selected_mle": 6.938893903907228e-18,
+    "residual": 6.938893903907228e-18,
+    "seconds": 0.01292891800403595
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "reference",
+    "index": 712,
+    "selected_mle": -2.220446049250313e-17,
+    "residual": 2.220446049250313e-17,
+    "seconds": 0.013466088101267815
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "reference",
+    "index": 890,
+    "selected_mle": 1.3877787807814457e-17,
+    "residual": 1.3877787807814457e-17,
+    "seconds": 0.01331893284805119
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "reference",
+    "index": 1068,
+    "selected_mle": -2.775557561562891e-17,
+    "residual": 2.775557561562891e-17,
+    "seconds": 0.012949533062055707
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "reference",
+    "index": 1246,
+    "selected_mle": 2.775557561562891e-17,
+    "residual": 2.775557561562891e-17,
+    "seconds": 0.013641302939504385
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "reference",
+    "index": 1424,
+    "selected_mle": 1.3877787807814457e-17,
+    "residual": 1.3877787807814457e-17,
+    "seconds": 0.013074052054435015
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "reference",
+    "index": 1602,
+    "selected_mle": 2.775557561562891e-17,
+    "residual": 2.775557561562891e-17,
+    "seconds": 0.012875324115157127
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "reference",
+    "index": 1780,
+    "selected_mle": -2.775557561562891e-17,
+    "residual": 2.775557561562891e-17,
+    "seconds": 0.013440852984786034
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "reference",
+    "index": 1958,
+    "selected_mle": 1.850371707708594e-17,
+    "residual": 1.850371707708594e-17,
+    "seconds": 0.013763078022748232
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "reference",
+    "index": 2110,
+    "selected_mle": -4.9343245538895825e-17,
+    "residual": 4.9343245538895825e-17,
+    "seconds": 0.03483310109004378
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "reference",
+    "index": 2136,
+    "selected_mle": 3.469446951953614e-18,
+    "residual": 3.469446951953614e-18,
+    "seconds": 0.0128647331148386
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "reference",
+    "index": 2314,
+    "selected_mle": -1.3877787807814457e-17,
+    "residual": 1.3877787807814457e-17,
+    "seconds": 0.013138815993443131
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "reference",
+    "index": 2492,
+    "selected_mle": -3.7007434154171876e-17,
+    "residual": 3.7007434154171876e-17,
+    "seconds": 0.013897974044084549
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "reference",
+    "index": 2670,
+    "selected_mle": -1.850371707708594e-17,
+    "residual": 1.850371707708594e-17,
+    "seconds": 0.012820566073060036
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "reference",
+    "index": 2848,
+    "selected_mle": -1.850371707708594e-17,
+    "residual": 1.850371707708594e-17,
+    "seconds": 0.013490305980667472
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "reference",
+    "index": 3026,
+    "selected_mle": 2.775557561562891e-17,
+    "residual": 2.775557561562891e-17,
+    "seconds": 0.013483985094353557
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "reference",
+    "index": 3204,
+    "selected_mle": -2.775557561562891e-17,
+    "residual": 2.775557561562891e-17,
+    "seconds": 0.013851773925125599
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "reference",
+    "index": 3382,
+    "selected_mle": -3.7007434154171876e-17,
+    "residual": 3.7007434154171876e-17,
+    "seconds": 0.012707696994766593
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "reference",
+    "index": 3560,
+    "selected_mle": 2.775557561562891e-17,
+    "residual": 2.775557561562891e-17,
+    "seconds": 0.013545551104471087
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "reference",
+    "index": 3738,
+    "selected_mle": -3.7007434154171876e-17,
+    "residual": 3.7007434154171876e-17,
+    "seconds": 0.013343069003894925
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "reference",
+    "index": 3916,
+    "selected_mle": -1.850371707708594e-17,
+    "residual": 1.850371707708594e-17,
+    "seconds": 0.01315944199450314
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "reference",
+    "index": 4095,
+    "selected_mle": -6.938893903907228e-18,
+    "residual": 6.938893903907228e-18,
+    "seconds": 0.012704913970082998
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "affine",
+    "index": 0,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      0.21324471365685616,
+      -3.005347742567517,
+      0.34647892623497,
+      -1.131226243984604,
+      0.8395710426396016,
+      1.0767406586125823,
+      -0.017493323421976736,
+      -2.332832434318888,
+      4.802513325499081,
+      -5.485297498292613
+    ],
+    "seconds": 10.000087585067376
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "affine",
+    "index": 1739,
+    "selected_mle": -3.7007434154171876e-17,
+    "residual": 3.7007434154171876e-17,
+    "seconds": 0.013451507082208991
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "affine",
+    "index": 3478,
+    "selected_mle": -4.4408920985006246e-17,
+    "residual": 4.4408920985006246e-17,
+    "seconds": 0.013685513054952025
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "affine",
+    "index": 5217,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      0.1551880527683306,
+      -1.6279784314975758,
+      -0.12865861854691618,
+      0.24495346733538548,
+      -0.1127377482237859,
+      2.5151002726465626,
+      1.8835387147425668,
+      -1.3024808154127625,
+      0.394853955505854,
+      -0.43336096793016066
+    ],
+    "seconds": 10.000114032067358
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "affine",
+    "index": 6956,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      9.419177965110118,
+      -1.4735094924781547,
+      0.8170996338003726,
+      0.2944358192394296,
+      -1.1371218027876473,
+      -1.169207318360618,
+      1.5664675831382988,
+      0.228030927109865,
+      -0.14422893190405356,
+      0.21082645647048287
+    ],
+    "seconds": 10.000094989081845
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "affine",
+    "index": 8695,
+    "selected_mle": 2.775557561562891e-17,
+    "residual": 2.775557561562891e-17,
+    "seconds": 0.013658834155648947
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "affine",
+    "index": 10434,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      -1.438242253436755,
+      -1.0277743106303077,
+      -1.1835832005106046,
+      0.5762624419971628,
+      1.7102116214399161,
+      -0.09819932143301187,
+      0.188161029588484,
+      -2.634860355470643,
+      1.2332126466400855,
+      1.1213014355956932
+    ],
+    "seconds": 10.000092431204394
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "affine",
+    "index": 12173,
+    "selected_mle": -1.850371707708594e-17,
+    "residual": 1.850371707708594e-17,
+    "seconds": 0.014497152995318174
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "affine",
+    "index": 13912,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      2.375292166991689,
+      -1.6714904263876218,
+      2.7478973273908673,
+      -0.3231256209916149,
+      0.7726186255573962,
+      -1.353048356568361,
+      0.37309033493070465,
+      1.0112899800030954,
+      -0.8047038163909844,
+      -0.5715203577906478
+    ],
+    "seconds": 10.000090219080448
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "affine",
+    "index": 15651,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      0.2684138508031825,
+      3.401333734333904,
+      0.24416396383797517,
+      1.3219714589843359,
+      0.09422411447750997,
+      -4.928574952915258,
+      -0.7028721682652417,
+      -0.09884833159733963,
+      -1.3353817070508591,
+      -0.05401767289841486
+    ],
+    "seconds": 10.000089180888608
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "affine",
+    "index": 17390,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      0.7474578548966418,
+      -1.4716714326032911,
+      0.009476960629325681,
+      -2.622230435848573,
+      -0.6153188340617831,
+      0.2742025601317969,
+      -2.3466149899895763,
+      1.9983535803777146,
+      4.8375058425051245,
+      0.645599716721239
+    ],
+    "seconds": 10.000789480982348
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "affine",
+    "index": 19129,
+    "selected_mle": 3.7007434154171876e-17,
+    "residual": 3.7007434154171876e-17,
+    "seconds": 0.01469978503882885
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "affine",
+    "index": 20869,
+    "selected_mle": 4.934324553889582e-17,
+    "residual": 4.934324553889582e-17,
+    "seconds": 0.01362058287486434
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "affine",
+    "index": 22608,
+    "selected_mle": 2.775557561562891e-17,
+    "residual": 2.775557561562891e-17,
+    "seconds": 0.013204093091189861
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "affine",
+    "index": 24347,
+    "selected_mle": -2.775557561562891e-17,
+    "residual": 2.775557561562891e-17,
+    "seconds": 0.01271812291815877
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "affine",
+    "index": 26086,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      -1.3362628975812418,
+      0.816704908045785,
+      -0.2054306531110328,
+      -0.627895905735939,
+      -1.1274882193940021,
+      0.6854916483438401,
+      0.5956193371019701,
+      -4.213508734874636,
+      0.28313731900780725,
+      0.7896305977550272
+    ],
+    "seconds": 10.000699539203197
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "affine",
+    "index": 27825,
+    "selected_mle": -4.440892098500625e-17,
+    "residual": 4.440892098500625e-17,
+    "seconds": 0.013758216053247452
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "affine",
+    "index": 29564,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      0.7246716078323621,
+      2.773120871104879,
+      2.793674409502471,
+      2.798365872653726,
+      -3.621879015368222,
+      -0.99146516932661,
+      -1.7983279804708943,
+      0.11505492873998435,
+      -0.6606082828846226,
+      -0.02645303401657051
+    ],
+    "seconds": 10.000090264016762
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "affine",
+    "index": 31303,
+    "selected_mle": -3.7007434154171876e-17,
+    "residual": 3.7007434154171876e-17,
+    "seconds": 0.013260627863928676
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "affine",
+    "index": 32241,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      -3.521111339591749,
+      -9.706381093774512,
+      -1.4502485319765817,
+      0.5464647201052096,
+      0.8605126674410145,
+      -28.05687793506959,
+      -0.1767863720762024,
+      1.136841040406488,
+      -0.36348885873050885,
+      0.19338072342138307
+    ],
+    "seconds": 10.000082243001089
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "affine",
+    "index": 33042,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      1.6560389666582136,
+      1.9520708208073867,
+      -2.370979822473875,
+      0.08173124085083217,
+      1.0040513456763671,
+      -1.110333064651177,
+      -0.005563859436481244,
+      -0.3687936566746723,
+      -3.424952066069763,
+      0.039572922851788234
+    ],
+    "seconds": 10.000072780996561
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "affine",
+    "index": 34781,
+    "selected_mle": 3.7007434154171876e-17,
+    "residual": 3.7007434154171876e-17,
+    "seconds": 0.013536005979403853
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "affine",
+    "index": 36520,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      -3.889911643318533,
+      0.873497856748748,
+      0.7065127228991067,
+      -0.4847255363437265,
+      0.6226355644688724,
+      -0.06837234089068472,
+      -1.0740422805998489,
+      -0.05314009476793885,
+      0.9464418160844558,
+      -1.8476567954559608
+    ],
+    "seconds": 10.000104497885332
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "affine",
+    "index": 38259,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      -0.40210244416553476,
+      1.030041714941251,
+      0.41947057114546454,
+      -0.3584699657370295,
+      1.4178392872601497,
+      -0.9212252309155073,
+      -0.9124494353270056,
+      -2.0125703382317237,
+      0.6743452994945749,
+      0.37462969347192604
+    ],
+    "seconds": 10.000071550020948
+  },
+  {
+    "case": "student_k2_n10",
+    "source": "affine",
+    "index": 39999,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      0.9099765314645338,
+      -0.610347343707984,
+      0.38086979503414314,
+      0.9772609009993012,
+      -0.5454117320243077,
+      1.4862817317862962,
+      -2.731445172621703,
+      0.39071441189177475,
+      -0.987588222795527,
+      -0.5836821628018825
+    ],
+    "seconds": 10.000086144078523
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "reference",
+    "index": 0,
+    "selected_mle": -1.850371707708594e-17,
+    "residual": 1.850371707708594e-17,
+    "seconds": 0.013057299889624119
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "reference",
+    "index": 178,
+    "selected_mle": -2.775557561562891e-17,
+    "residual": 2.775557561562891e-17,
+    "seconds": 0.014635823899880052
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "reference",
+    "index": 356,
+    "selected_mle": -3.7007434154171876e-17,
+    "residual": 3.7007434154171876e-17,
+    "seconds": 0.013081417186185718
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "reference",
+    "index": 534,
+    "selected_mle": 1.850371707708594e-17,
+    "residual": 1.850371707708594e-17,
+    "seconds": 0.013526195893064141
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "reference",
+    "index": 712,
+    "selected_mle": 2.775557561562891e-17,
+    "residual": 2.775557561562891e-17,
+    "seconds": 0.012790278065949678
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "reference",
+    "index": 890,
+    "selected_mle": 1.850371707708594e-17,
+    "residual": 1.850371707708594e-17,
+    "seconds": 0.01267166598699987
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "reference",
+    "index": 1068,
+    "selected_mle": 2.775557561562891e-17,
+    "residual": 2.775557561562891e-17,
+    "seconds": 0.01275987783446908
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "reference",
+    "index": 1138,
+    "selected_mle": 6.938893903907228e-18,
+    "residual": 6.938893903907228e-18,
+    "seconds": 0.039524456951767206
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "reference",
+    "index": 1246,
+    "selected_mle": -3.7007434154171876e-17,
+    "residual": 3.7007434154171876e-17,
+    "seconds": 0.013468459947034717
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "reference",
+    "index": 1424,
+    "selected_mle": -1.850371707708594e-17,
+    "residual": 1.850371707708594e-17,
+    "seconds": 0.013181247049942613
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "reference",
+    "index": 1602,
+    "selected_mle": -1.734723475976807e-18,
+    "residual": 1.734723475976807e-18,
+    "seconds": 0.012832917971536517
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "reference",
+    "index": 1780,
+    "selected_mle": 2.775557561562891e-17,
+    "residual": 2.775557561562891e-17,
+    "seconds": 0.013222014997154474
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "reference",
+    "index": 1958,
+    "selected_mle": 3.7007434154171876e-17,
+    "residual": 3.7007434154171876e-17,
+    "seconds": 0.014635091181844473
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "reference",
+    "index": 2136,
+    "selected_mle": -3.7007434154171876e-17,
+    "residual": 3.7007434154171876e-17,
+    "seconds": 0.013187464093789458
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "reference",
+    "index": 2314,
+    "selected_mle": 3.7007434154171876e-17,
+    "residual": 3.7007434154171876e-17,
+    "seconds": 0.013907008105888963
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "reference",
+    "index": 2492,
+    "selected_mle": -2.775557561562891e-17,
+    "residual": 2.775557561562891e-17,
+    "seconds": 0.012972817989066243
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "reference",
+    "index": 2670,
+    "selected_mle": 1.3877787807814457e-17,
+    "residual": 1.3877787807814457e-17,
+    "seconds": 0.012978972867131233
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "reference",
+    "index": 2848,
+    "selected_mle": -2.775557561562891e-17,
+    "residual": 2.775557561562891e-17,
+    "seconds": 0.013260061852633953
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "reference",
+    "index": 3026,
+    "selected_mle": 1.3877787807814457e-17,
+    "residual": 1.3877787807814457e-17,
+    "seconds": 0.012790604960173368
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "reference",
+    "index": 3204,
+    "selected_mle": 1.3877787807814457e-17,
+    "residual": 1.3877787807814457e-17,
+    "seconds": 0.012293618870899081
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "reference",
+    "index": 3382,
+    "selected_mle": -2.168404344971009e-19,
+    "residual": 2.168404344971009e-19,
+    "seconds": 0.012545042904093862
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "reference",
+    "index": 3560,
+    "selected_mle": 2.775557561562891e-17,
+    "residual": 2.775557561562891e-17,
+    "seconds": 0.012979429913684726
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "reference",
+    "index": 3738,
+    "selected_mle": -1.3877787807814457e-17,
+    "residual": 1.3877787807814457e-17,
+    "seconds": 0.013523587025702
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "reference",
+    "index": 3916,
+    "selected_mle": 1.850371707708594e-17,
+    "residual": 1.850371707708594e-17,
+    "seconds": 0.013539580162614584
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "reference",
+    "index": 4095,
+    "selected_mle": -3.7007434154171876e-17,
+    "residual": 3.7007434154171876e-17,
+    "seconds": 0.013086963910609484
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "affine",
+    "index": 0,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      -2.3584880460061473,
+      -0.9590899763480345,
+      4.367313265376696,
+      1.1592987370690624,
+      -3.973871414126225,
+      -1.998989022888904,
+      1.454703354068184,
+      2.494770444819326,
+      1.1176820519746227,
+      -1.1410842933801577
+    ],
+    "seconds": 10.000071864109486
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "affine",
+    "index": 1739,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      -0.20669544989076033,
+      0.34843777258841135,
+      0.47738735387885656,
+      0.08753832832923761,
+      -0.3322599985402025,
+      -0.870109292406977,
+      1.932567446151562,
+      0.6751067062844718,
+      -0.6753257826112133,
+      -0.5607665936568405
+    ],
+    "seconds": 10.000338213983923
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "affine",
+    "index": 3478,
+    "selected_mle": 3.7007434154171876e-17,
+    "residual": 3.7007434154171876e-17,
+    "seconds": 0.014477125136181712
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "affine",
+    "index": 5217,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      0.8257431086163658,
+      -1.925175073928663,
+      0.5355085532992605,
+      0.18199403270268705,
+      -0.6456161942301119,
+      1.0625037587823343,
+      -0.4220507138594177,
+      0.6953229300764779,
+      -1.6327361398962696,
+      -0.02145360982659983
+    ],
+    "seconds": 10.000083151040599
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "affine",
+    "index": 6944,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      0.27482520184816617,
+      -0.5328983590411027,
+      -0.6995335094911214,
+      -0.9893331304067216,
+      0.6454461545639602,
+      1.2185798420049303,
+      -27.191163089208356,
+      0.19882357634496317,
+      1.7860762711406468,
+      -2.8581293471506055
+    ],
+    "seconds": 10.000078001059592
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "affine",
+    "index": 6956,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      0.24012718155754104,
+      1.456791360208582,
+      -0.3425092095044893,
+      -1.3835847442414573,
+      -2.2985185034408597,
+      1.4746048498010227,
+      -23.631253345197198,
+      -0.49282043829268085,
+      1.4615253960414532,
+      -0.21163988064549383
+    ],
+    "seconds": 10.000087034190074
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "affine",
+    "index": 8695,
+    "selected_mle": 4.4408920985006246e-17,
+    "residual": 4.4408920985006246e-17,
+    "seconds": 0.0136143050622195
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "affine",
+    "index": 10434,
+    "selected_mle": 6.938893903907228e-18,
+    "residual": 6.938893903907228e-18,
+    "seconds": 0.012725107837468386
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "affine",
+    "index": 12173,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      0.23989672374810844,
+      0.11923113599557872,
+      -3.765232141834817,
+      -0.5544768056085605,
+      0.2720555363044382,
+      1.3678670493766247,
+      0.9385230018130708,
+      -0.427833860744151,
+      -0.05582936835294233,
+      -0.647284758293493
+    ],
+    "seconds": 10.000081851147115
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "affine",
+    "index": 13912,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      -0.7811177558927854,
+      0.8422013262638659,
+      -0.425879286251686,
+      2.167808808565913,
+      -0.09950859554963591,
+      0.32513296006914044,
+      0.01948282345637735,
+      -2.6020468962974093,
+      1.0351577559232061,
+      -3.629238957005934
+    ],
+    "seconds": 10.000066696899012
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "affine",
+    "index": 15651,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      0.30728802288290835,
+      0.16278340820577797,
+      0.4703926710579762,
+      0.11783829702503251,
+      -0.49671846888152593,
+      -1.0979429629728261,
+      -0.7122724804232904,
+      1.3116358871693965,
+      2.8022706949245166,
+      -1.0607953805028156
+    ],
+    "seconds": 10.000074981013313
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "affine",
+    "index": 17390,
+    "selected_mle": -3.7007434154171876e-17,
+    "residual": 3.7007434154171876e-17,
+    "seconds": 0.01363937184214592
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "affine",
+    "index": 19129,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      -2.7853485136678233,
+      -0.4204500769723718,
+      1.7754952136102582,
+      0.6917006044419841,
+      -0.830886459564047,
+      0.40512913239322323,
+      -1.4918639597676986,
+      0.13211843904406323,
+      0.2626482329447273,
+      0.5123833523722553
+    ],
+    "seconds": 10.000084223924205
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "affine",
+    "index": 20869,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      1.1453570819160717,
+      -1.1305243308599464,
+      -0.7370300862399879,
+      0.5110522126837436,
+      0.9451831630017611,
+      -0.6593209611299002,
+      0.8646642729407459,
+      0.34715925440915946,
+      -2.3826231807923803,
+      -0.20770837358330857
+    ],
+    "seconds": 10.00007164501585
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "affine",
+    "index": 22608,
+    "selected_mle": 1.3877787807814457e-17,
+    "residual": 1.3877787807814457e-17,
+    "seconds": 0.013135978020727634
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "affine",
+    "index": 24347,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      1.276367389972052,
+      -0.3855451613683626,
+      0.42272754279294644,
+      -0.2134474408236876,
+      0.16162456493142496,
+      0.43166397667993606,
+      -1.9228476403648087,
+      -1.7262271920519687,
+      -0.2038675939935607,
+      0.9101800342931342
+    ],
+    "seconds": 10.000069545116276
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "affine",
+    "index": 26086,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      8.487762353233594,
+      -1.4380327911280322,
+      -0.8768908568248514,
+      1.5497034212533927,
+      0.0002885119755871024,
+      0.21736363479327891,
+      -1.1457011356411182,
+      1.2165402450396154,
+      -0.808442055690188,
+      1.0910189570705966
+    ],
+    "seconds": 10.000091525027528
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "affine",
+    "index": 27825,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      -1.4590994637918422,
+      -1.1749036422617076,
+      -2.2036300170394716,
+      2.29624851476676,
+      0.9734680096520327,
+      3.2774938073259,
+      1.4182847350620187,
+      0.7132206026069969,
+      -1.5349157066503245,
+      -0.409089131365874
+    ],
+    "seconds": 10.000082603888586
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "affine",
+    "index": 29564,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      -0.11770290739040151,
+      0.5995360767823175,
+      0.7442767624382809,
+      -1.2175075311429118,
+      -0.5920797150847894,
+      0.9999404366759708,
+      0.5984170828866449,
+      -1.3044433707435623,
+      0.10472247978016241,
+      -0.2640647003273028
+    ],
+    "seconds": 10.000073180068284
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "affine",
+    "index": 31303,
+    "selected_mle": 1.850371707708594e-17,
+    "residual": 1.850371707708594e-17,
+    "seconds": 0.013427220983430743
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "affine",
+    "index": 33042,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      -0.8456900188372464,
+      -1.5464192819267901,
+      -0.48807411570221404,
+      2.203207433659378,
+      -4.492269282547276,
+      3.0122716423580433,
+      0.5633914323809449,
+      -0.3293983848181984,
+      0.5287594456644746,
+      0.3224560217194853
+    ],
+    "seconds": 10.000090040965006
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "affine",
+    "index": 34781,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      0.5522593217622421,
+      -0.16101782272326237,
+      0.21326025514331573,
+      2.865060262005193,
+      -1.556624220735414,
+      -0.9051854771180663,
+      -0.4536815808312089,
+      0.6108976471558892,
+      -0.8899339076227062,
+      1.3436803893484401
+    ],
+    "seconds": 10.148818740155548
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "affine",
+    "index": 36520,
+    "selected_mle": 4.4408920985006246e-17,
+    "residual": 4.4408920985006246e-17,
+    "seconds": 0.13879467104561627
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "affine",
+    "index": 38259,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      0.3072174813787635,
+      -0.2946669378192125,
+      -0.7409542141333385,
+      1.0804981215513003,
+      0.2772962475472225,
+      1.2312663237168469,
+      -1.2645715399542268,
+      0.3378998451203189,
+      0.11238264606017778,
+      -1.8611866273747735
+    ],
+    "seconds": 10.00008185300976
+  },
+  {
+    "case": "student_k3_n10",
+    "source": "affine",
+    "index": 39999,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      0.4738174281966069,
+      2.2204639562685577,
+      0.4405858186771554,
+      -0.715593224206713,
+      -0.17108796105189372,
+      1.0189024805729268,
+      -1.249544534113117,
+      -0.4943838324254177,
+      -1.5193874453253726,
+      0.5066729322273322
+    ],
+    "seconds": 10.000073560047895
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "reference",
+    "index": 0,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 0.3522264438215643
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "reference",
+    "index": 178,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      1.4149827293450796,
+      -0.0335972842017318,
+      -2.0068795765712126,
+      1.2343263842142314,
+      0.7954054208577656,
+      1.1483191104246377,
+      1.7589951332787646,
+      4.06751880916009,
+      1.1869100893665925,
+      2.1223082325263154
+    ],
+    "seconds": 10.000102874124423
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "reference",
+    "index": 356,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 0.013882709201425314
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "reference",
+    "index": 534,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 0.013342428021132946
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "reference",
+    "index": 712,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 0.01371561991982162
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "reference",
+    "index": 890,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 0.013964801095426083
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "reference",
+    "index": 1068,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 0.013549636118113995
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "reference",
+    "index": 1246,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 0.013510472839698195
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "reference",
+    "index": 1424,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 0.013125685974955559
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "reference",
+    "index": 1602,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 0.013173175044357777
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "reference",
+    "index": 1780,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      1.9471746823484584,
+      1.690779246288414,
+      0.3580795835369441,
+      2.7564145872528427,
+      1.0689990734381773,
+      0.1449728662064445,
+      1.1923796455354667,
+      1.6655512693143195,
+      10.326793371031792,
+      -0.24070833509307782
+    ],
+    "seconds": 10.000071689020842
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "reference",
+    "index": 1958,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 0.013869432033970952
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "reference",
+    "index": 2110,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 0.03959348099306226
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "reference",
+    "index": 2136,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 0.013326531974598765
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "reference",
+    "index": 2314,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 0.013158695073798299
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "reference",
+    "index": 2492,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 0.014249236090108752
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "reference",
+    "index": 2670,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 0.013394601875916123
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "reference",
+    "index": 2848,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 0.01524249417707324
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "reference",
+    "index": 3026,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      0.03888486579137895,
+      1.171098361719314,
+      9.20280664603743,
+      1.3404128436297815,
+      2.072906436838853,
+      5.125032898233687,
+      2.814558811011227,
+      -2.2368088577001215,
+      1.0027431226777026,
+      0.47086023391452914
+    ],
+    "seconds": 10.000072336057201
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "reference",
+    "index": 3204,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 0.014703853987157345
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "reference",
+    "index": 3382,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 0.01369514619000256
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "reference",
+    "index": 3560,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 0.0139918418135494
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "reference",
+    "index": 3738,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      0.9671386542764019,
+      1.7831203059074987,
+      0.24820402590127677,
+      1.1576542560263228,
+      0.7170928075916279,
+      1.7088564371265482,
+      -6.652906232774374,
+      1.6224268352887798,
+      1.2480038228903738,
+      1.8605816039217689
+    ],
+    "seconds": 10.000072994967923
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "reference",
+    "index": 3916,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 0.013304766034707427
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "reference",
+    "index": 4095,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 0.013355079805478454
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "affine",
+    "index": 0,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      1.0635575078642432,
+      5.881037488942522,
+      1.3409646499141272,
+      6.580369425502684,
+      2.6061658962780383,
+      1.0087722632920433,
+      0.738108351369909,
+      -5.109124039092859,
+      -0.05293264208919313,
+      1.6026969205282688
+    ],
+    "seconds": 10.000120161101222
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "affine",
+    "index": 1739,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      2.335832843451736,
+      0.7199835519899308,
+      2.1767921329897413,
+      -0.7116044422814056,
+      -1.3063549051955623,
+      2.966349104886549,
+      1.8522335343966185,
+      1.7959751254285226,
+      0.17125615270633343,
+      0.48015365422348977
+    ],
+    "seconds": 10.000118202995509
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "affine",
+    "index": 3478,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      2.855109326876564,
+      1.550065075573336,
+      15.248955442844888,
+      -0.5842155420222328,
+      1.0905879822354756,
+      -0.03270946122343488,
+      2.0295157865633864,
+      0.17881629211218897,
+      1.5214912947693424,
+      1.4928997575271028
+    ],
+    "seconds": 10.000102089019492
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "affine",
+    "index": 5217,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 0.01362948608584702
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "affine",
+    "index": 6956,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      2.354394308988012,
+      -1.524155166454447,
+      0.750633412446583,
+      1.7480029518708429,
+      2.1263107660687117,
+      0.8125427518216926,
+      0.642214197260424,
+      3.16788706437369,
+      1.3266553064266142,
+      -1.4139157051055475
+    ],
+    "seconds": 10.000083142891526
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "affine",
+    "index": 8695,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      1.9515126651114065,
+      0.8333783545352498,
+      0.9321365463854867,
+      1.2436157271519095,
+      -0.20383879395371607,
+      0.7345632588502858,
+      3.0423411768345487,
+      1.1273002130665168,
+      2.420709306364531,
+      1.280581269183413
+    ],
+    "seconds": 10.000080163124949
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "affine",
+    "index": 10434,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 0.013823260087519884
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "affine",
+    "index": 12173,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      1.3917039355856393,
+      1.3220688843156143,
+      0.40595357037793933,
+      1.1847396997487107,
+      8.799904135414554,
+      1.3884446999581173,
+      0.7229245352990997,
+      0.7403028379763701,
+      1.6868498628388433,
+      3.819928905986538
+    ],
+    "seconds": 10.000091630965471
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "affine",
+    "index": 13912,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      1.2711546057169574,
+      1.5767277965487145,
+      1.7323146769502935,
+      2.8789451624459135,
+      -0.8426639006458547,
+      2.50620120119971,
+      1.2865218025432408,
+      0.8874727037918417,
+      -2.1575936182690576,
+      -0.27188716586913886
+    ],
+    "seconds": 10.00008679786697
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "affine",
+    "index": 15651,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 0.013795419130474329
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "affine",
+    "index": 17390,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      1.4291641997270155,
+      0.4493078533313437,
+      0.9180599755563417,
+      1.5012688048301392,
+      -0.10750912499046117,
+      2.3023497209270136,
+      1.3138267415389422,
+      4.716525944434746,
+      -0.4633685602374067,
+      2.2478804338932052
+    ],
+    "seconds": 10.000096397008747
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "affine",
+    "index": 19129,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      -0.19924703924371068,
+      3.983837066117362,
+      -0.7705468316435873,
+      3.5276578166073236,
+      2.238787267315114,
+      -1.364456071779255,
+      0.9984008526505486,
+      1.6030479409050495,
+      -0.24544139638203388,
+      2.759563659904153
+    ],
+    "seconds": 10.000078437151387
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "affine",
+    "index": 20869,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      -1.6420163151681209,
+      -2.117217922193282,
+      1.7394566936862164,
+      1.1846706624151349,
+      -4.6952167705843175,
+      3.321971829083312,
+      2.0941747254575587,
+      4.273430458268635,
+      -9.927705083281493,
+      0.35824053445221393
+    ],
+    "seconds": 10.00009535998106
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "affine",
+    "index": 22608,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      -1.3375358881432167,
+      2.4247594443402347,
+      0.7479768097932817,
+      0.5927518572021291,
+      1.300511063149575,
+      5.509782509124386,
+      2.8180259802056993,
+      1.1856574724595048,
+      0.6662801123289719,
+      1.5336176951514908
+    ],
+    "seconds": 10.000091918045655
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "affine",
+    "index": 24347,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 0.012856225948780775
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "affine",
+    "index": 26086,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 0.013314055046066642
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "affine",
+    "index": 27825,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      1.6383560675091002,
+      4.940727018579004,
+      -0.8273596318474592,
+      1.4541363851058544,
+      -0.29064211998538814,
+      4.517915011241968,
+      2.071993725761048,
+      -0.8867993797097196,
+      -0.14575713158253967,
+      1.9389519157484822
+    ],
+    "seconds": 10.000087596010417
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "affine",
+    "index": 29564,
+    "selected_mle": 1.25,
+    "residual": 0.0,
+    "seconds": 0.013562195003032684
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "affine",
+    "index": 31303,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      2.4212102515136187,
+      0.4670656443156307,
+      2.2778598168250332,
+      1.2800669935682967,
+      -1.2685021323604708,
+      -2.7287461773749175,
+      2.462440743997634,
+      1.9162114690062082,
+      -0.015181522296723537,
+      -5.35992188224781
+    ],
+    "seconds": 10.000089470064268
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "affine",
+    "index": 33042,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      1.1189000242585974,
+      2.5169393676790115,
+      3.6454236773962103,
+      1.6762831564181102,
+      0.6587572770995165,
+      -0.22623615751561799,
+      0.5700589542868184,
+      0.44517545345693155,
+      1.4822043493018855,
+      4.117122991181275
+    ],
+    "seconds": 10.000080315861851
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "affine",
+    "index": 34781,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      1.6767064534678293,
+      1.263635537812032,
+      -0.546367787620448,
+      1.7951924476180976,
+      -12.159467570166326,
+      1.5284277170190017,
+      12.001400816227637,
+      0.43615966725039135,
+      0.5428720731564962,
+      2.3268963576701345
+    ],
+    "seconds": 10.000073452945799
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "affine",
+    "index": 35749,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      2.293982100781456,
+      1.793250750546156,
+      0.6241483151229691,
+      1.7904842965849674,
+      -34.719147779871726,
+      -0.9921478807685102,
+      -0.6569543544691103,
+      2.573989747663944,
+      1.0259106837738736,
+      1.030800852470331
+    ],
+    "seconds": 10.000074395909905
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "affine",
+    "index": 36520,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      2.830061038484672,
+      2.486608200665943,
+      0.5270271282956014,
+      0.39410979377221056,
+      4.667561731024927,
+      -0.2406266077074639,
+      1.9209870171540697,
+      3.5245509787279046,
+      -2.3390757878562383,
+      0.05737908239196354
+    ],
+    "seconds": 10.000071804970503
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "affine",
+    "index": 38259,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      1.414718053115032,
+      0.6327665703076585,
+      -1.2020758149177864,
+      3.8513357957219343,
+      -1.5550061326446487,
+      1.9843814444084622,
+      0.7865470510378738,
+      2.636188618059788,
+      -1.1323596431772756,
+      2.4426008260323604
+    ],
+    "seconds": 10.00008547003381
+  },
+  {
+    "case": "student_shift_prior",
+    "source": "affine",
+    "index": 39999,
+    "error": "TimeoutError('exact latent oracle exceeded 10 seconds')",
+    "data": [
+      -0.25308111259385235,
+      1.6071340269138699,
+      -0.24101159954341922,
+      1.2937002265501107,
+      1.393570448327152,
+      4.389000021337365,
+      1.2981057849295077,
+      3.5446754679368793,
+      1.5607761245138108,
+      0.4253906392647828
+    ],
+    "seconds": 10.000107976840809
+  }
+]

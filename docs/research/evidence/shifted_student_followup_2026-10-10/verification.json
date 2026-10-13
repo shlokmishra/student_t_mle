@@ -1,0 +1,31 @@
+{
+  "preexisting_files": 485,
+  "changed_preexisting": [],
+  "missing_preexisting": [],
+  "independent_oracle_checks": 194,
+  "oracle_errors": [],
+  "max_selected_location_error": 4.440892098500626e-16,
+  "max_loglik_gap": 7.105427357601002e-15,
+  "max_score_residual": 6.036837696399289e-16,
+  "max_oracle_release_residual": 2.220446049250313e-16,
+  "screens": {
+    "reference_weight_ess": true,
+    "reference_mean_se": true,
+    "reference_tail6_se": true,
+    "reference_q05_se": true,
+    "affine_mu_rhat": true,
+    "affine_latent_max_rhat": false,
+    "affine_tail6_rhat": false,
+    "affine_latent_bulk_ess": false,
+    "affine_latent_tail_ess": false
+  },
+  "rare_event_status": "unresolved affine/rejection precision; no forced normal screen",
+  "pytest_final": "......................                                                   [100%]\n22 passed in 13.99s",
+  "failures_during_development": [
+    "Initial driver SyntaxError: reference exit 1 / pytest collection exit 2, before data generation.",
+    "Initial supplementary fallback replay exit 124 at timeout; array decompression in loop fixed; final replay succeeds."
+  ],
+  "raw_artifacts": 10,
+  "raw_bytes": 26620531,
+  "no_production_source_changes": true
+}

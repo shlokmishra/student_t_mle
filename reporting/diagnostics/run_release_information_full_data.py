@@ -25,7 +25,8 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from kde_ref.moments import weighted_quantile
-from models import loc_logistic, loc_student
+from models.loc.logistic import score_gibbs as loc_logistic
+from models.loc.student import score_gibbs as loc_student
 
 
 TAIL_THRESHOLDS = [2.0, 3.0, 5.0, 10.0]
@@ -118,7 +119,10 @@ def compute_mle(x: np.ndarray, model: str, k: float | None) -> float:
 
 def centered_mle_errors(args: argparse.Namespace, model: str, k: float | None, n: int) -> np.ndarray:
     args.cache_dir.mkdir(parents=True, exist_ok=True)
-    path = args.cache_dir / f"{model}_k{k_key(k)}_n{n}_B{args.mle_simulations}_seed{args.seed}.npz"
+    convention = "selected-global-v1" if model == "student_t" else "standard-v1"
+    path = args.cache_dir / (
+        f"{model}_{convention}_k{k_key(k)}_n{n}_B{args.mle_simulations}_seed{args.seed}.npz"
+    )
     if path.exists():
         return np.asarray(np.load(path)["z"], dtype=float)
     rng = np.random.default_rng(args.seed + 1009 * n + 9173 * (0 if k is None or not np.isfinite(k) else int(10 * float(k))))
@@ -138,7 +142,7 @@ def centered_mle_errors(args: argparse.Namespace, model: str, k: float | None, n
             z[i] = loc_student.get_mle(rng.standard_t(df=float(k), size=n), params)
     else:
         raise ValueError(model)
-    np.savez_compressed(path, z=z)
+    np.savez_compressed(path, z=z, mle_convention=np.asarray(convention))
     return z
 
 

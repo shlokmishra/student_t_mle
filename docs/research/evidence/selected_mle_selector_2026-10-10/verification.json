@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-10",
+  "starting_files_checked": 460,
+  "intentionally_changed": [
+    "models/student_location_mle.py",
+    "requirements.txt"
+  ],
+  "other_existing_files_changed": [],
+  "missing_existing_files": [],
+  "original_selector_recoverable": true,
+  "source_sha256": {
+    "models/student_location_mle.py": "096abb4d3ad2a91b1946186af56b55f1b54e6482d367f5483bb6c72987e6550f",
+    "scripts/validate_student_mle_hardening.py": "9ab788c371ecf3abf672c768df50299d5b33859e6bd18010241ab2b7d09c943b",
+    "tests/test_student_location_mle_hardening.py": "932a78c28735dd0169980f871c0b8fa55d93a7c97d594e9f0b553a5ed943b598",
+    "requirements.txt": "60d7191955493aeccc3213606712f5da14efdafd2e9dd55ae74fba65453e93f1",
+    "scripts/selected_mle_reference_oracle.py": "ee89947b06e91cd3bec11cd8f2f69a4ee6f40803d82d8f90bdddb0f39c4718c1"
+  },
+  "tests": {
+    "final_four_file_suite": {
+      "passed": 61,
+      "seconds": 31.44,
+      "exit_code": 0
+    },
+    "additional_size_limit_test": {
+      "passed": 1,
+      "seconds": 2.89,
+      "exit_code": 0
+    },
+    "initial_pass": {
+      "passed": 37,
+      "failed": 2,
+      "issues": "permutation last-bit difference; score threshold below float summation precision"
+    },
+    "intermediate_pass": {
+      "passed": 40,
+      "failed": 0
+    },
+    "full_repository_suite_run": false
+  },
+  "validation_driver_exit_code": 0,
+  "initial_driver_failure": "NumPy int64 in JSON; fixed; initial log/partial outputs retained",
+  "ordinary_benchmark_draws": 512,
+  "ordinary_benchmark_fallbacks": 0,
+  "ordinary_benchmark_failures": 0,
+  "oracle_global_checks": 157,
+  "corrected_global_failures_in_oracle_checks": 0,
+  "python_ast_checked": [
+    "models/student_location_mle.py",
+    "scripts/validate_student_mle_hardening.py",
+    "tests/test_student_location_mle_hardening.py"
+  ],
+  "python": "3.13.5 (main, Apr  2 2026, 12:03:47) [GCC 14.3.0]",
+  "dependencies": {
+    "numpy": "2.5.2",
+    "scipy": "1.18.0",
+    "numba": "0.67.0",
+    "pytest": "9.1.1",
+    "sympy": "1.14.0",
+    "oracle_dependency_directory": "/tmp/student-mle-oracle-deps-20261003"
+  },
+  "no_universal_certification_claim": true
+}

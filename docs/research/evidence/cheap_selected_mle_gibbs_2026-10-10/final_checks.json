@@ -1,0 +1,12 @@
+{
+  "python": "3.13.5 (main, Apr  2 2026, 12:03:47) [GCC 14.3.0]",
+  "new_python_sources_parse": true,
+  "no_trailing_whitespace": true,
+  "all_nine_screens_pass": true,
+  "repaired_total_blocks": 216000,
+  "repaired_total_pairs": 1512000,
+  "oracle_checks": 450,
+  "model_and_driver_sources_match_chain_run": true,
+  "configuration_matches_chain_run": true,
+  "note": "Numerical pytest and oracle results were checked from saved evidence; no experiments repeated."
+}

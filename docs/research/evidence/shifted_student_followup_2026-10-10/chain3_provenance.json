@@ -1,0 +1,41 @@
+{
+  "seconds": 13.548889501951635,
+  "latent_acceptance": 0.44545,
+  "mu_acceptance": 0.65225,
+  "max_proposal_mle_residual": 5.329070518200751e-15,
+  "max_retained_mle_residual": 1.9984014443252818e-15,
+  "seed": 2026101069,
+  "initial_mu": -0.75,
+  "initial_x": [
+    -10.731704975554145,
+    1.2682950244458544,
+    1.2682950244458544,
+    1.2682950244458544,
+    1.2682950244458544,
+    1.2682950244458544,
+    1.2682950244458544,
+    1.2682950244458544,
+    1.2682950244458544,
+    1.2682950244458544
+  ],
+  "initial_max_residual": 11.981704975554145,
+  "iterations": 40000,
+  "initializer": "negative_outlier12",
+  "origin": {
+    "original_data": [
+      -12.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "failures": 0,
+  "sha256": "6bdf85c1999f0cd9a868cc09df4722f095671d7943f37ed4510af865e9fa0f79",
+  "raw_path": "tmp/shifted_student_followup_20261010/chain3.npz"
+}

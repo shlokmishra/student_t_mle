@@ -18,7 +18,9 @@ if str(ROOT) not in sys.path:
 
 from kde_ref.moments import posterior_grid_bounds, raw_weighted_posterior_moments
 from kde_ref.posterior import get_normalized_posterior_pdf
-from models import loc_laplace, loc_logistic, loc_student
+from models.loc.laplace import median_gibbs as loc_laplace
+from models.loc.logistic import score_gibbs as loc_logistic
+from models.loc.student import score_gibbs as loc_student
 from models.model_registry import (
     LAPLACE_MEDIAN_INTERVAL_TARGET,
     LAPLACE_NP_MEDIAN_TARGET,
@@ -383,6 +385,18 @@ def density_rows(
 
 
 def emit_rows(args: argparse.Namespace) -> None:
+    if args.out_csv.exists() and not args.overwrite and "student_t" in args.models:
+        current = get_model_spec("student_t").mle_convention
+        with args.out_csv.open("r", newline="", encoding="utf-8") as handle:
+            stale = any(
+                row.get("model") == "student_t" and row.get("mle_convention") != current
+                for row in csv.DictReader(handle)
+            )
+        if stale:
+            raise RuntimeError(
+                f"{args.out_csv} contains legacy Student score-root references; "
+                "rerun with --overwrite before generating selected/global-MLE references"
+            )
     if args.overwrite and args.out_csv.exists():
         args.out_csv.unlink()
     if args.overwrite and args.density_out_csv is not None and args.density_out_csv.exists():

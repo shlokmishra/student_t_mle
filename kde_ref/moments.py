@@ -9,7 +9,10 @@ from __future__ import annotations
 from typing import Callable
 
 import numpy as np
-from scipy import integrate, stats
+from scipy import integrate, stats, optimize
+from scipy.special import logsumexp, ndtr, ndtri
+
+from .numba_kernels import normal_logpdf
 
 
 def weighted_quantile(values, weights, quantiles):
@@ -36,7 +39,7 @@ def raw_weighted_posterior_moments(z_samples, mu_star, prior_mean=0.0, prior_std
     """
     z_samples = np.asarray(z_samples, dtype=float)
     mu_particles = float(mu_star) - z_samples
-    log_w = stats.norm.logpdf(mu_particles, loc=prior_mean, scale=prior_std)
+    log_w = normal_logpdf(mu_particles, float(prior_mean), float(prior_std))
     max_log_w = float(np.max(log_w))
     weights = np.exp(log_w - max_log_w)
     weight_sum = float(np.sum(weights))
@@ -189,21 +192,40 @@ def gaussian_kde_gaussian_prior_moments(kde_backend, mu_star, prior_mean=0.0, pr
         return None
     z = np.asarray(kde_backend.samples, dtype=float)
     h = float(kde_backend.bandwidth)
-    if not np.isfinite(h) or h <= 0:
-        return None
+    if z.ndim != 1 or z.size == 0 or not np.isfinite(z).all():
+        raise ValueError("finite, nonempty one-dimensional KDE samples required")
+    if not np.isfinite([h, mu_star, prior_mean, prior_std]).all() or min(h, prior_std) <= 0:
+        raise ValueError("finite locations and positive bandwidth/prior SD required")
     obs_means = float(mu_star) - z
     prior_var = float(prior_std) ** 2
     like_var = h * h
-    comp_var = 1.0 / (1.0 / prior_var + 1.0 / like_var)
-    comp_mean = comp_var * (float(prior_mean) / prior_var + obs_means / like_var)
+    total_var = prior_var + like_var
+    if not np.isfinite(total_var) or min(prior_var, like_var) <= 0:
+        raise FloatingPointError("Gaussian component variance is not representable")
+    comp_var = min(prior_var, like_var) / (1.0 + min(prior_var, like_var) / max(prior_var, like_var))
+    comp_mean = (like_var / total_var) * float(prior_mean) + (prior_var / total_var) * obs_means
     log_mix_w = stats.norm.logpdf(obs_means, loc=prior_mean, scale=np.sqrt(prior_var + like_var))
-    log_mix_w = log_mix_w - np.max(log_mix_w)
-    mix_w = np.exp(log_mix_w)
-    mix_w = mix_w / np.sum(mix_w)
+    log_total = float(logsumexp(log_mix_w))
+    if not np.isfinite(log_total) or not np.isfinite(comp_mean).all():
+        raise FloatingPointError("Gaussian mixture weights/locations are unresolved")
+    log_normalizer = log_total - np.log(z.size)
+    mix_w = np.exp(log_mix_w - log_total)
+    mix_w /= mix_w.sum()
     mean = float(np.sum(mix_w * comp_mean))
-    second = float(np.sum(mix_w * (comp_var + comp_mean * comp_mean)))
-    var = max(second - mean * mean, 0.0)
-    q025, q50, q975 = weighted_quantile(comp_mean, mix_w, [0.025, 0.5, 0.975])
+    var = float(comp_var + np.sum(mix_w * (comp_mean - mean)**2))
+    sd = np.sqrt(comp_var)
+    def quantile(prob):
+        offset = sd * ndtri(prob)
+        lo, hi = float(np.min(comp_mean) + offset), float(np.max(comp_mean) + offset)
+        if lo == hi:
+            return lo
+        def cdf_error(value):
+            return float(np.dot(mix_w, ndtr((value-comp_mean)/sd)) - prob)
+        # Expand for endpoint roundoff in translated or nearly collapsed mixtures.
+        lo = np.nextafter(lo-sd, -np.inf)
+        hi = np.nextafter(hi+sd, np.inf)
+        return optimize.brentq(cdf_error, lo, hi, xtol=1e-12, rtol=8*np.finfo(float).eps)
+    q025, q50, q975 = map(quantile, [0.025, 0.5, 0.975])
     return {
         "posterior_mean": mean,
         "posterior_var": float(var),
@@ -211,6 +233,7 @@ def gaussian_kde_gaussian_prior_moments(kde_backend, mu_star, prior_mean=0.0, pr
         "posterior_q025": float(q025),
         "posterior_q50": float(q50),
         "posterior_q975": float(q975),
-        "normalization_constant": float(np.mean(np.exp(log_mix_w + np.max(log_mix_w)))),
+        "normalization_constant": float(np.exp(log_normalizer)),
+        "log_normalization_constant": log_normalizer,
         "weighted_ess": float(1.0 / np.sum(mix_w * mix_w)),
     }

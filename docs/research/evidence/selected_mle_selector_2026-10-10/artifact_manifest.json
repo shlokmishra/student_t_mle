@@ -1,0 +1,114 @@
+{
+  "files": [
+    {
+      "path": "docs/research/evidence/selected_mle_selector_2026-10-10/adversarial_comparison.json",
+      "bytes": 98718,
+      "sha256": "f41b43cf0f70a2e31588a5e8df7050a46b32cc8c5058f34425418bd68ae01196"
+    },
+    {
+      "path": "docs/research/evidence/selected_mle_selector_2026-10-10/benchmark.json",
+      "bytes": 4172,
+      "sha256": "6472f98c8e69b6344c717b9d1cb761df2dd79372fda3a4e01871a7aeb51c38ed"
+    },
+    {
+      "path": "docs/research/evidence/selected_mle_selector_2026-10-10/benchmark_initial.json",
+      "bytes": 4167,
+      "sha256": "9c73b5b6afbcd4995de846558c3d96f3cde40e53bb87dfc11bf35d78f818375b"
+    },
+    {
+      "path": "docs/research/evidence/selected_mle_selector_2026-10-10/competing_cluster_precision.json",
+      "bytes": 1319,
+      "sha256": "67bd762da9415d0fa7b3c178698b575042211db495f77894cdecb26a0585e4fc"
+    },
+    {
+      "path": "docs/research/evidence/selected_mle_selector_2026-10-10/completion.json",
+      "bytes": 136,
+      "sha256": "fa66bb54f9e24ee587f7d6c7bce9f20ff824ecab4a17c23aa176da76c001272d"
+    },
+    {
+      "path": "docs/research/evidence/selected_mle_selector_2026-10-10/config.json",
+      "bytes": 1187,
+      "sha256": "f4813c4e7aa9ec4efaa035679870b09216121b4a922f0086dfd0f069d8f3efa6"
+    },
+    {
+      "path": "docs/research/evidence/selected_mle_selector_2026-10-10/extreme_comparison.json",
+      "bytes": 2200,
+      "sha256": "a5f8cbd1131954a2e320182edae0c353e8ed272d8339638e40fe258b5f5fb95c"
+    },
+    {
+      "path": "docs/research/evidence/selected_mle_selector_2026-10-10/git_status_before.txt",
+      "bytes": 4229,
+      "sha256": "c1bd07a9ac6a9c603a2b231ae67e6f72f7af1236a4138ebab47234fae16d3a8b"
+    },
+    {
+      "path": "docs/research/evidence/selected_mle_selector_2026-10-10/ordinary_oracle_comparison.json",
+      "bytes": 139844,
+      "sha256": "baa095a2013c4de8bc97500a4c2b3c72b6b32df79fc6d59710c8fa9b9f944c63"
+    },
+    {
+      "path": "docs/research/evidence/selected_mle_selector_2026-10-10/ordinary_oracle_comparison_initial.json",
+      "bytes": 139840,
+      "sha256": "7f8df42ff2952e6c4df07104c993d361f839b27c980fdc8bf71495bcd8dc0a0c"
+    },
+    {
+      "path": "docs/research/evidence/selected_mle_selector_2026-10-10/pytest_final.txt",
+      "bytes": 100,
+      "sha256": "7522f65cc3d4de6db14210dbe1294cdf9d116bae8eb3e80191f9ed0f9604021a"
+    },
+    {
+      "path": "docs/research/evidence/selected_mle_selector_2026-10-10/pytest_initial.txt",
+      "bytes": 1638,
+      "sha256": "a42602e0472ec682ff5dfcbaa04d2ef6c6eaf62fec8c9bc0eae43732eaacc540"
+    },
+    {
+      "path": "docs/research/evidence/selected_mle_selector_2026-10-10/pytest_limit.txt",
+      "bytes": 98,
+      "sha256": "b6e707f3e23368c94164977409331ba729325920ef6a37d4381a34a5da4d4bca"
+    },
+    {
+      "path": "docs/research/evidence/selected_mle_selector_2026-10-10/pytest_second.txt",
+      "bytes": 99,
+      "sha256": "c1977cd8c818d96a8dd97d2d49e0520cdae7ea282500a1d672b6bd8a99432f6f"
+    },
+    {
+      "path": "docs/research/evidence/selected_mle_selector_2026-10-10/selector_changes.patch",
+      "bytes": 22709,
+      "sha256": "42eaef61a81192c0203fb6c4228cce19306fabbac314edf0497de5d87fdae0dc"
+    },
+    {
+      "path": "docs/research/evidence/selected_mle_selector_2026-10-10/starting_hashes.json",
+      "bytes": 58067,
+      "sha256": "4e63633a27452294b6690f777a563e7af09f860db5aa20e210137b131772b4cd"
+    },
+    {
+      "path": "docs/research/evidence/selected_mle_selector_2026-10-10/student_location_mle_before.py",
+      "bytes": 13067,
+      "sha256": "577cac596f05aa30a39e503db65f36b0efffb652ff29b5185c6004617c436b20"
+    },
+    {
+      "path": "docs/research/evidence/selected_mle_selector_2026-10-10/summary.json",
+      "bytes": 1390,
+      "sha256": "b50b2d3b7cbf5e7bee54d124994dd30395ba98d9cfc48cc485b474450c6114c8"
+    },
+    {
+      "path": "docs/research/evidence/selected_mle_selector_2026-10-10/validation_final.txt",
+      "bytes": 1971,
+      "sha256": "1618798dbd848a56b9861b6b8d67d3ffbe01f99706cc1a46a6e648f64413e465"
+    },
+    {
+      "path": "docs/research/evidence/selected_mle_selector_2026-10-10/validation_initial.txt",
+      "bytes": 3350,
+      "sha256": "191a279380450bfc7b15efbfde3fca07404ee301351744b0978137d29ac32709"
+    },
+    {
+      "path": "docs/research/evidence/selected_mle_selector_2026-10-10/verification.json",
+      "bytes": 2161,
+      "sha256": "07031c6aeda6f543425c437d209c460d54da5fbcf9025349c400943a82c17ac0"
+    }
+  ],
+  "report": {
+    "path": "docs/research/selected_mle_selector_hardening.md",
+    "sha256": "38b93c4da356ab5c665b1cd4c6e9b118315456959e278ae641a700ac6a9b1b60"
+  },
+  "scope": "Compact selector-only evidence; original reference evidence and sampler sources unchanged."
+}

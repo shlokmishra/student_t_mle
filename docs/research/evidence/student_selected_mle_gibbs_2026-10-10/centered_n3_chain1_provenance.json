@@ -1,0 +1,47 @@
+{
+  "x_final": [
+    0.052501869761313616,
+    0.37703349610011716,
+    -4.500696923823804
+  ],
+  "store_x_chain": true,
+  "target": "selected_global_student_location_mle",
+  "estimator": "hardened_global_likelihood_maximum_exact_ties_lower",
+  "kernel": "sequential_joint_pair_mh_with_global_indicator_and_curvature",
+  "gibbs_backend": "python_pairs_numba_weights_mu",
+  "seed": 2026101201,
+  "counts": {
+    "pair_attempts": 12000,
+    "pair_accepts": 7143,
+    "global_selection_rejects": 351,
+    "selector_fallbacks": 0,
+    "mu_accepts": 9523,
+    "accepted_branch_changes": 3912
+  },
+  "pair_acceptance_rate": 0.59525,
+  "mu_acceptance_rate": 0.7935833333333333,
+  "max_score_residual": 1.9112857997660715e-15,
+  "max_selected_mle_residual": 1.3988810110276972e-14,
+  "initial_score_residual": 1.5748036555351952e-17,
+  "max_score_drift": 1.9012840347248927e-15,
+  "max_inverse_score_error": 2.7755575615628914e-17,
+  "min_retained_curvature": 0.07037467457179122,
+  "seconds": 3.5267228721641004,
+  "numerical_policy": "open score charts; no Jacobian/curvature floor; unresolved computations raise",
+  "score_tolerance": 1e-10,
+  "mle_tolerance": 1e-10,
+  "known_scale": 1.0,
+  "initial_x": [
+    -3.934552278428427e-07,
+    -1.362472483176238,
+    1.4678976104143011
+  ],
+  "initial_mu": 0.964154835974944,
+  "origin": {
+    "reference_index": 8688,
+    "max_quantile": 0.5
+  },
+  "raw_path": "tmp/student_selected_mle_gibbs_20261010/centered_n3_chain1.npz",
+  "sha256": "c339a43274b5e4087f41adfb561bbeec66dbd90d5859f2ad5f31eb200eaa8d0b",
+  "failures": 0
+}

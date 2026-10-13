@@ -1,0 +1,10 @@
+{
+  "display_only": true,
+  "grid": [
+    2.05,
+    4.5,
+    700
+  ],
+  "formula": "outer log gain = 4log(1+A)-log(1+v)-2log(P(v)); k=1",
+  "critical_line_source": "certified algebraic root rounded for display"
+}

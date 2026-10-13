@@ -1,0 +1,15 @@
+bank weighted_a 16384 2.32
+bank weighted_a 32768 3.44
+bank weighted_a 49152 4.69
+bank weighted_a 65536 5.75
+reference complete weighted_a
+bank weighted_b 16384 1.09
+bank weighted_b 32768 2.22
+bank weighted_b 49152 3.4
+bank weighted_b 65536 4.52
+reference complete weighted_b
+bank rejection_base 16384 1.14
+bank rejection_base 32768 2.63
+bank rejection_base 49152 3.68
+bank rejection_base 65536 4.73
+reference complete rejection_base

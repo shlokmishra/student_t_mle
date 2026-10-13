@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-03",
+  "source_preservation": {
+    "files_checked": 429,
+    "changed": [],
+    "missing": []
+  },
+  "focused_tests": {
+    "method": "direct function invocation; pytest collection previously timed out after 120s",
+    "tests": [
+      {
+        "test": "test_exact_oracle_enumerates_two_point_roots_and_selects_lower_tie",
+        "result": "passed"
+      },
+      {
+        "test": "test_exact_oracle_includes_degenerate_stationary_root",
+        "result": "passed"
+      },
+      {
+        "test": "test_oracle_translation_and_permutation",
+        "result": "passed"
+      },
+      {
+        "test": "test_reference_uses_release_minus_mle_and_prior_at_reconstructed_mu",
+        "result": "passed"
+      }
+    ],
+    "seconds": 162.79703907715157
+  },
+  "pytest": "Targeted runner timed out after 120 seconds; no pytest/full-suite pass claimed",
+  "python_ast_parsed": [
+    "scripts/selected_mle_reference_oracle.py",
+    "scripts/validate_selected_mle_reference.py",
+    "tests/test_selected_mle_reference_validation.py"
+  ],
+  "report_local_links": "all checked; manifest and verification created during packaging",
+  "cases_passing_frozen_screens": [
+    "gaussian_center",
+    "gaussian_shift_prior",
+    "student_k2_n3",
+    "student_k2_n10",
+    "student_k3_n10"
+  ],
+  "case_not_validated": "student_shift_prior: weight ESS 463.6; zero-event tail uncertainty invalid; preserved failed screen",
+  "latent": {
+    "checks": 300,
+    "initial_timeouts": 55,
+    "remaining_unresolved": 0,
+    "max_selected_mle_residual": 1.8236467115022135e-13,
+    "fast_exact_seconds_total": 0.8207785759586841,
+    "max_production_retained_residual": 1.259096993333486e-13
+  },
+  "python": "3.13.5 (main, Apr  2 2026, 12:03:47) [GCC 14.3.0]",
+  "platform": "Linux-4.18.0-553.162.1.el8_10.x86_64-x86_64-with-glibc2.28",
+  "production_changes": false
+}

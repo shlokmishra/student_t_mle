@@ -1,0 +1,1 @@
+Initial run/test logs are retained verbatim. Source copies in this folder were saved after the two reporting/assertion fixes, immediately before the retry; they are not original failing-source snapshots. No numerical datasets were processed in the failed driver attempt.

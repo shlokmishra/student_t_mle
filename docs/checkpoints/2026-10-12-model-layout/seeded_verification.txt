@@ -1,0 +1,12 @@
+loc_student
+loc_student_rattle
+loc_student_selected_mle
+loc_student_selected_mle_block
+loc_student_selected_mle_rattle
+loc_student_selected_mle_independence
+loc_affine
+loc_logistic
+loc_laplace
+loc_scale_student
+loc_scale_student_rattle
+All seeded arrays and acceptance decisions identical

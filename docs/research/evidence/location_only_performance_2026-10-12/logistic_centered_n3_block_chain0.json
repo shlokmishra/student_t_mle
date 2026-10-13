@@ -1,0 +1,19 @@
+{
+  "target": "selected_global_logistic_location_mle",
+  "estimator": "unique_logistic_score_root",
+  "kernel": "reversible_score_block_curvature_mh",
+  "counts": {
+    "blocks": 12000,
+    "accepted": 11332,
+    "mu_accepts": 10098,
+    "score_accepts": 46553,
+    "root_brackets": 11333
+  },
+  "max_score_residual": 1.7430501486614958e-14,
+  "mle_tolerance": 1e-10,
+  "seed": 2026111580,
+  "seconds": 0.5067055942490697,
+  "loop_seconds": 0.5065065729431808,
+  "raw_path": "tmp/location_only_performance_20261012/logistic_centered_n3_block_chain0.npz",
+  "sha256": "370cce1c7b42389b2fd56af47af6c1c97e4d2fc27776737a963ae6f47f384bb6"
+}

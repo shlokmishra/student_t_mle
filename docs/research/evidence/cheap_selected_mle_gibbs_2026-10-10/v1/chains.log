@@ -1,0 +1,80 @@
+selected score block 1 2026103300 3000 0.285
+selected score block 1 2026103300 6000 0.566
+complete centered_n3_m1_chain0 0.5664238389581442 {'blocks': 6000, 'accepted': 5132, 'mu_accepts': 4829, 'score_pairs': 6000, 'score_accepts': 3749, 'normal_draws': 8721, 'branch_changes_proposed': 3893, 'branch_changes_accepted': 2897, 'selector_calls': 5147, 'selector_fallbacks': 0, 'nonpositive_curvature': 85, 'cheap_metropolis': 769, 'global_selection': 14}
+selected score block 1 2026103301 3000 0.277
+selected score block 1 2026103301 6000 0.536
+complete centered_n3_m1_chain1 0.5358771160244942 {'blocks': 6000, 'accepted': 5066, 'mu_accepts': 4796, 'score_pairs': 6000, 'score_accepts': 3910, 'normal_draws': 8699, 'branch_changes_proposed': 3823, 'branch_changes_accepted': 2779, 'selector_calls': 5074, 'selector_fallbacks': 0, 'nonpositive_curvature': 102, 'cheap_metropolis': 825, 'global_selection': 7}
+selected score block 1 2026103302 3000 0.256
+selected score block 1 2026103302 6000 0.534
+complete centered_n3_m1_chain2 0.5339052020572126 {'blocks': 6000, 'accepted': 5044, 'mu_accepts': 4793, 'score_pairs': 6000, 'score_accepts': 3712, 'normal_draws': 8804, 'branch_changes_proposed': 3907, 'branch_changes_accepted': 2793, 'selector_calls': 5070, 'selector_fallbacks': 0, 'nonpositive_curvature': 101, 'cheap_metropolis': 830, 'global_selection': 25}
+selected score block 1 2026103303 3000 0.25
+selected score block 1 2026103303 6000 0.499
+complete centered_n3_m1_chain3 0.49866215698421 {'blocks': 6000, 'accepted': 5191, 'mu_accepts': 4747, 'score_pairs': 6000, 'score_accepts': 3551, 'normal_draws': 8946, 'branch_changes_proposed': 3882, 'branch_changes_accepted': 2944, 'selector_calls': 5205, 'selector_fallbacks': 0, 'nonpositive_curvature': 67, 'cheap_metropolis': 729, 'global_selection': 13}
+selected score block 4 2026103600 3000 0.271
+selected score block 4 2026103600 6000 0.529
+complete centered_n3_m4_chain0 0.5287957051768899 {'blocks': 6000, 'accepted': 4741, 'mu_accepts': 4740, 'score_pairs': 24000, 'score_accepts': 14720, 'normal_draws': 34959, 'branch_changes_proposed': 16754, 'branch_changes_accepted': 12897, 'selector_calls': 4766, 'selector_fallbacks': 0, 'nonpositive_curvature': 136, 'cheap_metropolis': 1099, 'global_selection': 24}
+selected score block 4 2026103601 3000 0.267
+selected score block 4 2026103601 6000 0.52
+complete centered_n3_m4_chain1 0.5200646878220141 {'blocks': 6000, 'accepted': 4792, 'mu_accepts': 4733, 'score_pairs': 24000, 'score_accepts': 15065, 'normal_draws': 34831, 'branch_changes_proposed': 16634, 'branch_changes_accepted': 12931, 'selector_calls': 4802, 'selector_fallbacks': 0, 'nonpositive_curvature': 158, 'cheap_metropolis': 1041, 'global_selection': 9}
+selected score block 4 2026103602 3000 0.25
+selected score block 4 2026103602 6000 0.503
+complete centered_n3_m4_chain2 0.5030013918876648 {'blocks': 6000, 'accepted': 4713, 'mu_accepts': 4743, 'score_pairs': 24000, 'score_accepts': 14875, 'normal_draws': 34861, 'branch_changes_proposed': 16672, 'branch_changes_accepted': 12781, 'selector_calls': 4729, 'selector_fallbacks': 0, 'nonpositive_curvature': 176, 'cheap_metropolis': 1096, 'global_selection': 15}
+selected score block 4 2026103603 3000 0.263
+selected score block 4 2026103603 6000 0.517
+complete centered_n3_m4_chain3 0.516664604190737 {'blocks': 6000, 'accepted': 4800, 'mu_accepts': 4760, 'score_pairs': 24000, 'score_accepts': 14901, 'normal_draws': 35132, 'branch_changes_proposed': 16433, 'branch_changes_accepted': 12773, 'selector_calls': 4819, 'selector_fallbacks': 0, 'nonpositive_curvature': 119, 'cheap_metropolis': 1063, 'global_selection': 18}
+selected score block 16 2026104800 3000 0.305
+selected score block 16 2026104800 6000 0.612
+complete centered_n3_m16_chain0 0.6117962710559368 {'blocks': 6000, 'accepted': 4626, 'mu_accepts': 4753, 'score_pairs': 96000, 'score_accepts': 58832, 'normal_draws': 140865, 'branch_changes_proposed': 68075, 'branch_changes_accepted': 52019, 'selector_calls': 4639, 'selector_fallbacks': 0, 'nonpositive_curvature': 130, 'cheap_metropolis': 1232, 'global_selection': 12}
+selected score block 16 2026104801 3000 0.308
+selected score block 16 2026104801 6000 0.641
+complete centered_n3_m16_chain1 0.6408145148307085 {'blocks': 6000, 'accepted': 4552, 'mu_accepts': 4717, 'score_pairs': 96000, 'score_accepts': 59335, 'normal_draws': 140552, 'branch_changes_proposed': 68347, 'branch_changes_accepted': 51474, 'selector_calls': 4570, 'selector_fallbacks': 0, 'nonpositive_curvature': 197, 'cheap_metropolis': 1234, 'global_selection': 17}
+selected score block 16 2026104802 3000 0.358
+selected score block 16 2026104802 6000 0.717
+complete centered_n3_m16_chain2 0.7175031211227179 {'blocks': 6000, 'accepted': 4615, 'mu_accepts': 4813, 'score_pairs': 96000, 'score_accepts': 59614, 'normal_draws': 140473, 'branch_changes_proposed': 67583, 'branch_changes_accepted': 51811, 'selector_calls': 4629, 'selector_fallbacks': 0, 'nonpositive_curvature': 127, 'cheap_metropolis': 1245, 'global_selection': 13}
+selected score block 16 2026104803 3000 0.358
+selected score block 16 2026104803 6000 0.709
+complete centered_n3_m16_chain3 0.7093921052291989 {'blocks': 6000, 'accepted': 4592, 'mu_accepts': 4797, 'score_pairs': 96000, 'score_accepts': 57825, 'normal_draws': 141679, 'branch_changes_proposed': 68209, 'branch_changes_accepted': 51843, 'selector_calls': 4608, 'selector_fallbacks': 0, 'nonpositive_curvature': 150, 'cheap_metropolis': 1243, 'global_selection': 15}
+selected score block 1 2026113300 3000 0.335
+selected score block 1 2026113300 6000 0.679
+complete centered_n10_m1_chain0 0.6788056930527091 {'blocks': 6000, 'accepted': 5682, 'mu_accepts': 4020, 'score_pairs': 6000, 'score_accepts': 3821, 'normal_draws': 13133, 'branch_changes_proposed': 4422, 'branch_changes_accepted': 4045, 'selector_calls': 5683, 'selector_fallbacks': 0, 'nonpositive_curvature': 0, 'cheap_metropolis': 318, 'global_selection': 0}
+selected score block 1 2026113301 3000 0.313
+selected score block 1 2026113301 6000 0.623
+complete centered_n10_m1_chain1 0.623416312970221 {'blocks': 6000, 'accepted': 5653, 'mu_accepts': 4102, 'score_pairs': 6000, 'score_accepts': 3751, 'normal_draws': 15346, 'branch_changes_proposed': 4448, 'branch_changes_accepted': 4036, 'selector_calls': 5654, 'selector_fallbacks': 0, 'nonpositive_curvature': 3, 'cheap_metropolis': 344, 'global_selection': 0}
+selected score block 1 2026113302 3000 0.307
+selected score block 1 2026113302 6000 0.634
+complete centered_n10_m1_chain2 0.6335709290578961 {'blocks': 6000, 'accepted': 5650, 'mu_accepts': 4071, 'score_pairs': 6000, 'score_accepts': 3753, 'normal_draws': 14697, 'branch_changes_proposed': 4637, 'branch_changes_accepted': 4215, 'selector_calls': 5651, 'selector_fallbacks': 0, 'nonpositive_curvature': 0, 'cheap_metropolis': 350, 'global_selection': 0}
+selected score block 1 2026113303 3000 0.328
+selected score block 1 2026113303 6000 0.643
+complete centered_n10_m1_chain3 0.6434059087187052 {'blocks': 6000, 'accepted': 5678, 'mu_accepts': 4107, 'score_pairs': 6000, 'score_accepts': 3532, 'normal_draws': 17851, 'branch_changes_proposed': 4582, 'branch_changes_accepted': 4184, 'selector_calls': 5679, 'selector_fallbacks': 0, 'nonpositive_curvature': 0, 'cheap_metropolis': 322, 'global_selection': 0}
+selected score block 4 2026113600 3000 0.319
+selected score block 4 2026113600 6000 0.644
+complete centered_n10_m4_chain0 0.6439192458055913 {'blocks': 6000, 'accepted': 5445, 'mu_accepts': 4104, 'score_pairs': 24000, 'score_accepts': 14885, 'normal_draws': 57378, 'branch_changes_proposed': 17926, 'branch_changes_accepted': 16100, 'selector_calls': 5447, 'selector_fallbacks': 0, 'nonpositive_curvature': 1, 'cheap_metropolis': 553, 'global_selection': 1}
+selected score block 4 2026113601 3000 0.318
+selected score block 4 2026113601 6000 0.641
+complete centered_n10_m4_chain1 0.6410630601458251 {'blocks': 6000, 'accepted': 5393, 'mu_accepts': 4030, 'score_pairs': 24000, 'score_accepts': 15051, 'normal_draws': 57444, 'branch_changes_proposed': 18090, 'branch_changes_accepted': 16032, 'selector_calls': 5394, 'selector_fallbacks': 0, 'nonpositive_curvature': 1, 'cheap_metropolis': 606, 'global_selection': 0}
+selected score block 4 2026113602 3000 0.325
+selected score block 4 2026113602 6000 0.646
+complete centered_n10_m4_chain2 0.6458323639817536 {'blocks': 6000, 'accepted': 5388, 'mu_accepts': 4055, 'score_pairs': 24000, 'score_accepts': 14814, 'normal_draws': 66105, 'branch_changes_proposed': 18444, 'branch_changes_accepted': 16353, 'selector_calls': 5393, 'selector_fallbacks': 0, 'nonpositive_curvature': 2, 'cheap_metropolis': 606, 'global_selection': 4}
+selected score block 4 2026113603 3000 0.315
+selected score block 4 2026113603 6000 0.632
+complete centered_n10_m4_chain3 0.6322927782312036 {'blocks': 6000, 'accepted': 5363, 'mu_accepts': 4052, 'score_pairs': 24000, 'score_accepts': 15413, 'normal_draws': 55932, 'branch_changes_proposed': 17765, 'branch_changes_accepted': 15606, 'selector_calls': 5364, 'selector_fallbacks': 0, 'nonpositive_curvature': 2, 'cheap_metropolis': 635, 'global_selection': 0}
+selected score block 16 2026114800 3000 0.374
+Traceback (most recent call last):
+  File "/scratch/user/shlokmishra08/code/student_t_mle/scripts/validate_cheap_selected_mle_gibbs.py", line 144, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/scratch/user/shlokmishra08/code/student_t_mle/scripts/validate_cheap_selected_mle_gibbs.py", line 143, in main
+    globals()[a.phase](cfg,raw,out)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/scratch/user/shlokmishra08/code/student_t_mle/scripts/validate_cheap_selected_mle_gibbs.py", line 47, in chains
+    try:r=selected.run_gibbs(case['chain_seed']+100*length+i,case['release'],parameters(case,cfg,x,mu,length,cfg['iterations']),True)
+          ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/user/shlokmishra08/code/student_t_mle/models/loc_student_selected_mle_block.py", line 166, in run_gibbs
+    x,state,d=block_step(x,mu,mu_star,k,sigma,length,rng,state,mle_tolerance=mt,score_tolerance=st)
+              ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/user/shlokmishra08/code/student_t_mle/models/loc_student_selected_mle_block.py", line 113, in block_step
+    proposed,a,d,b,e = score_block_kernel(x,mu,t,k,sigma,length)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/user/shlokmishra08/code/student_t_mle/models/loc_student_selected_mle_block.py", line 78, in score_pair_kernel
+    if not found: raise FloatingPointError('truncated-normal sampling budget exhausted')
+FloatingPointError: truncated-normal sampling budget exhausted

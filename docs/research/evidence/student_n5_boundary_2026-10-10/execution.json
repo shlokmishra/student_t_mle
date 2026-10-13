@@ -1,0 +1,12 @@
+{
+  "seconds": 20.037884518969804,
+  "binary_datasets": 21,
+  "numerical_failures": [],
+  "wrong_global_selections": [],
+  "source_sha256": {
+    "scripts/study_student_n5_boundary.py": "7f9878520d48a9eada6ec368ab6455cd718064689fa4690ec825873abd1012aa",
+    "reporting/diagnostics/student_n5_boundary.py": "fff74b5bf2ed979852c9c8425605a6c8530a2417238bd7edfcb73c9e7118141f",
+    "models/student_location_mle.py": "096abb4d3ad2a91b1946186af56b55f1b54e6482d367f5483bb6c72987e6550f",
+    "scripts/selected_mle_reference_oracle.py": "ee89947b06e91cd3bec11cd8f2f69a4ee6f40803d82d8f90bdddb0f39c4718c1"
+  }
+}

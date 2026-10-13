@@ -1,0 +1,38 @@
+{
+  "question": "Prove n=3 finite geometry/selected support, reconcile saved samplers, and test k=1/3 block chamber occupancy without tuning.",
+  "k_values": [
+    1,
+    2,
+    3
+  ],
+  "new_chain_k_values": [
+    1,
+    3
+  ],
+  "reference_draws": 8192,
+  "reference_seed": 2026104100,
+  "reference_ceiling_seconds": 60.0,
+  "bootstrap_seed": 2026104200,
+  "bootstrap_repetitions": 128,
+  "iterations": 4000,
+  "burn_in": 1000,
+  "block_length": 4,
+  "batch_length": 200,
+  "chain_seed": 2026104300,
+  "chain_ceiling_seconds": 120.0,
+  "sigma_z": 0.1,
+  "sigma_mu": 0.45,
+  "rhat_max": 1.01,
+  "ess_min": 400,
+  "difference_mcse_max": 4.0,
+  "excursion_lengths": [
+    4,
+    16
+  ],
+  "excursion_blocks": 256,
+  "excursion_seed": 2026104400,
+  "raw_directory": "tmp/student_n3_geometry_selected_mle_20261010",
+  "evidence_directory": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10",
+  "stopping_rule": "Two fresh 8192-particle banks, four 4000-block chains for k=1 and k=3 only; reuse k=2. Fixed-mu 256-block diagnostic per k and length 4/16. Exact 25 witnesses; finite predeclared adversarial cases. Stop at failures/budgets, preserve results; no tuning or extensions to force passes.",
+  "proof_status_before_execution": "Exact discriminant identity and positive-coefficient H certificate derived; topology and connectedness supply missing no-root continuation argument."
+}

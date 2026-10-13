@@ -1,0 +1,33 @@
+usage: run_affine_experiment.py [-h] [--model {normal,logistic,student}]
+                                [--n N] [--k K] [--known-scale KNOWN_SCALE]
+                                [--mu-star MU_STAR] [--iterations ITERATIONS]
+                                [--burn-in BURN_IN]
+                                [--mle-simulations MLE_SIMULATIONS]
+                                [--tau-q-values TAU_Q_VALUES]
+                                [--proposal-std-mu PROPOSAL_STD_MU]
+                                [--prior-mean PRIOR_MEAN]
+                                [--prior-std PRIOR_STD]
+                                [--kde-bw-method KDE_BW_METHOD]
+                                [--grid-size GRID_SIZE] [--seed SEED]
+                                [--out OUT]
+
+Run and compare the standalone local affine-normalization sampler.
+
+options:
+  -h, --help            show this help message and exit
+  --model {normal,logistic,student}
+  --n N
+  --k K
+  --known-scale KNOWN_SCALE
+  --mu-star MU_STAR
+  --iterations ITERATIONS
+  --burn-in BURN_IN
+  --mle-simulations MLE_SIMULATIONS
+  --tau-q-values TAU_Q_VALUES
+  --proposal-std-mu PROPOSAL_STD_MU
+  --prior-mean PRIOR_MEAN
+  --prior-std PRIOR_STD
+  --kde-bw-method KDE_BW_METHOD
+  --grid-size GRID_SIZE
+  --seed SEED
+  --out OUT

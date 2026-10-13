@@ -1,0 +1,7 @@
+{
+  "checked_replay": 65536,
+  "fallback_checks": 3,
+  "seconds": 5.059256450040266,
+  "bank_sha256": "b2f5b0197a6c19fae1f2775e2de33901746b319ede6167e8e2751088ee376c35",
+  "reason": "Unexpected selective fallbacks in weighted bank B; independently check every such selection."
+}

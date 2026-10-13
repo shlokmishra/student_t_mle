@@ -1,0 +1,13 @@
+{
+  "seconds": 130.81311342306435,
+  "chains": 92,
+  "compressed_chain_bytes": 50665592,
+  "method_cases": 23,
+  "scalar_traces": 493,
+  "figures": 43,
+  "original_screen_passes": 20,
+  "expanded_screen_passes": 18,
+  "inputs_verified_unchanged": 360,
+  "original_diagnostics_reproduced": true,
+  "new_sampling_iterations": 0
+}

@@ -1,0 +1,51 @@
+{
+  "cases": [
+    {
+      "id": "centered_n10",
+      "model": "student",
+      "k": 2.0,
+      "n": 10,
+      "release": 0.0,
+      "prior_mean": 0.0,
+      "prior_std": 2.0,
+      "tail_width": 0.75,
+      "proposal_std_mu": 0.45,
+      "proposal_std_z": 0.1,
+      "tau_q": 0.8,
+      "chain_seed": 2026113200
+    },
+    {
+      "id": "shifted_n10",
+      "model": "student",
+      "k": 2.0,
+      "n": 10,
+      "release": 1.25,
+      "prior_mean": -0.75,
+      "prior_std": 0.6,
+      "tail_width": 0.75,
+      "proposal_std_mu": 0.45,
+      "proposal_std_z": 0.1,
+      "tau_q": 0.8,
+      "chain_seed": 2026123200
+    }
+  ],
+  "existing_gibbs_evidence": "docs/research/evidence/student_selected_mle_gibbs_2026-10-10",
+  "chains": 4,
+  "iterations": 8000,
+  "burn_in": 1000,
+  "batch_length": 250,
+  "seed": 2026106100,
+  "direct_seed": 2026106200,
+  "direct_draws": 4096,
+  "direct_ceiling_seconds": 60,
+  "chain_ceiling_seconds": 90,
+  "total_ceiling_seconds": 240,
+  "extreme_threshold": 20,
+  "rhat_max": 1.01,
+  "ess_min": 400,
+  "difference_mcse_max": 4,
+  "raw_directory": "tmp/student_independence_geometry_20261010",
+  "evidence_directory": "docs/research/evidence/student_independence_geometry_2026-10-10",
+  "stopping_rule": "Exactly two n10 cases, four 8000-iteration chains for independent MH and unchanged m16 block; no tuning/extensions. One shared 4096-dataset direct throughput pilot; reuse full validated references. Exclude unresolved shifted mu>2 event from normal-uncertainty screens. Stop on numerical/oracle failure or ceiling.",
+  "question": "Is global iid base-data MH competitive with fixed m16 blocks, independent prior rejection and raw weighted MC?"
+}

@@ -15,10 +15,11 @@ $$
 \qquad m<d.
 $$
 
-The target density on the manifold is
+For the Student-t score-conditioned sampler, the target density on the
+manifold is the coarea-conditioned density
 
 $$
-\nu(dq) \propto \exp(-V(q))\,\sigma_{\mathcal M}(dq).
+\nu(dq) \propto \exp(-V(q))\,G_M(q)^{-1/2}\,\sigma_{\mathcal M}(dq),
 $$
 
 Introduce momentum \(p\) constrained to the cotangent space
@@ -32,12 +33,13 @@ p\in\mathbb R^d :
 \right\}.
 $$
 
-The extended Hamiltonian is
+Equivalently, the extended Hamiltonian uses the effective potential
+\(U(q)=V(q)+\tfrac12\log G_M(q)\):
 
 $$
 H(q,p)
 =
-V(q)
+U(q)
 +
 \frac12 p^T M^{-1}p.
 $$
@@ -336,23 +338,22 @@ $$
 
 ---
 
-# Practical Constrained GHMC Algorithm
+# Practical Constrained HMC Algorithm (Full Momentum Refreshment)
 
 Parameters:
 
 - timestep \(\Delta t\)
-- friction \(\gamma\)
 - mass matrix \(M\)
 - reverse-check tolerance \(\eta_{\rm rev}\)
 - Newton tolerance \(\varepsilon_{\rm newt}\)
 
-Current state:
+Current position:
 
 $$
-(q,p)\in T_q^*\mathcal M.
+q\in\mathcal M.
 $$
 
-## Step 1. Partial Momentum Refreshment
+## Step 1. Fresh Tangent Momentum
 
 Sample
 
@@ -360,31 +361,12 @@ $$
 G\sim N(0,I_d).
 $$
 
-Compute
-
-$$
-\widetilde p
-=
-\left(
-I+\frac{\Delta t}{4}\gamma M^{-1}
-\right)^{-1}
-\left[
-\left(
-I-\frac{\Delta t}{4}\gamma M^{-1}
-\right)p
-+
-\sqrt{\gamma\Delta t}\,G
-\right].
-$$
-
-Project \(\widetilde p\) onto \(T_q^*\mathcal M\):
+Project \(G\) onto \(T_q^*\mathcal M\):
 
 $$
 p
 =
-\widetilde p
-+
-\nabla\xi(q)\lambda,
+\Pi_{T_q^*\mathcal M}G,
 $$
 
 with
@@ -404,7 +386,7 @@ $$
 =
 p
 -
-\frac{\Delta t}{2}\nabla V(q).
+\frac{\Delta t}{2}\nabla U(q).
 $$
 
 Unconstrained position update:
@@ -452,7 +434,7 @@ $$
 \leftarrow
 \widetilde p
 -
-\frac{\Delta t}{2}\nabla V(q_{\rm prop}).
+\frac{\Delta t}{2}\nabla U(q_{\rm prop}).
 $$
 
 Project momentum:
@@ -518,85 +500,86 @@ $$
 
 ---
 
-## Step 5. Momentum Flip
+The sampler stores \(q^{n+1}\) and discards momentum.  The next iteration
+draws a new tangent Gaussian momentum.
 
-$$
-p \leftarrow -p.
-$$
+## Validated Student-t trajectory settings
 
----
+For the production Student-t implementation, trajectory parameters are
+problem-size dependent.  The following settings were tuned at \(k=2\) with
+central initialization, Gram correction, and the mandatory reverse check.  A
+setting is retained only when all validation chains had zero projection and
+reverse-check failures.
 
-## Step 6. Second Partial Momentum Refreshment
+| n | step size | RATTLE steps |
+|---:|---:|---:|
+| 10 | 0.15 | 20 |
+| 50 | 0.50 | 10 |
+| 200 | 0.50 | 5 |
+| 500 | 0.25 | 20 |
 
-Sample
+They are stored in
+`configs/student_rattle_k2_tuned_20260817.json` and can be applied by the
+cost-audit runner with:
 
-$$
-G' \sim N(0,I_d).
-$$
+```bash
+python scripts/run_cost_audit.py --models student_t --methods rattle \
+  --k-values 2 --n-values 10,50,200,500 \
+  --rattle-settings-json configs/student_rattle_k2_tuned_20260817.json
+```
 
-Apply the same midpoint Ornstein–Uhlenbeck momentum update and project back to
-
-$$
-T_q^*\mathcal M.
-$$
-
-This yields the next state
-
-$$
-(q^{n+1},p^{n+1}).
-$$
+Do not reuse this table unchanged for a different \(k\), initialization, or
+materially different geometry.  For acceptance-only tuning of both the
+Student-location Gibbs and RATTLE samplers, run
+`scripts/tune_student_acceptance.py`.  Set `--rattle-num-steps` to control the
+trajectory length; the tuner then selects the step size and proposal scales
+only by distance to the requested acceptance targets.  Projection and reverse
+failures remain hard safety exclusions.  Use `tune_student_rattle_latent.py`
+only when the goal is explicitly to rank settings by latent mixing and ESS.
 
 ---
 
 # Minimal Coding-Agent Pseudocode
 
 ```python
-def constrained_hmc_step(q, p, dt, M, gamma, V, gradV, xi, grad_xi,
-                         eta_rev, newton_tol):
+def constrained_hmc_step(q, dt, M, U, gradU, xi, grad_xi, eta_rev, newton_tol):
 
-    G = normal_like(p)
-    p = ou_momentum_update(q, p, G, dt, M, gamma, grad_xi)
-    p = project_momentum(q, p, M, grad_xi)
+    G = normal_like(q)
+    p = project_momentum(q, G, M, grad_xi)
 
     q0, p0 = q, p
 
     success_fwd, q_prop, p_prop = rattle_step(
-        q0, p0, dt, M, V, gradV, xi, grad_xi, newton_tol
+        q0, p0, dt, M, U, gradU, xi, grad_xi, newton_tol
     )
 
     if not success_fwd:
-        return q0, p0, "reject_forward_projection"
+        return q0, "reject_forward_projection"
 
     q_prime = q_prop
     p_prime = -p_prop
 
     success_rev, q_back, p_back = rattle_step(
-        q_prime, p_prime, dt, M, V, gradV, xi, grad_xi, newton_tol
+        q_prime, p_prime, dt, M, U, gradU, xi, grad_xi, newton_tol
     )
 
     if not success_rev:
-        return q0, p0, "reject_reverse_projection"
+        return q0, "reject_reverse_projection"
 
     if norm(q_back - q0) >= eta_rev:
-        return q0, p0, "reject_non_reversible"
+        return q0, "reject_non_reversible"
 
     log_alpha = (
-        hamiltonian(q0, p0, M, V)
-        - hamiltonian(q_prime, p_prime, M, V)
+        hamiltonian(q0, p0, M, U)
+        - hamiltonian(q_prime, p_prime, M, U)
     )
 
     if log_uniform() < min(0.0, log_alpha):
-        q, p = q_prime, p_prime
+        q = q_prime
         status = "accept"
     else:
-        q, p = q0, p0
+        q = q0
         status = "reject_metropolis"
 
-    p = -p
-
-    G2 = normal_like(p)
-    p = ou_momentum_update(q, p, G2, dt, M, gamma, grad_xi)
-    p = project_momentum(q, p, M, grad_xi)
-
-    return q, p, status
+    return q, status
 ```

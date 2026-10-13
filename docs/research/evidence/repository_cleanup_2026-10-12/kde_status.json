@@ -1,0 +1,24 @@
+{
+  "status": "known defects still present; no numerical code change",
+  "helper_reported": {
+    "posterior_mean": 0.0,
+    "posterior_var": 1.6251139555940985,
+    "posterior_sd": 1.2747995746759953,
+    "posterior_q025": -0.7252004253240049,
+    "posterior_q50": -0.7252004253240049,
+    "posterior_q975": 0.6526803827916042,
+    "normalization_constant": 1.0,
+    "weighted_ess": 2.0
+  },
+  "correct_mixture_quantiles": [
+    -2.461854799720723,
+    0.0,
+    2.4618547997207236
+  ],
+  "correct_normalizer": 0.1551458908062587,
+  "normalizer_error": 0.8448541091937413,
+  "quantile_max_abs_error": 1.8091744169291193,
+  "raw_weighted_path": "separate; tested and unaffected",
+  "cache_provenance": "version string does not fingerprint selector/tolerances; not authoritative",
+  "sj_backend": "may fall back to Silverman"
+}

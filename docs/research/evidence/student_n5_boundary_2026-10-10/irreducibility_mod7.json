@@ -1,0 +1,32 @@
+{
+  "K": {
+    "prime": 7,
+    "monic_polynomial": "A**5 + 2*A**4 - 3*A**3 - 3*A**2 - 2*A + 2",
+    "degree": 5,
+    "frobenius_residues": [
+      "-3*A**4 + 3*A**3 + A**2 - 3*A",
+      "-A**4 + 3*A**3 - 2*A**2 + 3*A + 3",
+      "-A**4 + A**3 - 2*A",
+      "-2*A**4 + A**2 + A + 2",
+      "A"
+    ],
+    "first_frobenius_gcd": "1",
+    "final_residue_equals_variable": true,
+    "irreducible_over_Q": true
+  },
+  "L": {
+    "prime": 7,
+    "monic_polynomial": "v**5 - 2*v**4 + 3*v**3 + 3*v**2 + 2*v - 3",
+    "degree": 5,
+    "frobenius_residues": [
+      "3*v**3 + 3*v**2 - 3*v + 3",
+      "3*v**4 - v**3 - 3*v + 3",
+      "2*v**4 + 3*v**3 + 3*v**2 + 2",
+      "2*v**4 + 2*v**3 + v**2 - 2*v + 1",
+      "v"
+    ],
+    "first_frobenius_gcd": "1",
+    "final_residue_equals_variable": true,
+    "irreducible_over_Q": true
+  }
+}

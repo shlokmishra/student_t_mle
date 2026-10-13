@@ -1,0 +1,101 @@
+[
+  {
+    "case": "centered_n3",
+    "iterations": 1000,
+    "seconds": {
+      "legacy_rattle": [
+        0.039837469812482595,
+        0.04291350394487381,
+        0.039723153691738844
+      ],
+      "rattle": [
+        0.172335313167423,
+        0.18863853067159653,
+        0.1841466990299523
+      ],
+      "affine": [
+        0.24938746681436896,
+        0.27492383401840925,
+        0.25025134393945336
+      ],
+      "gibbs": [
+        0.26192280976101756,
+        0.29341494431719184,
+        0.26765751373022795
+      ]
+    },
+    "median_microseconds_per_iteration": {
+      "legacy_rattle": 39.837469812482595,
+      "rattle": 184.1466990299523,
+      "affine": 250.25134393945336,
+      "gibbs": 267.65751373022795
+    },
+    "note": "warmed single-core three repeats; same RATTLE step size/length; legacy has a different target and weaker reverse check; Gibbs sweeps have floor(n/2) pair proposals; throughput is not statistical efficiency"
+  },
+  {
+    "case": "centered_n10",
+    "iterations": 1000,
+    "seconds": {
+      "legacy_rattle": [
+        0.049179558642208576,
+        0.04633456142619252,
+        0.047933115158230066
+      ],
+      "rattle": [
+        0.20001431368291378,
+        0.19287993991747499,
+        0.19075298588722944
+      ],
+      "affine": [
+        0.31202628603205085,
+        0.30449156928807497,
+        0.31796550285071135
+      ],
+      "gibbs": [
+        1.324721050914377,
+        1.3349380786530674,
+        1.361495930235833
+      ]
+    },
+    "median_microseconds_per_iteration": {
+      "legacy_rattle": 47.933115158230066,
+      "rattle": 192.87993991747499,
+      "affine": 312.02628603205085,
+      "gibbs": 1334.9380786530674
+    },
+    "note": "warmed single-core three repeats; same RATTLE step size/length; legacy has a different target and weaker reverse check; Gibbs sweeps have floor(n/2) pair proposals; throughput is not statistical efficiency"
+  },
+  {
+    "case": "shifted_n10",
+    "iterations": 1000,
+    "seconds": {
+      "legacy_rattle": [
+        0.05258580623194575,
+        0.04658965393900871,
+        0.046738472767174244
+      ],
+      "rattle": [
+        0.19362939335405827,
+        0.19263193989172578,
+        0.1941128857433796
+      ],
+      "affine": [
+        0.3118904340080917,
+        0.32166353333741426,
+        0.31292165582999587
+      ],
+      "gibbs": [
+        1.3770343977957964,
+        1.5211355220526457,
+        1.3302580001764
+      ]
+    },
+    "median_microseconds_per_iteration": {
+      "legacy_rattle": 46.738472767174244,
+      "rattle": 193.62939335405827,
+      "affine": 312.92165582999587,
+      "gibbs": 1377.0343977957964
+    },
+    "note": "warmed single-core three repeats; same RATTLE step size/length; legacy has a different target and weaker reverse check; Gibbs sweeps have floor(n/2) pair proposals; throughput is not statistical efficiency"
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "elapsed_seconds_after_warmup": 4.003848459105939,
+  "ordinary_oracle_checks": 96,
+  "adversarial_checks": 61,
+  "complete": true
+}

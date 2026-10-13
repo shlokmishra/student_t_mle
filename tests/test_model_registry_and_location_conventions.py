@@ -1,6 +1,7 @@
 import numpy as np
 
-from models import loc_laplace, loc_logistic
+from models.loc.laplace import median_gibbs as loc_laplace
+from models.loc.logistic import score_gibbs as loc_logistic
 from models.model_registry import MODEL_REGISTRY, model_validity_rows
 
 

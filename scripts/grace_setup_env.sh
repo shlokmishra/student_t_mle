@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Run this once on Grace from the repository root before submitting jobs.
+# Prepare the Python environment on Grace; legacy job grids have been retired.
 # Grace module names are version/toolchain specific. Find the exact module with:
 #   module spider Python
 # or:
 #   mla Python
 #
 # Then, if needed, run for example:
-#   PYTHON_MODULE="GCCcore/10.2.0 Python/3.8.6" bash scripts/grace_setup_env.sh
+#   PYTHON_MODULE="GCCcore/14.3.0 Python/3.13.5" bash scripts/grace_setup_env.sh
 
 PYTHON_MODULE="${PYTHON_MODULE:-}"
 PYTHON_BIN="${PYTHON_BIN:-}"
@@ -72,5 +72,5 @@ python -m pip install -r requirements.txt
 
 mkdir -p logs
 
-echo "Grace environment is ready. Submit jobs with:"
-echo "  bash scripts/grace_submit_all.sh"
+echo "Grace environment is ready. Check the current research code with:"
+echo "  .venv/bin/python scripts/run_checkpoint_validation.py --out tmp/validation-new"

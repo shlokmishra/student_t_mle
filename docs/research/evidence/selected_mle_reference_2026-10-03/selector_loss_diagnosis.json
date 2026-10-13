@@ -1,0 +1,37 @@
+[
+  {
+    "case": "k2.0_near_flat_n2",
+    "high_precision_loglik_loss": "7.009242000624854694917518928453514652213e-33",
+    "location_error": 1.6535789860374886e-08,
+    "oracle_selection_status": "exact_symmetric_global_tie_lower",
+    "root_digits": 32
+  },
+  {
+    "case": "left_cluster_spread_2^-10",
+    "high_precision_loglik_loss": "9.492454534782598521753943720923684038033e-26",
+    "location_error": 1.7008616737257398e-13,
+    "oracle_selection_status": "unique_global_bound",
+    "root_digits": 16
+  },
+  {
+    "case": "left_cluster_spread_2^-20",
+    "high_precision_loglik_loss": "2.610833032725589630160103051729758776630e-27",
+    "location_error": 2.7977620220553945e-14,
+    "oracle_selection_status": "unique_global_bound",
+    "root_digits": 16
+  },
+  {
+    "case": "left_cluster_spread_2^-35",
+    "high_precision_loglik_loss": "4.755601570593620024227660534651415629682e-22",
+    "location_error": 7.483314773541884,
+    "oracle_selection_status": "unique_global_bound",
+    "root_digits": 32
+  },
+  {
+    "case": "large_translation_1099511627776.0",
+    "high_precision_loglik_loss": "0.000000004143237641780727655589563121144798207098",
+    "location_error": 0.0,
+    "oracle_selection_status": "unique_global_bound",
+    "root_digits": 16
+  }
+]

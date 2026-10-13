@@ -1,0 +1,94 @@
+{
+  "counts": {
+    "blocks": 4000,
+    "accepted": 3090,
+    "mu_accepts": 3170,
+    "score_pairs": 64000,
+    "score_accepts": 38504,
+    "proposal_sampling_attempts": 94853,
+    "branch_changes_proposed": 45536,
+    "branch_changes_accepted": 34887,
+    "selector_calls": 3102,
+    "selector_fallbacks": 0,
+    "nonpositive_curvature": 115,
+    "cheap_metropolis": 784,
+    "global_selection": 11
+  },
+  "seconds": 0.43926993990316987,
+  "times": {
+    "proposal": 0.11425554659217596,
+    "selector": 0.1999414791353047
+  },
+  "seed": 2026105462,
+  "score_seed": 360471398,
+  "target": "selected_global_student_location_mle",
+  "proposal": "random_scan_regular_score_pair_power",
+  "block_length": 16,
+  "max_score_residual": 3.885780586188048e-15,
+  "max_selected_mle_residual": 2.398081733190338e-14,
+  "max_inverse_score_error": 5.551115123125783e-17,
+  "proposal_records": [
+    {
+      "iteration": 1,
+      "accepted": true,
+      "rejection": null,
+      "selector_called": true,
+      "proposed_x": [
+        0.1213473381118875,
+        -1.6276553381798824,
+        2.7126770855311992
+      ]
+    },
+    {
+      "iteration": 1001,
+      "accepted": true,
+      "rejection": null,
+      "selector_called": true,
+      "proposed_x": [
+        -0.9306019600518206,
+        -0.024607234171868247,
+        1.9323169109955602
+      ]
+    },
+    {
+      "iteration": 2001,
+      "accepted": true,
+      "rejection": null,
+      "selector_called": true,
+      "proposed_x": [
+        -0.7827641425050003,
+        0.29413501738198333,
+        0.3350648128385087
+      ]
+    },
+    {
+      "iteration": 3001,
+      "accepted": false,
+      "rejection": "cheap_metropolis",
+      "selector_called": false,
+      "proposed_x": [
+        1.8165495380447538,
+        0.013241821614105934,
+        -1.2117558614525756
+      ]
+    }
+  ],
+  "known_scale": 1.0,
+  "numerical_policy": "no artificial score/Jacobian/proposal cutoffs; unresolved computation raises; inherited parameter uniform guard retained",
+  "initial_x": [
+    0.3436066706362072,
+    -1.3647660583885386,
+    4.817640894625784
+  ],
+  "initial_mu": -0.3176186030682593,
+  "raw_path": "tmp/student_n3_fast_path_20261010/k2_m16_chain2_original.npz",
+  "sha256": "95431f570ece41755fc9836da22392e7318a3df31d10882f8d6a7652159c416f",
+  "source_sha256": {
+    "scripts/validate_student_n3_fast_path.py": "0c66a6ab967e51e7f97ca760feba1798e6e4db2e6b21dc179b9d65592ef56f7f",
+    "models/loc_student_selected_mle_block.py": "19d36b6ec29ebe36a2214376f2ab4135a9e7b91e227d130114c5dce89f77c491",
+    "models/student_n3_endpoint.py": "f5ef5429de5753b7edba6243410186c42fa08685dbd6848395db5102ee9e3b21",
+    "models/student_location_mle.py": "096abb4d3ad2a91b1946186af56b55f1b54e6482d367f5483bb6c72987e6550f",
+    "docs/research/evidence/student_n3_fast_path_2026-10-10/original_block.py": "d01d1789dd883dff9e24df5706c4ee0e52bfd4fb38d6f27b8f54aeccf04e577a",
+    "scripts/selected_mle_reference_oracle.py": "ee89947b06e91cd3bec11cd8f2f69a4ee6f40803d82d8f90bdddb0f39c4718c1"
+  }
+}

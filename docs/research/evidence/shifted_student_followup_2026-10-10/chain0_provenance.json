@@ -1,0 +1,30 @@
+{
+  "seconds": 12.902581073809415,
+  "latent_acceptance": 0.452175,
+  "mu_acceptance": 0.6588,
+  "max_proposal_mle_residual": 5.773159728050814e-15,
+  "max_retained_mle_residual": 2.220446049250313e-15,
+  "seed": 2026101066,
+  "initial_mu": 1.706347624951431,
+  "initial_x": [
+    2.6524308574820976,
+    1.2604206046090791,
+    3.2211295556286847,
+    0.9579290736595598,
+    0.16457904040291094,
+    1.1703046930354968,
+    0.5100571064633673,
+    2.5921932797985985,
+    -0.20420010403250155,
+    1.493926371573786
+  ],
+  "initial_max_residual": 1.9711295556286847,
+  "iterations": 40000,
+  "initializer": "reference_max_q0.1",
+  "origin": {
+    "bank_index": 34443
+  },
+  "failures": 0,
+  "sha256": "c8d50536b3bf1d6608de5e7ac1fbdfd094f90ee5902cadef0fbeba92b7e05665",
+  "raw_path": "tmp/shifted_student_followup_20261010/chain0.npz"
+}

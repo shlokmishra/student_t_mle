@@ -1,0 +1,331 @@
+{
+  "created_utc": "2026-10-10T23:41:51Z",
+  "files": [
+    {
+      "path": "docs/research/student_n3_geometry_selected_mle.md",
+      "bytes": 32167,
+      "sha256": "043170254468cd6657410d0853008b05f1849b49d64d4534f843804368f21519"
+    },
+    {
+      "path": "reporting/diagnostics/student_n3_selected_geometry.py",
+      "bytes": 4091,
+      "sha256": "889adc7072beab757890c72fe6eb1f2ee335c3e6e1a9f2a205cb46af48d254c1"
+    },
+    {
+      "path": "scripts/study_student_n3_selected_geometry.py",
+      "bytes": 23932,
+      "sha256": "73bab62a3c46aa5d9d60bbcd7e61842f56dd68a41568a39a6f584e78b5542708"
+    },
+    {
+      "path": "tests/test_student_n3_selected_geometry.py",
+      "bytes": 4344,
+      "sha256": "a46c79911b52846500e3815d2741c2f613959ff2b049d90c9ba3a70140d8f654"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/algebra.json",
+      "bytes": 12202,
+      "sha256": "48a3a27c0e618f492c53bb4457f2c9e4521611c7400b017009e869636270f3d8"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/algebra.log",
+      "bytes": 27,
+      "sha256": "11fa4005d6d1c93da437b46b41dda178841e80fd3973edd675816bf87c4722a5"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/algebra_execution.json",
+      "bytes": 1037,
+      "sha256": "1eeca21280d729345453d611cb35b62c451ee69d97e2f3e7335cd1b2a9f0e794"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/block_excursions.json",
+      "bytes": 27568,
+      "sha256": "3dbf40b629d0c8210e12ff6bc101eb3f5bfacabb323187e1b76a3798600a851f"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/block_k1_chain0_provenance.json",
+      "bytes": 1353,
+      "sha256": "5a5ba845f9f739fc407985aa085907494cf0a4e80e8b02ba301109a5211a5905"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/block_k1_chain1_provenance.json",
+      "bytes": 1350,
+      "sha256": "52ebf6abd8f45b98f41230ccee622ce499bed7136f025c906e8b00f6d6303710"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/block_k1_chain2_provenance.json",
+      "bytes": 1348,
+      "sha256": "08638686c4b24346912a0b02668d59e8b2c580e4b484cf2bb3a20bd331ba4cee"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/block_k1_chain3_provenance.json",
+      "bytes": 1338,
+      "sha256": "540836c00d6c053cc9930a753b49244bd7d615d9778d59807186d2afd3d74a15"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/block_k3_chain0_provenance.json",
+      "bytes": 1348,
+      "sha256": "6728c476f8cbd9efc932cae7dcae83019ccdf36853e6eda576af067110ca902e"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/block_k3_chain1_provenance.json",
+      "bytes": 1341,
+      "sha256": "06924838d6e8ff59321e8f3e5bf8b86a4536cae495d7c9f191c9215561ba5406"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/block_k3_chain2_provenance.json",
+      "bytes": 1342,
+      "sha256": "b517aad74e0d07f86c681fc9131788743917c9673a23e81e714131c22de81faa"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/block_k3_chain3_provenance.json",
+      "bytes": 1328,
+      "sha256": "650721fc708e29b13a706fc40537a12b0b4d7c50c3b0aec5801d9663b4e22a3e"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/blocks.log",
+      "bytes": 974,
+      "sha256": "8b8ef0a2a33e1286b46a923992729a48afc4a040fdfbee391bace1f3e406385f"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/blocks_execution.json",
+      "bytes": 1036,
+      "sha256": "ee9371c6ab217d55528833d04c926bcc979dc93d10bf82c12ca9051493247538"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/chamber_probabilities.json",
+      "bytes": 5921,
+      "sha256": "69a4a73f9ec21fb7f9a7b6d4344957115dcd7dffe71b30bf38a3c9f029629cf5"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/component_graph.pdf",
+      "bytes": 19649,
+      "sha256": "62e87fbfcd0d0b5456cdb13a6bc441a0f2ff0135cabb5c0d4f9342caff19d1a0"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/component_graph.png",
+      "bytes": 103705,
+      "sha256": "372bf6c47567f86712e338feb0e7b5f2e91bf18776ae07eb103c8025b3461769"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/config.json",
+      "bytes": 1400,
+      "sha256": "63d164ed9a81370387e3a9d2b085a65cd00b0d96ddeee087fb21fe1cb7a0c61a"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/driver_experiment_snapshot.py",
+      "bytes": 23661,
+      "sha256": "6fb0ac07688a4f434b141a343448d963c28975066e570ed849ffa37b9a4267fa"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/excursion_oracle_checks.json",
+      "bytes": 16979,
+      "sha256": "ec67d4015ae1cb1b5a825377ca6c5ef50922b305607b24b545deb7b4dc27e6e6"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/excursions.log",
+      "bytes": 1655,
+      "sha256": "6a0d0ec50cb4f54023de64ac4e0987ed44ad81c26182ebba7a387d8fe9980625"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/excursions_execution.json",
+      "bytes": 1040,
+      "sha256": "34ecf17a100accdd0a4a69d559871de1a57d622237b3ebc9ed72caaa37c2f35d"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/figures.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/figures_execution.json",
+      "bytes": 1037,
+      "sha256": "59ec046278aaa02aea9906c1776319f07d1e69a68739d5f00ef65a54b64952a9"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/final_checks.json",
+      "bytes": 909,
+      "sha256": "59bccd4e0aa6e8ba157b4a768e35a8a2e7a3df08c4d38772a74f7146a55d8e4b"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/high_precision_stress.json",
+      "bytes": 2290,
+      "sha256": "7cb27420d8a111953e973bf44fbcbe9b6a72653d2a5a46a6b00391dae901dc09"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/historical_replay.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/historical_restart_reconciliation.json",
+      "bytes": 726,
+      "sha256": "7639a1405fa72b975c82811a1d44d0a49c19d4e9b7b794e8b5dfc1f73bf1223e"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/local_max_counterexample.json",
+      "bytes": 410,
+      "sha256": "dddcd5d563401a23060d643450c7af82318841db8457d2cd8c10b7277980748b"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/new_block_comparisons.json",
+      "bytes": 123838,
+      "sha256": "32d66169b5bca6fc35b1149ab2ee15c20b358cc8c9138264036c1c4833b850e3"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/new_block_oracle_checks.json",
+      "bytes": 34062,
+      "sha256": "ba46dac087d0414d9d8b6ff1193f37c6b63fc20e9db183c9534caed96d198ba0"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/preservation_check.json",
+      "bytes": 73,
+      "sha256": "5eed4eb05e41d993947963b46cc446521d83e4f93c4f4a00ca8cc520cfeb1ad1"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/projection_probe.json",
+      "bytes": 2877,
+      "sha256": "092bf2532620f5f6f52d40b918c33e371f1cac8ad52458ee7031531b91241989"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/pytest_general_identity.log",
+      "bytes": 98,
+      "sha256": "e0c1a1b9859716ebd41b82172e962f847b66600d56dadd28d123d3915d708c1e"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/pytest_initial.log",
+      "bytes": 31,
+      "sha256": "f4e8f0dcbe65877f5b96a002f94389d042a967540a9f9606f2e17f49cf4e3e90"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/pytest_projection.log",
+      "bytes": 99,
+      "sha256": "6d178bca1e2517bea0857e175d0a4b2ad17a52bffcc387de822d7e8c8842abff"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/pytest_retry.log",
+      "bytes": 100,
+      "sha256": "fc86e196da62f09c85491b4a90675e73d7d76fafe8a2cbcef9b2af794045a71c"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/saved.log",
+      "bytes": 180,
+      "sha256": "4414502bbcb0b5a02f976185226aed5719f1cc96455a21be663b96371526f166"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/saved_execution.json",
+      "bytes": 1035,
+      "sha256": "4acbf90b82fb8d628190365d305446320bd3575c7d59d994c614cf022fd19a5d"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/saved_oracle_checks.json",
+      "bytes": 2535,
+      "sha256": "e502ad94d3b9efd19c2f909cc9bed593272217dac5966da5b090ca9b33889d95"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/saved_sampler_geometry.json",
+      "bytes": 314942,
+      "sha256": "8837891cb45fc0fdf4df65b6f41f34832c51ea337312adc0dd0a20b53341bbbd"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/score_sheets.pdf",
+      "bytes": 36253,
+      "sha256": "25f283aa5cc766770938f93a6aedcb74b028839d7a546c8b6703591575da9864"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/score_sheets.png",
+      "bytes": 100757,
+      "sha256": "e98ca1d6da0e7a19154150c885a334aca01d61b2fa62de01641a9cd43a891096"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/starting_hashes.json",
+      "bytes": 65053,
+      "sha256": "492d630d687e982451e96736786a4eaca00de8211bcac40619e3b0247713c683"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/starting_status.txt",
+      "bytes": 4822,
+      "sha256": "9f705a4ff616f26230356e9ac08b9afdcd5a9dcc0f4ee4cfea4f9175dbb49c73"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/stress.log",
+      "bytes": 41,
+      "sha256": "daac4065553c2dddbbf059e8c6a7ad521636d0a6a88e58b68e7054f0e3177633"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/stress_execution.json",
+      "bytes": 1036,
+      "sha256": "f3be5e91f00e5b2fb0f4f7dc357d172cfbc8c8acb2d6fea03232cb9eaa6c0477"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/stress_oracle.json",
+      "bytes": 123027,
+      "sha256": "779712b6d68008d3aff57d3ec3e03391b73dfba9cec8e10a3fedf8722f151196"
+    },
+    {
+      "path": "docs/research/evidence/student_n3_geometry_selected_mle_2026-10-10/supplemental_checks.py",
+      "bytes": 5335,
+      "sha256": "7551b71091d8d8763bfbddbae1e355371d169e4ba7e8a0b8d81380942d8638f5"
+    }
+  ],
+  "ignored_new_raw_arrays": [
+    {
+      "path": "tmp/student_n3_geometry_selected_mle_20261010/block_k1_chain0.npz",
+      "bytes": 68559,
+      "sha256": "558e843101fdaf7ae2dc48f6a4d2fe8bd5fb49347eae9c4d257625853c27291d"
+    },
+    {
+      "path": "tmp/student_n3_geometry_selected_mle_20261010/block_k1_chain1.npz",
+      "bytes": 68446,
+      "sha256": "a1fa81697b5cdba0198085f1709cb79c019918a6f47e8a533f1c7a8a201d8fa5"
+    },
+    {
+      "path": "tmp/student_n3_geometry_selected_mle_20261010/block_k1_chain2.npz",
+      "bytes": 70124,
+      "sha256": "65b0fb1fa8f60780161990b7973d76be86326eff474f54f329ad9beea601b5a5"
+    },
+    {
+      "path": "tmp/student_n3_geometry_selected_mle_20261010/block_k1_chain3.npz",
+      "bytes": 70385,
+      "sha256": "907239115e100da01fa3878cc1bb263e69b2875971f45d8c033c329f4cb3cf7e"
+    },
+    {
+      "path": "tmp/student_n3_geometry_selected_mle_20261010/block_k3_chain0.npz",
+      "bytes": 95394,
+      "sha256": "47a4f518ff42fab9ec894e68e3375a5d8c777cd370c2f9c15a59d9dfcad8033e"
+    },
+    {
+      "path": "tmp/student_n3_geometry_selected_mle_20261010/block_k3_chain1.npz",
+      "bytes": 97081,
+      "sha256": "7832ba42cec1665fcf64571f39fc5a1da41a2d5964ee1d2ab77a4f9ab5400c89"
+    },
+    {
+      "path": "tmp/student_n3_geometry_selected_mle_20261010/block_k3_chain2.npz",
+      "bytes": 96008,
+      "sha256": "79469152d715943d7417d18910c92d186e9919b5845d522656c313dc2c6e28ce"
+    },
+    {
+      "path": "tmp/student_n3_geometry_selected_mle_20261010/block_k3_chain3.npz",
+      "bytes": 96834,
+      "sha256": "fa5a3964265373356a85ffe66c21c133643e0318446d24efdf013ab2bcc07034"
+    },
+    {
+      "path": "tmp/student_n3_geometry_selected_mle_20261010/reference_k1.npz",
+      "bytes": 254377,
+      "sha256": "23b0ba445bf5059d25dfaba2dc8686f836586f89b232d784ec63f6d0d0a621d6"
+    },
+    {
+      "path": "tmp/student_n3_geometry_selected_mle_20261010/reference_k3.npz",
+      "bytes": 253100,
+      "sha256": "f358919b74dc9f93ce46e2a3376943b937e8c4c180a921cdd1b24d21f4517ee2"
+    }
+  ],
+  "reused_raw_provenance": "saved_sampler_geometry.json gives original sampler/reference/rejection paths and checksums; historical figures/tables are retained in place.",
+  "source_provenance": "blocks/stress/excursions/saved use driver_experiment_snapshot.py; final driver differs only in graph layout; algebra/figures final phase hashes use current driver.",
+  "scope": "Two fresh 8192-particle k1/k3 banks; eight 4000-block chains; six fixed-mu 256-block replays; declared exact/adversarial probes; one predetermined RATTLE projection case. No changes to existing samplers/selector.",
+  "preserved_timeouts": {
+    "initial_pytest_seconds": 120,
+    "initial_historical_replay_seconds": 60,
+    "retry_outcomes": "All final focused tests and historical replay completed."
+  },
+  "portability": "Copy ignored arrays and linked original validated arrays at their manifest paths. Figures and tables do not replace raw/provenance sources."
+}

@@ -1,0 +1,16 @@
+.F.....................................................                  [100%]
+=================================== FAILURES ===================================
+_________________ test_resultants_and_stationary_gap_reduction _________________
+
+    def test_resultants_and_stationary_gap_reduction():
+        assert sp.expand(sp.resultant(b.R, b.H, b.v)+(b.A**2-2*b.A+5)*b.K) == 0
+        assert sp.expand(sp.resultant(b.R, b.H, b.A)+b.v**2*b.L) == 0
+        assert sp.factor(sp.discriminant(b.R, b.v)) == 16*b.A*(b.A-5)
+>       assert sp.rem(b.H, b.R, b.v) == sp.expand((b.N-b.B*b.v)/125)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+tests/test_student_n5_boundary.py:25: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_student_n5_boundary.py::test_resultants_and_stationary_gap_reduction
+1 failed, 54 passed in 33.15s

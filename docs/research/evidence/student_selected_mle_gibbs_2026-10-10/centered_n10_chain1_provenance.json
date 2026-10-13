@@ -1,0 +1,61 @@
+{
+  "x_final": [
+    0.07401761099126535,
+    -0.05848153044937073,
+    0.32436658984494654,
+    -0.38190214282101026,
+    -0.13970972301215429,
+    0.23194100230427087,
+    -1.543266561056237,
+    0.5255502719420382,
+    1.6456862554622171,
+    -0.6052794416251152
+  ],
+  "store_x_chain": true,
+  "target": "selected_global_student_location_mle",
+  "estimator": "hardened_global_likelihood_maximum_exact_ties_lower",
+  "kernel": "sequential_joint_pair_mh_with_global_indicator_and_curvature",
+  "gibbs_backend": "python_pairs_numba_weights_mu",
+  "seed": 2026101301,
+  "counts": {
+    "pair_attempts": 60000,
+    "pair_accepts": 37746,
+    "global_selection_rejects": 16,
+    "selector_fallbacks": 3,
+    "mu_accepts": 8035,
+    "accepted_branch_changes": 26658
+  },
+  "pair_acceptance_rate": 0.6291,
+  "mu_acceptance_rate": 0.6695833333333333,
+  "max_score_residual": 5.4750312356716124e-15,
+  "max_selected_mle_residual": 4.107825191113079e-14,
+  "initial_score_residual": 1.8512752095189988e-16,
+  "max_score_drift": 5.620504062164855e-15,
+  "max_inverse_score_error": 2.7755575615628914e-17,
+  "min_retained_curvature": 0.05355532853804203,
+  "seconds": 17.834829308092594,
+  "numerical_policy": "open score charts; no Jacobian/curvature floor; unresolved computations raise",
+  "score_tolerance": 1e-10,
+  "mle_tolerance": 1e-10,
+  "known_scale": 1.0,
+  "initial_x": [
+    -0.1098696269321725,
+    -0.8512121497214812,
+    3.6003948205010463,
+    1.2355596994037972,
+    -1.6379523528894706,
+    0.7998727010049473,
+    -0.3607318153477182,
+    -1.9397461007834598,
+    2.6173519202706057,
+    0.06623975759601874
+  ],
+  "initial_mu": -0.656421234448467,
+  "origin": {
+    "reference_index": 27684,
+    "max_quantile": 0.5
+  },
+  "raw_path": "tmp/student_selected_mle_gibbs_20261010/centered_n10_chain1.npz",
+  "sha256": "cc9569873eda8a9fa4c8162fc20e4c27a473530742efce12ebe04b5723eb9a7a",
+  "failures": 0
+}

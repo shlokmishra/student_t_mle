@@ -2,7 +2,8 @@ import numpy as np
 import jax.random as random
 import pytest
 
-from models import loc_laplace, loc_laplace_rattle
+from models.loc.laplace import median_gibbs as loc_laplace
+from models.loc.laplace import facet_rattle as loc_laplace_rattle
 
 
 def _params(**overrides):

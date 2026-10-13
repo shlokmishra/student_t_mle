@@ -1,0 +1,5 @@
+bank fresh_n3 16384 1.24
+bank fresh_n3 32768 2.24
+reference centered_n3 32768
+reference centered_n10 131072
+reference shifted_n10 131072

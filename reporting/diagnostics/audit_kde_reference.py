@@ -27,10 +27,11 @@ from kde_ref.moments import (
     raw_weighted_posterior_moments,
 )
 from kde_ref.posterior import build_likelihood_kde_backend
-from models import loc_student
+from models.loc.student import score_gibbs as loc_student
 
 OUT_DIR = Path("reporting/diagnostic_outputs/kde_reference_audit")
 OUT_CSV = OUT_DIR / "kde_reference_audit.csv"
+STUDENT_MLE_CONVENTION = "selected_global_v1"
 
 
 def _floats(text: str) -> list[float]:
@@ -72,6 +73,7 @@ FIELDNAMES = [
     "seed",
     "B",
     "mu_star",
+    "mle_convention",
     "estimator_type",
     "backend",
     "n_grid",
@@ -99,6 +101,7 @@ def _row_base(k: float, n: int, seed: int, B: int, mu_star: float) -> dict[str, 
         "seed": seed,
         "B": B,
         "mu_star": mu_star,
+        "mle_convention": STUDENT_MLE_CONVENTION,
     }
 
 
@@ -124,6 +127,7 @@ def _completed(path: Path) -> set[tuple[str, ...]]:
                     row["n"],
                     row["seed"],
                     row["B"],
+                    row.get("mle_convention", "legacy_score_root"),
                     row["estimator_type"],
                     row["backend"],
                     row["n_grid"],
@@ -133,8 +137,22 @@ def _completed(path: Path) -> set[tuple[str, ...]]:
     return keys
 
 
+def _require_current_output_schema(path: Path) -> None:
+    if not path.exists():
+        return
+    with path.open("r", newline="", encoding="utf-8") as handle:
+        header = next(csv.reader(handle), [])
+    if header != FIELDNAMES:
+        raise RuntimeError(
+            f"{path} predates the selected/global-MLE reference convention; "
+            "rerun with --overwrite to regenerate it safely"
+        )
+
+
 def _cache_path(args: argparse.Namespace, k: float, n: int, B: int, seed: int) -> Path:
-    return args.out_csv.parent / "mle_sample_cache" / f"student_k{k}_n{n}_B{B}_seed{seed}.npz"
+    return args.out_csv.parent / "mle_sample_cache" / (
+        f"student_{STUDENT_MLE_CONVENTION}_k{k}_n{n}_B{B}_seed{seed}.npz"
+    )
 
 
 def _simulate_case(args: argparse.Namespace, k: float, n: int, B: int, seed: int) -> tuple[float, np.ndarray]:
@@ -149,7 +167,15 @@ def _simulate_case(args: argparse.Namespace, k: float, n: int, B: int, seed: int
         z_samples = np.asarray(loc_student.get_benchmark_mle_samples(key_mle, params, num_simulations=B, verbose=False), dtype=float)
         if args.cache_mle_samples:
             path.parent.mkdir(parents=True, exist_ok=True)
-            np.savez(path, z_samples=z_samples, k=np.float64(k), n=np.int64(n), B=np.int64(B), seed=np.int64(seed))
+            np.savez(
+                path,
+                z_samples=z_samples,
+                k=np.float64(k),
+                n=np.int64(n),
+                B=np.int64(B),
+                seed=np.int64(seed),
+                mle_convention=np.asarray(STUDENT_MLE_CONVENTION),
+            )
 
     key = random.PRNGKey(seed)
     key, key_obs, _ = random.split(key, 3)
@@ -159,7 +185,10 @@ def _simulate_case(args: argparse.Namespace, k: float, n: int, B: int, seed: int
 
 
 def _emit_raw(args: argparse.Namespace, done: set[tuple[str, ...]], k: float, n: int, seed: int, B: int, mu_star: float, z_samples: np.ndarray) -> None:
-    key = (str(k), str(n), str(seed), str(B), "raw_weighted_mc", "none", "", "")
+    key = (
+        str(k), str(n), str(seed), str(B), STUDENT_MLE_CONVENTION,
+        "raw_weighted_mc", "none", "", "",
+    )
     if key in done:
         return
     start = time.time()
@@ -194,7 +223,10 @@ def _emit_kde_rows(args: argparse.Namespace, done: set[tuple[str, ...]], k: floa
 
     for n_grid in args.n_grid_values:
         for bound_multiplier in args.bound_multipliers:
-            key = (str(k), str(n), str(seed), str(B), "kde_grid", backend_name, str(n_grid), str(bound_multiplier))
+            key = (
+                str(k), str(n), str(seed), str(B), STUDENT_MLE_CONVENTION,
+                "kde_grid", backend_name, str(n_grid), str(bound_multiplier),
+            )
             if key in done:
                 continue
             start = time.time()
@@ -221,7 +253,10 @@ def _emit_kde_rows(args: argparse.Namespace, done: set[tuple[str, ...]], k: floa
             _append_row(args.out_csv, row)
 
     if args.use_quad:
-        key = (str(k), str(n), str(seed), str(B), "kde_quad", backend_name, "", "")
+        key = (
+            str(k), str(n), str(seed), str(B), STUDENT_MLE_CONVENTION,
+            "kde_quad", backend_name, "", "",
+        )
         if key not in done:
             start = time.time()
             moments = kde_quad_posterior_moments(
@@ -247,7 +282,10 @@ def _emit_kde_rows(args: argparse.Namespace, done: set[tuple[str, ...]], k: floa
             _append_row(args.out_csv, row)
 
     if args.include_gaussian_analytic_check and backend_name.lower() in {"scott", "silverman"}:
-        key = (str(k), str(n), str(seed), str(B), "gaussian_kde_analytic", backend_name, "", "")
+        key = (
+            str(k), str(n), str(seed), str(B), STUDENT_MLE_CONVENTION,
+            "gaussian_kde_analytic", backend_name, "", "",
+        )
         if key not in done:
             start = time.time()
             moments = gaussian_kde_gaussian_prior_moments(backend, mu_star, args.prior_mean, args.prior_std)
@@ -271,6 +309,7 @@ def main() -> None:
     args = parse_args()
     if args.overwrite and args.out_csv.exists():
         args.out_csv.unlink()
+    _require_current_output_schema(args.out_csv)
     done = _completed(args.out_csv)
     for k in args.k_values:
         for n in args.n_values:

@@ -1,0 +1,52 @@
+{
+  "counts": {
+    "blocks": 12000,
+    "accepted": 9475,
+    "mu_accepts": 9496,
+    "score_pairs": 48000,
+    "score_accepts": 30049,
+    "proposal_sampling_attempts": 69641,
+    "branch_changes_proposed": 33329,
+    "branch_changes_accepted": 25634,
+    "selector_calls": 1,
+    "selector_fallbacks": 0,
+    "nonpositive_curvature": 312,
+    "cheap_metropolis": 2174,
+    "global_selection": 39,
+    "n3_fast_attempts": 9514,
+    "n3_fast_accepts": 9475,
+    "n3_fast_rejects": 39,
+    "n3_fast_fallbacks": 0
+  },
+  "seconds": 0.5193414236418903,
+  "times": {
+    "proposal": 0.09580354299396276,
+    "selector": 0.0,
+    "n3_fast": 0.06865425035357475
+  },
+  "seed": 2026111281,
+  "score_seed": 617907696,
+  "target": "selected_global_student_location_mle",
+  "proposal": "random_scan_regular_score_pair_power",
+  "block_length": 4,
+  "max_score_residual": 4.107825191113079e-15,
+  "max_selected_mle_residual": 1e-10,
+  "max_inverse_score_error": 5.551115123125783e-17,
+  "proposal_records": [],
+  "known_scale": 1.0,
+  "mle_check": "auto",
+  "endpoint_methods": {
+    "n3_bracket": 9475,
+    "selector": 2525
+  },
+  "n3_endpoint_fast_path": true,
+  "n3_fast_reasons": {
+    "bracket": 9475,
+    "root_interval_disjoint": 39
+  },
+  "selected_mle_residual_kind": "certified upper bound on fast states; computed estimate otherwise",
+  "numerical_policy": "no artificial score/Jacobian/proposal cutoffs; unresolved computation raises; unfloored parameter MH uniform",
+  "loop_seconds": 0.5190014648251235,
+  "raw_path": "tmp/location_only_performance_20261012/student_centered_n3_block_chain1.npz",
+  "sha256": "7409e9957ac225626a75e795b5c14b91c8fcf12ccc8660ab762201a517aae457"
+}

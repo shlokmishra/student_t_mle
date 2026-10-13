@@ -1,0 +1,23 @@
+........................................................................ [ 17%]
+........................................................................ [ 35%]
+........................................................................ [ 53%]
+........................................................................ [ 71%]
+........................................................................ [ 89%]
+...........................................                              [100%]
+============================= slowest 15 durations =============================
+34.80s call     tests/test_kde_reference_moments.py::test_raw_weighted_posterior_moments_manual
+22.08s call     tests/test_laplace_facet_rattle.py::test_laplace_facet_rattle_even_n_raises
+11.18s call     tests/test_model_layout.py::test_import_order_and_private_compiled_helpers[False]
+6.90s call     tests/test_laplace_facet_rattle.py::test_laplace_facet_rattle_preserves_fixed_median_facet
+3.71s call     tests/test_laplace_reference_targets.py::test_laplace_odd_n_reference_uses_scalar_median_kde_target
+2.65s call     tests/test_student_higher_n_geometry.py::test_fold_adjacency_by_independent_strict_linear_program[5]
+2.28s call     tests/test_student_mle_transitions.py::test_endpoint_global_mle_diagnostic_does_not_shadow_score_function
+2.24s call     tests/test_student_higher_n_geometry.py::test_fold_adjacency_by_independent_strict_linear_program[4]
+2.14s call     tests/test_student_global_mle_audit.py::test_global_selector_rejects_a_non_global_wide_brent_root
+1.96s call     tests/test_model_layout.py::test_import_order_and_private_compiled_helpers[True]
+0.69s call     tests/test_laplace_facet_rattle.py::test_laplace_facet_rattle_smoke_matches_gibbs_roughly
+0.67s call     tests/test_kde_reference_moments.py::test_numba_student_kernels_match_logsumexp_reference
+0.64s call     tests/test_model_layout.py::test_layout_bodies_and_explicit_scientific_revisions
+0.50s call     tests/test_student_selected_mle_gibbs.py::test_chain_constraint_selected_mle_and_reproducibility[10-1.25-1.0]
+0.49s call     tests/test_location_correctness.py::test_logistic_curved_phase_canonical_volume
+403 passed in 637.11s (0:10:37)

@@ -1,0 +1,11 @@
+{
+  "models/loc_affine.py": "7fc25c320be528adae27d20e9c59cf15f094312b19b4bead2303426d925234c8",
+  "models/student_location_mle.py": "577cac596f05aa30a39e503db65f36b0efffb652ff29b5185c6004617c436b20",
+  "models/loc_student.py": "1e0028f746669885186eadfe0de5d29763d9794f1e975f4a91eb0784063e1346",
+  "models/loc_student_rattle.py": "69ed64948759d0b564f62a0fa254c8760aabf2537a446104237cf2093cc65b9b",
+  "kde_ref/moments.py": "13eaed832f46c6465fb28f6a592afe65b8b0a912d3fd0cd877d434b0764bae78",
+  "kde_ref/posterior.py": "026d0679abf668e96f2ae9544a1b7619d5f0c9ff39917fd01cb70dd720f9d133",
+  "kde_ref/reference_adapter.py": "9a8bc82a9a11b3512826e4c5cf72986f5462755c23777f5e9d36e79abbc5f92d",
+  "scripts/selected_mle_reference_oracle.py": "618ba1099da2a0c13d3f945236a5aa16242e5f633921eb5cd29e8e7cbb351cc5",
+  "scripts/validate_selected_mle_reference.py": "dd5e2063847d37fcc52c7cbc448283ad4a22e387482ee52d051739bea893998e"
+}

@@ -1,0 +1,65 @@
+{
+  "python": "3.13.5 (main, Apr  2 2026, 12:03:47) [GCC 14.3.0]",
+  "preexisting_files_checked": 528,
+  "changed_or_missing_preexisting_files": [],
+  "phase_source_hashes_match_final": {
+    "references": true,
+    "chains": true,
+    "analyze": true,
+    "benchmark": true
+  },
+  "phase_exit_codes": {
+    "references": 0,
+    "chains": 0,
+    "analyze": 0,
+    "benchmark": 0
+  },
+  "focused_pytest": {
+    "exit_code": 0,
+    "passed": 93,
+    "seconds": 20.87,
+    "initial_fixture_failures": 2,
+    "final_timeouts": 0,
+    "collection_failures": 0
+  },
+  "numerical_chain_failures": 0,
+  "independent_oracle_checks": 192,
+  "oracle_errors": [],
+  "max_oracle_location_error": 8.881784197001252e-16,
+  "invariants": {
+    "initial_score_residual": 2.88953431494543e-16,
+    "max_score_drift": 1.7845100397373415e-14,
+    "max_score_residual": 1.81481077995288e-14,
+    "max_selected_mle_residual": 3.0597746558669314e-13,
+    "max_inverse_score_error": 6.938893903907228e-17
+  },
+  "min_retained_curvature": 0.022864542123078247,
+  "counts": {
+    "pair_attempts": 528000,
+    "pair_accepts": 322295,
+    "global_selection_rejects": 1830,
+    "selector_fallbacks": 43,
+    "mu_accepts": 101917,
+    "accepted_branch_changes": 229830
+  },
+  "cases": [
+    {
+      "id": "centered_n3",
+      "passes_declared_central_and_latent_screens": true,
+      "unscreened_metrics": []
+    },
+    {
+      "id": "centered_n10",
+      "passes_declared_central_and_latent_screens": true,
+      "unscreened_metrics": []
+    },
+    {
+      "id": "shifted_n10",
+      "passes_declared_central_and_latent_screens": true,
+      "unscreened_metrics": [
+        "upper_tail"
+      ]
+    }
+  ],
+  "manifest_sha256": "2218b99c387a77863360889d3c68aa3642cad34adbfff51d1a8d65be5e450a0c"
+}

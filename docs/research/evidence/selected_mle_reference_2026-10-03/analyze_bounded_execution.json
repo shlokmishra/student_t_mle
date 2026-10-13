@@ -1,0 +1,16 @@
+{
+  "exit_code": 0,
+  "status": "completed",
+  "command": [
+    ".venv/bin/python",
+    "-u",
+    "scripts/validate_selected_mle_reference.py",
+    "--config",
+    "docs/research/evidence/selected_mle_reference_2026-10-03/config.json",
+    "--phase",
+    "analyze"
+  ],
+  "elapsed_seconds": 732.2620247760788,
+  "timeout_seconds": 1200,
+  "reason": "Repeat analysis only after individual exact latent check stalled; all simulations and frozen criteria unchanged"
+}

@@ -1,16 +1,24 @@
-# Location models: Student, Laplace, Logistic.
-# Each module provides get_mle, sample_data, get_benchmark_mle_samples, run_gibbs.
+"""Models grouped by inferred parameter and distribution family.
 
-from . import loc_student
-from . import loc_student_rattle
-from . import loc_laplace
-from . import loc_logistic
-from . import loc_logistic_rattle
+Use ``models.loc`` and ``models.loc_scale`` for new code. Historical flat names
+remain lazy aliases to the same modules. See ``models/README.md`` for targets.
+"""
 
-__all__ = [
-    "loc_student",
-    "loc_student_rattle",
-    "loc_laplace",
-    "loc_logistic",
-    "loc_logistic_rattle",
-]
+from importlib import import_module
+from ._compat import LEGACY_MODULES, install_aliases
+
+install_aliases()
+
+__all__ = ["loc", "loc_scale", "scale", "shared", "model_registry"]
+
+
+def __getattr__(name):
+    if name in __all__:
+        module = import_module("models." + name)
+        globals()[name] = module
+        return module
+    if name in LEGACY_MODULES:
+        module = import_module("models." + LEGACY_MODULES[name])
+        globals()[name] = module
+        return module
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

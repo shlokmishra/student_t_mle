@@ -1,0 +1,110 @@
+{
+  "README.md": {
+    "bytes": 7536,
+    "sha256": "c39105373256c597038e08a2e8413fa24d5be782cb3b5e1eb40aeee9b57e0ea3"
+  },
+  "docs/paper/paper.tex": {
+    "bytes": 36660,
+    "sha256": "f1d572321a78034b46b4fe465f633bbf60d2b725591a71d8efb2842ebd330ba5"
+  },
+  "docs/research/evidence/location_review_handoff_2026-10-12/README.md": {
+    "bytes": 3695,
+    "sha256": "e27bb2579d6e684778d7dade8ac12660b6cc6874a0f3197ce1ae16826d1de6e7"
+  },
+  "docs/research/evidence/location_review_handoff_2026-10-12/checkpoint.json": {
+    "bytes": 508,
+    "sha256": "8fee50bb444e7e5bc82493794e4bd237011fb7458286654b9ba4250f9d41acf3"
+  },
+  "docs/research/evidence/location_review_handoff_2026-10-12/documents_before.tar.gz": {
+    "bytes": 25907,
+    "sha256": "56e53e43924cf963f99ca78e30c2d8bbddb1da73c57e3a28e78d2b537c6e55ee"
+  },
+  "docs/research/evidence/location_review_handoff_2026-10-12/figures/centered_n10.pdf": {
+    "bytes": 420265,
+    "sha256": "74519d0636b3165f2532daeaa24818da1165b4e1c22cf55dd150773df597ab35"
+  },
+  "docs/research/evidence/location_review_handoff_2026-10-12/figures/centered_n10.png": {
+    "bytes": 518597,
+    "sha256": "5442ff80aff5167992af4149d67960d07234ad7c2098dcd8549ad940a22048b4"
+  },
+  "docs/research/evidence/location_review_handoff_2026-10-12/figures/provenance.json": {
+    "bytes": 13283,
+    "sha256": "e9bbe5d11f105bbad37e7beb4b24234f81d387b0a0aab63323193f25598b56ce"
+  },
+  "docs/research/evidence/location_review_handoff_2026-10-12/figures/shifted_n10.pdf": {
+    "bytes": 475884,
+    "sha256": "2806b6d86463c7ac8ad8ff364b00e8a4a02e3fbaf20f41e1a98ef1b40441f1c4"
+  },
+  "docs/research/evidence/location_review_handoff_2026-10-12/figures/shifted_n10.png": {
+    "bytes": 568037,
+    "sha256": "6327ce144d6c368ecf3a3aa7c6f8580ba6945c5d3c3d1db25a68ba033f13bf3b"
+  },
+  "docs/research/evidence/location_review_handoff_2026-10-12/git_status_before.txt": {
+    "bytes": 8275,
+    "sha256": "2b458140dca096d8cb59e7a8a6e66ad3467c7bf71ee59aca8efa97b7aeacb98c"
+  },
+  "docs/research/evidence/location_review_handoff_2026-10-12/handoff_inventory.csv": {
+    "bytes": 480851,
+    "sha256": "1e19c793787084d927820b6debd0525118367d04070fe164ea1a8e0829e268f1"
+  },
+  "docs/research/evidence/location_review_handoff_2026-10-12/protected_before.json": {
+    "bytes": 353330,
+    "sha256": "e3501101d32931c299c033fa9a6460567f391ca735675a16525289190ea23201"
+  },
+  "docs/research/evidence/location_review_handoff_2026-10-12/validation/components-help.txt": {
+    "bytes": 302,
+    "sha256": "26afb0e4ef969db6d10e04faf1051640302c1d2ded06cabdd0bcc61f90166361"
+  },
+  "docs/research/evidence/location_review_handoff_2026-10-12/validation/example.txt": {
+    "bytes": 480,
+    "sha256": "072991865bce0f10ef037c27cced2a5819f19603a2f1754f16cd3b894bb4ac4c"
+  },
+  "docs/research/evidence/location_review_handoff_2026-10-12/validation/pytest.txt": {
+    "bytes": 2188,
+    "sha256": "03d9cff5aa630e3031a27fbfd32d844c9d6ae6f764d0827c51a08140fc733fd6"
+  },
+  "docs/research/evidence/location_review_handoff_2026-10-12/validation/pytest.xml": {
+    "bytes": 57217,
+    "sha256": "739a8cd130ab68f03f9a4f08052afbb41d8416ec5f906b9d7e8b738c84b7ec2a"
+  },
+  "docs/research/evidence/location_review_handoff_2026-10-12/validation/reference-help.txt": {
+    "bytes": 541,
+    "sha256": "393fc4de88ffd742d17f44ff3a213924c5c2fa0daf680efaba3bc347b82730b9"
+  },
+  "docs/research/evidence/location_review_handoff_2026-10-12/validation/selected-example.txt": {
+    "bytes": 702,
+    "sha256": "929e9d4b2f428778298825d4ab51656da9c8ff0218eed6c04e341d430a183bdb"
+  },
+  "docs/research/evidence/location_review_handoff_2026-10-12/validation/selected-gibbs-help.txt": {
+    "bytes": 291,
+    "sha256": "1f50533ca7ba85d2f0f697566ec537285c12c9da00852b30b47347287c16f7f7"
+  },
+  "docs/research/evidence/location_review_handoff_2026-10-12/validation/validation.json": {
+    "bytes": 2409,
+    "sha256": "acddfd8378c8e1ac947661ad88cced173c11d48aecc0589e999f483928e12553"
+  },
+  "docs/research/evidence/location_review_handoff_2026-10-12/verification.json": {
+    "bytes": 4303,
+    "sha256": "ab600e77d8971b4969c758d481dcd7845b07c4df84191f1f8a1fea2ec24bf0dc"
+  },
+  "docs/research/location_only_meeting_brief.md": {
+    "bytes": 24045,
+    "sha256": "1bd9a1c377610e8f45e178b48633a1c887f5ab5f895980bd75021753e3ac6314"
+  },
+  "kde_ref/README.md": {
+    "bytes": 3118,
+    "sha256": "f45a934df5952b5550d64e48a83a56424b93b88c4f2fbd82d08ed79360cd42aa"
+  },
+  "models/README.md": {
+    "bytes": 5651,
+    "sha256": "97761568629bbdb312e806113f25139d4162bcbdd1c1c14612ec1653fffed329"
+  },
+  "scripts/README.md": {
+    "bytes": 3013,
+    "sha256": "a9d253c51434bce70e5ad7c7083e33b1313282a09ebecbaebfcc0c13329f7f07"
+  },
+  "scripts/build_location_review_figures.py": {
+    "bytes": 6541,
+    "sha256": "9ce7436f4cbfae283abedd2782986ea32ff4215f9b2d1f8a9e1c2c3f273c600d"
+  }
+}

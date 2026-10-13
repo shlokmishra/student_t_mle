@@ -1,0 +1,54 @@
+{
+  "data": [
+    -0.0078,
+    -0.0078,
+    0.0078,
+    0.0078,
+    100000000000000.0,
+    100000000000000.0,
+    100000000000000.0,
+    100000000000000.02
+  ],
+  "k": 1.0,
+  "independent_oracle": {
+    "selected": 100000000000000.0,
+    "loglik": -257.88971351102333,
+    "roots": [
+      9.989394932156602e-15,
+      50000000000000.0,
+      100000000000000.0
+    ],
+    "multiplicities": [
+      1,
+      1,
+      1
+    ],
+    "winner_index": 2,
+    "selection_status": "unique_global_bound",
+    "root_digits": 16,
+    "selected_interval": [
+      "276062205067541710782692625113/2760622050675417",
+      "58018993370700702266159439615/580189933707007"
+    ]
+  },
+  "default": {
+    "error": "Student location MLE [output_precision]: a float cannot represent this root within absolute location_tol=2e-13",
+    "reason": "output_precision",
+    "location_tol": 2e-13,
+    "seconds": 0.3696378089953214
+  },
+  "representable": {
+    "selected": 100000000000000.0,
+    "diagnostics": {
+      "method": "exact_rational_bounds",
+      "exact_tie": false,
+      "root_count": 3,
+      "digits": 16,
+      "absolute_error_bound": 0.003905892377580231,
+      "fallback": true,
+      "fallback_reason": "substantial data loss during standardization"
+    },
+    "location_tol": 0.01,
+    "seconds": 0.016422848915681243
+  }
+}

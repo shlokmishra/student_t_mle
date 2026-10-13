@@ -1,0 +1,18 @@
+{
+  "target": "selected_laplace_midpoint_median",
+  "estimator": "odd_middle_even_midpoint",
+  "kernel": "exact_latent_conditionals_parameter_mh",
+  "counts": {
+    "updates": 12000,
+    "mu_accepts": 8608,
+    "label_permutations": 12000,
+    "accepted": 12000
+  },
+  "max_selected_mle_residual": 2.220446049250313e-16,
+  "seed": 2026112180,
+  "seconds": 0.32142625702545047,
+  "loop_seconds": 0.3212497951462865,
+  "raw_path": "tmp/location_only_performance_20261012/laplace_shifted_n4_gibbs_chain0.npz",
+  "sha256": "3855a01606c1c4708be2b52a72f7846d0fac1d038b18240fc6a3790fe426980e",
+  "acceptance_kind": "exact conditional updates"
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "case": "centered_n3",
+    "uncertainty": "new whole-particle bootstrap",
+    "base_source": "fresh_n3.npz"
+  },
+  {
+    "case": "centered_n10",
+    "uncertainty": "new whole-particle bootstrap",
+    "base_source": "validated shifted standardized banks, reweighted for centered prior"
+  },
+  {
+    "case": "shifted_n10",
+    "source": "docs/research/evidence/shifted_student_followup_2026-10-10/weighted_reference.json",
+    "source_sha256": "8522681575f0cd36f25e4e16c2902a16b5c6b2b3caa1d02dafc427e3d36ba9eb",
+    "uncertainty": "carried forward unchanged; raw hashes and every summary checked"
+  }
+]

@@ -1,0 +1,15 @@
+{
+  "target": "selected_laplace_midpoint_median",
+  "estimator": "odd_middle_even_midpoint",
+  "kernel": "exact_latent_conditionals_parameter_mh",
+  "counts": {
+    "updates": 512,
+    "mu_accepts": 351,
+    "label_permutations": 512
+  },
+  "max_selected_mle_residual": 1.1102230246251565e-16,
+  "seed": 2026102308,
+  "seconds": 0.01475547207519412,
+  "reference_index": 801,
+  "raw_sha256": "d8f0d9ad00070ce4262268917e81e068afd6d5ccae5b0c1e7b3ff51ce671674b"
+}

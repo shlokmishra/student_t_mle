@@ -1,0 +1,15 @@
+{
+  "authorized_existing_edits": [
+    "README.md",
+    "models/README.md",
+    "scripts/README.md",
+    "kde_ref/README.md",
+    "docs/paper/paper.tex",
+    "docs/research/location_only_meeting_brief.md"
+  ],
+  "protected_files": 1824,
+  "protected_bytes": 361257653,
+  "head": "b4f66744158d6517e1cb5bfb628f770eb1ead743",
+  "index_sha256": "5434d107723c0237ea2c0122dde74efafbec86daf65e303f819c6a04480c9aac",
+  "document_snapshot_sha256": "56e53e43924cf963f99ca78e30c2d8bbddb1da73c57e3a28e78d2b537c6e55ee"
+}

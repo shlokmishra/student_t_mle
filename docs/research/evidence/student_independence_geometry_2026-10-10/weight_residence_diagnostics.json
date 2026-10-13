@@ -1,0 +1,32 @@
+[
+  {
+    "case": "centered_n10",
+    "bands": [
+      {
+        "band": "weight>=0.5",
+        "current_states": 27999,
+        "acceptance": 0.9852494731954713
+      },
+      {
+        "band": "weight<0.01",
+        "current_states": 0,
+        "acceptance": null
+      }
+    ]
+  },
+  {
+    "case": "shifted_n10",
+    "bands": [
+      {
+        "band": "weight>=0.5",
+        "current_states": 2847,
+        "acceptance": 0.030558482613277135
+      },
+      {
+        "band": "weight<0.01",
+        "current_states": 2273,
+        "acceptance": 0.61460624725033
+      }
+    ]
+  }
+]

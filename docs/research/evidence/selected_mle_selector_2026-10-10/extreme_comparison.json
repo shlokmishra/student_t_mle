@@ -1,0 +1,89 @@
+[
+  {
+    "data": [
+      0.0,
+      1.0,
+      1e+200
+    ],
+    "k": 2.0,
+    "original": {
+      "error": "Student global-MLE certification exceeded its interval budget",
+      "type": "RuntimeError",
+      "seconds": 0.07231667404994369
+    },
+    "corrected": {
+      "error": "Student location MLE [dynamic_range]: general samples with standardized magnitudes above 1e50 are unsupported; no search attempted",
+      "type": "StudentMLEError",
+      "seconds": 0.00010132999159395695
+    }
+  },
+  {
+    "data": [
+      -1e+200,
+      1e+200
+    ],
+    "k": 2.0,
+    "original": {
+      "error": "nonfinite result",
+      "seconds": 0.00011044996790587902
+    },
+    "corrected": {
+      "selected": -1e+200,
+      "score_residual": 5e-201,
+      "loglik": -1382.5907765672673,
+      "diagnostics": {
+        "method": "exact_two_point",
+        "fallback": false,
+        "absolute_error_bound": 8.673617379884035e-19,
+        "exact_tie": true
+      },
+      "seconds": 0.00020114006474614143
+    }
+  },
+  {
+    "data": [
+      0.0,
+      1099511627776.0
+    ],
+    "k": 2.0,
+    "original": {
+      "selected": 0.0,
+      "score_residual": 9.094947017729282e-13,
+      "loglik": -82.13794089635351,
+      "diagnostics": {},
+      "seconds": 0.0001002950593829155
+    },
+    "corrected": {
+      "selected": 1.8189898372267255e-12,
+      "score_residual": 2.168404344971009e-19,
+      "loglik": -82.13794089635351,
+      "diagnostics": {
+        "method": "exact_two_point",
+        "fallback": false,
+        "absolute_error_bound": 4.336808689942018e-19,
+        "exact_tie": true
+      },
+      "seconds": 0.00010120798833668232
+    }
+  },
+  {
+    "data": [
+      1099511627776.0,
+      1099511627776.25,
+      1099511627777.5
+    ],
+    "k": 2.0,
+    "original": {
+      "selected": 1099511627776.489,
+      "score_residual": 5.0339071387461853e-05,
+      "loglik": -0.8308622593388266,
+      "diagnostics": {},
+      "seconds": 9.715510532259941e-05
+    },
+    "corrected": {
+      "error": "Student location MLE [output_precision]: a float cannot represent this root within absolute location_tol=2e-13",
+      "type": "StudentMLEError",
+      "seconds": 0.0027895511593669653
+    }
+  }
+]

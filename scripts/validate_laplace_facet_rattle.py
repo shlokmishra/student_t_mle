@@ -15,7 +15,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from models import loc_laplace, loc_laplace_rattle
+from models.loc.laplace import median_gibbs as loc_laplace
+from models.loc.laplace import facet_rattle as loc_laplace_rattle
 from reporting.diagnostics.audit_reference_all_models import laplace_odd_median_reference
 
 

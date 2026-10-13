@@ -1,0 +1,7 @@
+{
+  "python": "3.13.5 (main, Apr  2 2026, 12:03:47) [GCC 14.3.0]",
+  "dependency_directory": "/tmp/student-mle-oracle-deps-20261003",
+  "threads": 1,
+  "randomness": "none",
+  "top_level_imports_excluded_from_driver_seconds": true
+}

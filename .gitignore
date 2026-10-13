@@ -16,6 +16,7 @@ __pycache__/
 *.snm
 *.toc
 *.tar.gz
+!docs/checkpoints/2026-10-12-model-layout/source_before.tar.gz
 .DS_Store
 .cursor/rules/
 reporting/diagnostic_outputs/kde_reference_audit/mle_sample_cache/
@@ -24,3 +25,5 @@ data/
 reporting/diagnostic_outputs/
 models/artifacts/
 _archive_repo_cleanup_*/
+!docs/research/evidence/location_only_correctness_2026-10-12/source_before.tar.gz
+!docs/research/evidence/location_only_correctness_2026-10-12/*.log

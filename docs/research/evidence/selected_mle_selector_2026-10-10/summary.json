@@ -1,0 +1,46 @@
+{
+  "ordinary": {
+    "original": {
+      "draws": 96,
+      "failures": 0,
+      "max_location_error": 1.5074053116848063e-13,
+      "max_loglik_gap": 1.7763568394002505e-15,
+      "max_score_residual": 3.139016824249552e-13,
+      "exact_fallbacks": 0,
+      "root_enumeration_failures": 0,
+      "missing_roots_among_successful_enumerations": 0
+    },
+    "corrected": {
+      "draws": 96,
+      "failures": 0,
+      "max_location_error": 4.440892098500626e-16,
+      "max_loglik_gap": 1.7763568394002505e-15,
+      "max_score_residual": 4.3021142204224816e-16,
+      "exact_fallbacks": 0,
+      "root_enumeration_failures": 0,
+      "missing_roots_among_successful_enumerations": 0
+    }
+  },
+  "adversarial": {
+    "original": {
+      "draws": 61,
+      "failures": 0,
+      "max_location_error": 7.483314773541884,
+      "max_loglik_gap": 5.000003966415534e-09,
+      "max_score_residual": 9.999999901833337e-05,
+      "exact_fallbacks": 0,
+      "root_enumeration_failures": 0,
+      "missing_roots_among_successful_enumerations": 34
+    },
+    "corrected": {
+      "draws": 61,
+      "failures": 0,
+      "max_location_error": 2.220446049250313e-16,
+      "max_loglik_gap": 7.105427357601002e-15,
+      "max_score_residual": 1.1102230246251565e-15,
+      "exact_fallbacks": 9,
+      "root_enumeration_failures": 4,
+      "missing_roots_among_successful_enumerations": 0
+    }
+  }
+}

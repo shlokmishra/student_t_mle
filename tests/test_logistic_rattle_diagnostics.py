@@ -2,7 +2,7 @@ import numpy as np
 import jax.random as random
 
 from diagnostics.cost_ledger import CostLedger
-from models import loc_logistic_rattle
+from models.loc.logistic import score_rattle as loc_logistic_rattle
 
 
 def _tangent_momentum(x, p, mu_star):

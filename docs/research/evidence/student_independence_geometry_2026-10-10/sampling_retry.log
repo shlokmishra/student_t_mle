@@ -1,0 +1,20 @@
+chain centered_n10_independence_chain0 0.959 7874
+chain centered_n10_block16_chain0 1.102 6862
+chain centered_n10_block16_chain1 1.457 6923
+chain centered_n10_independence_chain1 0.797 7877
+chain centered_n10_independence_chain2 0.846 7876
+chain centered_n10_block16_chain2 1.02 6908
+chain centered_n10_block16_chain3 1.017 6886
+chain centered_n10_independence_chain3 0.791 7905
+summary centered_n10 independence 0.985375 {'mu': {'rhat': 1.0000777590275705, 'ess_bulk': 27786.438703818956, 'ess_tail': 27475.236428253545, 'ess_raw': 27810.050615762444}, 'maximum': {'rhat': 1.0000541556200482, 'ess_bulk': 26946.3896749912, 'ess_tail': 26829.10671842228, 'ess_raw': 27079.736306019866}, 'tail6': {'rhat': 0.9999828271551524, 'ess_bulk': 26920.406830720534, 'ess_tail': 26920.406830720534, 'ess_raw': 26920.406830720534}} True True
+summary centered_n10 block16 0.86184375 {'mu': {'rhat': 1.0017063350415296, 'ess_bulk': 3254.880689483371, 'ess_tail': 3762.3545938986285, 'ess_raw': 3146.840939150702}, 'maximum': {'rhat': 0.9999969817268007, 'ess_bulk': 16845.101586269728, 'ess_tail': 15220.888152425685, 'ess_raw': 17059.63271845948}, 'tail6': {'rhat': 0.9999493727879923, 'ess_bulk': 17308.013394567563, 'ess_tail': 17308.01339456759, 'ess_raw': 17308.01339456759}} True True
+chain shifted_n10_independence_chain0 0.814 1595
+chain shifted_n10_block16_chain0 1.003 6562
+chain shifted_n10_block16_chain1 1.012 6655
+chain shifted_n10_independence_chain1 0.881 1642
+chain shifted_n10_independence_chain2 0.913 1540
+chain shifted_n10_block16_chain2 1.104 6683
+chain shifted_n10_block16_chain3 1.049 6611
+chain shifted_n10_independence_chain3 0.798 1724
+summary shifted_n10 independence 0.20315625 {'mu': {'rhat': 1.0076628679508823, 'ess_bulk': 835.0045148248382, 'ess_tail': 523.4677314402887, 'ess_raw': 693.2315587999781}, 'maximum': {'rhat': 1.0022202661459914, 'ess_bulk': 1435.1781916454804, 'ess_tail': 1069.0840326036823, 'ess_raw': 1720.7762447239504}, 'tail6': {'rhat': 1.0017978018954146, 'ess_bulk': 1256.3191089653417, 'ess_tail': 1256.3191089653421, 'ess_raw': 1256.3191089653421}} True True
+summary shifted_n10 block16 0.82846875 {'mu': {'rhat': 1.0025290707250736, 'ess_bulk': 2755.632743318077, 'ess_tail': 3610.82148751262, 'ess_raw': 2606.715736825672}, 'maximum': {'rhat': 1.0000037415696184, 'ess_bulk': 11897.961975487096, 'ess_tail': 13314.59562124755, 'ess_raw': 18093.585999915045}, 'tail6': {'rhat': 0.9999115660776501, 'ess_bulk': 14473.371473839423, 'ess_tail': 14473.37147383943, 'ess_raw': 14473.37147383943}} True True

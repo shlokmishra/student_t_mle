@@ -23,12 +23,13 @@ from kde_ref.moments import (
     raw_weighted_posterior_moments,
 )
 from kde_ref.posterior import build_likelihood_kde_backend, get_normalized_posterior_pdf
-from models import loc_student
+from models.loc.student import score_gibbs as loc_student
 
 
 DEFAULT_AUDIT_DIR = Path("reporting/diagnostic_outputs/kde_reference_audit")
 DEFAULT_STEP1_CSV = DEFAULT_AUDIT_DIR / "step1_k2_n10_20_50.csv"
 DEFAULT_BACKENDS = ("scott", "SJ_transform", "t_abram")
+STUDENT_MLE_CACHE_VERSION = "selected_global_v1"
 
 
 def _as_list(values: Iterable[int | float | str] | int | float | str) -> list:
@@ -53,6 +54,15 @@ def _read_csvs(paths: Sequence[Path]) -> pd.DataFrame:
     if not frames:
         return pd.DataFrame()
     return pd.concat(frames, ignore_index=True)
+
+
+def _current_student_reference_rows(df: pd.DataFrame) -> pd.DataFrame:
+    """Exclude legacy score-root reference rows from corrected workflows."""
+    if df.empty or "mle_convention" not in df.columns:
+        return df.iloc[0:0].copy()
+    return df[
+        df["mle_convention"].fillna("").astype(str).eq(STUDENT_MLE_CACHE_VERSION)
+    ].copy()
 
 
 def discover_audit_csvs(audit_dir: Path = DEFAULT_AUDIT_DIR) -> list[Path]:
@@ -117,7 +127,7 @@ def load_or_run_kde_audit(
     paths = [out_csv] if out_csv.exists() else discover_audit_csvs(out_csv.parent)
     df = _read_csvs(paths)
     matching = filter_reference_summary(
-        df,
+        _current_student_reference_rows(df),
         k_values=k_values,
         n_values=n_values,
         B_values=B_values,
@@ -180,6 +190,7 @@ def common_summary_schema(df: pd.DataFrame) -> pd.DataFrame:
         "n",
         "k",
         "mu_star",
+        "mle_convention",
         "mean",
         "var",
         "sd",
@@ -213,6 +224,7 @@ def common_summary_schema(df: pd.DataFrame) -> pd.DataFrame:
             "n": df["n"],
             "k": df["k"],
             "mu_star": df["mu_star"],
+            "mle_convention": df["mle_convention"],
             "mean": df["posterior_mean"],
             "var": df["posterior_var"],
             "sd": df["posterior_sd"],
@@ -244,7 +256,9 @@ def load_reference_summary(
     """Read audit CSV output and return rows in a common schema."""
     paths = [csv_path] if csv_path is not None else discover_audit_csvs(audit_dir)
     df = _read_csvs([Path(path) for path in paths if path is not None])
-    return common_summary_schema(filter_reference_summary(df, **filters))
+    return common_summary_schema(
+        filter_reference_summary(_current_student_reference_rows(df), **filters)
+    )
 
 
 def mle_sample_cache_path(
@@ -255,7 +269,9 @@ def mle_sample_cache_path(
     seed: int,
     audit_dir: Path = DEFAULT_AUDIT_DIR,
 ) -> Path:
-    return audit_dir / "mle_sample_cache" / f"student_k{float(k)}_n{int(n)}_B{int(B)}_seed{int(seed)}.npz"
+    return audit_dir / "mle_sample_cache" / (
+        f"student_{STUDENT_MLE_CACHE_VERSION}_k{float(k)}_n{int(n)}_B{int(B)}_seed{int(seed)}.npz"
+    )
 
 
 def load_or_simulate_mle_errors(
@@ -288,6 +304,7 @@ def load_or_simulate_mle_errors(
             n=np.int64(n),
             B=np.int64(B),
             seed=np.int64(seed),
+            mle_convention=np.asarray(STUDENT_MLE_CACHE_VERSION),
         )
     return z_samples
 

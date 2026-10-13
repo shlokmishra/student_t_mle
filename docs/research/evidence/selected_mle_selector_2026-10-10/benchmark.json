@@ -1,0 +1,176 @@
+{
+  "config": {
+    "output": "docs/research/evidence/selected_mle_selector_2026-10-10",
+    "baseline": "docs/research/evidence/selected_mle_selector_2026-10-10/student_location_mle_before.py",
+    "location_tol": 2e-13,
+    "timing_repetitions": 3,
+    "oracle_checks_per_group": 32,
+    "ceiling_seconds": 300,
+    "benchmark_groups": [
+      {
+        "k": 2.0,
+        "n": 3,
+        "draws": 128,
+        "seed": 2026101000
+      },
+      {
+        "k": 2.0,
+        "n": 10,
+        "draws": 128,
+        "seed": 2026101001
+      },
+      {
+        "k": 3.0,
+        "n": 10,
+        "draws": 128,
+        "seed": 2026101002
+      },
+      {
+        "k": 1.0,
+        "n": 50,
+        "draws": 128,
+        "seed": 2026101003
+      }
+    ],
+    "question": "Does the corrected selected global MLE agree with independent roots while retaining ordinary simulation throughput?",
+    "criteria": {
+      "ordinary_location_error_max": 2e-13,
+      "ordinary_loglik_gap_max": 1e-10,
+      "ordinary_score_residual_max": 1e-10,
+      "performance": "Report warmed timings and fallback rate; overhead above 25 percent considered material; no tuning to hide failures",
+      "failures": "Preserve unresolved/range/output precision errors; no failed draws silently dropped"
+    }
+  },
+  "warmup": [
+    {
+      "module": "student_mle_before_hardening",
+      "first_call_seconds": 0.24220924894325435
+    },
+    {
+      "module": "models.student_location_mle",
+      "first_call_seconds": 4.350098730996251
+    }
+  ],
+  "timings": [
+    {
+      "group": {
+        "k": 2.0,
+        "n": 3,
+        "draws": 128,
+        "seed": 2026101000
+      },
+      "batch_seconds": {
+        "original": [
+          0.006944646826013923,
+          0.007192065007984638,
+          0.0071235960349440575
+        ],
+        "corrected": [
+          0.006162474863231182,
+          0.007104815915226936,
+          0.006988182896748185
+        ]
+      },
+      "median_seconds": {
+        "original": 0.0071235960349440575,
+        "corrected": 0.006988182896748185
+      },
+      "fallback_count": 0,
+      "failure_count": {
+        "original": 0,
+        "corrected": 0
+      },
+      "failures": []
+    },
+    {
+      "group": {
+        "k": 2.0,
+        "n": 10,
+        "draws": 128,
+        "seed": 2026101001
+      },
+      "batch_seconds": {
+        "original": [
+          0.007928821025416255,
+          0.00916162901557982,
+          0.00928601692430675
+        ],
+        "corrected": [
+          0.007475723046809435,
+          0.008956439094617963,
+          0.00932605005800724
+        ]
+      },
+      "median_seconds": {
+        "original": 0.00916162901557982,
+        "corrected": 0.008956439094617963
+      },
+      "fallback_count": 0,
+      "failure_count": {
+        "original": 0,
+        "corrected": 0
+      },
+      "failures": []
+    },
+    {
+      "group": {
+        "k": 3.0,
+        "n": 10,
+        "draws": 128,
+        "seed": 2026101002
+      },
+      "batch_seconds": {
+        "original": [
+          0.007464902941137552,
+          0.007598192896693945,
+          0.007972935913130641
+        ],
+        "corrected": [
+          0.007722300011664629,
+          0.007678991882130504,
+          0.007271351059898734
+        ]
+      },
+      "median_seconds": {
+        "original": 0.007598192896693945,
+        "corrected": 0.007678991882130504
+      },
+      "fallback_count": 0,
+      "failure_count": {
+        "original": 0,
+        "corrected": 0
+      },
+      "failures": []
+    },
+    {
+      "group": {
+        "k": 1.0,
+        "n": 50,
+        "draws": 128,
+        "seed": 2026101003
+      },
+      "batch_seconds": {
+        "original": [
+          0.025294840103015304,
+          0.02756677707657218,
+          0.025107476161792874
+        ],
+        "corrected": [
+          0.02451614406891167,
+          0.026947588892653584,
+          0.025950274197384715
+        ]
+      },
+      "median_seconds": {
+        "original": 0.025294840103015304,
+        "corrected": 0.025950274197384715
+      },
+      "fallback_count": 0,
+      "failure_count": {
+        "original": 0,
+        "corrected": 0
+      },
+      "failures": []
+    }
+  ]
+}

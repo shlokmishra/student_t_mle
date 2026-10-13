@@ -1,0 +1,15 @@
+{
+  "exit_code": 0,
+  "status": "completed",
+  "command": [
+    ".venv/bin/python",
+    "-u",
+    "scripts/validate_selected_mle_reference.py",
+    "--config",
+    "docs/research/evidence/selected_mle_reference_2026-10-03/config.json",
+    "--phase",
+    "resolve_latent"
+  ],
+  "elapsed_seconds": 45.643355876905844,
+  "timeout_seconds": 180
+}

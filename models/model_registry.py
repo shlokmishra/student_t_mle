@@ -32,8 +32,8 @@ MODEL_REGISTRY: dict[str, ModelSpec] = {
         supports_gibbs=True,
         supports_rattle=True,
         supports_cost_audit=True,
-        mle_type="smooth_score_root",
-        mle_convention="root of sum_i (x_i - mu_hat)/(k + (x_i - mu_hat)^2) = 0; k required",
+        mle_type="selected_global_mle",
+        mle_convention="global Student-t location likelihood maximizer; lower-mu rule only for exact ties; unresolved numerical selection raises; k required",
         constraint_type="smooth_score",
         default_parameters={"k": 2.0, "n": 20, "prior_mean": 0.0, "prior_std": 10.0},
         target_description="Condition on Student-t location score equation at observed mu_star.",
@@ -101,6 +101,14 @@ def model_validity_rows() -> list[dict[str, Any]]:
             rattle_applicable = bool(spec.supports_rattle)
             target_matches_reference = True
             warnings = ""
+            if model in {"student_t", "logistic"}:
+                if method in {"gibbs", "rattle"}:
+                    target_matches_reference = False
+                    warnings = "Legacy score-conditioned comparator; selected-MLE references include an estimator-curvature correction."
+                else:
+                    # These entries describe selected-statistic references, not
+                    # the score target of the legacy comparator kernels.
+                    warnings = "Selected-MLE reference; raw weighted MC is primary and KDE is supplementary."
             if method == "rattle" and not spec.supports_rattle:
                 implementation_exists = False
                 target_defined = False
@@ -114,7 +122,11 @@ def model_validity_rows() -> list[dict[str, Any]]:
                     "k": "1,2,3" if model == "student_t" else "",
                     "method": method,
                     "implementation_exists": implementation_exists,
-                    "target_description": spec.target_description,
+                    "target_description": (
+                        "selected_global_location_mle_equals_mu_star"
+                        if model in {"student_t", "logistic"} and method in {"raw_weighted_mc", "kde"}
+                        else spec.target_description
+                    ),
                     "mle_convention": spec.mle_convention,
                     "target_defined": target_defined,
                     "target_matches_reference": target_matches_reference,
@@ -126,3 +138,20 @@ def model_validity_rows() -> list[dict[str, Any]]:
                 }
             )
     return rows
+
+
+# Selected-statistic APIs are explicit; legacy rows above retain their meanings.
+SELECTED_LOCATION_METHODS = {
+    'student_pair_gibbs': {'module': 'models.loc.student.selected_gibbs', 'entrypoint': 'run_gibbs', 'family': 'student_t', 'target': 'selected_global_student_location_mle', 'status': 'regular_target_with_declared_numerical_limits'},
+    'student_block_gibbs': {'module': 'models.loc.student.selected_block', 'entrypoint': 'run_gibbs', 'family': 'student_t', 'target': 'selected_global_student_location_mle', 'status': 'regular_target_with_declared_numerical_limits'},
+    'student_rattle': {'module': 'models.loc.student.selected_rattle', 'entrypoint': 'run_rattle', 'family': 'student_t', 'target': 'selected_global_student_location_mle', 'status': 'corrected_endpoint; historical_n10_tail_mixing_failed'},
+    'logistic_block_gibbs': {'module': 'models.loc.logistic.selected_gibbs', 'entrypoint': 'run_gibbs', 'family': 'logistic', 'target': 'selected_global_logistic_location_mle', 'status': 'new_correctness_and_smoke_checks_only'},
+    'logistic_rattle': {'module': 'models.loc.logistic.selected_rattle', 'entrypoint': 'run_rattle', 'family': 'logistic', 'target': 'selected_global_logistic_location_mle', 'status': 'new_correctness_and_smoke_checks_only'},
+    'laplace_midpoint_gibbs': {'module': 'models.loc.laplace.selected_gibbs', 'entrypoint': 'run_gibbs', 'family': 'laplace', 'target': 'selected_laplace_midpoint_median', 'status': 'odd_and_even; new_correctness_and_smoke_checks_only'},
+    'laplace_midpoint_facet_hmc': {'module': 'models.loc.laplace.selected_facet_hmc', 'entrypoint': 'run_hmc', 'family': 'laplace', 'target': 'selected_laplace_midpoint_median', 'status': 'reflective_facet_hmc_not_smooth_rattle; new_correctness_and_smoke_checks_only'},
+}
+
+
+def get_selected_location_method(name):
+    """Return explicit selected-target metadata; no implicit legacy substitution."""
+    return dict(SELECTED_LOCATION_METHODS[name])

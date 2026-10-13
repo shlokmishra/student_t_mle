@@ -1,0 +1,1 @@
+"""Known-scale location inference."""

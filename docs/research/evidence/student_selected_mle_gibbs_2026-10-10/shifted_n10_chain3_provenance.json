@@ -1,0 +1,60 @@
+{
+  "x_final": [
+    0.8917568906913642,
+    -0.020083364038670615,
+    2.5562823482390087,
+    0.11910378805347088,
+    2.994208561509158,
+    -1.839858121977751,
+    1.7787617143081595,
+    2.855233472845632,
+    1.0506047223193784,
+    -18.26651153344733
+  ],
+  "store_x_chain": true,
+  "target": "selected_global_student_location_mle",
+  "estimator": "hardened_global_likelihood_maximum_exact_ties_lower",
+  "kernel": "sequential_joint_pair_mh_with_global_indicator_and_curvature",
+  "gibbs_backend": "python_pairs_numba_weights_mu",
+  "seed": 2026101403,
+  "counts": {
+    "pair_attempts": 60000,
+    "pair_accepts": 36197,
+    "global_selection_rejects": 117,
+    "selector_fallbacks": 11,
+    "mu_accepts": 7910,
+    "accepted_branch_changes": 27375
+  },
+  "pair_acceptance_rate": 0.6032833333333333,
+  "mu_acceptance_rate": 0.6591666666666667,
+  "max_score_residual": 1.81481077995288e-14,
+  "max_selected_mle_residual": 3.0597746558669314e-13,
+  "initial_score_residual": 2.88953431494543e-16,
+  "max_score_drift": 1.7845100397373415e-14,
+  "max_inverse_score_error": 6.938893903907228e-17,
+  "min_retained_curvature": 0.05831926518993652,
+  "seconds": 18.986171890050173,
+  "numerical_policy": "open score charts; no Jacobian/curvature floor; unresolved computations raise",
+  "score_tolerance": 1e-10,
+  "mle_tolerance": 1e-10,
+  "known_scale": 1.0,
+  "initial_x": [
+    -10.731704975554145,
+    1.2682950244458544,
+    1.2682950244458544,
+    1.2682950244458544,
+    1.2682950244458544,
+    1.2682950244458544,
+    1.2682950244458544,
+    1.2682950244458544,
+    1.2682950244458544,
+    1.2682950244458544
+  ],
+  "initial_mu": -0.75,
+  "origin": {
+    "type": "negative_outlier12"
+  },
+  "raw_path": "tmp/student_selected_mle_gibbs_20261010/shifted_n10_chain3.npz",
+  "sha256": "513aedfb633e0730feeebb43dd6eae3c3c589cb11d915dc4b2536ab06f3660a3",
+  "failures": 0
+}

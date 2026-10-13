@@ -1,0 +1,42 @@
+[
+  {
+    "case": "central_near_flat_4",
+    "score_at_zero_exact_binary": "-2.131980501604256573862686287284184764687e-21",
+    "curvature_at_zero": "0.00001465216090028956288431234600484533115907",
+    "mpmath_root": "-1.455062168722243614443178979674153006696e-16",
+    "oracle_location_error": "1.5980197332657836503e-17",
+    "best_vs_second_local_max_loglik_gap": "39.61397949196695503095325",
+    "precision_digits": 90,
+    "qualification": "High precision numerical evaluation/refinement for exact binary inputs; not a global root-enumeration certificate."
+  },
+  {
+    "case": "central_near_flat_8",
+    "score_at_zero_exact_binary": "-3.191952131744746214657323902297496842574e-25",
+    "curvature_at_zero": "0.000000001464466216439797370932852669068674119907",
+    "mpmath_root": "-2.179601069599661885937868374189865331357e-16",
+    "oracle_location_error": "1.8119963205726152068e-17",
+    "best_vs_second_local_max_loglik_gap": "76.45531170097817533412425",
+    "precision_digits": 90,
+    "qualification": "High precision numerical evaluation/refinement for exact binary inputs; not a global root-enumeration certificate."
+  },
+  {
+    "case": "inferior_near_tie_4",
+    "score_at_zero_exact_binary": "2.893733636805799487946344322261443966701e-21",
+    "curvature_at_zero": "-0.000006690367554544957289594871262115281868641",
+    "mpmath_root": "0.0038006139701840305523918520096903130021",
+    "oracle_location_error": "1.3655747454765561185e-17",
+    "best_vs_second_local_max_loglik_gap": "9.153159366422946994137201e-12",
+    "precision_digits": 90,
+    "qualification": "High precision numerical evaluation/refinement for exact binary inputs; not a global root-enumeration certificate."
+  },
+  {
+    "case": "inferior_near_tie_6",
+    "score_at_zero_exact_binary": "6.262757380998172964026601255084566270836e-23",
+    "curvature_at_zero": "-0.00000006698646171795499957371724652223210895261",
+    "mpmath_root": "0.0003674253371504601011053899498702093576104",
+    "oracle_location_error": "9.7023470743042481165e-21",
+    "best_vs_second_local_max_loglik_gap": "9.150660334558983247641887e-17",
+    "precision_digits": 90,
+    "qualification": "High precision numerical evaluation/refinement for exact binary inputs; not a global root-enumeration certificate."
+  }
+]

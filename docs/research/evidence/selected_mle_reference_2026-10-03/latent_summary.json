@@ -1,0 +1,8 @@
+{
+  "checks": 300,
+  "initial_timeouts": 55,
+  "remaining_unresolved": 0,
+  "max_selected_mle_residual": 1.8236467115022135e-13,
+  "fast_exact_seconds_total": 0.8207785759586841,
+  "max_production_retained_residual": 1.259096993333486e-13
+}

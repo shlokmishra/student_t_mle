@@ -1,0 +1,734 @@
+{
+  "pytest_focused.log": {
+    "bytes": 100,
+    "sha256": "f2b72b4f0ef87cf444dd4bd26b40b0b4c9c3c85689105a6bcb103daa9b5f2181"
+  },
+  "head_before.txt": {
+    "bytes": 41,
+    "sha256": "031b276c876e84ace3e4d9e77a72772193dde67e859bf68998d872ad18bb77a6"
+  },
+  "protected_before.json": {
+    "bytes": 158738,
+    "sha256": "7b0c64de2002c38a7bb4ee2f9de407af8ab99940b08a0d7f4d1dd420bc790fdc"
+  },
+  "source_before.json": {
+    "bytes": 9561,
+    "sha256": "b3819cdf1e039fbd5449b2d74b394834ce8ff179270940eaac2c434a4a9224f9"
+  },
+  "smoke_attempt1.log": {
+    "bytes": 2143,
+    "sha256": "fb0c42dd75a2877c03d44cbef4d37300a1df96f5eebb7af0d3731fbc9b0ffefc"
+  },
+  "git_status_before.txt": {
+    "bytes": 8013,
+    "sha256": "d0e3d7a4d517e432811eb265ed028cea2f987f08d60a88d831f02e614eff4870"
+  },
+  "source_changes.json": {
+    "bytes": 1757,
+    "sha256": "03dfa8a72e4d19ee478fb235fdf7d89b4c166d1b6095ae0b60cb85d382c5067a"
+  },
+  "preservation.json": {
+    "bytes": 3954,
+    "sha256": "31e0f0134e73b8c07a054be14b25ceabc349edeebf75d70d3f9b6efa60da22e2"
+  },
+  "staged_before.patch": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "source_before.tar.gz": {
+    "bytes": 172238,
+    "sha256": "33994c2f0403d52b0673327de2c502c9b2decb6aeece78420eaff0944223b218"
+  },
+  "smoke_attempt2.log": {
+    "bytes": 1517,
+    "sha256": "63714310564d12be252735222d598e2f8beb569f0db6e66f55c2621122899d8f"
+  },
+  "pytest_initial_full.log": {
+    "bytes": 512,
+    "sha256": "9f035f8e9e2f81d8d439f5e2b84c009b134113d403004b6acb087ef1468bf50e"
+  },
+  "pytest_final.log": {
+    "bytes": 512,
+    "sha256": "cd565fc0f94c5a288a3b23e37c1cf67d0331042f6ac3a9931564c2426d8f228f"
+  },
+  "smoke_attempt2/laplace_centered_n3_gibbs_1.json": {
+    "bytes": 443,
+    "sha256": "e0ad7630b9340fd813436b862aeb3c582b8272be4b1238c9b4b28bdda4b5056e"
+  },
+  "smoke_attempt2/logistic_shifted_n10_rattle_1.json": {
+    "bytes": 589,
+    "sha256": "4f5129ac340f2cd467869b2342074308cc13d1266061a62b7c59abf995f459dd"
+  },
+  "smoke_attempt2/laplace_shifted_n4_reference.json": {
+    "bytes": 2474,
+    "sha256": "7c29cf08cc23e764ea3495ebf7f106d48cd8722103ceccd6736803a17ab9101a"
+  },
+  "smoke_attempt2/comparisons.json": {
+    "bytes": 111879,
+    "sha256": "0eb7f4d141dfd154c58e40351fc95cebf6956fe271a6dc372cbb6690f795b11c"
+  },
+  "smoke_attempt2/logistic_centered_n3_rattle_1.json": {
+    "bytes": 590,
+    "sha256": "d4a0667c13d5af34722e9092b437a38ac055057543c0f348be653801cc01e1da"
+  },
+  "smoke_attempt2/laplace_centered_n3_facet_hmc_1.json": {
+    "bytes": 554,
+    "sha256": "082691b2a3a3b42795a6eb0d8cc7d572da6635363253964240ec749736f5facb"
+  },
+  "smoke_attempt2/logistic_shifted_n10_block_0.json": {
+    "bytes": 526,
+    "sha256": "d66c23da804e4fe59f8feff4ead610cd6f75a8a6496fd63748523445e6e2aa3a"
+  },
+  "smoke_attempt2/student_shifted_n10_block_0.json": {
+    "bytes": 1504,
+    "sha256": "1c45b738d03f6ee839fd7accdf05091e8863f0ca5bd61d9966802f15e2f1872b"
+  },
+  "smoke_attempt2/logistic_shifted_n10_reference.json": {
+    "bytes": 2463,
+    "sha256": "3d50af7d93e21f6bcb011015b40d3f9dc4e995fa06b9bff92d23905879220224"
+  },
+  "smoke_attempt2/smoke_comparison.png": {
+    "bytes": 147873,
+    "sha256": "9fecf675dbcdecd9e85179a1123969153f813c199f71c0892149d343a043f1d3"
+  },
+  "smoke_attempt2/laplace_centered_n4_gibbs_0.json": {
+    "bytes": 462,
+    "sha256": "e923149a2007c07b2e2df6548a13d760734147947183d062b2bad75bf7037354"
+  },
+  "smoke_attempt2/student_shifted_n10_rattle_1.json": {
+    "bytes": 2206,
+    "sha256": "3b2a68d76be5e3f8909162fb8ebc4e694ebdd809d84ee10577043be5a667eadd"
+  },
+  "smoke_attempt2/logistic_shifted_n10_rattle_0.json": {
+    "bytes": 589,
+    "sha256": "11a015a9e321b14fc53c482f6eed282a12a602eb4bab5a5bde7637649317f287"
+  },
+  "smoke_attempt2/student_centered_n10_block_0.json": {
+    "bytes": 1505,
+    "sha256": "377fac28d2bae537efe309f34a31fcc6f062ed49eaf8fccbfedfb1271007dc4a"
+  },
+  "smoke_attempt2/laplace_centered_n3_gibbs_0.json": {
+    "bytes": 440,
+    "sha256": "7036ad11dfb129153ee1c7544fed38551d1f7a9e83358e379c99903c27eb973b"
+  },
+  "smoke_attempt2/logistic_centered_n3_block_1.json": {
+    "bytes": 527,
+    "sha256": "d42e532913e5eab6447f98155c667607b49b63c04ddaf7f98bf1a063ea938ae2"
+  },
+  "smoke_attempt2/logistic_centered_n3_rattle_0.json": {
+    "bytes": 590,
+    "sha256": "83a0d9f34e4077ce6e8260754f09fcb5e9562f60e3417a1268b2d3f5173736fb"
+  },
+  "smoke_attempt2/environment.json": {
+    "bytes": 115,
+    "sha256": "0b36ee0b74cb0dd2aba2a58ae44b47dc4ded13833f566cc637775ea4ae30a758"
+  },
+  "smoke_attempt2/laplace_shifted_n3_facet_hmc_0.json": {
+    "bytes": 552,
+    "sha256": "8398137634c3e8f61c1f6746acb19cfd8ab9e3531efacfd72c78111680456655"
+  },
+  "smoke_attempt2/laplace_shifted_n4_facet_hmc_1.json": {
+    "bytes": 571,
+    "sha256": "e1e9a28aa222e6aca8a3db450c507cbfbcf7445ba470175584e5350f294e35ef"
+  },
+  "smoke_attempt2/student_centered_n10_rattle_1.json": {
+    "bytes": 2208,
+    "sha256": "06d34719bc32b2ea278bd139152f7003507477fb4c4e5d3483938082a31b26f7"
+  },
+  "smoke_attempt2/source.json": {
+    "bytes": 4984,
+    "sha256": "3a75006c0f8148936cb6d7763166cf0ce85ea385c62e8318eba3d1d4a1025c1d"
+  },
+  "smoke_attempt2/laplace_shifted_n3_reference.json": {
+    "bytes": 2478,
+    "sha256": "c9864b12449dfe45b183b8947b5e46e97ca53231eec9cb6738cb5d072ea20e5d"
+  },
+  "smoke_attempt2/student_centered_n3_block_1.json": {
+    "bytes": 1567,
+    "sha256": "b7edabf02219672d2f63e05db27b88008f74e3baf6ccb01e71e9b01652c0d902"
+  },
+  "smoke_attempt2/student_centered_n10_rattle_0.json": {
+    "bytes": 2207,
+    "sha256": "2339583ae80f3e22e107c6f26be915037b8d46321dc18db31ea154ac0821d98e"
+  },
+  "smoke_attempt2/config.json": {
+    "bytes": 3073,
+    "sha256": "21cd3b59357286418acfc05289950e759e9f996a8610c9790656f9a066b7ffc8"
+  },
+  "smoke_attempt2/logistic_centered_n10_block_0.json": {
+    "bytes": 525,
+    "sha256": "dab4051250747acdc84cf295423986b74b32d335391dfb597825f6d5a38496ab"
+  },
+  "smoke_attempt2/laplace_centered_n3_reference.json": {
+    "bytes": 2473,
+    "sha256": "dfa9bdd4564ff87bf72afc145164fbfab21c46487ffd60b50a785ecc0937ec13"
+  },
+  "smoke_attempt2/student_centered_n3_rattle_1.json": {
+    "bytes": 2191,
+    "sha256": "463b6e056952f5cfd3550f813558dd3979934e9eb6873912e85301f4e82ed742"
+  },
+  "smoke_attempt2/laplace_centered_n3_facet_hmc_0.json": {
+    "bytes": 552,
+    "sha256": "c353444c4d75325ebc5e5e3f61e2415dca36a597d36673656433542dc22b580f"
+  },
+  "smoke_attempt2/laplace_shifted_n3_gibbs_1.json": {
+    "bytes": 462,
+    "sha256": "bbff8b87b215a94be40d54031b08e02332930daed6e44f51445b3714b92c40f7"
+  },
+  "smoke_attempt2/laplace_shifted_n4_facet_hmc_0.json": {
+    "bytes": 571,
+    "sha256": "df5031271f202c2be0e10715170b43bb852a525c4658df11b215b9bf2a3bf1e6"
+  },
+  "smoke_attempt2/laplace_centered_n4_facet_hmc_0.json": {
+    "bytes": 572,
+    "sha256": "01f8d6fee3225cf6357cbc35f6270ad1cc20646106185cb7e2640e47bdb71af6"
+  },
+  "smoke_attempt2/student_centered_n3_reference.json": {
+    "bytes": 2608,
+    "sha256": "b94e37f95696e63877c2bc666e26d874ead08e8796e38feec845fac505bfff42"
+  },
+  "smoke_attempt2/student_centered_n3_rattle_0.json": {
+    "bytes": 2183,
+    "sha256": "44dd31040bd4551b1cfc4a53ba36e70e28699e8c3576b6f2264d842c7ca15c8e"
+  },
+  "smoke_attempt2/laplace_centered_n4_facet_hmc_1.json": {
+    "bytes": 572,
+    "sha256": "1fdb0ca649c66ab875d0da40c6cd014c610861290ffaed7441a053e70b4d8351"
+  },
+  "smoke_attempt2/laplace_shifted_n3_facet_hmc_1.json": {
+    "bytes": 571,
+    "sha256": "5eb062853115db3e47771a95e4d68864b86e924ea1dc306eb0ebbac82b5b932c"
+  },
+  "smoke_attempt2/student_centered_n3_block_0.json": {
+    "bytes": 1567,
+    "sha256": "cfd5286337b4f8de7c577faa0f03cc62567cea53aacae2bb66cb0b20fe4a0007"
+  },
+  "smoke_attempt2/logistic_centered_n10_block_1.json": {
+    "bytes": 527,
+    "sha256": "08c3edbe0a1737bf299ab40f76398682ad68c07f769a80409345f884387f1de4"
+  },
+  "smoke_attempt2/student_centered_n10_block_1.json": {
+    "bytes": 1503,
+    "sha256": "78a3dd124186dee3730069321b196e401230506b1ab00e80a2eace5c1dbc6d45"
+  },
+  "smoke_attempt2/laplace_shifted_n4_gibbs_1.json": {
+    "bytes": 461,
+    "sha256": "d847b2df21ab32179ca46829cb0ca6dab55f76eb0dfb09f79a1490ffa7498740"
+  },
+  "smoke_attempt2/logistic_centered_n10_rattle_0.json": {
+    "bytes": 590,
+    "sha256": "ab8acf6c84d16b9e373e941d1dc16041719b0c3b1592f2e4fa8b16a0a0cea471"
+  },
+  "smoke_attempt2/laplace_shifted_n4_gibbs_0.json": {
+    "bytes": 463,
+    "sha256": "f2fe8b0a8e9db3af5f033614716adc6df25b9006f046667317290cf83b9eb84c"
+  },
+  "smoke_attempt2/laplace_centered_n4_gibbs_1.json": {
+    "bytes": 444,
+    "sha256": "5efdc5ad3e004414662ae3a8171611e2efea197f0ba0b657ffd6f4ec4c5cabf9"
+  },
+  "smoke_attempt2/student_shifted_n10_rattle_0.json": {
+    "bytes": 2241,
+    "sha256": "6233d3162c1779d567fcde9de94db3ca75d465a2b441323930eeaa393bc9baa0"
+  },
+  "smoke_attempt2/student_shifted_n10_reference.json": {
+    "bytes": 2605,
+    "sha256": "e98903ba3060e05680723f4c9ed9717e6f64a1d39c911c5f953347637ce7b352"
+  },
+  "smoke_attempt2/logistic_centered_n10_rattle_1.json": {
+    "bytes": 591,
+    "sha256": "e689bd43f9968b4337e2a235af1e9991b87825ee717a14edd16cf38d6fbff03b"
+  },
+  "smoke_attempt2/laplace_centered_n4_reference.json": {
+    "bytes": 2483,
+    "sha256": "9e68b16466e9566dbaa3f56174d7fd9b66b828cb30b875d1c5f52eaeac6e6b71"
+  },
+  "smoke_attempt2/logistic_centered_n10_reference.json": {
+    "bytes": 2475,
+    "sha256": "86d0d2ab82cf836c018f3bd00982fa20ec4865568323ba63a805f13d27b8abcd"
+  },
+  "smoke_attempt2/oracle_checks.json": {
+    "bytes": 11503,
+    "sha256": "3f4cd0a7d719e3c9cd1df384e85d43a30dfb32e4088b9bef2e8422245458e815"
+  },
+  "smoke_attempt2/student_centered_n10_reference.json": {
+    "bytes": 2622,
+    "sha256": "9c00be6967b8069bc293e1d00d8582da4e518a3abc9a4c81e649b2d7d5081c15"
+  },
+  "smoke_attempt2/logistic_centered_n3_reference.json": {
+    "bytes": 2477,
+    "sha256": "dc8fb816537b656d769aac4a0736072ecd12e93d056becd34ca8b4e04ace4765"
+  },
+  "smoke_attempt2/completion.json": {
+    "bytes": 72,
+    "sha256": "40979c3b8c7b243d5a2b8ade6e60fd10144015ae5b26c32e29daf297e93b8923"
+  },
+  "smoke_attempt2/student_shifted_n10_block_1.json": {
+    "bytes": 1505,
+    "sha256": "7316acafac4de8f14db7fca0b3425b741c9b494e95e767922972a0c66b4dffe8"
+  },
+  "smoke_attempt2/logistic_centered_n3_block_0.json": {
+    "bytes": 526,
+    "sha256": "4c8e4c56cc4698fcc46de0c3382de4c06696407b6bf76987e6e53661b0e8914f"
+  },
+  "smoke_attempt2/laplace_shifted_n3_gibbs_0.json": {
+    "bytes": 443,
+    "sha256": "7c62f1d8dbe3d3d085f1ab415dd05e251ac2092ab52dd8c94ece805742eb816c"
+  },
+  "smoke_attempt2/logistic_shifted_n10_block_1.json": {
+    "bytes": 524,
+    "sha256": "8fc52c6c90b294911ed06ea22d7203a4531dae5e40a1b1c422acc71814ce1685"
+  },
+  "smoke_attempt2/raw/laplace_centered_n4_facet_hmc_1.npz": {
+    "bytes": 16895,
+    "sha256": "bacb4c21c95c2d13b5fb9423c7df97a76171af0d3149e13f85ac0a80b2a28d75"
+  },
+  "smoke_attempt2/raw/laplace_centered_n4_gibbs_0.npz": {
+    "bytes": 16284,
+    "sha256": "96660be4d5ee9e08f5c43ecbcd21d74326ca6c27f40e6a712a493a73a81db24d"
+  },
+  "smoke_attempt2/raw/student_centered_n3_block_0.npz": {
+    "bytes": 12321,
+    "sha256": "62a714ced75a549b72a6b9ee431bba505bcf47cb04e8ae363a35feef280dd7a5"
+  },
+  "smoke_attempt2/raw/laplace_shifted_n4_gibbs_1.npz": {
+    "bytes": 19048,
+    "sha256": "d8f0d9ad00070ce4262268917e81e068afd6d5ccae5b0c1e7b3ff51ce671674b"
+  },
+  "smoke_attempt2/raw/logistic_centered_n10_block_0.npz": {
+    "bytes": 40969,
+    "sha256": "2e7a61f9cd5ba7daa9eecbf890880b5f1fc18759acd85d719fb2f2d8d3914f88"
+  },
+  "smoke_attempt2/raw/laplace_shifted_n3_gibbs_0.npz": {
+    "bytes": 11937,
+    "sha256": "c517c010004b0e55903016ba6790411289ece03c5bf5ea4e9a5a7c04fd30f883"
+  },
+  "smoke_attempt2/raw/laplace_centered_n3_gibbs_0.npz": {
+    "bytes": 11957,
+    "sha256": "8c1206ab59296341f6c185561b02ffd7fd51bb17f05683ad561dd0f23e694e9d"
+  },
+  "smoke_attempt2/raw/laplace_shifted_n4_facet_hmc_1.npz": {
+    "bytes": 19049,
+    "sha256": "750bcc3c6e7a29e8165646babaf8e2e6674b1f7a69763e4cf0f0f95e8855b8a3"
+  },
+  "smoke_attempt2/raw/student_centered_n3_block_1.npz": {
+    "bytes": 11821,
+    "sha256": "94ee85bb4461e9215f9960cd508c190b298aead17df7929f2512556b7506caaf"
+  },
+  "smoke_attempt2/raw/logistic_centered_n3_rattle_0.npz": {
+    "bytes": 15060,
+    "sha256": "f59d1dada201c8122502b517dad08559c34a1a41952bcc093bdf3a2b747da5b9"
+  },
+  "smoke_attempt2/raw/logistic_centered_n3_rattle_1.npz": {
+    "bytes": 15305,
+    "sha256": "db28fbeb6a9285f5bffd5bfda7bd1c7601cbaae08302f8e713418d7796d933a0"
+  },
+  "smoke_attempt2/raw/student_shifted_n10_block_1.npz": {
+    "bytes": 33580,
+    "sha256": "910c4fb9cf67a4e0f772773b86fb9b94b74310b3f588440c90c226cbaaa3874e"
+  },
+  "smoke_attempt2/raw/student_centered_n3_rattle_1.npz": {
+    "bytes": 14320,
+    "sha256": "ddc93187ad4d00dcebe80b8687960c07213617e8c460745fda8ea8b7f6afc864"
+  },
+  "smoke_attempt2/raw/student_centered_n10_rattle_1.npz": {
+    "bytes": 37207,
+    "sha256": "51e16d6f4435ed12e54a60af9d03b4ee0f997a3076270e118a92bec2b3f04cec"
+  },
+  "smoke_attempt2/raw/laplace_centered_n4_gibbs_1.npz": {
+    "bytes": 16207,
+    "sha256": "6c071c0a0b1d99fe0c234b017b6f7a0668028801e76e34235628f3ca0b31142a"
+  },
+  "smoke_attempt2/raw/logistic_shifted_n10_rattle_1.npz": {
+    "bytes": 41535,
+    "sha256": "c364776c510a10ffe03e40a21295180d7aa1d87bd884a279b7a15885a96693e4"
+  },
+  "smoke_attempt2/raw/student_shifted_n10_rattle_1.npz": {
+    "bytes": 37649,
+    "sha256": "03818b7b8ec5604dbec4c1322c4e939e7f28b0245f444ddd547586664452d343"
+  },
+  "smoke_attempt2/raw/logistic_shifted_n10_rattle_0.npz": {
+    "bytes": 41563,
+    "sha256": "f2bc6811f47bb743e88b372e83b5eab45a5f23ac510d7b54d89274f72dd8fb8f"
+  },
+  "smoke_attempt2/raw/logistic_centered_n10_rattle_0.npz": {
+    "bytes": 41658,
+    "sha256": "74674d981a2e945a2881859f2622c14a312fc39213245faf13d0f53d667cfe05"
+  },
+  "smoke_attempt2/raw/laplace_shifted_n3_gibbs_1.npz": {
+    "bytes": 11943,
+    "sha256": "c88b158c06f9a949fa7d058fbf5ca6945eeb43171b4f03fb81e6c9367402241a"
+  },
+  "smoke_attempt2/raw/logistic_n10_bank.npz": {
+    "bytes": 349088,
+    "sha256": "7408c03f9a2ea05b5485b0364b22312a38e5b0798f89a9e8be88d5868b057db4"
+  },
+  "smoke_attempt2/raw/laplace_centered_n3_facet_hmc_0.npz": {
+    "bytes": 11948,
+    "sha256": "f2f9728de5c13c66a6c0597c42cc7fd0802334306e0a0987b01ced0b894aafa9"
+  },
+  "smoke_attempt2/raw/laplace_n4_bank.npz": {
+    "bytes": 158297,
+    "sha256": "583c5b6ce47e6e62088fc000473b0751cf80583bc9d7cf4b03f7bb230acd4db2"
+  },
+  "smoke_attempt2/raw/student_shifted_n10_block_0.npz": {
+    "bytes": 33951,
+    "sha256": "af6da1da8554aebc6aef15d4eae7fd62fdb325c20111e6e1d5910b96ed8a4f2d"
+  },
+  "smoke_attempt2/raw/student_centered_n10_block_1.npz": {
+    "bytes": 34878,
+    "sha256": "03d568f9bd8791749b14914787bbe674f0338a03286a778dc8901e0a96d80aa1"
+  },
+  "smoke_attempt2/raw/laplace_centered_n3_facet_hmc_1.npz": {
+    "bytes": 11878,
+    "sha256": "be3ebb40c859afa30fc56ec0ec7e189c6262817ff5742c4b952aa79cfca43115"
+  },
+  "smoke_attempt2/raw/laplace_n3_bank.npz": {
+    "bytes": 126729,
+    "sha256": "6a34e580dd80e3a86f69283fd1c3429ca6403c91a058efcbd5fb238b7bd25891"
+  },
+  "smoke_attempt2/raw/student_centered_n10_rattle_0.npz": {
+    "bytes": 37678,
+    "sha256": "c44ffbbe61a9fb45204ed52b5c12d50f9b6dc9b140498aecd88fa9f6076cabbf"
+  },
+  "smoke_attempt2/raw/laplace_centered_n4_facet_hmc_0.npz": {
+    "bytes": 16845,
+    "sha256": "5e41cb8e91771908f8a550cf838c134df96c02a0703779e9e61db917ee3ba2e1"
+  },
+  "smoke_attempt2/raw/laplace_shifted_n3_facet_hmc_0.npz": {
+    "bytes": 11871,
+    "sha256": "267715d6fa12cdfbb7b95fe6c2a684d0d429b6ed6604e9f5eb3f82cca8b59bb3"
+  },
+  "smoke_attempt2/raw/student_centered_n3_rattle_0.npz": {
+    "bytes": 13389,
+    "sha256": "3a641463c76e8c40489730fa2b2c69fd180f586c9de81ade0891736357dc1b06"
+  },
+  "smoke_attempt2/raw/logistic_centered_n10_rattle_1.npz": {
+    "bytes": 41910,
+    "sha256": "0b60166dc134df50129e7cbfd423b44cddcab5a52a71c60cf39a3739a0cccd94"
+  },
+  "smoke_attempt2/raw/student_centered_n10_block_0.npz": {
+    "bytes": 35102,
+    "sha256": "edf79b9992e6cc699ecb6660d0508e9c65e76283ad76f80cc9832e2dd68c3a82"
+  },
+  "smoke_attempt2/raw/logistic_centered_n3_block_1.npz": {
+    "bytes": 14981,
+    "sha256": "fb6265239817dcb13c6fa04da86b52a34618afd50114fe86a311af8205cb08f5"
+  },
+  "smoke_attempt2/raw/laplace_centered_n3_gibbs_1.npz": {
+    "bytes": 12039,
+    "sha256": "0c6e2b9b288e846434fde79a0ee3c7dbd7670230e521c0ba85378eadf1f89a48"
+  },
+  "smoke_attempt2/raw/logistic_n3_bank.npz": {
+    "bytes": 127083,
+    "sha256": "fb7d3544044a529b80bc507c73ec58d6af1ffc4cb2e315a197807acdeb1f9b18"
+  },
+  "smoke_attempt2/raw/logistic_centered_n3_block_0.npz": {
+    "bytes": 15224,
+    "sha256": "512a084e2c7157eedeb8f9ddc2c49252f6fb544ffd0d9217180bbc62354a1f72"
+  },
+  "smoke_attempt2/raw/laplace_shifted_n4_gibbs_0.npz": {
+    "bytes": 19163,
+    "sha256": "0ee0804589cdeb1f2eb03cf4028c2f35c6149ad7a010e939d278988ec8edc7bc"
+  },
+  "smoke_attempt2/raw/student_shifted_n10_rattle_0.npz": {
+    "bytes": 36638,
+    "sha256": "f671ddfa46e96c9ab4bc9bc0889adcf0d2b34d200bb2a58af0ab7a16eca5c2d5"
+  },
+  "smoke_attempt2/raw/laplace_shifted_n4_facet_hmc_0.npz": {
+    "bytes": 19064,
+    "sha256": "cb04d48ee8b3618583a3470fe1f35becd13d2abf17b2886389104a692e29f0ee"
+  },
+  "smoke_attempt2/raw/logistic_centered_n10_block_1.npz": {
+    "bytes": 40391,
+    "sha256": "2bee5a71ccbc1f973eec64ce4dd0fb134535425f7924417e603d15f83d51a281"
+  },
+  "smoke_attempt2/raw/logistic_shifted_n10_block_1.npz": {
+    "bytes": 40566,
+    "sha256": "e0700d9bc0b511c9132e5726561c5c126623df3a4a5b2d58198a3c456140b24a"
+  },
+  "smoke_attempt2/raw/logistic_shifted_n10_block_0.npz": {
+    "bytes": 40326,
+    "sha256": "2914cad8f5df86c309e08df37e77445b47f53750388ac58e6f0932ee1cad29e3"
+  },
+  "smoke_attempt2/raw/laplace_shifted_n3_facet_hmc_1.npz": {
+    "bytes": 11873,
+    "sha256": "d17ed29ce257763e97831c57b925a53f05fbe21050237b2e58d5214567c1ab81"
+  },
+  "smoke_attempt1/laplace_centered_n3_gibbs_1.json": {
+    "bytes": 443,
+    "sha256": "0151039ced7ca0b20b99fe0b2a528c59cf1075b02768d72e934d3e42a167e55c"
+  },
+  "smoke_attempt1/logistic_shifted_n10_rattle_1.json": {
+    "bytes": 590,
+    "sha256": "83423cd75b7246ab0b267a83fa026bbc1bbeaa8f699b12b552f4aa92a42c4283"
+  },
+  "smoke_attempt1/comparisons.json": {
+    "bytes": 80786,
+    "sha256": "721b5be525922f14b494ceb345ec521901e6eed985cbea92817b6056e568f069"
+  },
+  "smoke_attempt1/logistic_centered_n3_rattle_1.json": {
+    "bytes": 590,
+    "sha256": "2704f8200b11a4d15122bc230bf29acfc8c5f1a5bd46554c64ee69a508b18071"
+  },
+  "smoke_attempt1/logistic_shifted_n10_block_0.json": {
+    "bytes": 526,
+    "sha256": "7514a88ba67985188180495d95489c2b03c53dd7c2bd08d015c32b989597069b"
+  },
+  "smoke_attempt1/student_shifted_n10_block_0.json": {
+    "bytes": 1504,
+    "sha256": "17bed96cac9abe54802412308eeffd0e3d5b3cda31857fe641021a403a309383"
+  },
+  "smoke_attempt1/logistic_shifted_n10_reference.json": {
+    "bytes": 2463,
+    "sha256": "3d50af7d93e21f6bcb011015b40d3f9dc4e995fa06b9bff92d23905879220224"
+  },
+  "smoke_attempt1/student_shifted_n10_rattle_1.json": {
+    "bytes": 2206,
+    "sha256": "3a831d0d0ca184d76db382fc194726e58b91cbfef5b6ef8fccf6441379f93a5a"
+  },
+  "smoke_attempt1/logistic_shifted_n10_rattle_0.json": {
+    "bytes": 588,
+    "sha256": "909df9ceece8070e120c22ebab3b169cef65b32bc0df579515c042d7c381010c"
+  },
+  "smoke_attempt1/student_centered_n10_block_0.json": {
+    "bytes": 1505,
+    "sha256": "510f421412e04617bb7a453bcfbbf11a9fe15b3901609960a67244601feb9742"
+  },
+  "smoke_attempt1/laplace_centered_n3_gibbs_0.json": {
+    "bytes": 442,
+    "sha256": "ab6601425d79afa4e09787db034b86f306fb6b6312b8d5404897f92eb422e8d4"
+  },
+  "smoke_attempt1/logistic_centered_n3_block_1.json": {
+    "bytes": 527,
+    "sha256": "d73a8fbf1b8acd744005f54d2811fc3d35d9bb8e07eb4b8a32d551e7ca89df3d"
+  },
+  "smoke_attempt1/logistic_centered_n3_rattle_0.json": {
+    "bytes": 590,
+    "sha256": "164d1eec7b9e85bb8f9ed5e5676b5ed3e3ff14605af594227f3fa65afd5af832"
+  },
+  "smoke_attempt1/failure_partial.npz": {
+    "bytes": 590,
+    "sha256": "dd677a65bd1e803c8a1d35d6a91ff769abb186e7ff5340df23c73868a4faf31d"
+  },
+  "smoke_attempt1/environment.json": {
+    "bytes": 115,
+    "sha256": "0b36ee0b74cb0dd2aba2a58ae44b47dc4ded13833f566cc637775ea4ae30a758"
+  },
+  "smoke_attempt1/student_centered_n10_rattle_1.json": {
+    "bytes": 2208,
+    "sha256": "35b8f7e712219e2d063d2e6b5fc3cea3a6f3048195ce59c7f18d4189ae9e0512"
+  },
+  "smoke_attempt1/source.json": {
+    "bytes": 4984,
+    "sha256": "66783179b7d32598ee7a079b8d2fc71b3c2d99696961c4e8ac1337a8ee4eb60b"
+  },
+  "smoke_attempt1/student_centered_n3_block_1.json": {
+    "bytes": 1567,
+    "sha256": "a12ed4d67ef58d197d25cefe8dd21e5f5499722a2f903a64b3fcb748b460350f"
+  },
+  "smoke_attempt1/student_centered_n10_rattle_0.json": {
+    "bytes": 2206,
+    "sha256": "15ad52839fe6c1f5a5b25352acb4be587a903322e3b7acd1cb171feaa9aa370e"
+  },
+  "smoke_attempt1/config.json": {
+    "bytes": 3073,
+    "sha256": "21cd3b59357286418acfc05289950e759e9f996a8610c9790656f9a066b7ffc8"
+  },
+  "smoke_attempt1/logistic_centered_n10_block_0.json": {
+    "bytes": 525,
+    "sha256": "a719148a343ceb580eb8876155d9a4da2fb4461694eae43317c3e325624b66bf"
+  },
+  "smoke_attempt1/laplace_centered_n3_reference.json": {
+    "bytes": 2473,
+    "sha256": "dfa9bdd4564ff87bf72afc145164fbfab21c46487ffd60b50a785ecc0937ec13"
+  },
+  "smoke_attempt1/student_centered_n3_rattle_1.json": {
+    "bytes": 2189,
+    "sha256": "30b6d4a96724cfd5c0dc59629c007d9833293c3041ab49b86b6693bfd126ac0a"
+  },
+  "smoke_attempt1/student_centered_n3_reference.json": {
+    "bytes": 2608,
+    "sha256": "b94e37f95696e63877c2bc666e26d874ead08e8796e38feec845fac505bfff42"
+  },
+  "smoke_attempt1/student_centered_n3_rattle_0.json": {
+    "bytes": 2184,
+    "sha256": "32130aa04f979aa5b9a87edbb67c64cd8daf4b5f8681cb67526017120d93a6f5"
+  },
+  "smoke_attempt1/student_centered_n3_block_0.json": {
+    "bytes": 1567,
+    "sha256": "abd0ecc8d5a67700160b2f4e3e5ae6e62df2f08f7cc780758119449a389f0d8c"
+  },
+  "smoke_attempt1/logistic_centered_n10_block_1.json": {
+    "bytes": 526,
+    "sha256": "d1be1de8ecc18cc216fc0bce7e86cb7cf5292a76e97a256124501b29d83fa393"
+  },
+  "smoke_attempt1/student_centered_n10_block_1.json": {
+    "bytes": 1504,
+    "sha256": "aa4e36d1b33b99470ed702de1139dad92365a12b36d0694e349559ca4c2d993b"
+  },
+  "smoke_attempt1/logistic_centered_n10_rattle_0.json": {
+    "bytes": 590,
+    "sha256": "715b6c4d542154013a0d63d71cf0ab326033de161436d521dd5181a2e6443b25"
+  },
+  "smoke_attempt1/student_shifted_n10_rattle_0.json": {
+    "bytes": 2241,
+    "sha256": "a5c7c39583b4144bdefbcd2616358c320d418585836aec29e28c6062ed5420fb"
+  },
+  "smoke_attempt1/student_shifted_n10_reference.json": {
+    "bytes": 2605,
+    "sha256": "e98903ba3060e05680723f4c9ed9717e6f64a1d39c911c5f953347637ce7b352"
+  },
+  "smoke_attempt1/logistic_centered_n10_rattle_1.json": {
+    "bytes": 590,
+    "sha256": "d03439a0d8bc39e367580a74598d2a86c146e4080a9828726d7f0bc8c8a8c077"
+  },
+  "smoke_attempt1/logistic_centered_n10_reference.json": {
+    "bytes": 2475,
+    "sha256": "86d0d2ab82cf836c018f3bd00982fa20ec4865568323ba63a805f13d27b8abcd"
+  },
+  "smoke_attempt1/oracle_checks.json": {
+    "bytes": 11501,
+    "sha256": "5f84a7fe19fe19221c7245a33d507f78d448caac269cf6ef45daa8755bad8807"
+  },
+  "smoke_attempt1/student_centered_n10_reference.json": {
+    "bytes": 2622,
+    "sha256": "9c00be6967b8069bc293e1d00d8582da4e518a3abc9a4c81e649b2d7d5081c15"
+  },
+  "smoke_attempt1/logistic_centered_n3_reference.json": {
+    "bytes": 2477,
+    "sha256": "dc8fb816537b656d769aac4a0736072ecd12e93d056becd34ca8b4e04ace4765"
+  },
+  "smoke_attempt1/student_shifted_n10_block_1.json": {
+    "bytes": 1505,
+    "sha256": "7a12525cabf36557be31fa906c4e4d038d84484039fe3ce1ac8e9040f28c993c"
+  },
+  "smoke_attempt1/logistic_centered_n3_block_0.json": {
+    "bytes": 526,
+    "sha256": "0054e18d6f5578f672b439c154af8d5c05724eb02e592931164e21c31ad0d7ed"
+  },
+  "smoke_attempt1/failure.json": {
+    "bytes": 1293,
+    "sha256": "2a86aafd0a6baae948bd24cfaa85c32a2d00e38fe807a0eb243d8feb1fb2339f"
+  },
+  "smoke_attempt1/logistic_shifted_n10_block_1.json": {
+    "bytes": 526,
+    "sha256": "cef7b14c55b28d3bac5f95925c4a804b530d34d54caf4e58ca74eb71afd531e8"
+  },
+  "smoke_attempt1/raw/student_centered_n3_block_0.npz": {
+    "bytes": 12321,
+    "sha256": "62a714ced75a549b72a6b9ee431bba505bcf47cb04e8ae363a35feef280dd7a5"
+  },
+  "smoke_attempt1/raw/logistic_centered_n10_block_0.npz": {
+    "bytes": 40969,
+    "sha256": "2e7a61f9cd5ba7daa9eecbf890880b5f1fc18759acd85d719fb2f2d8d3914f88"
+  },
+  "smoke_attempt1/raw/laplace_centered_n3_gibbs_0.npz": {
+    "bytes": 11957,
+    "sha256": "8c1206ab59296341f6c185561b02ffd7fd51bb17f05683ad561dd0f23e694e9d"
+  },
+  "smoke_attempt1/raw/student_centered_n3_block_1.npz": {
+    "bytes": 11821,
+    "sha256": "94ee85bb4461e9215f9960cd508c190b298aead17df7929f2512556b7506caaf"
+  },
+  "smoke_attempt1/raw/logistic_centered_n3_rattle_0.npz": {
+    "bytes": 15060,
+    "sha256": "f59d1dada201c8122502b517dad08559c34a1a41952bcc093bdf3a2b747da5b9"
+  },
+  "smoke_attempt1/raw/logistic_centered_n3_rattle_1.npz": {
+    "bytes": 15305,
+    "sha256": "db28fbeb6a9285f5bffd5bfda7bd1c7601cbaae08302f8e713418d7796d933a0"
+  },
+  "smoke_attempt1/raw/student_shifted_n10_block_1.npz": {
+    "bytes": 33580,
+    "sha256": "910c4fb9cf67a4e0f772773b86fb9b94b74310b3f588440c90c226cbaaa3874e"
+  },
+  "smoke_attempt1/raw/student_centered_n3_rattle_1.npz": {
+    "bytes": 14320,
+    "sha256": "ddc93187ad4d00dcebe80b8687960c07213617e8c460745fda8ea8b7f6afc864"
+  },
+  "smoke_attempt1/raw/student_centered_n10_rattle_1.npz": {
+    "bytes": 37207,
+    "sha256": "51e16d6f4435ed12e54a60af9d03b4ee0f997a3076270e118a92bec2b3f04cec"
+  },
+  "smoke_attempt1/raw/logistic_shifted_n10_rattle_1.npz": {
+    "bytes": 41535,
+    "sha256": "c364776c510a10ffe03e40a21295180d7aa1d87bd884a279b7a15885a96693e4"
+  },
+  "smoke_attempt1/raw/student_shifted_n10_rattle_1.npz": {
+    "bytes": 37649,
+    "sha256": "03818b7b8ec5604dbec4c1322c4e939e7f28b0245f444ddd547586664452d343"
+  },
+  "smoke_attempt1/raw/logistic_shifted_n10_rattle_0.npz": {
+    "bytes": 41563,
+    "sha256": "f2bc6811f47bb743e88b372e83b5eab45a5f23ac510d7b54d89274f72dd8fb8f"
+  },
+  "smoke_attempt1/raw/logistic_centered_n10_rattle_0.npz": {
+    "bytes": 41658,
+    "sha256": "74674d981a2e945a2881859f2622c14a312fc39213245faf13d0f53d667cfe05"
+  },
+  "smoke_attempt1/raw/logistic_n10_bank.npz": {
+    "bytes": 349088,
+    "sha256": "7408c03f9a2ea05b5485b0364b22312a38e5b0798f89a9e8be88d5868b057db4"
+  },
+  "smoke_attempt1/raw/student_shifted_n10_block_0.npz": {
+    "bytes": 33951,
+    "sha256": "af6da1da8554aebc6aef15d4eae7fd62fdb325c20111e6e1d5910b96ed8a4f2d"
+  },
+  "smoke_attempt1/raw/student_centered_n10_block_1.npz": {
+    "bytes": 34878,
+    "sha256": "03d568f9bd8791749b14914787bbe674f0338a03286a778dc8901e0a96d80aa1"
+  },
+  "smoke_attempt1/raw/laplace_n3_bank.npz": {
+    "bytes": 126729,
+    "sha256": "6a34e580dd80e3a86f69283fd1c3429ca6403c91a058efcbd5fb238b7bd25891"
+  },
+  "smoke_attempt1/raw/student_centered_n10_rattle_0.npz": {
+    "bytes": 37678,
+    "sha256": "c44ffbbe61a9fb45204ed52b5c12d50f9b6dc9b140498aecd88fa9f6076cabbf"
+  },
+  "smoke_attempt1/raw/student_centered_n3_rattle_0.npz": {
+    "bytes": 13389,
+    "sha256": "3a641463c76e8c40489730fa2b2c69fd180f586c9de81ade0891736357dc1b06"
+  },
+  "smoke_attempt1/raw/logistic_centered_n10_rattle_1.npz": {
+    "bytes": 41910,
+    "sha256": "0b60166dc134df50129e7cbfd423b44cddcab5a52a71c60cf39a3739a0cccd94"
+  },
+  "smoke_attempt1/raw/student_centered_n10_block_0.npz": {
+    "bytes": 35102,
+    "sha256": "edf79b9992e6cc699ecb6660d0508e9c65e76283ad76f80cc9832e2dd68c3a82"
+  },
+  "smoke_attempt1/raw/logistic_centered_n3_block_1.npz": {
+    "bytes": 14981,
+    "sha256": "fb6265239817dcb13c6fa04da86b52a34618afd50114fe86a311af8205cb08f5"
+  },
+  "smoke_attempt1/raw/laplace_centered_n3_gibbs_1.npz": {
+    "bytes": 12039,
+    "sha256": "0c6e2b9b288e846434fde79a0ee3c7dbd7670230e521c0ba85378eadf1f89a48"
+  },
+  "smoke_attempt1/raw/logistic_n3_bank.npz": {
+    "bytes": 127083,
+    "sha256": "fb7d3544044a529b80bc507c73ec58d6af1ffc4cb2e315a197807acdeb1f9b18"
+  },
+  "smoke_attempt1/raw/logistic_centered_n3_block_0.npz": {
+    "bytes": 15224,
+    "sha256": "512a084e2c7157eedeb8f9ddc2c49252f6fb544ffd0d9217180bbc62354a1f72"
+  },
+  "smoke_attempt1/raw/student_shifted_n10_rattle_0.npz": {
+    "bytes": 36638,
+    "sha256": "f671ddfa46e96c9ab4bc9bc0889adcf0d2b34d200bb2a58af0ab7a16eca5c2d5"
+  },
+  "smoke_attempt1/raw/logistic_centered_n10_block_1.npz": {
+    "bytes": 40391,
+    "sha256": "2bee5a71ccbc1f973eec64ce4dd0fb134535425f7924417e603d15f83d51a281"
+  },
+  "smoke_attempt1/raw/logistic_shifted_n10_block_1.npz": {
+    "bytes": 40566,
+    "sha256": "e0700d9bc0b511c9132e5726561c5c126623df3a4a5b2d58198a3c456140b24a"
+  },
+  "smoke_attempt1/raw/logistic_shifted_n10_block_0.npz": {
+    "bytes": 40326,
+    "sha256": "2914cad8f5df86c309e08df37e77445b47f53750388ac58e6f0932ee1cad29e3"
+  }
+}

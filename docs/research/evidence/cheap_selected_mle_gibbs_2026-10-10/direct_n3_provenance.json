@@ -1,0 +1,9 @@
+{
+  "draws": 4096,
+  "seed": 2026103503,
+  "raw_path": "tmp/cheap_selected_mle_gibbs_20261010_v2/direct_n3.npz",
+  "sha256": "3f8f4a4a54d21308dc5693fdfe924b8fa42c24984cd1567a967b9801c6f89245",
+  "generation_and_selector_seconds": 0.2123167710378766,
+  "selector_fallbacks": 0,
+  "failures": 0
+}

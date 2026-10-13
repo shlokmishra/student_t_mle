@@ -1,0 +1,8 @@
+{
+  "python": "3.13.5 (main, Apr  2 2026, 12:03:47) [GCC 14.3.0]",
+  "numpy": "2.5.2",
+  "numba": "0.67.0",
+  "platform": "Linux-4.18.0-553.162.1.el8_10.x86_64-x86_64-with-glibc2.28",
+  "processor": "x86_64",
+  "floating_contract": "binary64, gradual underflow, no fastmath; CPU affinity and thread limits set in drivers"
+}

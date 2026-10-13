@@ -1,0 +1,44 @@
+[
+  {
+    "bank": "student_k2_n3",
+    "draws": 4096,
+    "exceptions": 0,
+    "location_disagreements": 0,
+    "clear_global_failures": 0,
+    "multiroot_datasets": 262,
+    "max_location_error": 2.1288526497187377e-13,
+    "max_score_residual": 2.1371793224034263e-13,
+    "max_loglik_gap": 3.552713678800501e-15,
+    "oracle_status_counts": {
+      "unique_global_bound": 4096
+    }
+  },
+  {
+    "bank": "student_k2_n10",
+    "draws": 4096,
+    "exceptions": 0,
+    "location_disagreements": 0,
+    "clear_global_failures": 0,
+    "multiroot_datasets": 54,
+    "max_location_error": 1.9373391779708982e-13,
+    "max_score_residual": 4.915234885771724e-13,
+    "max_loglik_gap": 7.105427357601002e-15,
+    "oracle_status_counts": {
+      "unique_global_bound": 4096
+    }
+  },
+  {
+    "bank": "student_k3_n10",
+    "draws": 4096,
+    "exceptions": 0,
+    "location_disagreements": 0,
+    "clear_global_failures": 0,
+    "multiroot_datasets": 3,
+    "max_location_error": 2.1884577483533008e-13,
+    "max_score_residual": 4.408140519274184e-13,
+    "max_loglik_gap": 3.552713678800501e-15,
+    "oracle_status_counts": {
+      "unique_global_bound": 4096
+    }
+  }
+]

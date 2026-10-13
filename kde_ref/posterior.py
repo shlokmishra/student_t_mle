@@ -7,9 +7,10 @@
 # small fixed bandwidth (e.g. 0.001) usually works better; the "right" value can depend on
 # n and k (smaller n → MLE more spread → sometimes a slightly larger h is needed).
 
+import math
+
 import numpy as np
 import scipy.stats as stats
-from scipy.integrate import quad
 
 
 def _grid_bounds_for_normalisation(prior_mean, prior_std, mu_star, mles, n_sigma=5):
@@ -43,10 +44,8 @@ def validate_posterior_1d(posterior_pdf, lo=-20.0, hi=20.0, n_grid=5000):
     integral = float(np.trapezoid(vals, mu_grid))
     return integral
 
-import numpy as np
-from scipy import stats
 from scipy.integrate import quad
-from scipy.special import gammaln, logsumexp
+from .numba_kernels import adaptive_student_logpdf, fixed_student_density
 
 # ---------------------------------------------------------------------
 # Helper KDE backends
@@ -170,47 +169,22 @@ class _StudentAbramsonKDE:
         hi = self.h0 * (f_pilot_x / g) ** (-self.alpha)
         self.hi = np.maximum(hi, 1e-15)
 
-    @staticmethod
-    def _student_logkernel(u, nu):
-        # log pdf of standard Student-t with df=nu at u
-        # c = Gamma((nu+1)/2) / (sqrt(nu*pi)*Gamma(nu/2))
-        # log c = gammaln((nu+1)/2) - 0.5*log(nu*pi) - gammaln(nu/2)
-        logc = gammaln((nu + 1.0) / 2.0) - 0.5 * np.log(nu * np.pi) - gammaln(nu / 2.0)
-        return logc - ((nu + 1.0) / 2.0) * np.log1p((u * u) / nu)
-
     def _fixed_student_kde_at_points(self, eval_points, centers, h, nu):
-        # f(eval) = mean_i 1/h * t_nu((eval - centers_i)/h)
-        eval_points = np.asarray(eval_points)
-        centers = np.asarray(centers)
-        h = float(h)
-        nu = float(nu)
-
-        out = np.empty(eval_points.shape[0], dtype=float)
-        for a in range(0, eval_points.shape[0], self.chunk):
-            b = min(a + self.chunk, eval_points.shape[0])
-            xp = eval_points[a:b][:, None]  # (m_chunk, 1)
-            u = (xp - centers[None, :]) / h
-            log_terms = self._student_logkernel(u, nu) - np.log(h)
-            out[a:b] = np.exp(logsumexp(log_terms, axis=1) - np.log(centers.size))
-        return out
+        return fixed_student_density(
+            np.asarray(eval_points, dtype=np.float64),
+            np.asarray(centers, dtype=np.float64),
+            float(h),
+            float(nu),
+        )
 
     def logpdf(self, x_eval):
-        x_eval = np.asarray(x_eval)
-        # Evaluate adaptive KDE:
-        # log f(x) = logmeanexp_i [ log t((x-x_i)/h_i) - log h_i ]
-        out = np.empty(x_eval.shape[0], dtype=float)
-
-        # chunk over eval points to manage memory
-        for a in range(0, x_eval.shape[0], self.chunk):
-            b = min(a + self.chunk, x_eval.shape[0])
-            xg = x_eval[a:b][:, None]  # (m_chunk, 1)
-
-            # u_ij = (xg_j - x_i)/h_i, broadcast h_i over rows
-            u = (xg - self.x[None, :]) / self.hi[None, :]
-            log_terms = self._student_logkernel(u, self.nu) - np.log(self.hi)[None, :]
-            out[a:b] = logsumexp(log_terms, axis=1) - np.log(self.n)
-
-        return np.log(np.maximum(np.exp(out), self.eps))
+        return adaptive_student_logpdf(
+            np.asarray(x_eval, dtype=np.float64),
+            self.x,
+            self.hi,
+            self.nu,
+            math.log(self.eps),
+        )
 
 def build_likelihood_kde_backend(mle_samples, params, bw_method=None, verbose=False):
     """

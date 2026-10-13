@@ -1,0 +1,94 @@
+{
+  "loc_student": {
+    "mu_acceptance_rate": 0.8333333333333334,
+    "pair_acceptance_rate": 1.0
+  },
+  "loc_student_rattle": {
+    "mu_acceptance_rate": 1.0
+  },
+  "loc_student_selected_mle": {
+    "counts": {
+      "pair_attempts": 12,
+      "pair_accepts": 10,
+      "global_selection_rejects": 0,
+      "selector_fallbacks": 0,
+      "mu_accepts": 11,
+      "accepted_branch_changes": 5
+    },
+    "target": "selected_global_student_location_mle",
+    "mu_acceptance_rate": 0.9166666666666666,
+    "pair_acceptance_rate": 0.8333333333333334
+  },
+  "loc_student_selected_mle_block": {
+    "counts": {
+      "blocks": 12,
+      "accepted": 11,
+      "mu_accepts": 10,
+      "score_pairs": 48,
+      "score_accepts": 33,
+      "proposal_sampling_attempts": 68,
+      "branch_changes_proposed": 38,
+      "branch_changes_accepted": 35,
+      "selector_calls": 1,
+      "selector_fallbacks": 0,
+      "nonpositive_curvature": 1,
+      "cheap_metropolis": 0,
+      "global_selection": 0,
+      "n3_fast_attempts": 11,
+      "n3_fast_accepts": 11,
+      "n3_fast_rejects": 0,
+      "n3_fast_fallbacks": 0
+    },
+    "target": "selected_global_student_location_mle"
+  },
+  "loc_student_selected_mle_rattle": {
+    "counts": {
+      "proposals": 12,
+      "accepted": 12,
+      "mu_accepts": 12,
+      "selector_calls": 13,
+      "selector_fallbacks": 0,
+      "forward_trajectories": 12,
+      "reverse_trajectories": 12,
+      "forward_steps": 24,
+      "reverse_steps": 24,
+      "projection_iterations": 60,
+      "position_projection_failures": 0,
+      "momentum_projection_failures": 0,
+      "nonregular_projection_branches": 0,
+      "initial_momentum_projection": 0,
+      "forward_projection": 0,
+      "reverse_phase": 0,
+      "nonpositive_curvature": 0,
+      "cheap_metropolis": 0,
+      "global_selection": 0
+    },
+    "target": "selected_global_student_location_mle",
+    "mu_acceptance_rate": 1.0
+  },
+  "loc_student_selected_mle_independence": {
+    "counts": {
+      "proposals": 12,
+      "accepted": 11,
+      "selector_calls": 13,
+      "selector_fallbacks": 0
+    },
+    "target": "selected_global_student_location_mle"
+  },
+  "loc_affine": {
+    "mu_acceptance_rate": 0.9166666666666666
+  },
+  "loc_logistic": {
+    "mu_acceptance_rate": 0.9166666666666666,
+    "pair_acceptance_rate": 1.0
+  },
+  "loc_laplace": {
+    "mu_acceptance_rate": 0.8333333333333334
+  },
+  "loc_scale_student": {
+    "parameter_acceptance_rate": 0.9166666666666666
+  },
+  "loc_scale_student_rattle": {
+    "parameter_acceptance_rate": 0.8333333333333334
+  }
+}

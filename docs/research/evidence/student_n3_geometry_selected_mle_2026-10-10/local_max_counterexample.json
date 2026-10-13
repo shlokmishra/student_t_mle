@@ -1,0 +1,15 @@
+{
+  "exact_y": [
+    "-13/16",
+    "27/11",
+    "7"
+  ],
+  "exact_score": "0",
+  "exact_J": "412/180625",
+  "J_float": 0.0022809688581314877,
+  "comparison_location": "27/11",
+  "D_at_zero": "4515625/7744",
+  "D_at_comparison": "947756221/3748096",
+  "D_comparison_ratio": "947756221/2185562500",
+  "conclusion": "zero is a strict local likelihood maximum but not global; all quantities are exact rational."
+}

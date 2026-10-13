@@ -1,0 +1,36 @@
+selected-MLE Gibbs 2026101200 5000 1.49
+selected-MLE Gibbs 2026101200 10000 2.98
+complete centered_n3_chain0 3.611432258039713
+selected-MLE Gibbs 2026101201 5000 1.48
+selected-MLE Gibbs 2026101201 10000 2.94
+complete centered_n3_chain1 3.5267228721641004
+selected-MLE Gibbs 2026101202 5000 1.48
+selected-MLE Gibbs 2026101202 10000 2.91
+complete centered_n3_chain2 3.4832875500433147
+selected-MLE Gibbs 2026101203 5000 1.49
+selected-MLE Gibbs 2026101203 10000 2.9
+complete centered_n3_chain3 3.4873448531143367
+selected-MLE Gibbs 2026101300 5000 7.37
+selected-MLE Gibbs 2026101300 10000 14.7
+complete centered_n10_chain0 17.689954741392285
+selected-MLE Gibbs 2026101301 5000 7.33
+selected-MLE Gibbs 2026101301 10000 14.91
+complete centered_n10_chain1 17.834829308092594
+selected-MLE Gibbs 2026101302 5000 7.3
+selected-MLE Gibbs 2026101302 10000 14.74
+complete centered_n10_chain2 17.67280422197655
+selected-MLE Gibbs 2026101303 5000 7.4
+selected-MLE Gibbs 2026101303 10000 15.12
+complete centered_n10_chain3 18.083876606076956
+selected-MLE Gibbs 2026101400 5000 7.4
+selected-MLE Gibbs 2026101400 10000 15.17
+complete shifted_n10_chain0 18.41862488305196
+selected-MLE Gibbs 2026101401 5000 7.71
+selected-MLE Gibbs 2026101401 10000 15.56
+complete shifted_n10_chain1 18.874558699782938
+selected-MLE Gibbs 2026101402 5000 7.39
+selected-MLE Gibbs 2026101402 10000 15.42
+complete shifted_n10_chain2 18.942338061053306
+selected-MLE Gibbs 2026101403 5000 7.96
+selected-MLE Gibbs 2026101403 10000 15.87
+complete shifted_n10_chain3 18.986171890050173

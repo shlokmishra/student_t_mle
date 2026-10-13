@@ -1,0 +1,127 @@
+{
+  "counts": {
+    "blocks": 8000,
+    "accepted": 6655,
+    "mu_accepts": 5234,
+    "score_pairs": 128000,
+    "score_accepts": 76205,
+    "proposal_sampling_attempts": 195899,
+    "branch_changes_proposed": 104601,
+    "branch_changes_accepted": 86336,
+    "selector_calls": 6656,
+    "selector_fallbacks": 0,
+    "nonpositive_curvature": 25,
+    "cheap_metropolis": 1320,
+    "global_selection": 0,
+    "n3_fast_attempts": 0,
+    "n3_fast_accepts": 0,
+    "n3_fast_rejects": 0,
+    "n3_fast_fallbacks": 0
+  },
+  "seconds": 1.0123306810855865,
+  "times": {
+    "proposal": 0.2194139715284109,
+    "selector": 0.5130274738185108,
+    "n3_fast": 0.0
+  },
+  "seed": 2026106201,
+  "score_seed": 1487799269,
+  "target": "selected_global_student_location_mle",
+  "proposal": "random_scan_regular_score_pair_power",
+  "block_length": 16,
+  "max_score_residual": 2.4272250875867485e-14,
+  "max_selected_mle_residual": 1.7696955012524995e-13,
+  "max_inverse_score_error": 1.1102230246251565e-16,
+  "proposal_records": [
+    {
+      "iteration": 1,
+      "accepted": true,
+      "rejection": null,
+      "selector_called": true,
+      "proposed_x": [
+        1.9978962685195603,
+        -0.3435602278403722,
+        2.906396213959387,
+        1.3580360701590033,
+        0.1401866528247966,
+        4.7604033117529365,
+        -3.132130909317512,
+        1.8441622389612788,
+        -0.213984118209948,
+        1.3745049641624987
+      ]
+    },
+    {
+      "iteration": 2001,
+      "accepted": true,
+      "rejection": null,
+      "selector_called": true,
+      "proposed_x": [
+        0.505914710457888,
+        1.9090107120710815,
+        -1.4632864770924705,
+        0.36043439240239683,
+        1.9110186390206994,
+        -2.1819331605250945,
+        1.379788247945211,
+        1.371293993967074,
+        4.383317542317005,
+        1.7359411370655562
+      ]
+    },
+    {
+      "iteration": 4001,
+      "accepted": true,
+      "rejection": null,
+      "selector_called": true,
+      "proposed_x": [
+        -1.685893178026808,
+        0.8759764177203503,
+        2.315761003602794,
+        1.2677715259406013,
+        1.099387945795746,
+        1.196738360174787,
+        1.9270344628659544,
+        1.7501916780112383,
+        1.357259268343517,
+        -0.455165328946989
+      ]
+    }
+  ],
+  "known_scale": 1.0,
+  "n3_endpoint_fast_path": false,
+  "n3_fast_reasons": {},
+  "selected_mle_residual_kind": "computed estimate",
+  "numerical_policy": "no artificial score/Jacobian/proposal cutoffs; unresolved computation raises; inherited parameter uniform guard retained",
+  "raw_path": "tmp/student_independence_geometry_20261010/shifted_n10_block16_chain1.npz",
+  "sha256": "45c0dd5be7f31f7793343d4d333440abe8c8d1390f2efb99e8f03ade3becc41b",
+  "initial_x": [
+    3.884911231504633,
+    -0.343560227840373,
+    2.4574405768045526,
+    5.204124923656204,
+    0.14018665282479692,
+    1.437878104901435,
+    0.7936010376258963,
+    1.7799697929360478,
+    -0.11613503870892272,
+    1.3745049641624987
+  ],
+  "initial_mu": 1.6852385536006937,
+  "initial_e": [
+    2.1996726779039393,
+    -2.0287987814410666,
+    0.7722020232038589,
+    3.5188863700555104,
+    -1.545051900775897,
+    -0.24736044869925866,
+    -0.8916375159747975,
+    0.0947312393353541,
+    -1.8013735923096164,
+    -0.31073358943819507
+  ],
+  "origin": {
+    "reference_index": 127400,
+    "max_quantile": 0.5
+  }
+}

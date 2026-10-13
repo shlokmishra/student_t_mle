@@ -1,0 +1,6 @@
+{
+  "action": "environment/artifact metadata",
+  "error": "ModuleNotFoundError: No module named 'sympy'",
+  "cause": "metadata command omitted existing isolated dependency PYTHONPATH",
+  "resolution": "retried using the documented PYTHONPATH; no dependency or environment changes"
+}

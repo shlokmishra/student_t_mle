@@ -1,0 +1,20 @@
+{
+  "target": "selected_laplace_midpoint_median",
+  "estimator": "odd_middle_even_midpoint",
+  "kernel": "reflective_ordered_facet_hmc",
+  "counts": {
+    "proposals": 12000,
+    "accepted": 11907,
+    "mu_accepts": 9040,
+    "reverse_failures": 0,
+    "wall_events": 3579,
+    "label_permutations": 12000
+  },
+  "max_selected_mle_residual": 0.0,
+  "max_reverse_error": 9.930136612989092e-16,
+  "seed": 2026111880,
+  "seconds": 0.9370719310827553,
+  "loop_seconds": 0.9369098031893373,
+  "raw_path": "tmp/location_only_performance_20261012/laplace_centered_n3_facet_hmc_chain0.npz",
+  "sha256": "6999b87a55e3095da958c94834b10cd3bcd9e7e1aae9cf7309b2b5165968a111"
+}

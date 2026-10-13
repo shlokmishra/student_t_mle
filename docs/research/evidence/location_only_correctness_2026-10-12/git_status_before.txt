@@ -1,0 +1,195 @@
+ M .gitignore
+ M README.md
+ D analysis.py
+ D configs/analysis_run_registry.yaml
+ D configs/final_production_v1_cases.yaml
+ D configs/numba_speedup_validation_cases.yaml
+ D configs/student_k1_n50_geometry_cases.yaml
+ D configs/targeted_validation_cases.yaml
+ D configs/timing_fairness_cases.yaml
+ D dashboard/README.md
+ D dashboard/__init__.py
+ D dashboard/app.py
+ D dashboard/dashboard_cache.py
+ D dashboard/pages/1_Posterior_Comparison.py
+ D dashboard/pages/2_Cost_Audit.py
+ D dashboard/pages/3_Model_Validity_Audit.py
+ D dashboard/pages/4_Analysis_Report.py
+ D dashboard/pages/5_KDE_Correctness.py
+ D dashboard/pages/6_Sampler_Correctness.py
+ D dashboard/pages/7_Efficiency.py
+ D dashboard/pages/8_Geometry.py
+ D dashboard/pages/9_MLE_Release_Information.py
+ D dashboard/scripts/check_dashboard_cache.py
+ D dashboard/scripts/prepare_dashboard_cache.py
+ D diagnostics/run_registry.py
+ M docs/rattle.md
+ D hpc/grace/check_targeted_validation_outputs.sbatch
+ D hpc/grace/final_production_v1_array.sbatch
+ D hpc/grace/final_production_v1_check.sbatch
+ D hpc/grace/numba_speedup_validation_array.sbatch
+ D hpc/grace/numba_speedup_validation_cases.tsv
+ D hpc/grace/numba_speedup_validation_smoke_cases.tsv
+ D hpc/grace/package_targeted_validation_outputs.sbatch
+ D hpc/grace/repair_targeted_validation_array.sbatch
+ D hpc/grace/repair_targeted_validation_cases.tsv
+ D hpc/grace/student_k1_n50_geometry_cases.tsv
+ D hpc/grace/submit_check_targeted_validation_outputs.sh
+ D hpc/grace/submit_final_production_v1.sh
+ D hpc/grace/submit_numba_speedup_smoke.sh
+ D hpc/grace/submit_numba_speedup_validation.sh
+ D hpc/grace/submit_student_k1_n50_geometry.sh
+ D hpc/grace/submit_targeted_validation.sh
+ D hpc/grace/submit_timing_fairness_audit.sh
+ D hpc/grace/targeted_validation_array.sbatch
+ D hpc/grace/targeted_validation_cases.tsv
+ D hpc/grace/timing_fairness_array.sbatch
+ M kde_ref/moments.py
+ M kde_ref/posterior.py
+ M kde_ref/reference_adapter.py
+ M models/__init__.py
+ D models/loc_laplace.py
+ D models/loc_laplace_rattle.py
+ D models/loc_logistic.py
+ D models/loc_logistic_rattle.py
+ D models/loc_scale_laplace.py
+ D models/loc_student.py
+ D models/loc_student_rattle.py
+ M models/model_registry.py
+ M reporting/diagnostics/README.md
+ D reporting/diagnostics/analyze_efficiency.py
+ D reporting/diagnostics/analyze_full_comparison.py
+ D reporting/diagnostics/analyze_geometry.py
+ D reporting/diagnostics/analyze_production_efficiency_cost_first.py
+ D reporting/diagnostics/analyze_release_information.py
+ D reporting/diagnostics/analyze_student_k1_n50_geometry.py
+ D reporting/diagnostics/analyze_targeted_validation.py
+ D reporting/diagnostics/audit_kde_correctness_all_models.py
+ M reporting/diagnostics/audit_kde_reference.py
+ D reporting/diagnostics/audit_prior_sensitivity.py
+ D reporting/diagnostics/audit_rattle_target.py
+ M reporting/diagnostics/audit_reference_all_models.py
+ D reporting/diagnostics/audit_sampler_correctness.py
+ D reporting/diagnostics/audit_student_rattle_algorithm.py
+ D reporting/diagnostics/check_kde_reference_step1.py
+ D reporting/diagnostics/compare_latent_geometry.py
+ M reporting/diagnostics/diagnose_student_score_vs_mle.py
+ D reporting/diagnostics/reconcile_baseline_targeted.py
+ D reporting/diagnostics/refresh_analysis_from_runset.py
+ D reporting/diagnostics/run_rattle_long_selected_configs.py
+ D reporting/diagnostics/run_rattle_tuning_grid.py
+ M reporting/diagnostics/run_release_information_full_data.py
+ D reporting/diagnostics/summarize_kde_reference_audit.py
+ D reporting/diagnostics/summarize_rattle_against_references.py
+ D reporting/diagnostics/summarize_reference_all_models.py
+ M requirements.txt
+ D scripts/benchmark_rattle_scaling_local.py
+ D scripts/benchmark_student_gibbs_backends.py
+ D scripts/check_dashboard_data.py
+ D scripts/check_numba_speedup_outputs.py
+ D scripts/check_targeted_validation_outputs.py
+ D scripts/grace_cost_audit.sbatch
+ D scripts/grace_patch_laplace_reference.sbatch
+ D scripts/grace_postprocess_dashboard.sbatch
+ D scripts/grace_reference_audit.sbatch
+ D scripts/grace_rerun_laplace_cost.sbatch
+ D scripts/grace_rerun_laplace_reference.sbatch
+ M scripts/grace_setup_env.sh
+ D scripts/grace_submit_all.sh
+ D scripts/make_grace_final_production_jobs.py
+ D scripts/make_grace_numba_speedup_jobs.py
+ D scripts/make_grace_targeted_validation_jobs.py
+ D scripts/package_numba_speedup_for_local.py
+ D scripts/package_targeted_validation_for_local.py
+ D scripts/patch_laplace_reference_outputs.py
+ D scripts/profile_rattle_cost_breakup.py
+ D scripts/profile_student_sampler_comparison.py
+ D scripts/replace_laplace_reference_rows.py
+ D scripts/run_analysis_pipeline.py
+ D scripts/run_cost_audit.py
+ D scripts/run_final_production_case.py
+ D scripts/run_targeted_validation.py
+ D scripts/run_timing_fairness_audit.py
+ D scripts/targeted_validation_config.py
+ D scripts/tune_rattle_grid.py
+ M scripts/validate_laplace_facet_rattle.py
+ M scripts/validate_laplace_facet_rattle_chain_behavior.py
+ M tests/test_kde_reference_moments.py
+ M tests/test_laplace_facet_rattle.py
+ M tests/test_laplace_reference_targets.py
+ M tests/test_logistic_rattle_diagnostics.py
+ M tests/test_model_registry_and_location_conventions.py
+ M tests/test_student_gibbs_backends.py
+ M tests/test_student_rattle_diagnostics.py
+?? diagnostics/README.md
+?? diagnostics/source_provenance.py
+?? docs/affine_plan.md
+?? docs/checkpoints/
+?? docs/evidence_ledger.csv
+?? docs/gibbs_student.md
+?? docs/loc_scale.tex
+?? docs/paper/
+?? docs/presentation/evidence/
+?? docs/research/
+?? docs/roadmap.md
+?? docs/student_branch_probability_followup.md
+?? docs/student_inverse_branch_correctness_audit.md
+?? docs/student_n3_gibbs_rattle_discussion.tex
+?? docs/student_n3_score_manifold_components.md
+?? examples/
+?? kde_ref/README.md
+?? kde_ref/numba_kernels.py
+?? models/README.md
+?? models/_compat.py
+?? models/loc/
+?? models/loc_scale/
+?? models/scale/
+?? models/shared/
+?? pytest.ini
+?? reporting/diagnostics/audit_student_global_mle.py
+?? reporting/diagnostics/student_higher_n_geometry.py
+?? reporting/diagnostics/student_n3_selected_geometry.py
+?? reporting/diagnostics/student_n5_boundary.py
+?? reporting/diagnostics/study_student_mle_transitions.py
+?? reporting/diagnostics/study_student_n3_branch_components.py
+?? reporting/diagnostics/verify_student_n3_components.py
+?? scripts/README.md
+?? scripts/audit_student_n3_fast_path.py
+?? scripts/followup_shifted_student_reference.py
+?? scripts/run_checkpoint_validation.py
+?? scripts/selected_mle_reference_oracle.py
+?? scripts/study_student_higher_n_geometry.py
+?? scripts/study_student_latent_esjd.py
+?? scripts/study_student_n3_selected_geometry.py
+?? scripts/study_student_n5_boundary.py
+?? scripts/tune_student_acceptance.py
+?? scripts/validate_cheap_selected_mle_gibbs.py
+?? scripts/validate_selected_mle_reference.py
+?? scripts/validate_student_independence_mh.py
+?? scripts/validate_student_mle_hardening.py
+?? scripts/validate_student_n3_fast_path.py
+?? scripts/validate_student_selected_mle_gibbs.py
+?? scripts/validate_student_selected_mle_rattle.py
+?? scripts/verify_student_independence_evidence.py
+?? scripts/verify_student_n5_irreducibility.py
+?? tests/test_loc_affine.py
+?? tests/test_loc_scale_student.py
+?? tests/test_model_layout.py
+?? tests/test_selected_mle_reference_validation.py
+?? tests/test_shifted_student_followup.py
+?? tests/test_student_acceptance_tuning.py
+?? tests/test_student_global_mle_audit.py
+?? tests/test_student_higher_n_geometry.py
+?? tests/test_student_independence_mh.py
+?? tests/test_student_inverse_branch_weights.py
+?? tests/test_student_latent_esjd.py
+?? tests/test_student_location_mle_hardening.py
+?? tests/test_student_mle_transitions.py
+?? tests/test_student_n3_branch_components.py
+?? tests/test_student_n3_component_graph.py
+?? tests/test_student_n3_endpoint.py
+?? tests/test_student_n3_selected_geometry.py
+?? tests/test_student_n5_boundary.py
+?? tests/test_student_selected_mle_block.py
+?? tests/test_student_selected_mle_gibbs.py
+?? tests/test_student_selected_mle_rattle.py

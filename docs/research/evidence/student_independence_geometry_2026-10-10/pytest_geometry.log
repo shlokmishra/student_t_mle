@@ -1,0 +1,14 @@
+...F....                                                                 [100%]
+=================================== FAILURES ===================================
+_____________ test_even_singular_points_and_odd_regularity_algebra _____________
+
+    def test_even_singular_points_and_odd_regularity_algebra():
+        rows={r['name']:r for r in geo.exact_examples()}
+>       r=rows['n4_singular_selected'];assert r['score_at_zero']=='0' and r['G_at_zero']=='0' and r['J_at_zero']=='0'
+                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+tests/test_student_higher_n_geometry.py:41: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_student_higher_n_geometry.py::test_even_singular_points_and_odd_regularity_algebra
+1 failed, 7 passed in 20.49s

@@ -1,0 +1,29 @@
+[
+  {
+    "case": "centered_n3",
+    "all_saved_states": 48004,
+    "max_score_residual": 9.998807337652238e-13,
+    "min_curvature": 0.11458202800409538,
+    "min_gram": 0.018824801779456113,
+    "min_projection_transversality": 0.9095154698123931,
+    "max_endpoint_roundtrip_error_in_recorded_proposals": 0.0
+  },
+  {
+    "case": "centered_n10",
+    "all_saved_states": 48004,
+    "max_score_residual": 9.999778782798785e-13,
+    "min_curvature": 0.03977413834809195,
+    "min_gram": 0.022157794852469288,
+    "min_projection_transversality": 0.6635748162055312,
+    "max_endpoint_roundtrip_error_in_recorded_proposals": 0.0
+  },
+  {
+    "case": "shifted_n10",
+    "all_saved_states": 48004,
+    "max_score_residual": 9.997003225237222e-13,
+    "min_curvature": 0.04030105614747059,
+    "min_gram": 0.03500806634507125,
+    "min_projection_transversality": 0.8147577242745095,
+    "max_endpoint_roundtrip_error_in_recorded_proposals": 4.440892098500626e-16
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "sampling_sources_match": true,
+  "geometry_sources_match": true,
+  "raw_chains_verified": 16,
+  "extra_direct_verification_selector_calls": 4
+}
